@@ -10,5 +10,5 @@ AiDEN nace como una respuesta tecnológica para la modernización de los inverna
 
 # 🛠️ Tecnologías destacadas
 * IA para análisis predictivo.
-* Maquetación con CSS Grid y HTML5 semántico (Zero-Div Policy).
+* Maquetación con CSS Grid y HTML5 semántico.
 * Enfoque en diseño minimalista y alto rendimiento.
