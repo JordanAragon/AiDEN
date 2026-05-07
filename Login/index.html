@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +7,46 @@
     <title>Login</title>
 </head>
 <body>
-    <main>
-        <section class="main section">
-            <h1>Bienvenido de Vuelta</h1>
+    <main class="login-page">
+        
+        <section class="form-container">
+            <header class="bienvenida">
+                <h1>Bienvenido de Vuelta!</h1>
+                <p>Ingresa tus credenciales para acceder a tu cuenta</p>
+            </header>
+
+            <article class="formulario-login">
+                <form action="#" method="POST">
+                    <section class="campo">
+                        <label for="correo">Correo</label>
+                        <input type="email" id="correo" placeholder="Ingresa tu correo">
+                    </section>
+
+                    <section class="campo">
+                        <header class="header-campo">
+                            <label for="contraseña">Contraseña</label>
+                            <a href="#" class="olvido">Olvide mi contraseña</a>
+                        </header>
+                        <input type="password" id="contraseña" placeholder="Ingresa tu contraseña">
+                    </section>
+
+                    <section class="recordar-opcion">
+                        <input type="checkbox" id="recordar">
+                        <label for="recordar">Recordar</label>
+                    </section>
+
+                    <button type="submit" class="btn-inicio">Inicio</button>
+                </form>
+            </article>
+
+            <footer class="pie-pagina">
+                <p>No tienes cuenta? <a href="#">Registrate</a></p>
+            </footer>
         </section>
+
+        <aside class="banner-lateral">
+            <img src="img/vivero.png" alt="Banner de Login">
+        </aside>
     </main>
 </body>
 </html>
