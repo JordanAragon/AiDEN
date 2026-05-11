@@ -1,0 +1,715 @@
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Open+Sans:wght@300;400;600&display=swap');
+    :root {
+    /* Eje Natural - Verdes */
+    --verde-bosque: #1B5E20;      /* Autoridad y fondos oscuros */
+    --verde-aiden: #2E7D32;       /* Color principal, botones y headers */
+    --verde-crecimiento: #66BB6A; /* Acentos e indicadores positivos */
+    --verde-menta: #A5D6A7;       /* Fondos suaves y tarjetas */
+
+    /* Eje Tecnológico - Azules */
+    --azul-inteligencia: #0D47A1; /* Módulos de IA e IoT */
+    --azul-tech-claro: #42A5F5;   /* Elementos interactivos y carga */
+
+    /* Neutros para Interfaz */
+    --negro-texto: #212121;       /* Texto principal en fondos claros */
+    --gris-fondo: #F5F5F5;        /* Fondo general de la plataforma */
+    --blanco: #FFFFFF;            /* Fondo principal */
+    }
+
+    *{
+        margin: 0;
+        padding: 0;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    /* PUNTO DE QUIEBRE PARA PANTALLAS PEQUEÑAS, (NOMBRE xS) */
+    @media screen and (min-width: 0px) and (max-width: 256px){  
+
+    /* MEDIDAS ESTANDAR EN COLUMNAS */  
+    .titulo{
+        color: rgb(0, 0, 0);
+        font-size: 0.9em;
+        margin-top: 3em;
+        margin-bottom: 3em;
+        padding-left: 1.2em;
+    }
+    .datos {
+        border: none; 
+        padding: 1.2em;
+        border-radius: 20px; 
+    }
+    label {
+        display: block;
+        font-size: 0.9em;
+        margin-bottom: 0.5em;
+    }
+    .itext {
+        padding: 1em;
+        border: 1px solid #ccc;
+        border-radius: 1em;
+        box-sizing: border-box;
+        margin-bottom: 1.5em;
+        font-size: 0.9;
+        box-shadow: 1px 1px 10px gray;
+    }
+    select{
+        padding: 1em;
+        margin-bottom: 0.7em;
+        border: 1px solid #ccc;
+        border-radius: 1em;
+        box-sizing: border-box;
+        font-size: 0.9em;
+        overflow: auto;
+        box-shadow: 1px 1px 10px gray;
+    }
+    select option{
+        font-size: 0.9em;
+        padding: 0;
+        overflow: auto;
+    }
+    .terminos{
+        display: flex;
+        border: none;
+        padding-left: 1.2em;
+        border-radius: 1.2em;
+        margin-bottom: 2em; 
+        margin-top: 0;
+
+    }
+    .textterm{
+        margin-left: 0.5em;
+        font-size: 0.8em;
+    }
+    .registroB{
+        border: none; 
+        border-radius: 20px;
+        margin-bottom: 2em; 
+        padding-left: 1.2em;
+    }
+    .boton_registro{
+        background-color: var(--verde-bosque);
+        color: var(--blanco);
+        padding: 1em;
+        padding-left: 1.2em;
+        font-size: 0.9em;
+        border-radius: 1em;
+    }
+    .redireccionLogin{
+        text-align: center;
+        margin-top: 7em;
+        margin-bottom: 3em;
+        padding-bottom: 2em;
+        font-size: 0.9em;
+    }
+    a{
+        padding: 0.1em;
+        color: blue;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: none;
+    }
+
+    .xs_1{
+        width: 8.333%;
+    }
+    .xs_2{
+        width: 16.666%;
+    }
+    .xs_3{
+        width: 25%;
+    }
+        .xs_4{
+        width: 33.333%;
+    }
+        .xs_5{
+        width: 41.666%;
+    }
+        .xs_6{
+        width: 50%;
+    }
+        .xs_7{
+        width: 58.333%;
+    }
+        .xs_8{
+        width: 66.666%;
+    }
+        .xs_9{
+        width: 75%;
+    }
+        .xs_10{
+        width: 83.333%;
+    }
+        .xs_11{
+        width: 91.666%;
+    }
+        .xs_12{
+        width: 100%;
+    }
+    }
+
+    /* PUNTO DE QUIEBRE PARA PANTALLAS PEQUEÑAS, (NOMBRE S) */   
+    @media screen and (min-width: 257px) and (max-width: 768px){
+    
+    .titulo{
+        color: rgb(0, 0, 0);
+        font-size: 1.2em;
+        margin-top: 3em;
+        margin-bottom: 3em;
+        text-align: center;
+        margin-right: 40em;
+    }
+    .datos {
+        border: none; 
+        padding: 1.2em;
+        border-radius: 20px; 
+        margin-left: 1.3em;
+    }
+    label {
+        display: block;
+        font-size: 1em;
+        margin-bottom: 0.5em;
+    }
+    .itext {
+        padding: 1em;
+        border: 1px solid #ccc;
+        border-radius: 1em;
+        box-sizing: border-box;
+        margin-bottom: 1.5em;
+        font-size: 1em;
+        box-shadow: 1px 1px 10px gray;
+    }
+    select{
+        padding: 1em;
+        margin-bottom: 0.7em;
+        border: 1px solid #ccc;
+        border-radius: 1em;
+        box-sizing: border-box;
+        font-size: 1em;
+        overflow: auto;
+        box-shadow: 1px 1px 10px gray;
+    }
+    select option{
+        font-size: 1em;
+        padding: 0;
+        overflow: auto;
+        font-size: 0.8em;
+    }
+
+    .terminos{
+        display: flex;
+        border: none;
+        padding-left: 1.2em;
+        border-radius: 1.2em;
+        margin-bottom: 2em; 
+        margin-top: 0;
+        margin-left: 1em;
+    }
+    .textterm{
+        margin-left: 0.5em;
+        font-size: 1em;
+    }
+    .registroB{
+        border: none; 
+        border-radius: 20px;
+        margin-bottom: 2em; 
+        padding-left: 1.2em;
+        margin-left: 1em;
+        margin-top: 4em;
+    }
+    .boton_registro{
+        background-color: var(--verde-bosque);
+        color: var(--blanco);
+        padding: 1em;
+        padding-left: 1.2em;
+        font-size: 1.2em;
+        border-radius: 1em;
+        box-shadow: 0 0 8px var(--verde-aiden);
+        border: 1px solid var(--verde-menta);
+    }
+    .redireccionLogin{
+        text-align: center;
+        margin-top: 8em;
+        margin-bottom: 5em;
+        padding-bottom: 2em;
+        font-size: 1em;
+
+    }
+    a{
+        padding: 0.1em;
+        color: blue;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: none;
+    }
+    .s_1{
+        width: 8.333%;
+    }
+    .s_2{
+        width: 16.666%;
+    }
+    .s_3{
+        width: 25%;
+    }
+        .s_4{
+        width: 33.333%;
+    }
+        .s_5{
+        width: 41.666%;
+    }
+        .s_6{
+        width: 50%;
+    }
+        .s_7{
+        width: 58.333%;
+    }
+        .s_8{
+        width: 66.666%;
+    }
+        .s_9{
+        width: 75%;
+    }
+        .s_10{
+        width: 83.333%;
+    }
+        .s_11{
+        width: 91.666%;
+    }
+        .s_12{
+        width: 100%;
+    }
+    }
+
+    /* PUNTO DE QUIEBRE PARA PANTALLAS MEDIANAS, (NOMBRE M) */ 
+    @media screen and (min-width: 768px) and (max-width: 1000px){
+    
+    .form{
+        display: flex;
+    }
+    .form{
+        font-size: 1.2em;
+    }
+    .titulo{
+        text-align: center;
+        color: rgb(0, 0, 0);
+        font-size: 1.3em;
+        margin-top: 2.5em;
+        margin-bottom: 3em;
+        text-shadow: 2px 0 2px var(--verde-menta);
+    }
+    .datos {
+        border: none; 
+        padding: 1.2em;
+        border-radius: 20px;
+        margin-left: 2em;  
+    }
+    label {
+        display: block;
+        font-size: 1em;
+        margin-bottom: 0.5em;
+    }
+    .itext {
+        padding: 1em;
+        border: 1px solid #ccc;
+        border-radius: 1em;
+        box-sizing: border-box;
+        margin-bottom: 1.5em;
+        font-size: 1em;
+        box-shadow: 1px 1px 10px gray;
+    }
+    select{
+        padding: 1em;
+        margin-bottom: 0.7em;
+        border: 1px solid #ccc;
+        border-radius: 1em;
+        box-sizing: border-box;
+        font-size: 1.2em;
+        overflow: auto;
+        box-shadow: 1px 1px 10px gray;
+    }
+    select option{
+        font-size: 0.6em;
+        padding: 0;
+        overflow: auto;
+        font-size: 0.6em;
+    }
+
+    .terminos{
+        display: flex;
+        border: none;
+        padding-left: 1.2em;
+        border-radius: 1.2em;
+        margin-left: 2em; 
+        margin-bottom: 2em; 
+        margin-top: 0;
+
+    }
+    .textterm{
+        margin-left: 0.5em;
+    }
+    .registroB{
+        border: none; 
+        border-radius: 1.2em;
+        margin-left: 2em; 
+        margin-bottom: 2em; 
+        padding-left: 1.2em;
+    }
+    .boton_registro{
+        background-color: var(--verde-bosque);
+        color: var(--blanco);
+        padding: 1em;
+        padding-left: 1.2em;
+        font-size: 1.3em;
+        border-radius: 1em;
+        box-shadow: 0 0 10px var(--verde-aiden);
+        border: 1px solid var(--verde-crecimiento);
+    }
+    .redireccionLogin{
+        text-align: center;
+        margin-top: 7em;
+        margin-bottom: 3em;
+        padding-bottom: 2em;
+        font-size: 1.3em;
+    }
+    a{
+        padding: 0.3em;
+        color: blue;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: none;
+    }
+    .m_1{
+        width: 8.333%;
+    }
+    .m_2{
+        width: 16.666%;
+    }
+    .m_3{
+        width: 25%;
+    }
+        .m_4{
+        width: 33.333%;
+    }
+        .m_5{
+        width: 41.666%;
+    }
+        .m_6{
+        width: 50%;
+    }
+        .m_7{
+        width: 58.333%;
+    }
+        .m_8{
+        width: 66.666%;
+    }
+        .m_9{
+        width: 75%;
+    }
+        .m_10{
+        width: 83.333%;
+    }
+        .m_11{
+        width: 91.666%;
+    }
+        .m_12{
+        width: 100%;
+    }
+    }
+
+
+    /* PUNTO DE QUIEBRE PARA PANTALLAS GRANDES, (NOMBRE L) */ 
+    @media screen and (min-width: 1001px) and (max-width: 1466px){
+    
+    .form{
+        display: flex;
+        min-height: 100vh; 
+        align-items: stretch;   
+    }
+    .titulo{
+        color: rgb(0, 0, 0);
+        font-size: 1.3em;
+        margin-top: 2.5em;
+        margin-left: 6em;
+        margin-bottom: 3em;
+        font-size: 1.6em;
+    }
+    .datos {
+        border: none; 
+        padding: 1.2em;
+        border-radius: 20px;
+        margin-left: 3em;  
+        font-size: 1.2em;
+    }
+    label {
+        display: block;
+        font-size: 1.2em;
+        margin-bottom: 0.3em;
+    }
+    .itext {
+        padding: 1em;
+        border: 1px solid #ccc;
+        border-radius: 1em;
+        box-sizing: border-box;
+        margin-bottom: 1.5em;
+        font-size: 1.2em;
+        box-shadow: 1px 1px 10px gray;
+    }
+    select{
+        padding: 1em;
+        margin-bottom: 0.7em;
+        border: 1px solid #ccc;
+        border-radius: 1em;
+        box-sizing: border-box;
+        font-size: 1.1em;
+        overflow: auto;
+        box-shadow: 1px 1px 10px gray;
+    }
+    select option{
+        padding: 0;
+        overflow: auto;
+        font-size: 0.6em;
+    }
+
+    .terminos{
+        display: flex;
+        border: none;
+        padding-left: 1.2em;
+        border-radius: 1.2em;
+        margin-left: 3em; 
+        margin-bottom: 2em; 
+        margin-top: 0;
+        font-size: 1.1em
+    }
+    .textterm{
+        margin-left: 0.4em;
+        font-size: 1.2em;
+    }
+    .registroB{
+        border: none; 
+        border-radius: 1.2em;
+         padding-left: 1.2em;
+        margin-left: 3em; 
+        margin-bottom: 2em; 
+        padding-left: 1.2em;
+        font-size: 1.2em;
+
+    }
+    .boton_registro{
+        background-color: var(--verde-bosque);
+        color: var(--blanco);
+        padding: 1em;
+        padding-left: 1.2em;
+        font-size: 1.3em;
+        border-radius: 1em;
+        box-shadow: 0 0 10px var(--verde-aiden);
+        border: 1px solid var(--verde-crecimiento);
+    }
+    .redireccionLogin{
+        text-align: center;
+        margin-top: 7em;
+        margin-bottom: 3em;
+        padding-bottom: 2em;
+        font-size: 1.6em;
+    }
+    a{
+        padding: 0.3em;
+        color: blue;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: none;
+    }
+
+    .image{
+        background-image: url(/img/AiDEN\ girl.jpeg);
+        background-repeat: no-repeat;
+        background-position-x: -21em;
+        background-size: cover;
+        border-radius: 25% 0 0 25%;
+        margin-left: 2em;
+        box-shadow: 0 0 20px gray ;
+    }
+
+    .l_1{
+        width: 8.333%;
+    }
+    .l_2{
+        width: 16.666%;
+    }
+    .l_3{
+        width: 25%;
+    }
+        .l_4{
+        width: 33.333%;
+    }
+        .l_5{
+        width: 41.666%;
+    }
+        .l_6{
+        width: 50%;
+    }
+        .l_7{
+        width: 58.333%;
+    }
+        .l_8{
+        width: 66.666%;
+    }
+        .l_9{
+        width: 75%;
+    }
+        .l_10{
+        width: 83.333%;
+    }
+        .l_11{
+        width: 91.666%;
+    }
+        .l_12{
+        width: 100%;
+    }
+    }
+
+    /* PUNTO DE QUIEBRE PARA PANTALLAS MUY GRANDES, (NOMBRE XL) */ 
+    @media screen and (min-width: 1466px){
+    
+    .form{
+        display: flex;
+        min-height: 100vh; 
+        align-items: stretch;   
+    }
+    .titulo{
+        color: rgb(0, 0, 0);
+        font-size: 1.5em;
+        margin-top: 4em;
+        margin-left: 3em;
+        margin-bottom: 3em;
+    }
+    .datos {
+        border: none; 
+        padding: 1.2em;
+        border-radius: 20px;
+        margin-left: 3em;  
+    }
+    label {
+        display: block;
+        font-size: 1.3em;
+    }
+    .itext {
+        padding: 1em;
+        border: 1px solid #ccc;
+        border-radius: 1em;
+        box-sizing: border-box;
+        margin-bottom: 1.5em;
+        font-size: 1.2em;
+        box-shadow: 1px 1px 10px gray;
+    }
+    select{
+        padding: 1em;
+        margin-bottom: 0.7em;
+        border: 1px solid #ccc;
+        border-radius: 1em;
+        box-sizing: border-box;
+        font-size: 1.2em;
+        overflow: auto;
+        box-shadow: 1px 1px 10px gray;
+    }
+    select option{
+        font-size: 0.9em;
+        padding: 0;
+        overflow: auto;
+    }
+
+    .terminos{
+        display: flex;
+        border: none;
+        padding-left: 1.2em;
+        border-radius: 1.2em;
+        margin-left: 3em; 
+        margin-bottom: 2em; 
+        margin-top: 0;
+        font-size: 1.2em;
+        
+    }
+    .textterm{
+        margin-left: 0.5em;
+    }
+    .registroB{
+        border: none; 
+        border-radius: 20px;
+        margin-left: 3em; 
+        margin-bottom: 2em; 
+        font-size: 1.2em;
+    }
+    .boton_registro{
+        background-color: var(--verde-bosque);
+        color: var(--blanco);
+        padding: 1em;
+        padding-left: 1.2em;
+        font-size: 1.2em;
+        border-radius: 1em;
+        box-shadow: 0 0 10px var(--verde-aiden);
+        border: 1px solid var(--verde-crecimiento);
+    }
+    .redireccionLogin{
+        text-align: center;
+        margin-top: 7em;
+        margin-bottom: 3em;
+        padding-bottom: 2em;
+        font-size: 1.3em;
+    }
+    a{
+        padding: 0.3em;
+        color: blue;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: none;
+    }
+
+    .image{
+        background-image: url(/img/AiDEN\ girl.jpeg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 25% 0 0 25%;
+        margin-left: 2em;
+        box-shadow: 0 0 20px gray ;
+    }
+
+        .xl_1{
+        width: 8.333%;
+    }
+    .xl_2{
+        width: 16.666%;
+    }
+    .xl_3{
+        width: 25%;
+    }
+        .xl_4{
+        width: 33.333%;
+    }
+        .xl_5{
+        width: 41.666%;
+    }
+        .xl_6{
+        width: 50%;
+    }
+        .xl_7{
+        width: 58.333%;
+    }
+        .xl_8{
+        width: 66.666%;
+    }
+        .xl_9{
+        width: 75%;
+    }
+        .xl_10{
+        width: 83.333%;
+    }
+        .xl_11{
+        width: 91.666%;
+    }
+        .xl_12{
+        width: 100%;
+    }
+    }
