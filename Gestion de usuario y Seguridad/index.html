@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivero - Gestión de Usuarios y Seguridad</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    </head>
+<body>
+
+    <nav class="sidebar">
+        <header class="sidebar-header">
+            <span class="icon-logo leaf-icon"></span>
+            <h1>VIVERO</h1>
+            <p>Sistema de Gestión</p>
+        </header>
+
+        <section class="menu-group">
+            <a href="#" class="menu-item dashboard-link">
+                <span class="icon dashboard-icon"></span> Dashboard
+            </a>
+        </section>
+
+        <section class="menu-group">
+            <h2>USUARIOS Y SEGURIDAD</h2>
+            <a href="#" class="menu-item active">
+                <span class="icon users-icon"></span> Usuarios
+            </a>
+            <a href="#" class="menu-item">
+                <span class="icon roles-icon"></span> Roles y Permisos
+            </a>
+        </section>
+
+        <section class="menu-group">
+            <h2>AUDITORÍA</h2>
+            <a href="#" class="menu-item">
+                <span class="icon history-icon"></span> Historial de Cambios
+            </a>
+        </section>
+
+        <section class="menu-group">
+            <h2>MÓDULOS</h2>
+            <a href="#" class="menu-item">
+                <span class="icon inventory-icon"></span> Inventario
+            </a>
+            <a href="#" class="menu-item">
+                <span class="icon sales-icon"></span> Ventas
+            </a>
+            <a href="#" class="menu-item">
+                <span class="icon reports-icon"></span> Reportes
+            </a>
+        </section>
+
+        <section class="menu-group">
+            <h2>CONFIGURACIÓN</h2>
+            <a href="#" class="menu-item">
+                <span class="icon settings-icon"></span> Configuración
+            </a>
+        </section>
+
+        <footer class="sidebar-footer">
+            <img src="path/to/admin-avatar.jpg" alt="Admin" class="user-avatar">
+            <section class="user-info">
+                <h3>Administrador</h3>
+                <p>admin@vivero.com</p>
+            </section>
+        </footer>
+    </nav>
+
+    <main class="main-content">
+        <header class="top-header">
+            <section class="header-left">
+                <button class="menu-toggle"><span class="icon burger-icon"></span></button>
+                <span class="icon security-icon-header"></span>
+                <h2>Gestión de Usuarios y Seguridad</h2>
+            </section>
+            <section class="header-right">
+                <button class="notification-btn">
+                    <span class="icon bell-icon"></span>
+                    <span class="notification-badge">3</span>
+                </button>
+                <img src="path/to/owner-avatar.jpg" alt="Dueño" class="user-avatar">
+                <section class="user-meta">
+                    <h3>Administrador</h3>
+                    <p>Dueño</p>
+                </section>
+                <button class="user-menu-btn"><span class="icon arrow-down-icon"></span></button>
+            </section>
+        </header>
+
+        <header class="page-header">
+            <h2>Gestión de Usuarios</h2>
+            <p>Administra los usuarios del sistema y sus roles de acceso.</p>
+        </header>
+
+        <section class="kpi-grid">
+            <article class="kpi-card users-card">
+                <span class="icon kpi-icon green">
+                    <span class="icon-users-kpi"></span>
+                </span>
+                <section class="kpi-data">
+                    <p class="kpi-label">Usuarios Registrados</p>
+                    <p class="kpi-value">25</p>
+                    <p class="kpi-subtext">Total de usuarios</p>
+                </section>
+            </article>
+
+            <article class="kpi-card roles-card">
+                <span class="icon kpi-icon light-green">
+                    <span class="icon-roles-kpi"></span>
+                </span>
+                <section class="kpi-data">
+                    <p class="kpi-label">Roles Activos</p>
+                    <p class="kpi-value">3</p>
+                    <p class="kpi-subtext">Dueño, Administrador, Operario</p>
+                </section>
+            </article>
+
+            <article class="kpi-card changes-card">
+                <span class="icon kpi-icon green">
+                    <span class="icon-changes-kpi"></span>
+                </span>
+                <section class="kpi-data">
+                    <p class="kpi-label">Cambios Hoy</p>
+                    <p class="kpi-value">2</p>
+                    <p class="kpi-subtext">Modificaciones realizadas</p>
+                </section>
+            </article>
+
+            <article class="kpi-card last-change-card">
+                <span class="icon kpi-icon green">
+                    <span class="icon-last-change-kpi"></span>
+                </span>
+                <section class="kpi-data">
+                    <p class="kpi-label">Último Cambio</p>
+                    <p class="kpi-value">Hoy, 10:30 AM</p>
+                    <p class="kpi-subtext">Por: Administrador</p>
+                </section>
+            </article>
+        </section>
+
+        <section class="management-panels">
+            
+            <section class="user-list-panel">
+                <header class="panel-header">
+                    <h3>Listado de Usuarios</h3>
+                    <section class="panel-actions">
+                        <input type="search" placeholder="Buscar usuario...">
+                        <button class="btn btn-primary">
+                            <span class="icon plus-icon"></span> Nuevo Usuario
+                        </button>
+                    </section>
+                </header>
+
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo Electrónico</th>
+                            <th>Rol Actual</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="user-cell">
+                                <span class="avatar-placeholder color-1">JP</span>
+                                Juan Pérez
+                            </td>
+                            <td>juan@vivero.com</td>
+                            <td class="role-cell"><span class="badge badge-admin">Administrador</span></td>
+                            <td class="status-cell"><span class="status status-active"></span> Activo</td>
+                            <td class="action-cell"><button class="btn-icon"><span class="icon options-icon"></span></button></td>
+                        </tr>
+                        <tr>
+                            <td class="user-cell">
+                                <span class="avatar-placeholder color-2">ML</span>
+                                María López
+                            </td>
+                            <td>maria@vivero.com</td>
+                            <td class="role-cell"><span class="badge badge-operario">Operario</span></td>
+                            <td class="status-cell"><span class="status status-active"></span> Activo</td>
+                            <td class="action-cell"><button class="btn-icon"><span class="icon options-icon"></span></button></td>
+                        </tr>
+                        <tr>
+                            <td class="user-cell">
+                                <span class="avatar-placeholder color-3">CR</span>
+                                Carlos Ruiz
+                            </td>
+                            <td>carlos@vivero.com</td>
+                            <td class="role-cell"><span class="badge badge-operario">Operario</span></td>
+                            <td class="status-cell"><span class="status status-active"></span> Activo</td>
+                            <td class="action-cell"><button class="btn-icon"><span class="icon options-icon"></span></button></td>
+                        </tr>
+                        <tr>
+                            <td class="user-cell">
+                                <span class="avatar-placeholder color-4">AT</span>
+                                Ana Torres
+                            </td>
+                            <td>ana@vivero.com</td>
+                            <td class="role-cell"><span class="badge badge-admin">Administrador</span></td>
+                            <td class="status-cell"><span class="status status-inactive"></span> Inactivo</td>
+                            <td class="action-cell"><button class="btn-icon"><span class="icon options-icon"></span></button></td>
+                        </tr>
+                        <tr>
+                            <td class="user-cell">
+                                <span class="avatar-placeholder color-5">LG</span>
+                                Luis Gómez
+                            </td>
+                            <td>luis@vivero.com</td>
+                            <td class="role-cell"><span class="badge badge-operario">Operario</span></td>
+                            <td class="status-cell"><span class="status status-active"></span> Activo</td>
+                            <td class="action-cell"><button class="btn-icon"><span class="icon options-icon"></span></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <footer class="pagination-footer">
+                    <p>Mostrando 1 a 5 de 25 usuarios</p>
+                    <nav class="pagination">
+                        <button class="pagination-arrow disabled"><span class="icon arrow-left-icon"></span></button>
+                        <button class="pagination-page active">1</button>
+                        <button class="pagination-page">2</button>
+                        <button class="pagination-page">3</button>
+                        <span class="pagination-ellipsis">...</span>
+                        <button class="pagination-page">5</button>
+                        <button class="pagination-arrow"><span class="icon arrow-right-icon"></span></button>
+                    </nav>
+                </footer>
+            </section>
+
+            <aside class="role-management-aside">
+                <article class="role-assign-panel">
+                    <h3>Asignar / Modificar Rol</h3>
+                    <form class="role-form">
+                        <fieldset>
+                            <label>Seleccionar Usuario</label>
+                            <select>
+                                <option>Juan Pérez (juan@vivero.com)</option>
+                            </select>
+                        </fieldset>
+                        <fieldset>
+                            <label>Rol</label>
+                            <select>
+                                <option>Administrador</option>
+                            </select>
+                        </fieldset>
+                        
+                        <fieldset class="permissions-fieldset">
+                            <legend>Permisos del rol seleccionado</legend>
+                            <ul>
+                                <li class="permission-item checked"><span class="icon check-icon"></span> Acceso al dashboard</li>
+                                <li class="permission-item checked"><span class="icon check-icon"></span> Gestionar usuarios</li>
+                                <li class="permission-item checked"><span class="icon check-icon"></span> Gestionar inventario</li>
+                                <li class="permission-item checked"><span class="icon check-icon"></span> Ver reportes</li>
+                                <li class="permission-item checked"><span class="icon check-icon"></span> Configuración del sistema</li>
+                            </ul>
+                        </fieldset>
+                        
+                        <button type="submit" class="btn btn-success btn-full-width">
+                            <span class="icon save-icon"></span> Guardar Cambios
+                        </button>
+                    </form>
+                </article>
+
+                <article class="system-roles-panel">
+                    <h3>Roles del Sistema</h3>
+                    <ul>
+                        <li class="role-detail-item">
+                            <span class="icon role-icon owner"><span class="icon-crown"></span></span>
+                            <section class="role-detail-text">
+                                <p class="role-name">Dueño</p>
+                                <p class="role-desc">Acceso total al sistema y todas las funcionalidades.</p>
+                            </section>
+                        </li>
+                        <li class="role-detail-item">
+                            <span class="icon role-icon admin"><span class="icon-shield"></span></span>
+                            <section class="role-detail-text">
+                                <p class="role-name">Administrador</p>
+                                <p class="role-desc">Gestiona usuarios, inventario, ventas y reportes.</p>
+                            </section>
+                        </li>
+                        <li class="role-detail-item">
+                            <span class="icon role-icon operario"><span class="icon-user"></span></span>
+                            <section class="role-detail-text">
+                                <p class="role-name">Operario</p>
+                                <p class="role-desc">Acceso limitado a funciones básicas asignadas.</p>
+                            </section>
+                        </li>
+                    </ul>
+                </article>
+            </aside>
+        </section>
+
+        <section class="roles-history-panel">
+            <header class="panel-header">
+                <h3>Historial de Cambios de Roles</h3>
+            </header>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Fecha y Hora</th>
+                        <th>Usuario Modificado</th>
+                        <th>Cambio Realizado</th>
+                        <th>Modificado Por</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>25/05/2024 10:30</td>
+                        <td>Juan Pérez</td>
+                        <td>Rol cambiado a Administrador</td>
+                        <td>Administrador</td>
+                    </tr>
+                    <tr>
+                        <td>24/05/2024 16:45</td>
+                        <td>María López</td>
+                        <td>Rol cambiado a Operario</td>
+                        <td>Administrador</td>
+                    </tr>
+                    <tr>
+                        <td>23/05/2024 09:15</td>
+                        <td>Carlos Ruiz</td>
+                        <td>Estado cambiado a Activo</td>
+                        <td>Administrador</td>
+                    </tr>
+                    <tr>
+                        <td>22/05/2024 14:20</td>
+                        <td>Ana Torres</td>
+                        <td>Rol cambiado a Administrador</td>
+                        <td>Administrador</td>
+                    </tr>
+                    <tr>
+                        <td>21/05/2024 11:05</td>
+                        <td>Luis Gómez</td>
+                        <td>Rol cambiado a Operario</td>
+                        <td>Administrador</td>
+                    </tr>
+                </tbody>
+            </table>
+            <footer class="panel-footer-center">
+                <button class="btn-text-link">Ver más historial <span class="icon arrow-down-icon-small"></span></button>
+            </footer>
+        </section>
+        
+    </main>
+
+</body>
+</html>
