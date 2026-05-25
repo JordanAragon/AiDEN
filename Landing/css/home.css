@@ -1,0 +1,218 @@
+/* Colores base del proyecto */
+:root {
+    --bg-principal: #ffffff;
+    --bg-secundario: #f4f7f6;
+    --color-primario: #2E7D32; 
+    --color-primario-hover: #1B5E20; 
+    --color-acento: #66BB6A; 
+    --texto-oscuro: #1f2937;
+    --texto-claro: #4b5563;
+    --borde: #e5e7eb;
+    --sombra-suave: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --sombra-fuerte: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Reseteo básico para evitar márgenes raros del navegador */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-principal);
+    color: var(--texto-oscuro);
+    line-height: 1.6;
+}
+
+/* Estilos de la barra de navegación */
+.cabecera-sitio {
+    position: sticky;
+    top: 0;
+    background-color: var(--bg-principal);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    box-shadow: var(--sombra-suave);
+    z-index: 1000;
+}
+
+.marca-logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--color-primario);
+    text-decoration: none;
+}
+
+.navegacion-menu ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.navegacion-menu a {
+    text-decoration: none;
+    color: var(--texto-claro);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navegacion-menu a:hover {
+    color: var(--color-primario);
+}
+
+/* Estilos para los botones comunes */
+.btn-principal, .btn-secundario {
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.btn-principal {
+    background-color: var(--color-primario);
+    color: white;
+    border: 1px solid var(--color-primario);
+}
+
+.btn-principal:hover {
+    background-color: var(--color-primario-hover);
+}
+
+.btn-secundario {
+    background-color: transparent;
+    color: var(--color-primario);
+    border: 1px solid var(--color-primario);
+    margin-right: 0.5rem;
+}
+
+.btn-secundario:hover {
+    background-color: var(--bg-secundario);
+}
+
+/* Bloque contenedor de secciones */
+.contenedor-principal {
+    padding: 2rem 5%;
+}
+
+.seccion-hero {
+    display: flex;
+    align-items: center;
+    min-height: 70vh;
+    padding: 4rem 0;
+}
+
+.hero-introduccion h1 {
+    font-size: 3rem;
+    color: var(--texto-oscuro);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.hero-introduccion p {
+    font-size: 1.2rem;
+    color: var(--texto-claro);
+    margin-bottom: 2rem;
+    max-width: 600px;
+}
+
+.hero-botones {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Estilos de las secciones informativas */
+.seccion-nosotros, .seccion-modulos {
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.titulo-seccion h2 {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    color: var(--color-primario);
+}
+
+/* Maquetación de tarjetas con Flexbox plano */
+.grilla-tarjetas {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.tarjeta-modulo {
+    background-color: var(--bg-secundario);
+    padding: 2.5rem;
+    border-radius: 0.5rem;
+    width: 300px;
+    box-shadow: var(--sombra-suave);
+    transition: transform 0.3s;
+}
+
+.tarjeta-modulo:hover {
+    transform: translateY(-5px);
+}
+
+.tarjeta-modulo h3 {
+    margin-bottom: 1rem;
+    color: var(--texto-oscuro);
+}
+
+/* Pie de página */
+.pie-sitio {
+    background-color: var(--texto-oscuro);
+    color: white;
+    padding: 3rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN COMPLETO POR PANTALLA
+   ========================================================================== */
+
+/* [xs] Pantallas muy pequeñas (Celulares verticales de menos de 480px) */
+@media (max-width: 480px) {
+    .cabecera-sitio { flex-direction: column; gap: 1rem; padding: 1rem; }
+    .navegacion-menu ul { flex-direction: column; align-items: center; gap: 0.8rem; }
+    .hero-introduccion h1 { font-size: 1.8rem; }
+    .hero-botones { flex-direction: column; width: 100%; }
+    .hero-botones .btn-principal, .hero-botones .btn-secundario { text-align: center; margin-right: 0; }
+    .grilla-tarjetas { flex-direction: column; align-items: center; }
+    .tarjeta-modulo { width: 100%; }
+    .pie-sitio { flex-direction: column; text-align: center; }
+}
+
+/* [s] Pantallas pequeñas (Celulares horizontales / Tablets de 481px a 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .cabecera-sitio { flex-wrap: wrap; }
+    .hero-introduccion h1 { font-size: 2.3rem; }
+    .tarjeta-modulo { width: 45%; }
+}
+
+/* [l] Pantallas medianas (Tablets grandes / Laptops estándar de 769px a 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hero-introduccion h1 { font-size: 2.7rem; }
+    .tarjeta-modulo { width: 280px; }
+}
+
+/* [xl] Pantallas grandes (Monitores normales de 1025px a 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    /* Mantiene los estilos bases estructurados fluidamente */
+}
+
+/* [xxl] Pantallas muy grandes (Monitores UltraWide o de alta resolución superior a 1441px) */
+@media (min-width: 1441px) {
+    .contenedor-principal { max-width: 1400px; margin: 0 auto; }
+    .cabecera-sitio { padding: 1rem 10%; }
+}

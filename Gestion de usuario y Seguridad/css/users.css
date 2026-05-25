@@ -1,0 +1,236 @@
+/* Paleta original de verdes oscuros del dashboard corporativo */
+:root {
+    --dark-green: #0a4f31; 
+    --bright-green: #1f9d55;
+    --light-green: #bce9cc; 
+    --hover-green: #11603d; 
+    --text-on-dark: #f0fdf4;
+    --text-primary: #1f2937; 
+    --text-muted: #6b7280; 
+    --bg-main: #f3f6f9; 
+    --bg-panel: #ffffff; 
+    --border-color: #e5e7eb;
+    --badge-admin-bg: #eff6ff;
+    --badge-admin-text: #1d4ed8;
+    --badge-operario-bg: #f3e8ff;
+    --badge-operario-text: #7e22ce;
+    --status-active: #16a34a;
+    --font-family: 'Open Sans', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: grid;
+    grid-template-columns: 260px 1fr; /* Estructura nativa fija */
+    min-height: 100vh;
+    font-family: var(--font-family);
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+}
+
+/* Columna de Navegación Lateral */
+.sidebar {
+    background-color: var(--dark-green);
+    color: var(--text-on-dark);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-header {
+    margin-bottom: 32px;
+}
+
+.sidebar-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.menu-group {
+    margin-bottom: 24px;
+}
+
+.menu-group h2 {
+    font-size: 0.75rem;
+    color: var(--light-green);
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    color: var(--text-on-dark);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.menu-item.active, .menu-item:hover {
+    background-color: var(--hover-green);
+}
+
+/* Estilo del botón regresar del panel lateral */
+.btn-regresar-panel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--light-green);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 10px 12px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.btn-regresar-panel:hover {
+    background-color: #dc2626;
+    color: white;
+}
+
+/* Área de trabajo central */
+.main-content {
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.content-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 4px;
+}
+
+/* Reutilización de botones */
+.btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--bright-green);
+    color: white;
+}
+
+/* Rejilla de bloques KPI */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.metric-card {
+    background: var(--bg-panel);
+    padding: 24px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark-green);
+}
+
+/* Tablas informativas */
+.panel-section {
+    background: var(--bg-panel);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    text-align: left;
+}
+
+.data-table th, .data-table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-admin { background: var(--badge-admin-bg); color: var(--badge-admin-text); }
+.badge-operario { background: var(--badge-operario-bg); color: var(--badge-operario-text); }
+
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--status-active);
+}
+
+.btn-action {
+    background: none;
+    border: none;
+    color: var(--bright-green);
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN COMPLETO POR PANTALLA
+   ========================================================================== */
+
+/* [xs] Pantallas muy pequeñas (Celulares) */
+@media (max-width: 480px) {
+    body { grid-template-columns: 1fr; } /* Colapsamos la grilla para apilar el menú */
+    .sidebar { min-height: auto; gap: 1rem; }
+    .main-content { padding: 15px; }
+    .content-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .metrics-grid { grid-template-columns: 1fr; gap: 16px; }
+    .data-table { display: block; overflow-x: auto; } /* Scroll para que no rompa la pantalla */
+}
+
+/* [s] Pantallas pequeñas (Celulares horizontales / Tablets chicas) */
+@media (min-width: 481px) and (max-width: 768px) {
+    body { grid-template-columns: 1fr; }
+    .sidebar { flex-direction: row; flex-wrap: wrap; }
+    .main-content { padding: 24px; }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* [l] Pantallas medianas (Tablets grandes / Laptops compactas) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    body { grid-template-columns: 220px 1fr; }
+    .main-content { padding: 24px; }
+    .metrics-grid { gap: 16px; }
+}
+
+/* [xl] Pantallas grandes (Monitores normales de escritorio) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    /* El comportamiento base por defecto funciona de manera óptima */
+}
+
+/* [xxl] Pantallas muy grandes (Monitores extendidos de alta gama) */
+@media (min-width: 1441px) {
+    .main-content { max-width: 1600px; }
+}

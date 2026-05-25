@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/recuperacion.css">
+    <title>Recuperar Contraseña - AiDEN</title>
+</head>
+<body>
+    <main class="contenedor-principal">
+        
+        <article class="tarjeta-recuperacion">
+
+            <a href="../landing/home.html" class="btn-regresar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+                Regresar
+            </a>
+        
+            <header class="encabezado-tarjeta"> 
+                <h1>¿Olvidó su contraseña?</h1>
+                <p>Ingrese su correo electrónico registrado y le enviaremos un enlace seguro para restablecer su contraseña. El enlace expirará en 24 horas.</p>
+            </header>
+
+            <section class="cuerpo-tarjeta">
+                <form action="../login/login.html" method="GET">
+                    <div class="grupo-formulario">
+                        <label for="email-recuperacion">Dirección de correo electrónico</label>
+                        <input type="email" id="email-recuperacion" placeholder="nombre@vivero.com" required>
+                    </div>
+
+                    <button type="submit" class="btn-enviar">Enviar enlace de recuperación</button>
+                </form>
+            </section>
+
+        </article>
+        
+    </main>
+</body>
+</html>

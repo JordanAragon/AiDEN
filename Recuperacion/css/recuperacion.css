@@ -1,0 +1,140 @@
+/* Reseteo general */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Fondo gris sutil para que resalte la tarjeta blanquecina */
+.contenedor-principal {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3f4f6; 
+    padding: 20px;
+}
+
+/* Tarjeta minimalista original */
+.tarjeta-recuperacion {
+    background-color: #f9f9f9; 
+    max-width: 650px;
+    width: 100%;
+    padding: 3.5rem 3rem;
+    border-radius: 40px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    position: relative;
+}
+
+/* Botón Regresar superior */
+.btn-regresar {
+    position: absolute;
+    top: 25px;
+    left: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #555555;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.btn-regresar:hover {
+    color: #1b5e20;
+}
+
+.encabezado-tarjeta {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.encabezado-tarjeta h1 {
+    font-size: 2rem;
+    color: #000000;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.encabezado-tarjeta p {
+    font-size: 1.05rem;
+    color: #666666;
+    line-height: 1.5;
+}
+
+.grupo-formulario {
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.grupo-formulario label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 0.6rem;
+}
+
+.grupo-formulario input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    outline: none;
+    background-color: #ffffff;
+}
+
+/* Botón sólido negro original */
+.btn-enviar {
+    width: 100%;
+    padding: 1.1rem;
+    background-color: #000000; 
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-enviar:hover {
+    background-color: #222222;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN COMPLETO POR PANTALLA
+   ========================================================================== */
+
+/* [xs] Pantallas muy pequeñas (Móviles verticales) */
+@media (max-width: 480px) {
+    .tarjeta-recuperacion { padding: 2.5rem 1.5rem; border-radius: 25px; padding-top: 4.5rem; }
+    .btn-regresar { top: 20px; left: 1.5rem; }
+    .encabezado-tarjeta h1 { font-size: 1.5rem; }
+    .encabezado-tarjeta p { font-size: 0.95rem; }
+}
+
+/* [s] Pantallas pequeñas (Celulares en horizontal) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .tarjeta-recuperacion { padding: 3rem 2rem; padding-top: 4.5rem; }
+    .btn-regresar { top: 20px; left: 2rem; }
+}
+
+/* [l] Pantallas medianas (Tablets estándar) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .tarjeta-recuperacion { max-width: 550px; }
+}
+
+/* [xl] Pantallas grandes (Monitores normales) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    /* Centrado equilibrado perfecto */
+}
+
+/* [xxl] Pantallas muy grandes (Alta definición) */
+@media (min-width: 1441px) {
+    .tarjeta-recuperacion { max-width: 700px; }
+}
