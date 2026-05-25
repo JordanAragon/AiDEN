@@ -25,31 +25,32 @@
             </header>
 
             <article class="formulario-login">
-                <form action="../Usuarios/users.html" method="GET">
-                    <section class="campo">
+                <form action="../usuarios/users.html" method="GET">
+                    
+                    <fieldset class="campo">
                         <label for="correo">Correo</label>
                         <input type="email" id="correo" placeholder="Ingresa tu correo" required>
-                    </section>
+                    </fieldset>
 
-                    <section class="campo">
-                        <div class="header-campo">
+                    <fieldset class="campo">
+                        <header class="header-campo">
                             <label for="contraseña">Contraseña</label>
-                            <a href="../Recuperacion/recuperacion.html" class="olvido">Olvidé mi contraseña</a>
-                        </div>
+                            <a href="../recuperacion/recuperacion.html" class="olvido">Olvidé mi contraseña</a>
+                        </header>
                         <input type="password" id="contraseña" placeholder="Ingresa tu contraseña" required>
-                    </section>
+                    </fieldset>
 
-                    <section class="recordar-opcion">
+                    <fieldset class="recordar-opcion">
                         <input type="checkbox" id="recordar">
                         <label for="recordar">Recordar cuenta</label>
-                    </section>
+                    </fieldset>
 
                     <button type="submit" class="btn-inicio">Inicio</button>
                 </form>
             </article>
 
             <footer class="pie-pagina">
-                <p>¿No tienes cuenta? <a href="../Registro/singup.html">Regístrate</a></p>
+                <p>¿No tienes cuenta? <a href="../registro/singup.html">Regístrate</a></p>
             </footer>
         </section>
 

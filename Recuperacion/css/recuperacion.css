@@ -68,6 +68,8 @@
 .grupo-formulario {
     text-align: left;
     margin-bottom: 2rem;
+    border: none;
+    padding: 0;
 }
 
 .grupo-formulario label {

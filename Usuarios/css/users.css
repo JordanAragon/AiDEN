@@ -1,4 +1,4 @@
-/* Paleta original de verdes oscuros del dashboard corporativo */
+/* Definición de la paleta original del prototipo administrativo */
 :root {
     --dark-green: #0a4f31; 
     --bright-green: #1f9d55;
@@ -24,82 +24,106 @@
     padding: 0;
 }
 
+/* Modificación importante: quitamos el Grid lateral y ponemos un flujo vertical en bloque */
 body {
-    display: grid;
-    grid-template-columns: 260px 1fr; /* Estructura nativa fija */
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
     font-family: var(--font-family);
     background-color: var(--bg-main);
     color: var(--text-primary);
 }
 
-/* Columna de Navegación Lateral */
-.sidebar {
+/* ==========================================================================
+   BARRA DE NAVEGACIÓN SUPERIOR
+   ========================================================================== */
+.top-navbar {
     background-color: var(--dark-green);
     color: var(--text-on-dark);
-    padding: 24px;
+    padding: 12px 40px;
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.sidebar-header {
-    margin-bottom: 32px;
-}
-
-.sidebar-header h1 {
-    font-size: 1.4rem;
-    font-weight: 700;
-}
-
-.menu-group {
-    margin-bottom: 24px;
-}
-
-.menu-group h2 {
-    font-size: 0.75rem;
-    color: var(--light-green);
-    margin-bottom: 12px;
-    letter-spacing: 0.05em;
-}
-
-.menu-item {
+/* Sección del logo */
+.navbar-brand .logo-area {
     display: flex;
     align-items: center;
-    padding: 10px 12px;
-    color: var(--text-on-dark);
-    text-decoration: none;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    margin-bottom: 4px;
+    gap: 12px;
+    margin: 0;
 }
 
-.menu-item.active, .menu-item:hover {
+.navbar-brand figcaption {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.navbar-brand h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+/* Lista de enlaces centrales */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+    margin: 0;
+}
+
+.nav-item {
+    color: var(--text-on-dark);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.nav-item:hover, .nav-item.active {
     background-color: var(--hover-green);
 }
 
-/* Estilo del botón regresar del panel lateral */
-.btn-regresar-panel {
+/* Botón de salir / regresar */
+.btn-regresar-nav {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     color: var(--light-green);
     text-decoration: none;
-    font-size: 0.9rem;
-    padding: 10px 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 8px 16px;
     border-radius: 6px;
-    transition: background 0.2s;
+    transition: all 0.2s;
+    border: 1px solid var(--light-green);
 }
 
-.btn-regresar-panel:hover {
+.btn-regresar-nav:hover {
     background-color: #dc2626;
     color: white;
+    border-color: #dc2626;
 }
 
-/* Área de trabajo central */
+/* ==========================================================================
+   ÁREA DE CONTENIDO PRINCIPAL
+   ========================================================================== */
 .main-content {
     padding: 40px;
-    overflow-y: auto;
+    flex-grow: 1; /* Ocupa todo el espacio restante de la pantalla */
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .content-header {
@@ -111,16 +135,21 @@ body {
 
 .content-header h1 {
     font-size: 1.75rem;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
-/* Reutilización de botones */
+.content-header p {
+    color: var(--text-muted);
+}
+
+/* Componente de Botones */
 .btn {
     padding: 10px 20px;
     border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
     border: none;
+    transition: background-color 0.2s;
 }
 
 .btn-primary {
@@ -128,7 +157,11 @@ body {
     color: white;
 }
 
-/* Rejilla de bloques KPI */
+.btn-primary:hover {
+    background-color: var(--hover-green);
+}
+
+/* Cajas de métricas (KPIs) */
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -141,21 +174,56 @@ body {
     padding: 24px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.metric-card h3 {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 12px;
 }
 
 .metric-value {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 700;
     color: var(--dark-green);
+    margin-bottom: 6px;
 }
 
-/* Tablas informativas */
+.metric-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Tablas e inputs de búsqueda */
 .panel-section {
     background: var(--bg-panel);
     border-radius: 8px;
     border: 1px solid var(--border-color);
     padding: 24px;
     margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.search-input {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    width: 250px;
+}
+
+.search-input:focus {
+    border-color: var(--bright-green);
 }
 
 .data-table {
@@ -165,13 +233,22 @@ body {
     text-align: left;
 }
 
+.data-table th {
+    background-color: #f9fafb;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
 .data-table th, .data-table td {
-    padding: 14px;
+    padding: 14px 16px;
     border-bottom: 1px solid var(--border-color);
 }
 
+/* Indicadores de estado y roles */
 .badge {
-    padding: 4px 8px;
+    padding: 4px 10px;
     border-radius: 4px;
     font-size: 0.8rem;
     font-weight: 600;
@@ -186,6 +263,7 @@ body {
     height: 8px;
     border-radius: 50%;
     background-color: var(--status-active);
+    margin-right: 6px;
 }
 
 .btn-action {
@@ -194,6 +272,11 @@ body {
     color: var(--bright-green);
     cursor: pointer;
     font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-action:hover {
+    text-decoration: underline;
 }
 
 /* ==========================================================================
@@ -202,35 +285,39 @@ body {
 
 /* [xs] Pantallas muy pequeñas (Celulares) */
 @media (max-width: 480px) {
-    body { grid-template-columns: 1fr; } /* Colapsamos la grilla para apilar el menú */
-    .sidebar { min-height: auto; gap: 1rem; }
+    .top-navbar { flex-direction: column; padding: 16px; gap: 16px; }
+    .nav-links { flex-direction: column; width: 100%; text-align: center; gap: 8px; }
     .main-content { padding: 15px; }
-    .content-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-    .metrics-grid { grid-template-columns: 1fr; gap: 16px; }
-    .data-table { display: block; overflow-x: auto; } /* Scroll para que no rompa la pantalla */
+    .content-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .metrics-grid { grid-template-columns: 1fr; }
+    .panel-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .search-input { width: 100%; }
+    .data-table { display: block; overflow-x: auto; white-space: nowrap; }
 }
 
-/* [s] Pantallas pequeñas (Celulares horizontales / Tablets chicas) */
+/* [s] Pantallas pequeñas (Tablets verticales y Celulares en horizontal) */
 @media (min-width: 481px) and (max-width: 768px) {
-    body { grid-template-columns: 1fr; }
-    .sidebar { flex-direction: row; flex-wrap: wrap; }
+    .top-navbar { flex-wrap: wrap; padding: 16px 24px; gap: 16px; }
+    .nav-links { order: 3; width: 100%; justify-content: center; margin-top: 10px; }
     .main-content { padding: 24px; }
     .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .data-table { display: block; overflow-x: auto; }
 }
 
-/* [l] Pantallas medianas (Tablets grandes / Laptops compactas) */
+/* [l] Pantallas medianas (Laptops y Tablets grandes) */
 @media (min-width: 769px) and (max-width: 1024px) {
-    body { grid-template-columns: 220px 1fr; }
-    .main-content { padding: 24px; }
+    .top-navbar { padding: 12px 24px; }
+    .nav-item { padding: 8px 10px; font-size: 0.9rem; }
+    .main-content { padding: 32px; }
     .metrics-grid { gap: 16px; }
 }
 
-/* [xl] Pantallas grandes (Monitores normales de escritorio) */
+/* [xl] Pantallas grandes (Monitores estándar) */
 @media (min-width: 1025px) and (max-width: 1440px) {
-    /* El comportamiento base por defecto funciona de manera óptima */
+    /* El diseño fluye perfectamente gracias al max-width */
 }
 
-/* [xxl] Pantallas muy grandes (Monitores extendidos de alta gama) */
+/* [xxl] Pantallas muy grandes (Alta resolución y UltraWide) */
 @media (min-width: 1441px) {
-    .main-content { max-width: 1600px; }
+    .main-content { padding: 60px 40px; }
 }
