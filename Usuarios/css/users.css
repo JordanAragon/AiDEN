@@ -1,208 +1,170 @@
-/* Definición de la paleta original del prototipo administrativo */
+/* ==========================================================================
+   VARIABLES DE ESTILO (DISEÑO CENTRALIZADO)
+   ========================================================================== */
 :root {
     --dark-green: #0a4f31; 
     --bright-green: #1f9d55;
     --light-green: #bce9cc; 
     --hover-green: #11603d; 
     --text-on-dark: #f0fdf4;
+    --text-muted-on-dark: #bbdcc0;
     --text-primary: #1f2937; 
     --text-muted: #6b7280; 
     --bg-main: #f3f6f9; 
     --bg-panel: #ffffff; 
     --border-color: #e5e7eb;
+    
+    /* Estados y Badges */
     --badge-admin-bg: #eff6ff;
     --badge-admin-text: #1d4ed8;
     --badge-operario-bg: #f3e8ff;
     --badge-operario-text: #7e22ce;
     --status-active: #16a34a;
+    --status-inactive: #dc2626;
+    
     --font-family: 'Open Sans', sans-serif;
 }
 
+/* Reset general semántico */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* Modificación importante: quitamos el Grid lateral y ponemos un flujo vertical en bloque */
 body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
     font-family: var(--font-family);
     background-color: var(--bg-main);
     color: var(--text-primary);
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
 }
 
 /* ==========================================================================
-   BARRA DE NAVEGACIÓN SUPERIOR
+   BARRA LATERAL DE NAVEGACIÓN (SIDEBAR)
    ========================================================================== */
-.top-navbar {
+.sidebar {
     background-color: var(--dark-green);
     color: var(--text-on-dark);
-    padding: 12px 40px;
+    padding: 24px 16px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    flex-direction: column;
+    gap: 32px;
 }
 
-/* Sección del logo */
-.navbar-brand .logo-area {
+.sidebar-header {
+    text-align: center;
+    border-bottom: 1px solid var(--hover-green);
+    padding-bottom: 16px;
+}
+
+.sidebar-header h1 {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    margin-top: 8px;
+}
+
+.sidebar-header p {
+    font-size: 0.8rem;
+    color: var(--text-muted-on-dark);
+}
+
+.menu-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-group h2 {
+    font-size: 0.75rem;
+    color: var(--text-muted-on-dark);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    padding-left: 12px;
+}
+
+.menu-item {
+    color: var(--text-on-dark);
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
     gap: 12px;
-    margin: 0;
+    transition: background 0.2s ease;
 }
 
-.navbar-brand figcaption {
-    font-size: 1.4rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    margin: 0;
-}
-
-.navbar-brand h1 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    margin: 0;
-}
-
-/* Lista de enlaces centrales */
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 1.5rem;
-    margin: 0;
-}
-
-.nav-item {
-    color: var(--text-on-dark);
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 6px;
-    transition: background-color 0.2s;
-}
-
-.nav-item:hover, .nav-item.active {
+.menu-item:hover, .menu-item.active {
     background-color: var(--hover-green);
 }
 
-/* Botón de salir / regresar */
-.btn-regresar-nav {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--light-green);
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 6px;
-    transition: all 0.2s;
-    border: 1px solid var(--light-green);
-}
-
-.btn-regresar-nav:hover {
-    background-color: #dc2626;
-    color: white;
-    border-color: #dc2626;
+.tools-group {
+    margin-top: auto; /* Empuja las configuraciones hacia abajo */
 }
 
 /* ==========================================================================
-   ÁREA DE CONTENIDO PRINCIPAL
+   CONTENIDO PRINCIPAL Y BARRA SUPERIOR (TOPBAR)
    ========================================================================== */
 .main-content {
-    padding: 40px;
-    flex-grow: 1; /* Ocupa todo el espacio restante de la pantalla */
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.content-header {
+.top-bar {
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 32px;
 }
 
-.content-header h1 {
-    font-size: 1.75rem;
-    margin-bottom: 6px;
+.top-bar-left h2 {
+    font-size: 1.3rem;
 }
 
-.content-header p {
-    color: var(--text-muted);
-}
-
-/* Componente de Botones */
-.btn {
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.2s;
-}
-
-.btn-primary {
-    background-color: var(--bright-green);
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: var(--hover-green);
-}
-
-/* Cajas de métricas (KPIs) */
-.metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-bottom: 32px;
-}
-
-.metric-card {
-    background: var(--bg-panel);
-    padding: 24px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.metric-card h3 {
-    font-size: 1rem;
-    color: var(--text-muted);
-    font-weight: 600;
-    margin-bottom: 12px;
-}
-
-.metric-value {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: var(--dark-green);
-    margin-bottom: 6px;
-}
-
-.metric-sub {
+.top-bar-left p {
     font-size: 0.85rem;
     color: var(--text-muted);
 }
 
-/* Tablas e inputs de búsqueda */
-.panel-section {
-    background: var(--bg-panel);
-    border-radius: 8px;
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logout-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    border-left: 1px solid var(--border-color);
+    padding-left: 12px;
+}
+
+.logout-link:hover {
+    color: var(--status-inactive);
+}
+
+/* ==========================================================================
+   CONTENEDOR DE TRABAJO (WORKSPACE) Y PANELES
+   ========================================================================== */
+.workspace-container {
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.panel-card {
+    background-color: var(--bg-panel);
+    border-radius: 12px;
     border: 1px solid var(--border-color);
     padding: 24px;
-    margin-bottom: 32px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
@@ -210,114 +172,203 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
-.search-input {
-    padding: 8px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 0.95rem;
-    outline: none;
-    width: 250px;
+.side-panels-group {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-.search-input:focus {
-    border-color: var(--bright-green);
-}
-
-.data-table {
+/* ==========================================================================
+   TABLAS DE DATOS Y ELEMENTOS INTERACTIVOS
+   ========================================================================== */
+.data-table, .log-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 16px;
     text-align: left;
 }
 
-.data-table th {
-    background-color: #f9fafb;
+.data-table th, .log-table th {
+    padding: 12px;
+    border-bottom: 2px solid var(--border-color);
     color: var(--text-muted);
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
 }
 
-.data-table th, .data-table td {
-    padding: 14px 16px;
+.data-table td, .log-table td {
+    padding: 14px 12px;
     border-bottom: 1px solid var(--border-color);
+    font-size: 0.9rem;
 }
 
-/* Indicadores de estado y roles */
-.badge {
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 0.8rem;
+/* Botones y Badges */
+.btn {
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
     font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
 }
 
-.badge-admin { background: var(--badge-admin-bg); color: var(--badge-admin-text); }
-.badge-operario { background: var(--badge-operario-bg); color: var(--badge-operario-text); }
+.btn-success {
+    background-color: var(--bright-green);
+    color: white;
+}
 
-.status-indicator {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--status-active);
-    margin-right: 6px;
+.btn-success:hover {
+    background-color: var(--hover-green);
 }
 
 .btn-action {
     background: none;
-    border: none;
-    color: var(--bright-green);
+    border: 1px solid var(--border-color);
+    padding: 6px 12px;
+    border-radius: 4px;
     cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
+    color: var(--text-primary);
 }
 
 .btn-action:hover {
-    text-decoration: underline;
+    background-color: var(--bg-main);
+}
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.badge-admin { background-color: var(--badge-admin-bg); color: var(--badge-admin-text); }
+.badge-operario { background-color: var(--badge-operario-bg); color: var(--badge-operario-text); }
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+
+.status-indicator::before {
+    content: "●";
+}
+
+.status-indicator.active { color: var(--status-active); }
+.status-indicator.inactive { color: var(--status-inactive); }
+
+/* Detalles de Roles */
+.system-roles-panel ul {
+    list-style: none;
+}
+
+.role-detail-item {
+    display: flex;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.role-detail-item:last-child {
+    border-bottom: none;
+}
+
+.role-icon {
+    font-size: 1.2rem;
+    background-color: var(--bg-main);
+    padding: 8px;
+    border-radius: 8px;
+    height: max-content;
+}
+
+.panel-footer-center {
+    padding-top: 16px;
+    text-align: center;
+}
+
+.btn-text-link {
+    background: none;
+    border: none;
+    color: var(--bright-green);
+    font-weight: 600;
+    cursor: pointer;
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN COMPLETO POR PANTALLA
+   SOPORTE RESPONSIVO (PANTALLA POR PANTALLA)
    ========================================================================== */
 
-/* [xs] Pantallas muy pequeñas (Celulares) */
-@media (max-width: 480px) {
-    .top-navbar { flex-direction: column; padding: 16px; gap: 16px; }
-    .nav-links { flex-direction: column; width: 100%; text-align: center; gap: 8px; }
-    .main-content { padding: 15px; }
-    .content-header { flex-direction: column; align-items: flex-start; gap: 16px; }
-    .metrics-grid { grid-template-columns: 1fr; }
-    .panel-header { flex-direction: column; gap: 12px; align-items: flex-start; }
-    .search-input { width: 100%; }
-    .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+/* 📱 [xs]: Celulares verticales muy pequeños */
+@media (max-width: 575px) {
+    body {
+        grid-template-columns: 1fr;
+    }
+    .sidebar {
+        display: none; /* Se implementaría un menú hamburguesa aquí */
+    }
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+    .workspace-container {
+        grid-template-columns: 1fr;
+        padding: 16px;
+    }
+    .data-table th, .data-table td {
+        font-size: 0.75rem;
+        padding: 8px;
+    }
 }
 
-/* [s] Pantallas pequeñas (Tablets verticales y Celulares en horizontal) */
-@media (min-width: 481px) and (max-width: 768px) {
-    .top-navbar { flex-wrap: wrap; padding: 16px 24px; gap: 16px; }
-    .nav-links { order: 3; width: 100%; justify-content: center; margin-top: 10px; }
-    .main-content { padding: 24px; }
-    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
-    .data-table { display: block; overflow-x: auto; }
+/* 📱 [s]: Celulares en horizontal / Pantallas pequeñas */
+@media (min-width: 576px) and (max-width: 767px) {
+    body {
+        grid-template-columns: 80px 1fr; /* Colapsa barra lateral a sólo iconos */
+    }
+    .sidebar h1, .sidebar p, .sidebar h2, .sidebar .menu-item span:not(.icon) {
+        display: none;
+    }
+    .workspace-container {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
 }
 
-/* [l] Pantallas medianas (Laptops y Tablets grandes) */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .top-navbar { padding: 12px 24px; }
-    .nav-item { padding: 8px 10px; font-size: 0.9rem; }
-    .main-content { padding: 32px; }
-    .metrics-grid { gap: 16px; }
+/* 📑 [m]: Tablets / Pantallas medianas */
+@media (min-width: 768px) and (max-width: 991px) {
+    body {
+        grid-template-columns: 220px 1fr;
+    }
+    .workspace-container {
+        grid-template-columns: 1fr; /* Apila el panel derecho abajo */
+    }
 }
 
-/* [xl] Pantallas grandes (Monitores estándar) */
-@media (min-width: 1025px) and (max-width: 1440px) {
-    /* El diseño fluye perfectamente gracias al max-width */
+/* 💻 [l]: Laptops / Pantallas grandes estándar */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .workspace-container {
+        grid-template-columns: 1.4fr 1fr;
+        padding: 24px;
+    }
 }
 
-/* [xxl] Pantallas muy grandes (Alta resolución y UltraWide) */
-@media (min-width: 1441px) {
-    .main-content { padding: 60px 40px; }
+/* 🖥️ [xl]: Escritorios amplios */
+@media (min-width: 1200px) and (max-width: 1399px) {
+    .workspace-container {
+        grid-template-columns: 1.6fr 1fr;
+    }
+}
+
+/* 📺 [xxl]: Monitores Ultra-Wide / Pantallas gigantes */
+@media (min-width: 1400px) {
+    .workspace-container {
+        max-width: 1600px;
+        margin: 0 auto;
+        width: 100%;
+    }
 }
