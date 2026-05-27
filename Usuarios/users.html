@@ -3,202 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vivero - Gestión de Usuarios y Seguridad</title>
+    <title>Vivero - Gestión de Usuarios</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/users.css">
 </head>
 <body>
 
-    <nav class="sidebar">
-        <header class="sidebar-header">
-            <span class="icon-logo leaf-icon">🍃</span>
+    <nav class="top-nav">
+        <header class="nav-brand">
             <h1>AiDEN</h1>
         </header>
-
-        <section class="menu-group">
-            <a href="../Landing/home.html" class="menu-item dashboard-link">
-                <span class="icon dashboard-icon"></span> Dashboard
-            </a>
-        </section>
-
-        <section class="menu-group">
-            <a href="../Landing/home.html" class="menu-item dashboard-link">
-                <span class="icon dashboard-icon"></span> Produccion y Cultivos
-            </a>
-        </section>
-
-        <section class="menu-group">
-            <a href="../Landing/home.html" class="menu-item dashboard-link">
-                <span class="icon dashboard-icon"></span> Inventario
-            </a>
-        </section>
-
-        <section class="menu-group">
-            <a href="../Landing/home.html" class="menu-item dashboard-link">
-                <span class="icon dashboard-icon"></span> Gestion Fitosanitaria
-            </a>
-        </section>
-
-        <section class="menu-group">
-            <a href="../Landing/home.html" class="menu-item dashboard-link">
-                <span class="icon dashboard-icon"></span> Monitoreo Ambiental
-            </a>
-        </section>
-
-        <section class="menu-group">
-            <a href="../Landing/home.html" class="menu-item dashboard-link">
-                <span class="icon dashboard-icon"></span> Reportes y Analitica
-            </a>
-        </section>
-
-        <section class="menu-group">
-            <h2>USUARIOS Y SEGURIDAD</h2>
-            <a href="users.html" class="menu-item active">
-                <span class="icon users-icon">👥</span> Usuarios
-            </a>
-            <a href="#" class="menu-item" title="Módulo en desarrollo">
-                <span class="icon roles-icon">🛡️</span> Roles y Permisos
-            </a>
-        </section>
-
-        <section class="menu-group tools-group">
-            <a href="#" class="menu-item">
-                <span class="icon settings-icon">⚙️</span> Configuración
-            </a>
+        <ul class="nav-menu">
+            <li><a href="../Landing/home.html">Dashboard</a></li>
+            <li><a href="#">Producción</a></li>
+            <li><a href="#">Inventario</a></li>
+            <li><a href="#">Trazabilidad</a></li>
+            <li><a href="#" class="active">Usuarios</a></li>
+        </ul>
+        <section class="user-profile">
+            <a href="../Perfil/perfil.html">Mi Perfil</a>
+            <a href="../Landing/index.html" class="logout-link">Cerrar Sesión</a>
         </section>
     </nav>
 
     <main class="main-content">
-        
-        <header class="top-bar">
-            <section class="top-bar-left">
-                <h2>Gestión de Usuarios</h2>
-                <p>Monitoreo de credenciales, roles y accesos del personal</p>
-            </section>
-            
-            <section class="top-bar-right">
-                <span class="user-avatar">👤</span>
-                <span class="user-name">Administrador</span>
-                <a href="../Login/login.html" class="logout-link">Cerrar Sesión</a>
-            </section>
+        <header class="page-header">
+            <h2>Gestión de Usuarios y Seguridad</h2>
+            <p>Monitoreo de credenciales, roles y accesos del personal</p>
         </header>
 
-        <section class="workspace-container">
-            
-            <article class="panel-card user-list-panel">
+        <section class="workspace">
+            <article class="panel-card">
                 <header class="panel-header">
                     <h3>Personal Registrado</h3>
-                    <button class="btn btn-success"><span class="save-icon">+</span> Nuevo Usuario</button>
+                    <button class="btn-success">+ Nuevo Usuario</button>
                 </header>
-
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Nombre Completo</th>
-                            <th>Correo Electrónico</th>
-                            <th>Rol Asignado</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Juan Pérez</strong></td>
-                            <td>juan.perez@vivero.com</td>
-                            <td><span class="badge badge-admin">Administrador</span></td>
-                            <td><span class="status-indicator active">Activo</span></td>
-                            <td><button class="btn-action">Editar</button></td>
-                        </tr>
-                        <tr>
-                            <td><strong>María López</strong></td>
-                            <td>maria.lopez@vivero.com</td>
-                            <td><span class="badge badge-operario">Operario</span></td>
-                            <td><span class="status-indicator active">Activo</span></td>
-                            <td><button class="btn-action">Editar</button></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Carlos Ruiz</strong></td>
-                            <td>carlos.ruiz@vivero.com</td>
-                            <td><span class="badge badge-operario">Operario</span></td>
-                            <td><span class="status-indicator inactive">Inactivo</span></td>
-                            <td><button class="btn-action">Editar</button></td>
+                            <td>Juan Pérez</td>
+                            <td>juan@vivero.com</td>
+                            <td><span class="badge">Administrador</span></td>
+                            <td>Activo</td>
+                            <td><button>Editar</button></td>
                         </tr>
                     </tbody>
                 </table>
             </article>
-
-            <aside class="side-panels-group">
-                
-                <article class="panel-card system-roles-panel">
-                    <header class="panel-header">
-                        <h3>Roles del Sistema</h3>
-                    </header>
-                    <ul>
-                        <li class="role-detail-item">
-                            <span class="role-icon owner">🔑</span>
-                            <section>
-                                <h4>Propietario</h4>
-                                <p>Acceso total a todos los modulos del sistema.</p>
-                            </section>
-                        </li>
-                        <li class="role-detail-item">
-                            <span class="role-icon admin">🛡️</span>
-                            <section>
-                                <h4>Administrador</h4>
-                                <p>Gestión operativa de personal, stock y reportes.</p>
-                            </section>
-                        </li>
-                        <li class="role-detail-item">
-                            <span class="role-icon operario">🌱</span>
-                            <section>
-                                <h4>Operario</h4>
-                                <p>Registro diario de producción, tareas y traslados.</p>
-                            </section>
-                        </li>
-                    </ul>
-                </article>
-
-                <article class="panel-card activity-log-panel">
-                    <header class="panel-header">
-                        <h3>Historial de Cambios</h3>
-                    </header>
-                    <table class="log-table">
-                        <thead>
-                            <tr>
-                                <th>Fecha/Hora</th>
-                                <th>Usuario</th>
-                                <th>Acción</th>
-                                <th>Autor</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>25/05/2026 10:30</td>
-                                <td>Juan Pérez</td>
-                                <td>Rol cambiado a Administrador</td>
-                                <td>Administrador</td>
-                            </tr>
-                            <tr>
-                                <td>24/05/2024 16:45</td>
-                                <td>María López</td>
-                                <td>Rol cambiado a Operario</td>
-                                <td>Administrador</td>
-                            </tr>
-                            <tr>
-                                <td>23/05/2024 09:15</td>
-                                <td>Carlos Ruiz</td>
-                                <td>Estado cambiado a Activo</td>
-                                <td>Administrador</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <footer class="panel-footer-center">
-                        <button class="btn-text-link">Ver más historial <span class="icon-arrow">👇</span></button>
-                    </footer>
-                </article>
-
-            </aside>
-
         </section>
     </main>
 
