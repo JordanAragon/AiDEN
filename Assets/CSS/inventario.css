@@ -188,3 +188,32 @@ footer{
     padding: 15px;
     margin-top: 20px;
 }
+
+@media (max-width: 480px) {
+    .image { display: none; }
+    .formulario { padding: 1.5em; padding-top: 4em; }
+    .btn-regresar { left: 1.5em; top: 15px; }
+    .titulo h1 { font-size: 2rem; }
+}
+
+/* [s] Pantallas pequeñas (Tablets chicas) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .image { display: none; }
+    .formulario { padding: 4em; }
+}
+
+/* [l] Pantallas medianas (Laptops / Pantallas estándar) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .formulario { padding: 2em; }
+    .titulo h1 { font-size: 2.2rem; }
+}
+
+/* [xl] Pantallas grandes (Monitores estándar) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    /* El diseño de dos columnas distribuye el espacio de forma nativa */
+}
+
+/* [xxl] Pantallas muy grandes (Resoluciones extendidas) */
+@media (min-width: 1441px) {
+    .formulario { padding: 6em; }
+}
