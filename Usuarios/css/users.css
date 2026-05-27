@@ -1,6 +1,4 @@
-/* ==========================================================================
-   VARIABLES DE ESTILO (DISEÑO CENTRALIZADO)
-   ========================================================================== */
+
 :root {
     --dark-green: #0a4f31; 
     --bright-green: #1f9d55;
@@ -25,7 +23,7 @@
     --font-family: 'Open Sans', sans-serif;
 }
 
-/* Reset general semántico */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -41,9 +39,8 @@ body {
     min-height: 100vh;
 }
 
-/* ==========================================================================
-   BARRA LATERAL DE NAVEGACIÓN (SIDEBAR)
-   ========================================================================== */
+/* SIDEBAR) */
+
 .sidebar {
     background-color: var(--dark-green);
     color: var(--text-on-dark);
@@ -105,9 +102,7 @@ body {
     margin-top: auto; /* Empuja las configuraciones hacia abajo */
 }
 
-/* ==========================================================================
-   CONTENIDO PRINCIPAL Y BARRA SUPERIOR (TOPBAR)
-   ========================================================================== */
+/* CONTENIDO PRINCIPAL Y TOPBAR */
 .main-content {
     display: flex;
     flex-direction: column;
