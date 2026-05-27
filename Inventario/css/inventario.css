@@ -1,0 +1,190 @@
+/* ===== GENERAL ===== */
+
+body{
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f1f5f9;
+    color: #1f9d55;
+}
+
+/* ===== HEADER ===== */
+
+header{
+    background-color:  #1f9d55;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+header section{
+    margin-bottom: 20px;
+}
+
+header section h1{
+    margin: 0;
+    font-size: 35px;
+}
+
+header section p{
+    margin-top: 5px;
+    font-size: 15px;
+}
+
+
+/* ===== NAV ===== */
+
+nav ul{
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li{
+    display: inline-block;
+    margin-right: 20px;
+}
+
+nav ul li a{
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+nav ul li a:hover{
+    color: #38bdf8;
+}
+
+
+/* ===== MAIN ===== */
+
+main{
+    padding: 20px;
+}
+
+
+/* ===== SECCIONES ===== */
+
+main section{
+    background-color: white;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+}
+
+main section header h2{
+    margin-top: 0;
+    color: #0f172a;
+}
+
+
+/* ===== ARTICLES ===== */
+
+article{
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+}
+
+article h3{
+    margin-top: 0;
+}
+
+
+/* ===== FORMULARIO ===== */
+
+form{
+    margin-top: 15px;
+}
+
+form label{
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+form input,
+form select{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+form button{
+    margin-top: 15px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2563eb;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+form button:hover{
+    background-color: #1d4ed8;
+}
+
+
+/* ===== TABLA ===== */
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table thead{
+    background-color: #e2e8f0;
+}
+
+table th,
+table td{
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    text-align: center;
+}
+
+table tbody tr:hover{
+    background-color: #f1f5f9;
+}
+
+
+/* ===== LISTAS ===== */
+
+ul{
+    padding-left: 20px;
+}
+
+ul li{
+    margin-bottom: 10px;
+}
+
+
+/* ===== ASIDE ===== */
+
+aside{
+    padding: 20px;
+}
+
+aside section{
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+}
+
+
+/* ===== FOOTER ===== */
+
+footer{
+    background-color: #0f172a;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 20px;
+}

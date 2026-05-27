@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/inventario.css">
+    <title>AiDEN | Inventario</title>
+</head>
+
+<body>
+
+    <main>
+        <section>
+            <header>
+                <h2>Resumen General</h2>
+            </header>
+
+            <article>
+                <h3>Total de Insumos</h3>
+                <p>120</p>
+            </article>
+
+            <article>
+                <h3>Stock Bajo</h3>
+                <p>8</p>
+            </article>
+
+            <article>
+                <h3>Entradas Registradas</h3>
+                <p>45</p>
+            </article>
+
+            <article>
+                <h3>Salidas Registradas</h3>
+                <p>31</p>
+            </article>
+        </section>
+
+
+        <section>
+            <header>
+                <h2>Registro de Insumos</h2>
+            </header>
+
+            <article>
+                <header>
+                    <h3>Nuevo Insumo</h3>
+                </header>
+
+                <form>
+                    <label for="nombreInsumo">
+                        Nombre del insumo
+                    </label>
+
+                    <input type="text" id="nombreInsumo">
+
+                    <label for="categoriaInsumo">
+                        Categoría
+                    </label>
+
+                    <select id="categoriaInsumo">
+                        <option>Fertilizantes</option>
+                        <option>Sustratos</option>
+                        <option>Herramientas</option>
+                        <option>Semillas</option>
+                    </select>
+
+                    <label for="unidadMedida">
+                        Unidad de medida
+                    </label>
+
+                    <select id="unidadMedida">
+                        <option>Kilogramos</option>
+                        <option>Litros</option>
+                        <option>Unidades</option>
+                    </select>
+
+                    <label for="stockMinimo">
+                        Stock mínimo
+                    </label>
+
+                    <input type="number" id="stockMinimo">
+
+                    <button type="submit">
+                        Registrar Insumo
+                    </button>
+
+                </form>
+            </article>
+        </section>
+
+
+        <section>
+
+            <header>
+                <h2>Entrada de Insumos</h2>
+            </header>
+
+            <article>
+
+                <form>
+                    <label for="insumoEntrada">
+                        Insumo
+                    </label>
+
+                    <select id="insumoEntrada">
+                        <option>Abono Orgánico</option>
+                    </select>
+
+                    <label for="cantidadEntrada">
+                        Cantidad recibida
+                    </label>
+
+                    <input type="number" id="cantidadEntrada">
+
+                    <label for="responsableEntrada">
+                        Responsable
+                    </label>
+
+                    <input type="text" id="responsableEntrada">
+
+                    <button type="submit">
+                        Registrar Entrada
+                    </button>
+                </form>
+
+            </article>
+        </section>
+
+
+    <!-- SALIDA DE INSUMOS -->
+        <section>
+
+            <header>
+                <h2>Salida de Insumos</h2>
+            </header>
+
+            <article>
+                <form>
+                    <label for="insumoSalida">
+                        Insumo
+                    </label>
+
+                    <select id="insumoSalida">
+                        <option>Abono Orgánico</option>
+                    </select>
+
+                    <label for="cantidadSalida">
+                        Cantidad utilizada
+                    </label>
+
+                    <input type="number" id="cantidadSalida">
+
+                    <label for="loteSalida">
+                        Lote asociado
+                    </label>
+
+                    <input type="text" id="loteSalida">
+
+                    <button type="submit">
+                        Registrar Salida
+                    </button>
+                </form>
+            </article>
+        </section>
+
+
+        <section>
+
+            <header>
+                <h2>Alertas de Inventario</h2>
+            </header>
+
+            <article>
+                <h3>Stock Bajo Detectado</h3>
+
+                <p>
+                    El insumo "Fertilizante A" se encuentra
+                    por debajo del stock mínimo permitido.
+                </p>
+            </article>
+        </section>
+
+
+        <section>
+
+            <header>
+                <h2>Historial de Movimientos</h2>
+            </header>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Movimiento</th>
+                        <th>Insumo</th>
+                        <th>Cantidad</th>
+                        <th>Responsable</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>20/05/2026</td>
+                        <td>Entrada</td>
+                        <td>Abono Orgánico</td>
+                        <td>50</td>
+                        <td>Jordan</td>
+                    </tr>
+
+                    <tr>
+                        <td>21/05/2026</td>
+                        <td>Salida</td>
+                        <td>Abono Orgánico</td>
+                        <td>10</td>
+                        <td>Operario 1</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <section>
+
+            <header>
+                <h2>Reportes de Inventario</h2>
+            </header>
+
+            <article>
+
+                <form>
+
+                    <label for="fechaInicio">
+                        Fecha inicio
+                    </label>
+
+                    <input type="date" id="fechaInicio">
+
+                    <label for="fechaFin">
+                        Fecha fin
+                    </label>
+
+                    <input type="date" id="fechaFin">
+
+                    <button type="submit">
+                        Consultar Reporte
+                    </button>
+
+                    <button type="button">
+                        Exportar PDF
+                    </button>
+
+                    <button type="button">
+                        Exportar Excel
+                    </button>
+
+                </form>
+
+            </article>
+
+    </section>
+
+</main>
+</body>
+</html>
