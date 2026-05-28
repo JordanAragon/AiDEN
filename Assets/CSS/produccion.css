@@ -35,6 +35,9 @@ body {
     justify-content: space-between;
 }
 
+.nav-menu { list-style: none; display: flex; gap: 20px; }
+.nav-menu a { color: #bce9cc; text-decoration: none; font-weight: 600; }
+.nav-menu a.active { color: white; border-bottom: 2px solid white; }
 
 .nav-brand {
     font-size: 1.5rem;
@@ -209,6 +212,8 @@ table tbody tr:nth-child(even) {
 .btn-editar:hover {
     background-color: #4caf50;
 }
+
+
 
 /* pantallas pequeñas */
 responsive {

@@ -31,6 +31,201 @@ body { font-family: 'Open Sans', sans-serif; background-color: var(--bg-main); m
 .main-content { padding: 2rem; }
 .panel-card { background: white; padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color); }
 
+.main-content {
+    padding: 2rem;
+}
+
+.page-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+    margin: 0;
+}
+
+.page-content p {
+    color: #666666;
+    font-size: 1rem;
+}
+
+.workspace {
+    background: white; 
+    padding: 2rem; 
+    border-radius: 12px; 
+    border: 1px solid var(--border-color); 
+}
+
+.workspace p {
+    color: #666666;
+    font-size: 1rem;
+}
+
+.panel-header {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.panel-header h3 {
+    margin: 0;
+}
+
+.panel-content p {
+    color: #666666;
+    font-size: 1rem;
+}
+
+.btn-success {
+    background-color: var(--bright-green);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-success:hover {
+    background-color: #1f9d55;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead {
+    background-color: var(--dark-green);
+    color: white;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.btn-editar {
+    background-color: var(--bright-green);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-editar:hover {
+    background-color: #1f9d55;
+}
+
+
+
+
+
+
+
+.seguridad-header {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.seguridad-header h2 {
+    margin: 0;
+}
+
+.seguridad-content {
+    background: white; 
+    padding: 2rem; 
+    border-radius: 12px; 
+    border: 1px solid var(--border-color); 
+}
+
+.seguridad-content p {
+    color: #666666;
+    font-size: 1rem;
+}
+
+.seguridad-content ul {
+    list-style: disc;
+    padding-left: 20px;
+    color: #666666;
+    font-size: 1rem;
+}
+
+.seguridad-panel {
+    background: var(--bg-secundario);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+
+.seguridad-panel h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.seguridad-panel p {
+    color: #666666;
+    font-size: 1rem;
+}
+
+.security-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.security-form label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333333;
+}
+
+.security-form input,
+.security-form select {
+    padding: 0.85rem;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.security-form input:focus,
+.security-form select:focus {
+    border-color: #3e5622;
+}
+
+#nombre-rol {
+    width: 50%;
+}
+
+.btn-guardar {
+    background-color: var(--bright-green);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-guardar:hover {
+    background-color: #1f9d55;
+}
+
+
+
+
 /* Responsive (Ejemplo para móvil) */
 @media (max-width: 768px) {
     .nav-menu { display: none; } /* Aquí podrías añadir lógica de menú hamburguesa */

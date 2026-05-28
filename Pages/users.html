@@ -54,10 +54,39 @@
                             <td>juan@vivero.com</td>
                             <td><span class="badge">Administrador</span></td>
                             <td>Activo</td>
-                            <td><button>Editar</button></td>
+                            <td><button class="btn-editar">Editar</button></td>
                         </tr>
                     </tbody>
                 </table>
+            </article>
+        </section>
+    </main>
+
+    <main class="seguridad-content">
+        <section>
+            <header class="seguridad-header">
+                <h2>Seguridad y Accesos</h2>
+                <p>Configura roles, permisos y monitorea accesos al sistema</p>
+            </header>
+
+            <article class="seguridad-panel">
+                <h3>Roles y Permisos</h3>
+
+                <form class="security-form">
+                    <label for="nombreRol">
+                        Nombre del rol
+                    </label>
+
+                    <input type="text" id="nombreRol">
+
+                    <label for="permisosRol">
+                        Permisos asignados
+                    </label>
+
+                    <textarea id="permisosRol"></textarea>
+
+                    <button class="btn-guardar "type="submit">Guardar Rol</button>
+                </form>
             </article>
         </section>
     </main>

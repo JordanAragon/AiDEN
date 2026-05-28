@@ -1,219 +1,284 @@
-/* ===== GENERAL ===== */
+:root {
+    --bg-principal: #ffffff;
+    --bg-secundario: #f4f7f6;
+    --color-primario: #2E7D32; 
+    --color-primario-hover: #1B5E20; 
+    --color-acento: #66BB6A; 
+    --texto-oscuro: #1f2937;
+    --texto-claro: #4b5563;
+    --borde: #e5e7eb;
+    --sombra-suave: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --sombra-fuerte: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
 
-body{
+/* Reseteo básico para evitar márgenes raros del navegador */
+* {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f1f5f9;
-    color: #1f9d55;
-}
-
-/* ===== HEADER ===== */
-
-header{
-    background-color:  #1f9d55;
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-}
-
-header section{
-    margin-bottom: 20px;
-}
-
-header section h1{
-    margin: 0;
-    font-size: 35px;
-}
-
-header section p{
-    margin-top: 5px;
-    font-size: 15px;
-}
-
-
-/* ===== NAV ===== */
-
-nav ul{
-    list-style: none;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    scroll-behavior: smooth;
 }
 
-nav ul li{
-    display: inline-block;
-    margin-right: 20px;
+body {
+    background-color: var(--bg-principal);
+    color: var(--texto-oscuro);
+    line-height: 1.6;
 }
 
-nav ul li a{
+.top-nav {
+    background-color: var(--color-primario);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-menu { list-style: none; display: flex; gap: 20px; }
+.nav-menu a { color: #bce9cc; text-decoration: none; font-weight: 600; }
+.nav-menu a.active { color: white; border-bottom: 2px solid white; }
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
     color: white;
     text-decoration: none;
-    font-size: 15px;
-    transition: 0.3s;
 }
 
-nav ul li a:hover{
-    color: #38bdf8;
+.nav-brand h1 {
+    margin: 0;
+}
+
+.nav-menu {
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-primario);
+    color: white;
+    padding: 1rem 2rem;
+}
+
+.nav-brand:hover {
+    color: var(--color-primario-hover);
+}   
+
+.nav-menu a:hover {
+    color: var(--color-primario-hover);
+}
+
+.user-logout {
+    border-left: 1px solid #11603d;
+    padding-left: 15px;
+}
+
+.user-logout a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.user-logout a:hover {
+    color: var(--color-primario-hover);
 }
 
 
-/* ===== MAIN ===== */
-
-main{
-    padding: 20px;
+.main-content {
+    padding: 2rem;
 }
 
+.panel-card {
+    background: var(--bg-secundario);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--borde);
+    box-shadow: var(--sombra-suave);
+}
 
-/* ===== SECCIONES ===== */
+.panel-card h2 {
+    margin-bottom: 1rem;
+    color: var(--color-primario);
+}
 
-main section{
-    background-color: white;
+.panel-card p {
+    color: var(--texto-claro);
+    margin-top: 0.5rem;
+}
+
+.page-header {
     margin-bottom: 20px;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+    box-shadow: var(--sombra-suave);
+    background-color: var(--bg-secundario);
 }
 
-main section header h2{
+.page-header h2 {
     margin-top: 0;
-    color: #0f172a;
+    color: var(--color-primario);
+}
+
+.page-header p {
+    color: var(--texto-claro);
+    margin-top: 5px;
 }
 
 
-/* ===== ARTICLES ===== */
-
-article{
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #f8fafc;
-    border-radius: 8px;
+.workspace {
+    background-color: var(--bg-principal);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--sombra-suave);
 }
 
-article h3{
-    margin-top: 0;
+.panel-card {
+    background: var(--bg-principal);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--borde);
+    box-shadow: var(--sombra-suave);
 }
 
-
-/* ===== FORMULARIO ===== */
-
-form{
-    margin-top: 15px;
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
-form label{
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    font-weight: bold;
+.panel-header h2 {
+    margin: 0;
+    color: var(--color-primario);
 }
 
-form input,
-form select{
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    box-sizing: border-box;
+.panel-header p {
+    margin: 0;
+    color: var(--texto-claro);
+    justify-content: flex-end;
 }
 
-form button{
-    margin-top: 15px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 6px;
-    background-color: #2563eb;
+.panel-header .btn {
+    background-color: var(--color-primario);
     color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
     cursor: pointer;
-    transition: 0.3s;
 }
 
-form button:hover{
-    background-color: #1d4ed8;
+.panel-header .btn:hover {
+    background-color: var(--color-primario-hover);
 }
 
-
-/* ===== TABLA ===== */
-
-table{
+table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
-table thead{
-    background-color: #e2e8f0;
+table th, table td {
+    border: 1px solid var(--borde);
+    text-align: left;
+}
+
+table th {
+    background-color: var(--bg-secundario);
+    color: var(--color-primario);
+    padding: 10px;
+}
+
+.btn-success {
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-success:hover {
+    background-color: var(--color-primario-hover);
+}
+
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table thead {
+    background-color: var(--bg-secundario);
 }
 
 table th,
-table td{
+table td {
     padding: 12px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid var(--borde);
     text-align: center;
 }
 
-table tbody tr:hover{
-    background-color: #f1f5f9;
-}
-
-
-/* ===== LISTAS ===== */
-
-ul{
-    padding-left: 20px;
-}
-
-ul li{
-    margin-bottom: 10px;
-}
-
-
-/* ===== ASIDE ===== */
-
-aside{
-    padding: 20px;
-}
-
-aside section{
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
-}
-
-
-/* ===== FOOTER ===== */
-
-footer{
-    background-color: #0f172a;
+.badge-alerta {
+    background-color: #e53e3e;
     color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.badge-alerta hover {
+    background-color: #c53030;
+}
+
+
+
+.badge-atrasado {
+    background-color: #ed8936;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.badge-completado {
+    background-color: #48bb78;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.btn-editar {
+    background-color: var(--color-acento);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-editar:hover {
+    background-color: #4caf50;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead {
+    background-color: var(--bg-secundario);
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px;
+    border: 1px solid var(--borde);
     text-align: center;
-    padding: 15px;
-    margin-top: 20px;
 }
 
-@media (max-width: 480px) {
-    .image { display: none; }
-    .formulario { padding: 1.5em; padding-top: 4em; }
-    .btn-regresar { left: 1.5em; top: 15px; }
-    .titulo h1 { font-size: 2rem; }
-}
 
-/* [s] Pantallas pequeñas (Tablets chicas) */
-@media (min-width: 481px) and (max-width: 768px) {
-    .image { display: none; }
-    .formulario { padding: 4em; }
-}
 
-/* [l] Pantallas medianas (Laptops / Pantallas estándar) */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .formulario { padding: 2em; }
-    .titulo h1 { font-size: 2.2rem; }
-}
-
-/* [xl] Pantallas grandes (Monitores estándar) */
-@media (min-width: 1025px) and (max-width: 1440px) {
-    /* El diseño de dos columnas distribuye el espacio de forma nativa */
-}
-
-/* [xxl] Pantallas muy grandes (Resoluciones extendidas) */
-@media (min-width: 1441px) {
-    .formulario { padding: 6em; }
-}

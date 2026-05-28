@@ -8,262 +8,130 @@
 </head>
 
 <body>
-
-    <main>
-        <section>
-            <header>
-                <h2>Resumen General</h2>
-            </header>
-
-            <article>
-                <h3>Total de Insumos</h3>
-                <p>120</p>
-            </article>
-
-            <article>
-                <h3>Stock Bajo</h3>
-                <p>8</p>
-            </article>
-
-            <article>
-                <h3>Entradas Registradas</h3>
-                <p>45</p>
-            </article>
-
-            <article>
-                <h3>Salidas Registradas</h3>
-                <p>31</p>
-            </article>
+    <nav class="top-nav">
+        <header class="nav-brand">
+            <h1>AiDEN</h1>
+        </header>
+        <ul class="nav-menu">
+            <li><a href="../index.html">Dashboard</a></li>
+            <li><a href="../Pages/produccion.html">Producción</a></li>
+            <li><a href="../Pages/inventario.html" class="active">Inventario</a></li>
+            <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
+            <li><a href="../Pages/users.html">Usuarios</a></li>
+        </ul>
+        <section class="user-logout">
+            <a href="../index.html" class="logout-link">Cerrar Sesión</a>
         </section>
+    </nav>
 
+    <main class="main-content">
+        <header class="page-header">
+            <h2>Gestión de Inventario</h2>
+            <p>Monitoreo de existencias, alertas de stock y gestión de proveedores</p>
+        </header>
 
-        <section>
-            <header>
-                <h2>Registro de Insumos</h2>
-            </header>
-
-            <article>
-                <header>
-                    <h3>Nuevo Insumo</h3>
+        <section class="workspace">
+            <article class="panel-card">
+                <header class="panel-header">
+                    <h3>Inventario Actual</h3>
+                    <button class="btn-success">+ Nuevo Producto</button>
                 </header>
-
-                <form>
-                    <label for="nombreInsumo">
-                        Nombre del insumo
-                    </label>
-
-                    <input type="text" id="nombreInsumo">
-
-                    <label for="categoriaInsumo">
-                        Categoría
-                    </label>
-
-                    <select id="categoriaInsumo">
-                        <option>Fertilizantes</option>
-                        <option>Sustratos</option>
-                        <option>Herramientas</option>
-                        <option>Semillas</option>
-                    </select>
-
-                    <label for="unidadMedida">
-                        Unidad de medida
-                    </label>
-
-                    <select id="unidadMedida">
-                        <option>Kilogramos</option>
-                        <option>Litros</option>
-                        <option>Unidades</option>
-                    </select>
-
-                    <label for="stockMinimo">
-                        Stock mínimo
-                    </label>
-
-                    <input type="number" id="stockMinimo">
-
-                    <button type="submit">
-                        Registrar Insumo
-                    </button>
-
-                </form>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Cantidad</th>
+                            <th>Proveedor</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Semillas de Tomate</td>
+                            <td>Semillas</td>
+                            <td>200 unidades</td>
+                            <td>AgroProveedores S.A.</td>
+                            <td><span class="badge">En Stock</span></td>
+                            <td><button class="btn-editar">Editar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
             </article>
         </section>
+    </main>
 
+    <main class="main-content">
+        <header class="page-header">
+            <h2>Alertas de Stock</h2>
+            <p>Configura y gestiona alertas para niveles críticos de inventario</p>
+        </header>
 
-        <section>
-
-            <header>
-                <h2>Entrada de Insumos</h2>
-            </header>
-
-            <article>
-
-                <form>
-                    <label for="insumoEntrada">
-                        Insumo
-                    </label>
-
-                    <select id="insumoEntrada">
-                        <option>Abono Orgánico</option>
-                    </select>
-
-                    <label for="cantidadEntrada">
-                        Cantidad recibida
-                    </label>
-
-                    <input type="number" id="cantidadEntrada">
-
-                    <label for="responsableEntrada">
-                        Responsable
-                    </label>
-
-                    <input type="text" id="responsableEntrada">
-
-                    <button type="submit">
-                        Registrar Entrada
-                    </button>
-                </form>
-
+        <section class="workspace">
+            <article class="panel-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Nivel Actual</th>
+                            <th>Nivel Mínimo</th>
+                            <th>Alerta</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Semillas de Tomate</td>
+                            <td>200 unidades</td>
+                            <td>50 unidades</td>
+                            <td><span class="badge-alerta">Alerta Activa</span></td>
+                            <td><button class="btn-editar">Configurar Alerta</button></td>
+                        </tr>
+                    </tbody>
+                </table>
             </article>
         </section>
+    </main>
 
+    <main class="main-content">
+        <header class="page-header">
+            <h2>Gestión de Proveedores</h2>
+            <p>Administra la información de tus proveedores y su historial de suministros</p>
+        </header>
 
-    <!-- SALIDA DE INSUMOS -->
-        <section>
-
-            <header>
-                <h2>Salida de Insumos</h2>
-            </header>
-
-            <article>
-                <form>
-                    <label for="insumoSalida">
-                        Insumo
-                    </label>
-
-                    <select id="insumoSalida">
-                        <option>Abono Orgánico</option>
-                    </select>
-
-                    <label for="cantidadSalida">
-                        Cantidad utilizada
-                    </label>
-
-                    <input type="number" id="cantidadSalida">
-
-                    <label for="loteSalida">
-                        Lote asociado
-                    </label>
-
-                    <input type="text" id="loteSalida">
-
-                    <button type="submit">
-                        Registrar Salida
-                    </button>
-                </form>
+        <section class="workspace">
+            <article class="panel-card">
+                <header class="panel-header">
+                    <h3>Proveedores Registrados</h3>
+                    <button class="btn-success">+ Nuevo Proveedor</button>
+                </header>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Proveedor</th>
+                            <th>Contacto</th>
+                            <th>Productos Suministrados</th>
+                            <th>Último Suministro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AgroProveedores S.A.</td>
+                            <td>
+                                <p>María López</p>
+                                <p>
+                            </td>
+                            <td>Semillas de Tomate, Semillas de Lechuga</td>
+                            <td>2024-05-20</td>
+                            <td><button class="btn-editar">Editar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
             </article>
         </section>
-
-
-        <section>
-
-            <header>
-                <h2>Alertas de Inventario</h2>
-            </header>
-
-            <article>
-                <h3>Stock Bajo Detectado</h3>
-
-                <p>
-                    El insumo "Fertilizante A" se encuentra
-                    por debajo del stock mínimo permitido.
-                </p>
-            </article>
-        </section>
-
-
-        <section>
-
-            <header>
-                <h2>Historial de Movimientos</h2>
-            </header>
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Movimiento</th>
-                        <th>Insumo</th>
-                        <th>Cantidad</th>
-                        <th>Responsable</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    <tr>
-                        <td>20/05/2026</td>
-                        <td>Entrada</td>
-                        <td>Abono Orgánico</td>
-                        <td>50</td>
-                        <td>Jordan</td>
-                    </tr>
-
-                    <tr>
-                        <td>21/05/2026</td>
-                        <td>Salida</td>
-                        <td>Abono Orgánico</td>
-                        <td>10</td>
-                        <td>Operario 1</td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </section>
-
-
-        <section>
-
-            <header>
-                <h2>Reportes de Inventario</h2>
-            </header>
-
-            <article>
-
-                <form>
-
-                    <label for="fechaInicio">
-                        Fecha inicio
-                    </label>
-
-                    <input type="date" id="fechaInicio">
-
-                    <label for="fechaFin">
-                        Fecha fin
-                    </label>
-
-                    <input type="date" id="fechaFin">
-
-                    <button type="submit">
-                        Consultar Reporte
-                    </button>
-
-                    <button type="button">
-                        Exportar PDF
-                    </button>
-
-                    <button type="button">
-                        Exportar Excel
-                    </button>
-
-                </form>
-
-            </article>
-
-    </section>
+    </main>
 
 </main>
 </body>
