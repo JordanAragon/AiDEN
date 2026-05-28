@@ -211,6 +211,9 @@ table tbody tr:hover {
     background-color: #4caf50;
 }
 
+
+
+/* Pantallas pequeñas */
 responsive {
     @media (max-width: 768px) {
         .top-nav {
@@ -227,6 +230,48 @@ responsive {
             align-items: center;
             text-align: center;
         }
+    }
+}
+
+/* Pantallas medianas */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .page-header {
+        align-items: center;
+        text-align: center;
+    } 
+    .panel-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}
+
+/* Pantallas grandes */
+@media (min-width: 1025px) {
+    .page-header {
+        align-items: flex-start;
+        text-align: left;
+    }
+    .panel-header {
+        flex-direction: row;
+        gap: 20px;
+        text-align: left;
+    }
+}
+
+/* Pantallas extra grandes */
+@media (min-width: 1441px) {
+    .page-header h2 {
+        font-size: 2.5rem;
+    }
+    .page-header p {
+        font-size: 1.2rem;
+    }
+    .panel-header h2 {
+        font-size: 1.8rem;
+    }
+    .panel-header p {
+        font-size: 1rem;
     }
 }
 
