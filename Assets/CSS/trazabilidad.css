@@ -1,0 +1,237 @@
+:root {
+    --bg-principal: #ffffff;
+    --bg-secundario: #f4f7f6;
+    --color-primario: #2E7D32; 
+    --color-primario-hover: #1B5E20; 
+    --color-acento: #66BB6A; 
+    --texto-oscuro: #1f2937;
+    --texto-claro: #4b5563;
+    --borde: #e5e7eb;
+    --sombra-suave: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --sombra-fuerte: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Reseteo básico para evitar márgenes raros del navegador */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-principal);
+    color: var(--texto-oscuro);
+    line-height: 1.6;
+}
+
+
+.top-nav {
+    background-color: var(--color-primario);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+
+.nav-brand h1 {
+    margin: 0;
+}
+
+
+.nav-menu {
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-primario);
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-menu li {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.nav-menu a:hover {
+    color: var(--color-acento);
+}
+
+
+.main-content {
+    padding: 20px;
+}
+
+
+.page-header {
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--sombra-suave);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: var(--bg-secundario);
+}
+
+.page-header h2 {
+    margin-top: 0;
+    color: var(--color-primario);
+}
+
+.page-header p {
+    color: var(--texto-claro);
+    margin-top: 5px;
+    justify-content:space-around;
+}
+
+
+.panel-card {
+    background-color: var(--bg-principal);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--sombra-suave);
+}
+
+.panel-card h3 {
+    margin-top: 0;
+    color: var(--color-primario);
+}
+
+.panel-card p {
+    color: var(--texto-claro);
+    margin-top: 10px;
+}
+
+
+.trazabilidad-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.trazabilidad-form label {
+    font-weight: 600;
+    color: var(--texto-oscuro);
+}
+
+.trazabilidad-form input,
+.trazabilidad-form select {
+    padding: 10px;
+    border: 1px solid var(--borde);
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+.trazabilidad-form input:focus,
+.trazabilidad-form select:focus {
+    border-color: var(--color-primario);
+    outline: none;
+}
+
+.trazabilidad-form button {
+    align-self: flex-start;
+    padding: 10px 20px;
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.trazabilidad-form button:hover {
+    background-color: var(--color-primario-hover);
+}
+
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table thead {
+    background-color: var(--bg-secundario);
+}
+
+table th,
+table td {
+    padding: 12px;
+    border: 1px solid var(--borde);
+    text-align: center;
+}
+
+table th {
+    background-color: var(--color-primario);
+    color: white;
+}   
+
+table tbody tr:hover {
+    background-color: var(--bg-secundario);
+    cursor: pointer;
+}
+
+.btn-editar {
+    background-color: var(--color-acento);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-editar:hover {
+    background-color: #4caf50;
+}
+
+responsive {
+    @media (max-width: 768px) {
+        .top-nav {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-menu {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .page-header {
+            align-items: center;
+            text-align: center;
+        }
+    }
+}
+
+
+
+
+
+

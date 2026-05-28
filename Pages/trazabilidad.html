@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Assets/CSS/trazabilidad.css">
+    <title>Trazabilidad</title>
+</head>
+
+
+<body>
+
+    <nav class="top-nav">
+        <header class="nav-brand">
+            <h1>AiDEN</h1>
+        </header>
+        <ul class="nav-menu">
+            <li><a href="../index.html">Dashboard</a></li>
+            <li><a href="../Pages/produccion.html">Producción</a></li>
+            <li><a href="../Pages/inventario.html">Inventario</a></li>
+            <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
+            <li><a href="../Pages/users.html" class="active">Usuarios</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section>
+            <header class="page-header">
+                <h2>Registro de Trazabilidad</h2>
+                <p>Gestiona y monitorea el seguimiento de los productos a lo largo de su ciclo de vida</p>
+            </header>
+
+            <article class="panel-card">
+                <h3>Nuevo Registro</h3>
+
+                <form class="trazabilidad-form">
+                    <label for="nombreRegistro">
+                        Nombre del registro
+                    </label>
+
+                    <input type="text" id="nombreRegistro">
+
+                    <label for="descripcionRegistro">
+                        Descripción
+                    </label>
+
+                    <textarea id="descripcionRegistro"></textarea>
+
+                    <button type="submit">Guardar Registro</button>
+                </form>
+            </article>
+        </section>
+    </main>
+
+    <main class="main-content">
+        <section>
+            <header class="page-header">
+                <h2>Historial de Trazabilidad</h2>
+                <p>Visualiza y gestiona los registros de trazabilidad existentes</p>
+            </header>
+
+            <article class="panel-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre del Registro</th>
+                            <th>Descripción</th>
+                            <th>Fecha de Creación</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Registro 1</td>
+                            <td>Descripción del registro 1</td>
+                            <td>2024-06-01</td>
+                            <td><button class="btn-editar">Editar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </article>
+        </section>
+    </main>
+
+    <main class="main-content">
+        <section>
+            <header class="page-header">
+                <h2>Alertas de Trazabilidad</h2>
+                <p>Monitorea alertas relacionadas con la trazabilidad de los productos</p>
+            </header>
+
+            <article class="panel-card">
+                <h3>Alerta: Registro Incompleto</h3>
+
+                <p>
+                    El registro "Registro 1" no tiene una descripción completa.
+                    Por favor, revise y actualice la información.
+                </p>
+            </article>
+        </section>
+    </main>
+
+</body>
+</html>
