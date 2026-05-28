@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vivero - Gestión de Usuarios</title>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>AiDEN | Usuarios</title>
     <link rel="stylesheet" href="../Assets/CSS/users.css">
 </head>
 <body>
-
     <nav class="top-nav">
         <header class="nav-brand">
             <h1>AiDEN</h1>
@@ -18,78 +16,129 @@
             <li><a href="../Pages/produccion.html">Producción</a></li>
             <li><a href="../Pages/inventario.html">Inventario</a></li>
             <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
-            <li><a href="#" class="active">Usuarios</a></li>
+            <li><a href="../Pages/users.html" class="active">Usuarios</a></li>
         </ul>
         <section class="user-profile">
-            <a href="../Pages/perfil.html">Mi Perfil</a>
-            <a href="../index.html" class="logout-link">Cerrar Sesión</a>
+            <a href="../Pages/users.html">Mi perfil</a>
+            <a href="../index.html" class="logout-link">Cerrar sesión</a>
         </section>
     </nav>
 
     <main class="main-content">
         <header class="page-header">
-            <h2>Gestión de Usuarios y Seguridad</h2>
-            <p>Monitoreo de credenciales, roles y accesos del personal</p>
+            <section>
+                <span class="eyebrow">Usuarios y seguridad</span>
+                <h2>Roles, permisos y accesos</h2>
+                <p>Gestiona el personal del vivero, define permisos por rol y revisa el estado de las cuentas.</p>
+            </section>
+            <button class="btn-success" type="button">Nuevo usuario</button>
         </header>
+
+        <section class="summary-grid" aria-label="Resumen de usuarios">
+            <article class="metric-card">
+                <span class="metric-label">Usuarios</span>
+                <strong class="metric-value">16</strong>
+                <p class="metric-note">14 activos</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Roles</span>
+                <strong class="metric-value">3</strong>
+                <p class="metric-note">Propietario, administrador, operario</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Accesos hoy</span>
+                <strong class="metric-value">9</strong>
+                <p class="metric-note">Sin intentos fallidos</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Pendientes</span>
+                <strong class="metric-value">2</strong>
+                <p class="metric-note">Invitaciones sin aceptar</p>
+            </article>
+        </section>
 
         <section class="workspace">
             <article class="panel-card">
                 <header class="panel-header">
-                    <h3>Personal Registrado</h3>
-                    <button class="btn-success">+ Nuevo Usuario</button>
+                    <section>
+                        <h3>Personal registrado</h3>
+                        <p>Consulta cuentas, roles asignados y estado de acceso.</p>
+                    </section>
                 </header>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Rol</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Juan Pérez</td>
-                            <td>juan@vivero.com</td>
-                            <td><span class="badge">Administrador</span></td>
-                            <td>Activo</td>
-                            <td><button class="btn-editar">Editar</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Juan Pérez</td>
+                                <td>juan@vivero.com</td>
+                                <td><span class="badge-info">Administrador</span></td>
+                                <td><span class="badge">Activo</span></td>
+                                <td><button class="btn-editar" type="button">Editar</button></td>
+                            </tr>
+                            <tr>
+                                <td>María López</td>
+                                <td>maria@vivero.com</td>
+                                <td><span class="badge-warning">Operario</span></td>
+                                <td><span class="badge">Activo</span></td>
+                                <td><button class="btn-editar" type="button">Editar</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
             </article>
+
+            <section class="workspace grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h3>Crear rol</h3>
+                            <p>Configura permisos para limitar acciones por responsabilidad.</p>
+                        </section>
+                    </header>
+                    <form class="security-form">
+                        <label for="nombreRol">Nombre del rol</label>
+                        <input type="text" id="nombreRol" placeholder="Ej. Supervisor de producción">
+
+                        <label for="permisosRol">Permisos asignados</label>
+                        <textarea id="permisosRol" placeholder="Inventario: leer y editar. Producción: leer. Usuarios: sin acceso."></textarea>
+
+                        <button class="btn-guardar" type="submit">Guardar rol</button>
+                    </form>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h3>Últimos accesos</h3>
+                            <p>Actividad reciente para auditoría básica.</p>
+                        </section>
+                    </header>
+                    <ul class="timeline">
+                        <li>
+                            <strong>Juan Pérez inició sesión</strong>
+                            <span>Hoy, 08:45 a.m.</span>
+                        </li>
+                        <li>
+                            <strong>María López actualizó inventario</strong>
+                            <span>Ayer, 04:12 p.m.</span>
+                        </li>
+                        <li>
+                            <strong>Invitación enviada a nuevo operario</strong>
+                            <span>26 May 2026</span>
+                        </li>
+                    </ul>
+                </article>
+            </section>
         </section>
     </main>
-
-    <main class="seguridad-content">
-        <section>
-            <header class="seguridad-header">
-                <h2>Seguridad y Accesos</h2>
-                <p>Configura roles, permisos y monitorea accesos al sistema</p>
-            </header>
-
-            <article class="seguridad-panel">
-                <h3>Roles y Permisos</h3>
-
-                <form class="security-form">
-                    <label for="nombreRol">
-                        Nombre del rol
-                    </label>
-
-                    <input type="text" id="nombreRol">
-
-                    <label for="permisosRol">
-                        Permisos asignados
-                    </label>
-
-                    <textarea id="permisosRol"></textarea>
-
-                    <button class="btn-guardar "type="submit">Guardar Rol</button>
-                </form>
-            </article>
-        </section>
-    </main>
-
 </body>
 </html>

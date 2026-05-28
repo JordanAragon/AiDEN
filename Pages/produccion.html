@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Assets/CSS/produccion.css">
-    <title>Produccion</title>
+    <title>AiDEN | Producción</title>
 </head>
 <body>
     <nav class="top-nav">
@@ -13,117 +13,153 @@
         </header>
         <ul class="nav-menu">
             <li><a href="../index.html">Dashboard</a></li>
-            <li><a href="../Pages/produccion.html">Producción</a></li>
+            <li><a href="../Pages/produccion.html" class="active">Producción</a></li>
             <li><a href="../Pages/inventario.html">Inventario</a></li>
             <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
-            <li><a href="../Pages/users.html" class="active">Usuarios</a></li>
+            <li><a href="../Pages/users.html">Usuarios</a></li>
         </ul>
-    </nav> 
+        <section class="user-logout">
+            <a href="../index.html" class="logout-link">Cerrar sesión</a>
+        </section>
+    </nav>
 
     <main class="main-content">
         <header class="page-header">
-            <h2>Gestión de Producción</h2>
-            <p>Monitoreo de fases productivas, recursos y rendimiento</p>
+            <section>
+                <span class="eyebrow">Producción</span>
+                <h2>Seguimiento de fases productivas</h2>
+                <p>Controla actividades, recursos asignados, rendimiento y desviaciones de cada fase del vivero.</p>
+            </section>
+            <button class="btn-success" type="button">Nueva fase</button>
         </header>
+
+        <section class="summary-grid" aria-label="Resumen de producción">
+            <article class="metric-card">
+                <span class="metric-label">Fases activas</span>
+                <strong class="metric-value">5</strong>
+                <p class="metric-note">2 próximas a cierre</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Rendimiento</span>
+                <strong class="metric-value">85%</strong>
+                <p class="metric-note">Meta general 90%</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Recursos usados</span>
+                <strong class="metric-value">72%</strong>
+                <p class="metric-note">Consumo semanal</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Desviación</span>
+                <strong class="metric-value">-5%</strong>
+                <p class="metric-note">En germinación</p>
+            </article>
+        </section>
 
         <section class="workspace">
             <article class="panel-card">
                 <header class="panel-header">
-                    <h3>Fases Productivas</h3>
-                    <button class="btn-success">+ Nueva Fase</button>
+                    <section>
+                        <h3>Fases productivas</h3>
+                        <p>Estado operativo y recursos asignados por fase.</p>
+                    </section>
                 </header>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Fase</th>
-                            <th>Descripción</th>
-                            <th>Recursos Asignados</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Germinación</td>
-                            <td>Proceso de germinación de semillas</td>
-                            <td>Semillas, Agua, Luz</td>
-                            <td>En Progreso</td>
-                            <td><button class="btn-editar">Editar</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fase</th>
+                                <th>Descripción</th>
+                                <th>Recursos asignados</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Germinación</td>
+                                <td>Activación y brote inicial de semillas</td>
+                                <td>Semillas, agua, luz</td>
+                                <td><span class="badge-info">En progreso</span></td>
+                                <td><button class="btn-editar" type="button">Editar</button></td>
+                            </tr>
+                            <tr>
+                                <td>Trasplante</td>
+                                <td>Paso a bandejas y control de raíz</td>
+                                <td>Sustrato, bandejas, herramientas</td>
+                                <td><span class="badge-warning">Pendiente</span></td>
+                                <td><button class="btn-editar" type="button">Editar</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
             </article>
+
+            <section class="workspace grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h3>Indicadores clave</h3>
+                            <p>Comparación entre rendimiento actual y objetivo.</p>
+                        </section>
+                    </header>
+                    <section class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Fase</th>
+                                    <th>Actual</th>
+                                    <th>Objetivo</th>
+                                    <th>Desviación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Germinación</td>
+                                    <td>85%</td>
+                                    <td>90%</td>
+                                    <td><span class="badge-warning">-5%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Trasplante</td>
+                                    <td>92%</td>
+                                    <td>88%</td>
+                                    <td><span class="badge">+4%</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h3>Asignar recurso</h3>
+                            <p>Relaciona insumos del inventario con una fase productiva.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field" for="fase">Fase
+                            <select id="fase">
+                                <option>Germinación</option>
+                                <option>Trasplante</option>
+                                <option>Crecimiento</option>
+                            </select>
+                        </label>
+                        <label class="field" for="recurso">Recurso
+                            <input type="text" id="recurso" placeholder="Semillas, agua, sustrato">
+                        </label>
+                        <label class="field" for="asignada">Cantidad asignada
+                            <input type="number" id="asignada" placeholder="1000">
+                        </label>
+                        <label class="field" for="utilizada">Cantidad utilizada
+                            <input type="number" id="utilizada" placeholder="850">
+                        </label>
+                        <button class="btn-success" type="submit">Guardar asignación</button>
+                    </form>
+                </article>
+            </section>
         </section>
     </main>
-
-    <main class="main-content">
-        <header class="page-header">
-            <h2>Rendimiento de Producción</h2>
-            <p>Análisis de rendimiento y eficiencia de las fases productivas</p>
-        </header>
-
-        <section class="workspace">
-            <article class="panel-card">
-                <header class="panel-header">
-                    <h3>Indicadores Clave</h3>
-                </header>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Fase</th>
-                            <th>Rendimiento Actual</th>
-                            <th>Rendimiento Objetivo</th>
-                            <th>Desviación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Germinación</td>
-                            <td>85%</td>
-                            <td>90%</td>
-                            <td>-5%</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </article>
-        </section>
-    </main>
-
-    <main class="main-content">
-        <header class="page-header">
-            <h2>Recursos Asignados</h2>
-            <p>Monitoreo de recursos asignados a cada fase productiva</p>
-        </header>
-
-        <section class="workspace">
-            <article class="panel-card">
-                <header class="panel-header">
-                    <h3>Recursos por Fase</h3>
-                </header>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Fase</th>
-                            <th>Recurso</th>
-                            <th>Cantidad Asignada</th>
-                            <th>Cantidad Utilizada</th>
-                            <th>Disponibilidad</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Germinación</td>
-                            <td>Semillas</td>
-                            <td>1000</td>
-                            <td>850</td>
-                            <td>150</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </article>
-        </section>
-    </main>
-
-
 </body>
 </html>

@@ -1,215 +1,217 @@
-/* Reseteo general del módulo de Login */
+:root {
+    --color-primary: #156f52;
+    --color-primary-dark: #0b4d3a;
+    --color-accent: #f0b429;
+    --bg-page: #f6f8f7;
+    --bg-surface: #ffffff;
+    --text-main: #17231f;
+    --text-muted: #64716c;
+    --border: #dfe7e3;
+    --shadow: 0 18px 40px rgba(20, 55, 43, 0.1);
+}
+
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body, html {
-    height: 100%;
-    width: 100%;
-    background-color: #ffffff;
+body,
+html {
+    min-height: 100%;
+    background: var(--bg-page);
+    color: var(--text-main);
 }
 
-/* Pantalla dividida en dos columnas principales */
 .login-page {
-    display: flex;
-    height: 100vh;
-    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
+    min-height: 100vh;
 }
 
-/* Columna del Formulario */
 .form-container {
-    flex: 1;
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 10%;
-    background-color: #ffffff;
-    position: relative; 
+    padding: 5rem clamp(1.25rem, 8vw, 6rem);
+    background: var(--bg-surface);
 }
 
-/* Estilo del botón regresar con el icono alineado */
 .btn-regresar {
     position: absolute;
-    top: 30px;
-    left: 10%;
-    display: flex;
+    top: 1.5rem;
+    left: clamp(1.25rem, 8vw, 6rem);
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: #555555;
+    gap: 0.5rem;
+    color: var(--text-muted);
     text-decoration: none;
     font-size: 0.95rem;
-    font-weight: 600;
-    transition: color 0.2s ease, transform 0.2s ease;
+    font-weight: 800;
 }
 
 .btn-regresar:hover {
-    color: #1b5e20;
-    transform: translateX(-3px);
+    color: var(--color-primary-dark);
 }
 
-/* Encabezados internos */
 .encabezado-login {
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
 }
 
 .encabezado-login h1 {
-    font-size: 2.2rem;
-    color: #111111;
-    font-weight: 700;
-    margin-bottom: 0.4rem;
+    color: var(--text-main);
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
 }
 
-.encabezado-login p {
-    color: #666666;
-    font-size: 1rem;
+.encabezado-login p,
+.pie-pagina p {
+    margin-top: 0.5rem;
+    color: var(--text-muted);
 }
 
-/* Estructuración de cajas de texto */
+form,
 .campo {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1.5rem;
+    display: grid;
+    gap: 1rem;
 }
 
-.campo label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #333333;
-    margin-bottom: 0.5rem;
+.campo,
+.recordar-opcion {
+    border: 0;
+    padding: 0;
+}
+
+.campo label,
+.recordar-opcion label {
+    color: var(--text-main);
+    font-size: 0.92rem;
+    font-weight: 800;
 }
 
 .header-campo {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
-.olvido {
-    font-size: 0.85rem;
-    color: #666666;
+.olvido,
+.pie-pagina a {
+    color: var(--color-primary);
+    font-weight: 800;
     text-decoration: none;
-    font-weight: 500;
 }
 
-.olvido:hover {
+.olvido:hover,
+.pie-pagina a:hover {
     text-decoration: underline;
 }
 
 .campo input {
     width: 100%;
-    padding: 0.85rem;
-    border: 1px solid #dddddd;
+    min-height: 3rem;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    background-color: #ffffff;
-    font-size: 0.9rem;
+    background: #ffffff;
+    color: var(--text-main);
     outline: none;
 }
 
 .campo input:focus {
-    border-color: #3e5622;
+    border-color: var(--color-primary);
+    outline: 3px solid rgba(21, 111, 82, 0.14);
 }
 
 .recordar-opcion {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 2rem;
-    font-size: 0.85rem;
-    font-weight: 500;
+    gap: 0.6rem;
 }
 
-.campo, .recordar-opcion {
-    border: none;
-    padding: 0;
-    margin: 0;
-}
-
-/* Botón verde oliva oscuro original del prototipo */
 .btn-inicio {
-    width: 100%;
-    padding: 0.85rem;
-    background-color: #3e5622; 
-    color: white;
-    border: none;
+    min-height: 3rem;
+    border: 0;
     border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
+    background: var(--color-primary);
+    color: #ffffff;
     cursor: pointer;
-    margin-bottom: 2rem;
-    transition: background 0.3s;
+    font-size: 1rem;
+    font-weight: 900;
 }
 
 .btn-inicio:hover {
-    background-color: #2e4118;
+    background: var(--color-primary-dark);
 }
 
 .pie-pagina {
+    margin-top: 1.5rem;
     text-align: center;
 }
 
-.pie-pagina p {
-    font-size: 0.95rem;
-    color: #333333;
-}
-
-.pie-pagina a {
-    color: #00a8e1; 
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.pie-pagina a:hover {
-    text-decoration: underline;
-}
-
-/* Panel derecho con imagen de fondo */
 .banner-lateral {
-    flex: 1;
-    background-color: #f0f4ee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    display: grid;
+    align-content: center;
+    gap: 1rem;
+    padding: clamp(1.5rem, 6vw, 5rem);
+    background:
+        linear-gradient(135deg, rgba(21, 111, 82, 0.9), rgba(11, 77, 58, 0.96)),
+        var(--color-primary-dark);
+    color: #ffffff;
 }
 
-.banner-lateral img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.banner-lateral h2 {
+    max-width: 560px;
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    line-height: 1.02;
 }
 
-/* ==========================================================================
-   RESPONSIVE DESIGN COMPLETO POR PANTALLA
-   ========================================================================== */
-
-/* [xs] Pantallas muy pequeñas (Móviles verticales) */
-@media (max-width: 480px) {
-    .banner-lateral { display: none; } /* Ocultamos la imagen para priorizar el login */
-    .form-container { padding: 0 6%; }
-    .encabezado-login h1 { font-size: 1.8rem; }
-    .btn-regresar { top: 15px; left: 6%; }
+.banner-lateral p {
+    max-width: 520px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 1.05rem;
 }
 
-/* [s] Pantallas pequeñas (Celulares en horizontal / Tablets chicas) */
-@media (min-width: 481px) and (max-width: 768px) {
-    .banner-lateral { display: none; }
-    .form-container { padding: 0 12%; }
+.banner-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin-top: 1.25rem;
 }
 
-/* [l] Pantallas medianas (Tablets grandes / Laptops comunes) */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .form-container { padding: 0 5%; } /* Reducimos padding para que no se aplaste el formulario */
+.banner-stats article {
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
 }
 
-/* [xl] Pantallas grandes (Monitores normales de escritorio) */
-@media (min-width: 1025px) and (max-width: 1440px) {
-    /* Funciona excelente con el Flexbox al 50% de ancho */
+.banner-stats strong {
+    display: block;
+    font-size: 1.5rem;
 }
 
-/* [xxl] Pantallas muy grandes (Monitores de alta definición) */
-@media (min-width: 1441px) {
-    .form-container { padding: 0 15%; } /* Centramos más el contenido en pantallas gigantes */
+.banner-stats span {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.84rem;
+}
+
+@media (max-width: 820px) {
+    .login-page {
+        grid-template-columns: 1fr;
+    }
+
+    .banner-lateral {
+        order: -1;
+        min-height: 280px;
+    }
+}
+
+@media (max-width: 520px) {
+    .banner-stats {
+        grid-template-columns: 1fr;
+    }
 }

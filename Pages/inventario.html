@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="../Assets/CSS/inventario.css">
     <title>AiDEN | Inventario</title>
 </head>
-
 <body>
     <nav class="top-nav">
         <header class="nav-brand">
@@ -20,119 +19,151 @@
             <li><a href="../Pages/users.html">Usuarios</a></li>
         </ul>
         <section class="user-logout">
-            <a href="../index.html" class="logout-link">Cerrar Sesión</a>
+            <a href="../index.html" class="logout-link">Cerrar sesión</a>
         </section>
     </nav>
 
     <main class="main-content">
         <header class="page-header">
-            <h2>Gestión de Inventario</h2>
-            <p>Monitoreo de existencias, alertas de stock y gestión de proveedores</p>
+            <section>
+                <span class="eyebrow">Inventario</span>
+                <h2>Control de insumos y proveedores</h2>
+                <p>Administra existencias, niveles mínimos, alertas de stock y proveedores del vivero desde una vista operativa.</p>
+            </section>
+            <button class="btn-success" type="button">Nuevo producto</button>
         </header>
+
+        <section class="summary-grid" aria-label="Resumen de inventario">
+            <article class="metric-card">
+                <span class="metric-label">Productos activos</span>
+                <strong class="metric-value">42</strong>
+                <p class="metric-note">7 categorías registradas</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Stock crítico</span>
+                <strong class="metric-value">3</strong>
+                <p class="metric-note">Requieren reposición</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Proveedores</span>
+                <strong class="metric-value">8</strong>
+                <p class="metric-note">5 con suministro reciente</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Última entrada</span>
+                <strong class="metric-value">20 May</strong>
+                <p class="metric-note">Semillas y sustratos</p>
+            </article>
+        </section>
 
         <section class="workspace">
             <article class="panel-card">
                 <header class="panel-header">
-                    <h3>Inventario Actual</h3>
-                    <button class="btn-success">+ Nuevo Producto</button>
+                    <section>
+                        <h3>Inventario actual</h3>
+                        <p>Consulta cantidades disponibles y estado de cada insumo.</p>
+                    </section>
+                    <button class="btn-secondary" type="button">Exportar</button>
                 </header>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Categoría</th>
-                            <th>Cantidad</th>
-                            <th>Proveedor</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Semillas de Tomate</td>
-                            <td>Semillas</td>
-                            <td>200 unidades</td>
-                            <td>AgroProveedores S.A.</td>
-                            <td><span class="badge">En Stock</span></td>
-                            <td><button class="btn-editar">Editar</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Categoría</th>
+                                <th>Cantidad</th>
+                                <th>Proveedor</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Semillas de tomate</td>
+                                <td>Semillas</td>
+                                <td>200 unidades</td>
+                                <td>AgroProveedores S.A.</td>
+                                <td><span class="badge">En stock</span></td>
+                                <td><button class="btn-editar" type="button">Editar</button></td>
+                            </tr>
+                            <tr>
+                                <td>Sustrato orgánico</td>
+                                <td>Insumos</td>
+                                <td>18 sacos</td>
+                                <td>BioTierra</td>
+                                <td><span class="badge-warning">Reposición cercana</span></td>
+                                <td><button class="btn-editar" type="button">Editar</button></td>
+                            </tr>
+                            <tr>
+                                <td>Bandejas germinadoras</td>
+                                <td>Herramientas</td>
+                                <td>6 unidades</td>
+                                <td>CampoVerde</td>
+                                <td><span class="badge-danger">Stock crítico</span></td>
+                                <td><button class="btn-editar" type="button">Editar</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
             </article>
+
+            <section class="workspace grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h3>Alertas de stock</h3>
+                            <p>Define mínimos para recibir avisos antes de detener la producción.</p>
+                        </section>
+                    </header>
+                    <section class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Nivel actual</th>
+                                    <th>Nivel mínimo</th>
+                                    <th>Alerta</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Bandejas germinadoras</td>
+                                    <td>6 unidades</td>
+                                    <td>10 unidades</td>
+                                    <td><span class="badge-alerta">Activa</span></td>
+                                    <td><button class="btn-editar" type="button">Configurar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h3>Nuevo proveedor</h3>
+                            <p>Registra contactos para compras y trazabilidad de suministros.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field" for="proveedor">Proveedor
+                            <input type="text" id="proveedor" placeholder="Nombre comercial">
+                        </label>
+                        <label class="field" for="contacto">Contacto
+                            <input type="text" id="contacto" placeholder="Persona encargada">
+                        </label>
+                        <label class="field" for="telefono">Teléfono
+                            <input type="tel" id="telefono" placeholder="300 000 0000">
+                        </label>
+                        <label class="field" for="producto">Producto
+                            <input type="text" id="producto" placeholder="Insumo suministrado">
+                        </label>
+                        <button class="btn-success" type="submit">Guardar proveedor</button>
+                    </form>
+                </article>
+            </section>
         </section>
     </main>
-
-    <main class="main-content">
-        <header class="page-header">
-            <h2>Alertas de Stock</h2>
-            <p>Configura y gestiona alertas para niveles críticos de inventario</p>
-        </header>
-
-        <section class="workspace">
-            <article class="panel-card">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Nivel Actual</th>
-                            <th>Nivel Mínimo</th>
-                            <th>Alerta</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Semillas de Tomate</td>
-                            <td>200 unidades</td>
-                            <td>50 unidades</td>
-                            <td><span class="badge-alerta">Alerta Activa</span></td>
-                            <td><button class="btn-editar">Configurar Alerta</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </article>
-        </section>
-    </main>
-
-    <main class="main-content">
-        <header class="page-header">
-            <h2>Gestión de Proveedores</h2>
-            <p>Administra la información de tus proveedores y su historial de suministros</p>
-        </header>
-
-        <section class="workspace">
-            <article class="panel-card">
-                <header class="panel-header">
-                    <h3>Proveedores Registrados</h3>
-                    <button class="btn-success">+ Nuevo Proveedor</button>
-                </header>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Proveedor</th>
-                            <th>Contacto</th>
-                            <th>Productos Suministrados</th>
-                            <th>Último Suministro</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>AgroProveedores S.A.</td>
-                            <td>
-                                <p>María López</p>
-                                <p>
-                            </td>
-                            <td>Semillas de Tomate, Semillas de Lechuga</td>
-                            <td>2024-05-20</td>
-                            <td><button class="btn-editar">Editar</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </article>
-        </section>
-    </main>
-
-</main>
 </body>
 </html>

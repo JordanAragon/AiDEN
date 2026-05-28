@@ -1,218 +1,284 @@
-/* Colores base del proyecto */
 :root {
-    --bg-principal: #ffffff;
-    --bg-secundario: #f4f7f6;
-    --color-primario: #2E7D32; 
-    --color-primario-hover: #1B5E20; 
-    --color-acento: #66BB6A; 
-    --texto-oscuro: #1f2937;
-    --texto-claro: #4b5563;
-    --borde: #e5e7eb;
-    --sombra-suave: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --sombra-fuerte: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --color-primary: #156f52;
+    --color-primary-dark: #0b4d3a;
+    --color-accent: #f0b429;
+    --color-info: #2f80ed;
+    --bg-page: #f7faf8;
+    --bg-surface: #ffffff;
+    --bg-muted: #edf5f0;
+    --text-main: #17231f;
+    --text-muted: #64716c;
+    --border: #dfe7e3;
+    --shadow: 0 18px 40px rgba(20, 55, 43, 0.1);
 }
 
-/* Reseteo básico para evitar márgenes raros del navegador */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     scroll-behavior: smooth;
 }
 
 body {
-    background-color: var(--bg-principal);
-    color: var(--texto-oscuro);
+    background: var(--bg-page);
+    color: var(--text-main);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
 }
 
-/* Estilos de la barra de navegación */
 .cabecera-sitio {
     position: sticky;
     top: 0;
-    background-color: var(--bg-principal);
+    z-index: 20;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 1rem 5%;
-    box-shadow: var(--sombra-suave);
-    z-index: 1000;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem clamp(1rem, 5vw, 4rem);
+    background: rgba(255, 255, 255, 0.94);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 10px 28px rgba(20, 55, 43, 0.06);
+    backdrop-filter: blur(14px);
 }
 
 .marca-logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: var(--color-primario);
+    color: var(--color-primary-dark);
+    font-size: 1.65rem;
+    font-weight: 900;
     text-decoration: none;
+}
+
+.navegacion-menu ul,
+.cabecera-acciones,
+.hero-botones {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
 }
 
 .navegacion-menu ul {
-    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     list-style: none;
-    gap: 2rem;
 }
 
 .navegacion-menu a {
+    display: inline-flex;
+    min-height: 2.4rem;
+    align-items: center;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-weight: 700;
     text-decoration: none;
-    color: var(--texto-claro);
-    font-weight: 500;
-    transition: color 0.3s;
 }
 
 .navegacion-menu a:hover {
-    color: var(--color-primario);
+    background: var(--bg-muted);
+    color: var(--color-primary-dark);
 }
 
-/* Estilos para los botones comunes */
-.btn-principal, .btn-secundario {
-    padding: 0.6rem 1.2rem;
-    border-radius: 0.375rem;
+.btn-principal,
+.btn-secundario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.6rem;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    font-weight: 800;
     text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s;
-    display: inline-block;
 }
 
 .btn-principal {
-    background-color: var(--color-primario);
-    color: white;
-    border: 1px solid var(--color-primario);
+    background: var(--color-primary);
+    color: #ffffff;
 }
 
 .btn-principal:hover {
-    background-color: var(--color-primario-hover);
+    background: var(--color-primary-dark);
 }
 
 .btn-secundario {
-    background-color: transparent;
-    color: var(--color-primario);
-    border: 1px solid var(--color-primario);
-    margin-right: 0.5rem;
+    border: 1px solid var(--border);
+    background: #ffffff;
+    color: var(--color-primary-dark);
 }
 
 .btn-secundario:hover {
-    background-color: var(--bg-secundario);
+    background: var(--bg-muted);
 }
 
-/* Bloque contenedor de secciones */
 .contenedor-principal {
-    padding: 2rem 5%;
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
 }
 
 .seccion-hero {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
     align-items: center;
-    min-height: 70vh;
-    padding: 4rem 0;
+    gap: 2rem;
+    min-height: calc(100vh - 74px);
+    padding: 3rem 0;
 }
 
 .hero-introduccion h1 {
-    font-size: 3rem;
-    color: var(--texto-oscuro);
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
+    max-width: 800px;
+    font-size: clamp(2.3rem, 6vw, 4.8rem);
+    line-height: 1.03;
 }
 
 .hero-introduccion p {
-    font-size: 1.2rem;
-    color: var(--texto-claro);
-    margin-bottom: 2rem;
-    max-width: 600px;
+    max-width: 680px;
+    margin: 1.2rem 0 1.6rem;
+    color: var(--text-muted);
+    font-size: 1.12rem;
 }
 
-.hero-botones {
-    display: flex;
+.hero-panel {
+    display: grid;
     gap: 1rem;
+    padding: 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, rgba(21, 111, 82, 0.08), rgba(47, 128, 237, 0.08)),
+        #ffffff;
+    box-shadow: var(--shadow);
 }
 
-/* Estilos de las secciones informativas */
-.seccion-nosotros, .seccion-modulos {
-    padding: 5rem 0;
-    text-align: center;
+.hero-panel header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.hero-panel h2 {
+    font-size: 1rem;
+}
+
+.estado-operativo {
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    background: #e6f6ed;
+    color: #16803c;
+    font-size: 0.78rem;
+    font-weight: 900;
+}
+
+.panel-metricas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+}
+
+.panel-metricas article,
+.tarjeta-modulo {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.panel-metricas article {
+    padding: 1rem;
+}
+
+.panel-metricas span {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.panel-metricas strong {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 1.7rem;
+}
+
+.seccion-nosotros,
+.seccion-modulos {
+    padding: 4rem 0;
+}
+
+.titulo-seccion {
+    margin-bottom: 1.4rem;
 }
 
 .titulo-seccion h2 {
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
-    color: var(--color-primario);
+    color: var(--color-primary-dark);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
 }
 
-/* Maquetación de tarjetas con Flexbox plano */
+.seccion-nosotros p {
+    max-width: 820px;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+}
+
 .grilla-tarjetas {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
 }
 
 .tarjeta-modulo {
-    background-color: var(--bg-secundario);
-    padding: 2.5rem;
-    border-radius: 0.5rem;
-    width: 300px;
-    box-shadow: var(--sombra-suave);
-    transition: transform 0.3s;
-}
-
-.tarjeta-modulo:hover {
-    transform: translateY(-5px);
+    display: grid;
+    gap: 0.7rem;
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
 }
 
 .tarjeta-modulo h3 {
-    margin-bottom: 1rem;
-    color: var(--texto-oscuro);
+    color: var(--color-primary-dark);
 }
 
-/* Pie de página */
+.tarjeta-modulo p {
+    color: var(--text-muted);
+}
+
 .pie-sitio {
-    background-color: var(--texto-oscuro);
-    color: white;
-    padding: 3rem 5%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 1.5rem;
+    padding: 2rem clamp(1rem, 5vw, 4rem);
+    background: var(--color-primary-dark);
+    color: #ffffff;
 }
 
-/* ==========================================================================
-   RESPONSIVE DESIGN COMPLETO POR PANTALLA
-   ========================================================================== */
-
-/* [xs] Pantallas muy pequeñas (Celulares verticales de menos de 480px) */
-@media (max-width: 480px) {
-    .cabecera-sitio { flex-direction: column; gap: 1rem; padding: 1rem; }
-    .navegacion-menu ul { flex-direction: column; align-items: center; gap: 0.8rem; }
-    .hero-introduccion h1 { font-size: 1.8rem; }
-    .hero-botones { flex-direction: column; width: 100%; }
-    .hero-botones .btn-principal, .hero-botones .btn-secundario { text-align: center; margin-right: 0; }
-    .grilla-tarjetas { flex-direction: column; align-items: center; }
-    .tarjeta-modulo { width: 100%; }
-    .pie-sitio { flex-direction: column; text-align: center; }
+.pie-sitio p {
+    color: rgba(255, 255, 255, 0.78);
 }
 
-/* [s] Pantallas pequeñas (Celulares horizontales / Tablets de 481px a 768px) */
-@media (min-width: 481px) and (max-width: 768px) {
-    .cabecera-sitio { flex-wrap: wrap; }
-    .hero-introduccion h1 { font-size: 2.3rem; }
-    .tarjeta-modulo { width: 45%; }
+@media (max-width: 880px) {
+    .cabecera-sitio,
+    .pie-sitio {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .seccion-hero,
+    .grilla-tarjetas {
+        grid-template-columns: 1fr;
+    }
 }
 
-/* [l] Pantallas medianas (Tablets grandes / Laptops estándar de 769px a 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .hero-introduccion h1 { font-size: 2.7rem; }
-    .tarjeta-modulo { width: 280px; }
-}
+@media (max-width: 520px) {
+    .cabecera-acciones,
+    .hero-botones,
+    .panel-metricas {
+        align-items: stretch;
+        flex-direction: column;
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
 
-/* [xl] Pantallas grandes (Monitores normales de 1025px a 1440px) */
-@media (min-width: 1025px) and (max-width: 1440px) {
-    /* Mantiene los estilos bases estructurados fluidamente */
-}
-
-/* [xxl] Pantallas muy grandes (Monitores UltraWide o de alta resolución superior a 1441px) */
-@media (min-width: 1441px) {
-    .contenedor-principal { max-width: 1400px; margin: 0 auto; }
-    .cabecera-sitio { padding: 1rem 10%; }
+    .btn-principal,
+    .btn-secundario {
+        width: 100%;
+    }
 }

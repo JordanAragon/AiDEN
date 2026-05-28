@@ -1,15 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Assets/CSS/trazabilidad.css">
-    <title>Trazabilidad</title>
+    <title>AiDEN | Trazabilidad</title>
 </head>
-
-
 <body>
-
     <nav class="top-nav">
         <header class="nav-brand">
             <h1>AiDEN</h1>
@@ -18,87 +15,124 @@
             <li><a href="../index.html">Dashboard</a></li>
             <li><a href="../Pages/produccion.html">Producción</a></li>
             <li><a href="../Pages/inventario.html">Inventario</a></li>
-            <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
-            <li><a href="../Pages/users.html" class="active">Usuarios</a></li>
+            <li><a href="../Pages/trazabilidad.html" class="active">Trazabilidad</a></li>
+            <li><a href="../Pages/users.html">Usuarios</a></li>
         </ul>
+        <section class="user-logout">
+            <a href="../index.html" class="logout-link">Cerrar sesión</a>
+        </section>
     </nav>
 
     <main class="main-content">
-        <section>
-            <header class="page-header">
-                <h2>Registro de Trazabilidad</h2>
-                <p>Gestiona y monitorea el seguimiento de los productos a lo largo de su ciclo de vida</p>
-            </header>
+        <header class="page-header">
+            <section>
+                <span class="eyebrow">Trazabilidad</span>
+                <h2>Seguimiento del ciclo de vida</h2>
+                <p>Registra eventos por lote, consulta historial y atiende alertas de información incompleta.</p>
+            </section>
+            <button class="btn-success" type="button">Nuevo registro</button>
+        </header>
 
+        <section class="summary-grid" aria-label="Resumen de trazabilidad">
+            <article class="metric-card">
+                <span class="metric-label">Lotes activos</span>
+                <strong class="metric-value">12</strong>
+                <p class="metric-note">4 en germinación</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Eventos</span>
+                <strong class="metric-value">38</strong>
+                <p class="metric-note">Registrados este mes</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Alertas</span>
+                <strong class="metric-value">1</strong>
+                <p class="metric-note">Registro incompleto</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Cumplimiento</span>
+                <strong class="metric-value">96%</strong>
+                <p class="metric-note">Datos completos</p>
+            </article>
+        </section>
+
+        <section class="workspace grid-two">
             <article class="panel-card">
-                <h3>Nuevo Registro</h3>
-
+                <header class="panel-header">
+                    <section>
+                        <h3>Nuevo registro</h3>
+                        <p>Documenta el origen, fase y observaciones del lote.</p>
+                    </section>
+                </header>
                 <form class="trazabilidad-form">
-                    <label for="nombreRegistro">
-                        Nombre del registro
-                    </label>
+                    <label for="nombreRegistro">Nombre del registro</label>
+                    <input type="text" id="nombreRegistro" placeholder="Lote TOM-2026-05">
 
-                    <input type="text" id="nombreRegistro">
+                    <label for="faseRegistro">Fase</label>
+                    <select id="faseRegistro">
+                        <option>Germinación</option>
+                        <option>Trasplante</option>
+                        <option>Crecimiento</option>
+                        <option>Despacho</option>
+                    </select>
 
-                    <label for="descripcionRegistro">
-                        Descripción
-                    </label>
+                    <label for="descripcionRegistro">Descripción</label>
+                    <textarea id="descripcionRegistro" placeholder="Detalle el evento, responsable e insumos utilizados"></textarea>
 
-                    <textarea id="descripcionRegistro"></textarea>
-
-                    <button type="submit">Guardar Registro</button>
+                    <button type="submit">Guardar registro</button>
                 </form>
             </article>
+
+            <article class="alert-card">
+                <span class="eyebrow">Alerta activa</span>
+                <h3>Registro incompleto</h3>
+                <p>El lote TOM-2026-05 no tiene observaciones de riego registradas para la fase de germinación.</p>
+                <button class="btn-editar" type="button">Revisar alerta</button>
+            </article>
         </section>
-    </main>
 
-    <main class="main-content">
-        <section>
-            <header class="page-header">
-                <h2>Historial de Trazabilidad</h2>
-                <p>Visualiza y gestiona los registros de trazabilidad existentes</p>
-            </header>
-
+        <section class="workspace">
             <article class="panel-card">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre del Registro</th>
-                            <th>Descripción</th>
-                            <th>Fecha de Creación</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Registro 1</td>
-                            <td>Descripción del registro 1</td>
-                            <td>2024-06-01</td>
-                            <td><button class="btn-editar">Editar</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <header class="panel-header">
+                    <section>
+                        <h3>Historial de trazabilidad</h3>
+                        <p>Eventos recientes ordenados por fecha de creación.</p>
+                    </section>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Registro</th>
+                                <th>Fase</th>
+                                <th>Descripción</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TOM-2026-05</td>
+                                <td>Germinación</td>
+                                <td>Siembra inicial en bandejas</td>
+                                <td>2026-05-20</td>
+                                <td><span class="badge-warning">Por completar</span></td>
+                                <td><button class="btn-editar" type="button">Editar</button></td>
+                            </tr>
+                            <tr>
+                                <td>LEC-2026-03</td>
+                                <td>Trasplante</td>
+                                <td>Movimiento a cama de crecimiento</td>
+                                <td>2026-05-18</td>
+                                <td><span class="badge">Completo</span></td>
+                                <td><button class="btn-editar" type="button">Editar</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
             </article>
         </section>
     </main>
-
-    <main class="main-content">
-        <section>
-            <header class="page-header">
-                <h2>Alertas de Trazabilidad</h2>
-                <p>Monitorea alertas relacionadas con la trazabilidad de los productos</p>
-            </header>
-
-            <article class="panel-card">
-                <h3>Alerta: Registro Incompleto</h3>
-
-                <p>
-                    El registro "Registro 1" no tiene una descripción completa.
-                    Por favor, revise y actualice la información.
-                </p>
-            </article>
-        </section>
-    </main>
-
 </body>
 </html>
