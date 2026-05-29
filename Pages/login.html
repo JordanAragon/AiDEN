@@ -8,24 +8,16 @@
 </head>
 <body>
     <main class="login-page">
-        
         <section class="form-container">
-            
-            <a href="../index.html" class="btn-regresar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                </svg>
-                Regresar
-            </a>
+            <a href="../index.html" class="btn-regresar">← Regresar</a>
 
             <header class="encabezado-login">
                 <h1>Ingresa a tu cuenta</h1>
-                <p>Ingresa tus datos para continuar</p>
+                <p>Accede al control de lotes, inventario, fases y alarmas de cumplimiento.</p>
             </header>
 
             <article class="formulario-login">
                 <form action="../Pages/users.html" method="GET">
-                    
                     <fieldset class="campo">
                         <label for="correo">Correo</label>
                         <input type="email" id="correo" placeholder="Ingresa tu correo" required>
@@ -33,10 +25,10 @@
 
                     <fieldset class="campo">
                         <header class="header-campo">
-                            <label for="contraseña">Contraseña</label>
+                            <label for="contrasena">Contraseña</label>
                             <a href="../Pages/recuperacion.html" class="olvido">Olvidé mi contraseña</a>
                         </header>
-                        <input type="password" id="contraseña" placeholder="Ingresa tu contraseña" required>
+                        <input type="password" id="contrasena" placeholder="Ingresa tu contraseña" required>
                     </fieldset>
 
                     <fieldset class="recordar-opcion">
@@ -44,7 +36,7 @@
                         <label for="recordar">Recordar cuenta</label>
                     </fieldset>
 
-                    <button type="submit" class="btn-inicio">Inicio</button>
+                    <button type="submit" class="btn-inicio">Entrar al sistema</button>
                 </form>
             </article>
 
@@ -54,22 +46,10 @@
         </section>
 
         <aside class="banner-lateral">
-            <h2>AiDEN</h2>
-            <p>Monitoreo claro para inventario, producción, trazabilidad y seguridad operativa.</p>
-            <section class="banner-stats" aria-label="Indicadores de acceso">
-                <article>
-                    <strong>42</strong>
-                    <span>productos</span>
-                </article>
-                <article>
-                    <strong>5</strong>
-                    <span>fases</span>
-                </article>
-                <article>
-                    <strong>12</strong>
-                    <span>lotes</span>
-                </article>
-            </section>
+            <figure>
+                <img src="../Assets/IMG/vivero.png" alt="Vivero tecnificado AiDEN">
+                <figcaption>AiDEN conecta el trabajo de campo con información útil para decidir.</figcaption>
+            </figure>
         </aside>
     </main>
 </body>

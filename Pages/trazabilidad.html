@@ -7,31 +7,37 @@
     <title>AiDEN | Trazabilidad</title>
 </head>
 <body>
-    <nav class="top-nav">
-        <header class="nav-brand">
-            <h1>AiDEN</h1>
-        </header>
-        <ul class="nav-menu">
-            <li><a href="../index.html">Dashboard</a></li>
-            <li><a href="../Pages/produccion.html">Producción</a></li>
-            <li><a href="../Pages/inventario.html">Inventario</a></li>
-            <li><a href="../Pages/trazabilidad.html" class="active">Trazabilidad</a></li>
-            <li><a href="../Pages/users.html">Usuarios</a></li>
-        </ul>
-        <section class="user-logout">
+    <header class="top-nav">
+        <a href="../index.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegación de módulos">
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../Pages/produccion.html">Producción</a></li>
+                <li><a href="../Pages/inventario.html">Inventario</a></li>
+                <li><a href="../Pages/trazabilidad.html" class="active">Trazabilidad</a></li>
+                <li><a href="../Pages/users.html">Usuarios</a></li>
+            </ul>
+        </nav>
+        <nav class="user-logout" aria-label="Sesión">
             <a href="../index.html" class="logout-link">Cerrar sesión</a>
-        </section>
-    </nav>
+        </nav>
+    </header>
 
     <main class="main-content">
+        <!-- La imagen explica mejor la idea de lote que un texto largo, por eso va antes del formulario. -->
         <header class="page-header">
             <section>
                 <span class="eyebrow">Trazabilidad</span>
-                <h2>Seguimiento del ciclo de vida</h2>
+                <h1>Seguimiento del ciclo de vida</h1>
                 <p>Registra eventos por lote, consulta historial y atiende alertas de información incompleta.</p>
             </section>
             <button class="btn-success" type="button">Nuevo registro</button>
         </header>
+
+        <figure class="module-image">
+            <img src="../Assets/IMG/vivero3.png" alt="Lotes de plantas etiquetados con trazabilidad AiDEN">
+            <figcaption>Vista de trazabilidad: cada lote conserva fase, historial y alertas de cumplimiento.</figcaption>
+        </figure>
 
         <section class="summary-grid" aria-label="Resumen de trazabilidad">
             <article class="metric-card">
@@ -60,8 +66,8 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h3>Nuevo registro</h3>
-                        <p>Documenta el origen, fase y observaciones del lote.</p>
+                        <h2>Nuevo registro</h2>
+                        <p>Documenta el origen, fase, responsable y observaciones del lote.</p>
                     </section>
                 </header>
                 <form class="trazabilidad-form">
@@ -85,7 +91,7 @@
 
             <article class="alert-card">
                 <span class="eyebrow">Alerta activa</span>
-                <h3>Registro incompleto</h3>
+                <h2>Registro incompleto</h2>
                 <p>El lote TOM-2026-05 no tiene observaciones de riego registradas para la fase de germinación.</p>
                 <button class="btn-editar" type="button">Revisar alerta</button>
             </article>
@@ -95,7 +101,7 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h3>Historial de trazabilidad</h3>
+                        <h2>Historial de trazabilidad</h2>
                         <p>Eventos recientes ordenados por fecha de creación.</p>
                     </section>
                 </header>
@@ -134,5 +140,17 @@
             </article>
         </section>
     </main>
+
+    <footer class="module-footer">
+        <section>
+            <strong>AiDEN</strong>
+            <p>Trazabilidad por lote para auditoría, cumplimiento y decisiones con evidencia.</p>
+        </section>
+        <nav aria-label="Enlaces del módulo">
+            <a href="../index.html">Volver al Home</a>
+            <a href="../Pages/inventario.html">Inventario</a>
+            <a href="../Pages/produccion.html">Producción</a>
+        </nav>
+    </footer>
 </body>
 </html>

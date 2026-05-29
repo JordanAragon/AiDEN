@@ -5,11 +5,9 @@
     --text-primary: #1f2937;
     --border-color: #e5e7eb;
     --earth-gold: #c99834;
-    --sky-blue: #2f80ed;
     --surface: #ffffff;
     --muted-text: #61716a;
     --soft-green: #e9f5ef;
-    --shadow-soft: 0 18px 44px rgba(10, 79, 49, 0.1);
 }
 
 * {
@@ -25,27 +23,25 @@ html {
 body {
     background: var(--bg-main);
     color: var(--text-primary);
-    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: "Segoe UI", system-ui, sans-serif;
     line-height: 1.6;
-}
-
-body::selection {
-    background: var(--dark-green);
-    color: var(--surface);
 }
 
 a {
     color: inherit;
 }
 
-/* La navegación se mantiene sobria: útil para reuniones y demos sin distraer del mensaje. */
+img {
+    max-width: 100%;
+}
+
+/* La navegación queda simple para no competir con el mensaje principal. */
 .site-header {
     position: sticky;
     top: 0;
     z-index: 20;
-    background: rgba(255, 255, 255, 0.94);
+    background: var(--surface);
     border-bottom: 1px solid var(--border-color);
-    backdrop-filter: blur(16px);
 }
 
 .site-nav {
@@ -55,14 +51,13 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.25rem;
+    gap: 1rem;
 }
 
 .brand {
     color: var(--dark-green);
     font-size: 1.65rem;
     font-weight: 900;
-    letter-spacing: 0;
     text-decoration: none;
 }
 
@@ -79,9 +74,9 @@ a {
 }
 
 .nav-links a {
-    min-height: 2.5rem;
     display: inline-flex;
     align-items: center;
+    min-height: 2.5rem;
     padding: 0.55rem 0.75rem;
     border-radius: 8px;
     color: var(--muted-text);
@@ -96,10 +91,10 @@ a {
 }
 
 .button {
-    min-height: 2.75rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-height: 2.75rem;
     padding: 0.72rem 1rem;
     border-radius: 8px;
     font-weight: 800;
@@ -109,7 +104,6 @@ a {
 .button-primary {
     background: var(--dark-green);
     color: var(--surface);
-    box-shadow: 0 12px 24px rgba(10, 79, 49, 0.18);
 }
 
 .button-primary:hover {
@@ -126,10 +120,6 @@ a {
     background: var(--soft-green);
 }
 
-main {
-    overflow: hidden;
-}
-
 .hero-section,
 .value-section,
 .modules-section,
@@ -139,18 +129,18 @@ main {
     margin: 0 auto;
 }
 
-/* El hero vende control ejecutivo sin caer en una portada decorativa. */
+/* Aprendí que el hero funciona mejor con una imagen real y no solo con tarjetas simuladas. */
 .hero-section {
-    min-height: calc(100vh - 76px);
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.82fr);
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 0.88fr);
     align-items: center;
     gap: 3rem;
-    padding: 4.5rem 0;
+    min-height: calc(100vh - 76px);
+    padding: 4rem 0;
 }
 
 .hero-copy {
-    max-width: 760px;
+    max-width: 780px;
 }
 
 .eyebrow {
@@ -166,21 +156,19 @@ h2,
 h3 {
     color: var(--text-primary);
     line-height: 1.08;
-    letter-spacing: 0;
 }
 
 h1 {
     margin-top: 0.8rem;
-    font-size: 4.5rem;
-    max-width: 840px;
+    font-size: 4.2rem;
 }
 
 h2 {
-    font-size: 2.6rem;
+    font-size: 2.45rem;
 }
 
 h3 {
-    font-size: 1.25rem;
+    font-size: 1.22rem;
 }
 
 p {
@@ -189,98 +177,37 @@ p {
 
 .hero-summary {
     max-width: 680px;
-    margin: 1.4rem 0 1.8rem;
+    margin: 1.35rem 0 1.8rem;
     font-size: 1.08rem;
 }
 
-.hero-visual {
-    position: relative;
-    display: grid;
-    gap: 1rem;
-    padding: 1.15rem;
-    border: 1px solid rgba(10, 79, 49, 0.16);
-    border-radius: 8px;
-    background:
-        linear-gradient(135deg, rgba(10, 79, 49, 0.08), rgba(47, 128, 237, 0.08)),
-        var(--surface);
-    box-shadow: var(--shadow-soft);
-}
-
-.hero-visual figcaption {
-    color: var(--muted-text);
-    font-size: 0.82rem;
-    font-weight: 800;
-}
-
-.visual-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-bottom: 0.9rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.visual-toolbar span,
-.visual-grid span,
-.visual-flow li {
-    color: var(--muted-text);
-    font-size: 0.86rem;
-    font-weight: 700;
-}
-
-.visual-toolbar strong {
-    padding: 0.35rem 0.65rem;
-    border-radius: 999px;
-    background: #e6f6ed;
-    color: var(--bright-green);
-    font-size: 0.76rem;
-}
-
-.visual-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.85rem;
-}
-
-.visual-grid article,
-.visual-flow,
-.value-grid article,
-.module-grid article,
-.impact-card,
-.impact-proof {
+.hero-figure,
+.module-figure {
+    overflow: hidden;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background: var(--surface);
 }
 
-.visual-grid article {
-    padding: 1rem;
-}
-
-.visual-grid strong {
+.hero-figure img {
     display: block;
-    margin-top: 0.35rem;
-    color: var(--dark-green);
-    font-size: 1.8rem;
-    line-height: 1;
+    width: 100%;
+    min-height: 360px;
+    object-fit: cover;
 }
 
-.visual-flow {
-    padding: 1rem;
-}
-
-.visual-flow ol {
-    display: grid;
-    gap: 0.7rem;
-    list-style-position: inside;
+.hero-figure figcaption,
+.module-figure figcaption {
+    padding: 0.75rem 1rem;
+    color: var(--muted-text);
+    font-size: 0.9rem;
 }
 
 .value-section,
 .modules-section,
 .impact-section,
 .cta-section {
-    padding: 5rem 0;
+    padding: 4.5rem 0;
 }
 
 .section-heading {
@@ -293,7 +220,8 @@ p {
 }
 
 .value-grid,
-.module-grid {
+.module-grid,
+.impact-layout {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
@@ -301,9 +229,17 @@ p {
 
 .value-grid article,
 .module-grid article,
+.impact-card,
+.impact-proof {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--surface);
+}
+
+.value-grid article,
+.module-grid article,
 .impact-card {
     padding: 1.25rem;
-    box-shadow: 0 10px 26px rgba(31, 41, 55, 0.05);
 }
 
 .value-grid h3,
@@ -323,6 +259,17 @@ p {
     gap: 0.9rem;
 }
 
+.module-figure {
+    margin: -1.25rem -1.25rem 0;
+}
+
+.module-figure img {
+    display: block;
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+}
+
 .module-number {
     width: 2.5rem;
     min-height: 2.5rem;
@@ -336,7 +283,6 @@ p {
 }
 
 .module-grid a {
-    margin-top: 0.4rem;
     color: var(--dark-green);
     font-weight: 900;
     text-decoration: none;
@@ -344,12 +290,6 @@ p {
 
 .module-grid a:hover {
     text-decoration: underline;
-}
-
-.impact-layout {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
 }
 
 .impact-proof {
@@ -360,10 +300,10 @@ p {
     gap: 1.2rem;
     padding: 1.4rem;
     background: var(--dark-green);
-    color: var(--surface);
 }
 
 .impact-proof strong {
+    color: var(--surface);
     font-size: 3rem;
     line-height: 1;
 }
@@ -381,10 +321,7 @@ p {
     margin-bottom: 4rem;
     padding: 2rem;
     border-radius: 8px;
-    background:
-        linear-gradient(135deg, rgba(10, 79, 49, 0.94), rgba(31, 157, 85, 0.84)),
-        var(--dark-green);
-    box-shadow: var(--shadow-soft);
+    background: var(--dark-green);
 }
 
 .cta-section h2,
@@ -401,7 +338,6 @@ p {
 .cta-section .button-primary {
     background: var(--surface);
     color: var(--dark-green);
-    box-shadow: none;
 }
 
 .site-footer {
@@ -430,10 +366,6 @@ address,
     font-style: normal;
 }
 
-address strong {
-    color: var(--text-primary);
-}
-
 address a,
 .site-footer nav a {
     color: var(--muted-text);
@@ -448,10 +380,9 @@ address a:hover,
 /* xs: teléfonos verticales pequeños */
 @media (max-width: 480px) {
     .site-nav {
-        min-height: auto;
-        padding: 1rem 0;
         align-items: flex-start;
         flex-direction: column;
+        padding: 1rem 0;
     }
 
     .nav-links,
@@ -461,16 +392,15 @@ address a:hover,
         width: 100%;
     }
 
-    .nav-actions .button,
-    .hero-actions .button {
+    .button {
         width: 100%;
     }
 
     .hero-section {
-        min-height: auto;
         grid-template-columns: 1fr;
+        min-height: auto;
         gap: 2rem;
-        padding: 2.6rem 0;
+        padding: 2.5rem 0;
     }
 
     h1 {
@@ -478,33 +408,29 @@ address a:hover,
     }
 
     h2 {
-        font-size: 1.8rem;
+        font-size: 1.75rem;
     }
 
-    .hero-summary {
-        font-size: 1rem;
+    .hero-figure img {
+        min-height: 230px;
     }
 
-    .visual-grid,
     .value-grid,
     .module-grid,
     .impact-layout,
+    .impact-proof,
     .cta-section,
     .site-footer {
         grid-template-columns: 1fr;
     }
-
-    .impact-proof {
-        grid-template-columns: 1fr;
-    }
 }
 
-/* s: teléfonos grandes y tablets pequeñas */
+/* s: celulares grandes y tablets pequeñas */
 @media (min-width: 481px) and (max-width: 768px) {
     .site-nav {
-        padding: 1rem 0;
         align-items: flex-start;
         flex-direction: column;
+        padding: 1rem 0;
     }
 
     .nav-links,
@@ -513,9 +439,9 @@ address a:hover,
     }
 
     .hero-section {
-        min-height: auto;
         grid-template-columns: 1fr;
-        padding: 3.2rem 0;
+        min-height: auto;
+        padding: 3rem 0;
     }
 
     h1 {
@@ -535,7 +461,7 @@ address a:hover,
     }
 }
 
-/* m: tablets horizontales y laptops compactas */
+/* m: tablets horizontales */
 @media (min-width: 769px) and (max-width: 1024px) {
     .site-nav {
         flex-wrap: wrap;
@@ -545,11 +471,10 @@ address a:hover,
     .hero-section {
         grid-template-columns: 1fr;
         min-height: auto;
-        padding: 4rem 0;
     }
 
     h1 {
-        font-size: 3.6rem;
+        font-size: 3.5rem;
     }
 
     .value-grid,
@@ -563,36 +488,32 @@ address a:hover,
         grid-column: 1 / -1;
         grid-template-columns: 1fr;
     }
-
-    .site-footer {
-        grid-template-columns: 1fr 1fr;
-    }
 }
 
 /* l: portátiles estándar */
 @media (min-width: 1025px) and (max-width: 1280px) {
+    .site-nav,
     .hero-section,
     .value-section,
     .modules-section,
     .impact-section,
-    .cta-section,
-    .site-nav {
+    .cta-section {
         width: min(1100px, calc(100% - 2rem));
     }
 
     h1 {
-        font-size: 4rem;
+        font-size: 3.8rem;
     }
 }
 
 /* xl: escritorios amplios */
 @media (min-width: 1281px) and (max-width: 1440px) {
     .hero-section {
-        gap: 3.5rem;
+        gap: 3.4rem;
     }
 }
 
-/* xxl: monitores grandes y salas de presentación */
+/* xxl: pantallas grandes */
 @media (min-width: 1441px) {
     .site-nav,
     .hero-section,
@@ -604,10 +525,10 @@ address a:hover,
     }
 
     h1 {
-        font-size: 5rem;
+        font-size: 4.8rem;
     }
 
     h2 {
-        font-size: 3rem;
+        font-size: 2.9rem;
     }
 }

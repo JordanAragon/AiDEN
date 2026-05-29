@@ -7,28 +7,28 @@
     <title>AiDEN | Producción</title>
 </head>
 <body>
-    <nav class="top-nav">
-        <header class="nav-brand">
-            <h1>AiDEN</h1>
-        </header>
-        <ul class="nav-menu">
-            <li><a href="../index.html">Dashboard</a></li>
-            <li><a href="../Pages/produccion.html" class="active">Producción</a></li>
-            <li><a href="../Pages/inventario.html">Inventario</a></li>
-            <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
-            <li><a href="../Pages/users.html">Usuarios</a></li>
-        </ul>
-        <section class="user-logout">
+    <header class="top-nav">
+        <a href="../index.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegación de módulos">
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../Pages/produccion.html" class="active">Producción</a></li>
+                <li><a href="../Pages/inventario.html">Inventario</a></li>
+                <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
+                <li><a href="../Pages/users.html">Usuarios</a></li>
+            </ul>
+        </nav>
+        <nav class="user-logout" aria-label="Sesión">
             <a href="../index.html" class="logout-link">Cerrar sesión</a>
-        </section>
-    </nav>
+        </nav>
+    </header>
 
     <main class="main-content">
         <header class="page-header">
             <section>
                 <span class="eyebrow">Producción</span>
-                <h2>Seguimiento de fases productivas</h2>
-                <p>Controla actividades, recursos asignados, rendimiento y desviaciones de cada fase del vivero.</p>
+                <h1>Seguimiento de fases productivas</h1>
+                <p>Controla germinación, trasplante, crecimiento y despacho con recursos asignados por lote.</p>
             </section>
             <button class="btn-success" type="button">Nueva fase</button>
         </header>
@@ -60,7 +60,7 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h3>Fases productivas</h3>
+                        <h2>Fases productivas</h2>
                         <p>Estado operativo y recursos asignados por fase.</p>
                     </section>
                 </header>
@@ -99,7 +99,7 @@
                 <article class="panel-card">
                     <header class="panel-header">
                         <section>
-                            <h3>Indicadores clave</h3>
+                            <h2>Indicadores clave</h2>
                             <p>Comparación entre rendimiento actual y objetivo.</p>
                         </section>
                     </header>
@@ -134,7 +134,7 @@
                 <article class="panel-card">
                     <header class="panel-header">
                         <section>
-                            <h3>Asignar recurso</h3>
+                            <h2>Asignar recurso</h2>
                             <p>Relaciona insumos del inventario con una fase productiva.</p>
                         </section>
                     </header>
@@ -161,5 +161,17 @@
             </section>
         </section>
     </main>
+
+    <footer class="module-footer">
+        <section>
+            <strong>AiDEN</strong>
+            <p>Producción por fases conectada con inventario, alarmas y trazabilidad.</p>
+        </section>
+        <nav aria-label="Enlaces del módulo">
+            <a href="../index.html">Volver al Home</a>
+            <a href="../Pages/inventario.html">Inventario</a>
+            <a href="../Pages/trazabilidad.html">Trazabilidad</a>
+        </nav>
+    </footer>
 </body>
 </html>

@@ -7,60 +7,57 @@
     <title>Registro - AiDEN</title>
 </head>
 <body>
-    <main class="form xs_12 s_12 m_12 l_12 xl_12">
-        
-        <section class="formulario xs_12 s_12 m_12 l_6 xl_6">
-            
-            <a href="../index.html" class="btn-regresar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                </svg>
-                Regresar
-            </a>
+    <main class="form">
+        <section class="formulario">
+            <a href="../index.html" class="btn-regresar">← Regresar</a>
 
-            <header class="titulo xs_12 s_12 m_11">
-                <h1>¡Empecemos!</h1>
+            <header class="titulo">
+                <h1>Crear cuenta en AiDEN</h1>
+                <p>Registra tu perfil para empezar a gestionar viveros, lotes y recursos.</p>
             </header>
 
-            <form action="../Pages/users.html" method="GET" class="register xs_12 s_12 m_11 xl_12">
-                <fieldset class="datos xs_11 s_11 m_11">
-                    <label for="Nombre">Nombre</label>
-                    <input class="itext xs_11 s_11 m_12 l_11 xl_11" id="Nombre" type="text" placeholder="Ingrese su nombre" required>
+            <form action="../Pages/users.html" method="GET" class="register">
+                <fieldset class="datos">
+                    <label for="nombre">Nombre</label>
+                    <input class="itext" id="nombre" type="text" placeholder="Ingrese su nombre" required>
 
                     <label for="apellido">Apellidos</label>
-                    <input class="itext xs_11 s_11 m_12 l_11 xl_11" id="apellido" type="text" placeholder="Ingrese sus apellidos" required>
+                    <input class="itext" id="apellido" type="text" placeholder="Ingrese sus apellidos" required>
 
-                    <label for="Email">Correo Electrónico</label>
-                    <input class="itext xs_11 s_11 m_12 l_11 xl_11" id="Email" type="email" placeholder="Ej: Correo@gmail.com" required>
+                    <label for="email">Correo electrónico</label>
+                    <input class="itext" id="email" type="email" placeholder="correo@empresa.com" required>
 
-                    <label for="Pass">Contraseña</label>
-                    <input class="itext xs_11 s_11 m_12 l_11 xl_11" id="Pass" type="password" placeholder="Cree una nueva contraseña" required>
+                    <label for="pass">Contraseña</label>
+                    <input class="itext" id="pass" type="password" placeholder="Cree una nueva contraseña" required>
 
-                    <label for="rol">Roles</label>
-                    <select class="xs_8 s_8 m_6 l_6 xl_8" id="rol" name="rol" required>
+                    <label for="rol">Rol</label>
+                    <select id="rol" name="rol" required>
                         <option value="">Seleccione su rol</option>
-                        <option value="dueño">Propietario</option>
+                        <option value="dueno">Propietario</option>
                         <option value="administrador">Administrador</option>
                         <option value="operario">Operario</option>
                     </select>
                 </fieldset>
 
-                <fieldset class="terminos xs_8 s_4 m_4 l_5">
+                <fieldset class="terminos">
                     <input type="checkbox" id="check-term" required>
-                    <label for="check-term" class="textterm">Acepto los términos y Condiciones</label>
-                </fieldset> 
+                    <label for="check-term" class="textterm">Acepto los términos y condiciones</label>
+                </fieldset>
 
-                <section class="registroB">
-                    <input class="boton_registro xs_11 s_11 m_12 l_11 xl_11" type="submit" value="Regístrate">
-                </section>
+                <button class="boton_registro" type="submit">Registrarme</button>
             </form>
-                
-            <section class="redireccionLogin xs_12 s_12 m_12 l_12 xl_12">
-                <p>¿Tienes una cuenta? <a href="../Pages/login.html">Inicia Sesión</a></p>
-            </section>
+
+            <footer class="redireccionLogin">
+                <p>¿Tienes una cuenta? <a href="../Pages/login.html">Inicia sesión</a></p>
+            </footer>
         </section>
 
-        <article class="image l_6 xl_6"></article>
+        <aside class="image">
+            <figure>
+                <img src="../Assets/IMG/dash.png" alt="Dashboard ejecutivo de AiDEN">
+                <figcaption>Un tablero para revisar cumplimiento, alertas y trazabilidad.</figcaption>
+            </figure>
+        </aside>
     </main>
 </body>
 </html>

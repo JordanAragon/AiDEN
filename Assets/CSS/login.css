@@ -1,92 +1,88 @@
 :root {
-    --color-primary: #156f52;
-    --color-primary-dark: #0b4d3a;
-    --color-accent: #f0b429;
-    --bg-page: #f6f8f7;
-    --bg-surface: #ffffff;
-    --text-main: #17231f;
-    --text-muted: #64716c;
-    --border: #dfe7e3;
-    --shadow: 0 18px 40px rgba(20, 55, 43, 0.1);
+    --dark-green: #0a4f31;
+    --bright-green: #1f9d55;
+    --bg-main: #f3f6f9;
+    --text-primary: #1f2937;
+    --border-color: #e5e7eb;
+    --surface: #ffffff;
+    --muted-text: #61716a;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-body,
-html {
-    min-height: 100%;
-    background: var(--bg-page);
-    color: var(--text-main);
+body {
+    min-height: 100vh;
+    background: var(--bg-main);
+    color: var(--text-primary);
 }
 
+/* Dejé esta pantalla en dos columnas porque se entiende rápido: formulario + contexto visual. */
 .login-page {
     display: grid;
     grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
     min-height: 100vh;
 }
 
-.form-container {
+.form-container,
+.formulario {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 5rem clamp(1.25rem, 8vw, 6rem);
-    background: var(--bg-surface);
+    background: var(--surface);
 }
 
 .btn-regresar {
     position: absolute;
     top: 1.5rem;
     left: clamp(1.25rem, 8vw, 6rem);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.95rem;
+    color: var(--muted-text);
     font-weight: 800;
+    text-decoration: none;
 }
 
 .btn-regresar:hover {
-    color: var(--color-primary-dark);
+    color: var(--dark-green);
 }
 
-.encabezado-login {
+.encabezado-login,
+.titulo,
+.encabezado-tarjeta {
     margin-bottom: 2rem;
 }
 
-.encabezado-login h1 {
-    color: var(--text-main);
+h1 {
+    color: var(--text-primary);
     font-size: clamp(2rem, 5vw, 3rem);
     line-height: 1.1;
 }
 
-.encabezado-login p,
-.pie-pagina p {
+p {
     margin-top: 0.5rem;
-    color: var(--text-muted);
+    color: var(--muted-text);
 }
 
 form,
-.campo {
+.campo,
+.datos,
+.grupo-formulario {
     display: grid;
     gap: 1rem;
 }
 
-.campo,
-.recordar-opcion {
+fieldset {
     border: 0;
     padding: 0;
 }
 
-.campo label,
-.recordar-opcion label {
-    color: var(--text-main);
+label {
+    color: var(--text-primary);
     font-size: 0.92rem;
     font-weight: 800;
 }
@@ -99,119 +95,164 @@ form,
 }
 
 .olvido,
-.pie-pagina a {
-    color: var(--color-primary);
+.pie-pagina a,
+.redireccionLogin a {
+    color: var(--dark-green);
     font-weight: 800;
     text-decoration: none;
 }
 
-.olvido:hover,
-.pie-pagina a:hover {
-    text-decoration: underline;
-}
-
-.campo input {
+input,
+select {
     width: 100%;
     min-height: 3rem;
     padding: 0.8rem 0.9rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    background: #ffffff;
-    color: var(--text-main);
-    outline: none;
+    background: var(--surface);
+    color: var(--text-primary);
 }
 
-.campo input:focus {
-    border-color: var(--color-primary);
-    outline: 3px solid rgba(21, 111, 82, 0.14);
+input:focus,
+select:focus {
+    border-color: var(--bright-green);
+    outline: 3px solid rgba(31, 157, 85, 0.14);
 }
 
-.recordar-opcion {
+.recordar-opcion,
+.terminos {
     display: flex;
     align-items: center;
     gap: 0.6rem;
 }
 
-.btn-inicio {
+.recordar-opcion input,
+.terminos input {
+    width: auto;
+    min-height: auto;
+}
+
+.btn-inicio,
+.boton_registro,
+.btn-enviar {
+    width: 100%;
     min-height: 3rem;
     border: 0;
     border-radius: 8px;
-    background: var(--color-primary);
-    color: #ffffff;
+    background: var(--dark-green);
+    color: var(--surface);
     cursor: pointer;
     font-size: 1rem;
     font-weight: 900;
 }
 
-.btn-inicio:hover {
-    background: var(--color-primary-dark);
+.btn-inicio:hover,
+.boton_registro:hover,
+.btn-enviar:hover {
+    background: #073c26;
 }
 
-.pie-pagina {
+.pie-pagina,
+.redireccionLogin {
     margin-top: 1.5rem;
     text-align: center;
 }
 
-.banner-lateral {
+.banner-lateral,
+.image {
     display: grid;
-    align-content: center;
-    gap: 1rem;
+    place-items: center;
     padding: clamp(1.5rem, 6vw, 5rem);
-    background:
-        linear-gradient(135deg, rgba(21, 111, 82, 0.9), rgba(11, 77, 58, 0.96)),
-        var(--color-primary-dark);
-    color: #ffffff;
+    background: var(--dark-green);
 }
 
-.banner-lateral h2 {
-    max-width: 560px;
-    font-size: clamp(2rem, 5vw, 4.5rem);
-    line-height: 1.02;
-}
-
-.banner-lateral p {
-    max-width: 520px;
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 1.05rem;
-}
-
-.banner-stats {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.8rem;
-    margin-top: 1.25rem;
-}
-
-.banner-stats article {
-    padding: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+.banner-lateral figure,
+.image figure {
+    overflow: hidden;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--surface);
 }
 
-.banner-stats strong {
+.banner-lateral img,
+.image img {
     display: block;
-    font-size: 1.5rem;
+    width: 100%;
+    max-height: 430px;
+    object-fit: cover;
 }
 
-.banner-stats span {
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 0.84rem;
+.banner-lateral figcaption,
+.image figcaption {
+    padding: 0.9rem 1rem;
+    color: var(--muted-text);
+    font-weight: 700;
 }
 
-@media (max-width: 820px) {
-    .login-page {
+/* xs: celulares pequeños */
+@media (max-width: 480px) {
+    .login-page,
+    .form {
         grid-template-columns: 1fr;
     }
 
-    .banner-lateral {
+    .form-container,
+    .formulario {
+        padding: 5rem 1.25rem 2rem;
+    }
+
+    .btn-regresar {
+        left: 1.25rem;
+    }
+
+    .banner-lateral,
+    .image {
         order: -1;
-        min-height: 280px;
+        padding: 1rem;
     }
 }
 
-@media (max-width: 520px) {
-    .banner-stats {
+/* s: celulares grandes */
+@media (min-width: 481px) and (max-width: 768px) {
+    .login-page,
+    .form {
         grid-template-columns: 1fr;
+    }
+
+    .banner-lateral,
+    .image {
+        order: -1;
+        min-height: 260px;
+    }
+}
+
+/* m: tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .form-container,
+    .formulario {
+        padding: 5rem 2rem;
+    }
+}
+
+/* l: portátiles normales */
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .form-container,
+    .formulario {
+        padding: 5rem 4rem;
+    }
+}
+
+/* xl: escritorios amplios */
+@media (min-width: 1281px) and (max-width: 1440px) {
+    .banner-lateral img,
+    .image img {
+        max-height: 480px;
+    }
+}
+
+/* xxl: pantallas grandes */
+@media (min-width: 1441px) {
+    .form-container,
+    .formulario {
+        padding: 5rem 8rem;
     }
 }

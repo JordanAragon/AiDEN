@@ -5,77 +5,14 @@
     display: grid;
     place-items: center;
     padding: 1rem;
-    background:
-        linear-gradient(135deg, rgba(21, 111, 82, 0.1), rgba(240, 180, 41, 0.12)),
-        var(--bg-page);
+    background: var(--bg-main);
 }
 
 .tarjeta-recuperacion {
     position: relative;
-    width: min(100%, 650px);
+    width: min(100%, 620px);
     padding: 5rem clamp(1.25rem, 6vw, 3rem) 3rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    background: var(--bg-surface);
-    box-shadow: var(--shadow);
-}
-
-.encabezado-tarjeta {
-    margin-bottom: 2rem;
-    text-align: left;
-}
-
-.encabezado-tarjeta h1 {
-    color: var(--text-main);
-    font-size: clamp(2rem, 5vw, 3rem);
-    line-height: 1.1;
-}
-
-.encabezado-tarjeta p {
-    margin-top: 0.8rem;
-    color: var(--text-muted);
-}
-
-.grupo-formulario {
-    display: grid;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    border: 0;
-    padding: 0;
-}
-
-.grupo-formulario label {
-    color: var(--text-main);
-    font-size: 0.92rem;
-    font-weight: 800;
-}
-
-.grupo-formulario input {
-    width: 100%;
-    min-height: 3rem;
-    padding: 0.8rem 0.9rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: #ffffff;
-}
-
-.grupo-formulario input:focus {
-    border-color: var(--color-primary);
-    outline: 3px solid rgba(21, 111, 82, 0.14);
-}
-
-.btn-enviar {
-    width: 100%;
-    min-height: 3rem;
-    border: 0;
-    border-radius: 8px;
-    background: var(--color-primary);
-    color: #ffffff;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 900;
-}
-
-.btn-enviar:hover {
-    background: var(--color-primary-dark);
+    background: var(--surface);
 }

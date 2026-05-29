@@ -3,33 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AiDEN | Usuarios</title>
     <link rel="stylesheet" href="../Assets/CSS/users.css">
+    <title>AiDEN | Usuarios</title>
 </head>
 <body>
-    <nav class="top-nav">
-        <header class="nav-brand">
-            <h1>AiDEN</h1>
-        </header>
-        <ul class="nav-menu">
-            <li><a href="../index.html">Dashboard</a></li>
-            <li><a href="../Pages/produccion.html">Producción</a></li>
-            <li><a href="../Pages/inventario.html">Inventario</a></li>
-            <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
-            <li><a href="../Pages/users.html" class="active">Usuarios</a></li>
-        </ul>
-        <section class="user-profile">
+    <header class="top-nav">
+        <a href="../index.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegación de módulos">
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../Pages/produccion.html">Producción</a></li>
+                <li><a href="../Pages/inventario.html">Inventario</a></li>
+                <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
+                <li><a href="../Pages/users.html" class="active">Usuarios</a></li>
+            </ul>
+        </nav>
+        <nav class="user-profile" aria-label="Sesión">
             <a href="../Pages/users.html">Mi perfil</a>
             <a href="../index.html" class="logout-link">Cerrar sesión</a>
-        </section>
-    </nav>
+        </nav>
+    </header>
 
     <main class="main-content">
         <header class="page-header">
             <section>
                 <span class="eyebrow">Usuarios y seguridad</span>
-                <h2>Roles, permisos y accesos</h2>
-                <p>Gestiona el personal del vivero, define permisos por rol y revisa el estado de las cuentas.</p>
+                <h1>Roles, permisos y accesos</h1>
+                <p>Gestiona el personal del vivero y limita cada acción según el rol operativo.</p>
             </section>
             <button class="btn-success" type="button">Nuevo usuario</button>
         </header>
@@ -61,7 +61,7 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h3>Personal registrado</h3>
+                        <h2>Personal registrado</h2>
                         <p>Consulta cuentas, roles asignados y estado de acceso.</p>
                     </section>
                 </header>
@@ -100,7 +100,7 @@
                 <article class="panel-card">
                     <header class="panel-header">
                         <section>
-                            <h3>Crear rol</h3>
+                            <h2>Crear rol</h2>
                             <p>Configura permisos para limitar acciones por responsabilidad.</p>
                         </section>
                     </header>
@@ -118,7 +118,7 @@
                 <article class="panel-card">
                     <header class="panel-header">
                         <section>
-                            <h3>Últimos accesos</h3>
+                            <h2>Últimos accesos</h2>
                             <p>Actividad reciente para auditoría básica.</p>
                         </section>
                     </header>
@@ -140,5 +140,17 @@
             </section>
         </section>
     </main>
+
+    <footer class="module-footer">
+        <section>
+            <strong>AiDEN</strong>
+            <p>Control de accesos para proteger datos de lotes, inventario y producción.</p>
+        </section>
+        <nav aria-label="Enlaces del módulo">
+            <a href="../index.html">Volver al Home</a>
+            <a href="../Pages/inventario.html">Inventario</a>
+            <a href="../Pages/produccion.html">Producción</a>
+        </nav>
+    </footer>
 </body>
 </html>

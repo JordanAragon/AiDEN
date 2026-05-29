@@ -7,31 +7,37 @@
     <title>AiDEN | Inventario</title>
 </head>
 <body>
-    <nav class="top-nav">
-        <header class="nav-brand">
-            <h1>AiDEN</h1>
-        </header>
-        <ul class="nav-menu">
-            <li><a href="../index.html">Dashboard</a></li>
-            <li><a href="../Pages/produccion.html">Producción</a></li>
-            <li><a href="../Pages/inventario.html" class="active">Inventario</a></li>
-            <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
-            <li><a href="../Pages/users.html">Usuarios</a></li>
-        </ul>
-        <section class="user-logout">
+    <header class="top-nav">
+        <a href="../index.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegación de módulos">
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../Pages/produccion.html">Producción</a></li>
+                <li><a href="../Pages/inventario.html" class="active">Inventario</a></li>
+                <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
+                <li><a href="../Pages/users.html">Usuarios</a></li>
+            </ul>
+        </nav>
+        <nav class="user-logout" aria-label="Sesión">
             <a href="../index.html" class="logout-link">Cerrar sesión</a>
-        </section>
-    </nav>
+        </nav>
+    </header>
 
     <main class="main-content">
+        <!-- Puse el resumen arriba porque ayuda a entender el estado del módulo sin leer la tabla completa. -->
         <header class="page-header">
             <section>
                 <span class="eyebrow">Inventario</span>
-                <h2>Control de insumos y proveedores</h2>
+                <h1>Control de insumos y proveedores</h1>
                 <p>Administra existencias, niveles mínimos, alertas de stock y proveedores del vivero desde una vista operativa.</p>
             </section>
             <button class="btn-success" type="button">Nuevo producto</button>
         </header>
+
+        <figure class="module-image">
+            <img src="../Assets/IMG/dash2.png" alt="Panel de inventario AiDEN en una tablet">
+            <figcaption>Vista del inventario inteligente: niveles, stock crítico y acciones rápidas.</figcaption>
+        </figure>
 
         <section class="summary-grid" aria-label="Resumen de inventario">
             <article class="metric-card">
@@ -60,7 +66,7 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h3>Inventario actual</h3>
+                        <h2>Inventario actual</h2>
                         <p>Consulta cantidades disponibles y estado de cada insumo.</p>
                     </section>
                     <button class="btn-secondary" type="button">Exportar</button>
@@ -111,8 +117,8 @@
                 <article class="panel-card">
                     <header class="panel-header">
                         <section>
-                            <h3>Alertas de stock</h3>
-                            <p>Define mínimos para recibir avisos antes de detener la producción.</p>
+                            <h2>Alertas de stock</h2>
+                            <p>Define mínimos para activar alarmas antes de detener la producción.</p>
                         </section>
                     </header>
                     <section class="table-wrap">
@@ -142,7 +148,7 @@
                 <article class="panel-card">
                     <header class="panel-header">
                         <section>
-                            <h3>Nuevo proveedor</h3>
+                            <h2>Nuevo proveedor</h2>
                             <p>Registra contactos para compras y trazabilidad de suministros.</p>
                         </section>
                     </header>
@@ -165,5 +171,17 @@
             </section>
         </section>
     </main>
+
+    <footer class="module-footer">
+        <section>
+            <strong>AiDEN</strong>
+            <p>Inventario conectado con producción, alarmas y trazabilidad por lote.</p>
+        </section>
+        <nav aria-label="Enlaces del módulo">
+            <a href="../index.html">Volver al Home</a>
+            <a href="../Pages/produccion.html">Producción</a>
+            <a href="../Pages/trazabilidad.html">Trazabilidad</a>
+        </nav>
+    </footer>
 </body>
 </html>
