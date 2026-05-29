@@ -3,107 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AiDEN centraliza inventario, producción por lotes, trazabilidad y alarmas de cumplimiento para viveros agrícolas tecnificados.">
     <link rel="stylesheet" href="Assets/CSS/home.css">
-    <title>AiDEN</title>
+    <title>AiDEN | Gestión agrícola tecnificada</title>
 </head>
 <body>
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Navegación principal">
+            <a href="#inicio" class="brand">AiDEN</a>
 
-    <header class="cabecera-sitio">
-        <a href="#inicio" class="marca-logo">AiDEN</a>
-        
-        <nav class="navegacion-menu">
-            <ul>
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#sobre-nosotros">Nosotros</a></li>
+            <ul class="nav-links">
+                <li><a href="#propuesta">Propuesta</a></li>
                 <li><a href="#modulos">Módulos</a></li>
+                <li><a href="#impacto">Impacto</a></li>
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
-        </nav>
 
-        <section class="cabecera-acciones">
-            <a href="Pages/login.html" class="btn-secundario">Iniciar</a>
-            <a href="Pages/singup.html" class="btn-principal">Registrarse</a>
-        </section>
+            <section class="nav-actions" aria-label="Accesos de cuenta">
+                <a href="Pages/login.html" class="button button-secondary">Iniciar sesión</a>
+                <a href="Pages/singup.html" class="button button-primary">Solicitar demo</a>
+            </section>
+        </nav>
     </header>
 
-    <main class="contenedor-principal">
-        <section id="inicio" class="seccion-hero">
-            <article class="hero-introduccion">
-                <h1>AiDEN</h1>
-                <p>AiDEN centraliza y optimiza los procesos operativos mediante herramientas modernas de monitoreo en tiempo real.</p>
-                <nav class="hero-botones">
-                    <a href="Pages/singup.html" class="btn-principal">Probar Gratis</a>
-                    <a href="#modulos" class="btn-secundario">Ver Módulos</a>
+    <main>
+        <!-- Apertura pensada para decisores: problema, promesa y evidencia operativa. -->
+        <section id="inicio" class="hero-section">
+            <article class="hero-copy">
+                <p class="eyebrow">Sistema agrícola para viveros tecnificados</p>
+                <h1>AiDEN convierte la operación por lotes en decisiones trazables, medibles y auditables.</h1>
+                <p class="hero-summary">
+                    Una plataforma para controlar inventario, fases productivas, recursos y alertas de cumplimiento
+                    desde una sola vista ejecutiva. Diseñada para empresas agrícolas que necesitan escalar sin perder
+                    control operativo.
+                </p>
+                <nav class="hero-actions" aria-label="Acciones principales">
+                    <a href="Pages/singup.html" class="button button-primary">Agendar presentación</a>
+                    <a href="#modulos" class="button button-secondary">Ver capacidades</a>
                 </nav>
             </article>
-            <aside class="hero-panel" aria-label="Resumen operativo">
-                <header>
-                    <h2>Panel operativo</h2>
-                    <span class="estado-operativo">En línea</span>
-                </header>
-                <section class="panel-metricas">
+
+            <figure class="hero-visual" aria-label="Vista resumida de operación AiDEN">
+                <figcaption>Vista ejecutiva de operación</figcaption>
+                <section class="visual-toolbar" aria-label="Estado de plataforma">
+                    <span>AiDEN Command Center</span>
+                    <strong>Operación activa</strong>
+                </section>
+                <section class="visual-grid" aria-label="Indicadores del tablero">
                     <article>
-                        <span>Inventario</span>
-                        <strong>42</strong>
+                        <span>Lotes activos</span>
+                        <strong>128</strong>
                     </article>
                     <article>
-                        <span>Producción</span>
-                        <strong>85%</strong>
-                    </article>
-                    <article>
-                        <span>Trazabilidad</span>
+                        <span>Cumplimiento</span>
                         <strong>96%</strong>
                     </article>
                     <article>
-                        <span>Alertas</span>
-                        <strong>4</strong>
+                        <span>Alertas críticas</span>
+                        <strong>04</strong>
+                    </article>
+                    <article>
+                        <span>Recursos usados</span>
+                        <strong>72%</strong>
                     </article>
                 </section>
-            </aside>
+                <aside class="visual-flow" aria-label="Flujo de lote">
+                    <ol>
+                        <li>Siembra registrada</li>
+                        <li>Germinación en control</li>
+                        <li>Trasplante programado</li>
+                        <li>Despacho trazable</li>
+                    </ol>
+                </aside>
+            </figure>
         </section>
 
-        <section id="sobre-nosotros" class="seccion-nosotros">
-            <header class="titulo-seccion">
-                <h2>Sobre Nosotros</h2>
+        <section id="propuesta" class="value-section">
+            <header class="section-heading">
+                <p class="eyebrow">Propuesta de valor</p>
+                <h2>El problema no es producir más. Es producir con evidencia.</h2>
+                <p>
+                    En operaciones agrícolas de alto volumen, la información suele dispersarse entre inventarios,
+                    reportes manuales y seguimiento informal de fases. AiDEN ordena ese flujo y lo convierte en
+                    gestión verificable.
+                </p>
             </header>
-            <p>AiDEN es una solución enfocada en mejorar la gestión operativa. Nuestro objetivo es centralizar procesos clave como el control de inventario y la trazabilidad, permitiendo una administración más eficiente.</p>
-        </section>
 
-        <section id="modulos" class="seccion-modulos">
-            <header class="titulo-seccion">
-                <h2>Módulos principales</h2>
-            </header>
-
-            <section class="grilla-tarjetas">
-                <article class="tarjeta-modulo">
-                    <h3>Inventario</h3>
-                    <p>Control de existencias y alertas de stock.</p>
-                    <a href="Pages/inventario.html" class="btn-secundario">Abrir inventario</a>
+            <section class="value-grid" aria-label="Problemas que resuelve AiDEN">
+                <article>
+                    <h3>Menos puntos ciegos</h3>
+                    <p>Centraliza existencias, lotes, responsables y estados para evitar decisiones basadas en datos incompletos.</p>
                 </article>
-                <article class="tarjeta-modulo">
-                    <h3>Producción</h3>
-                    <p>Seguimiento de fases productivas y recursos.</p>
-                    <a href="Pages/produccion.html" class="btn-secundario">Abrir producción</a>
+                <article>
+                    <h3>Alarmas con propósito</h3>
+                    <p>Activa alertas de cumplimiento cuando una fase, insumo o registro compromete la continuidad operativa.</p>
                 </article>
-                <article class="tarjeta-modulo">
-                    <h3>Trazabilidad</h3>
-                    <p>Historial completo desde la materia prima.</p>
-                    <a href="Pages/trazabilidad.html" class="btn-secundario">Abrir trazabilidad</a>
+                <article>
+                    <h3>Escalabilidad operativa</h3>
+                    <p>Estandariza procesos para que cada vivero mantenga control incluso al crecer en volumen, sedes o equipos.</p>
                 </article>
             </section>
         </section>
+
+        <section id="modulos" class="modules-section">
+            <header class="section-heading">
+                <p class="eyebrow">Módulos clave</p>
+                <h2>Una arquitectura operativa conectada de extremo a extremo.</h2>
+            </header>
+
+            <section class="module-grid" aria-label="Módulos principales de AiDEN">
+                <article>
+                    <span class="module-number">01</span>
+                    <h3>Inventario inteligente</h3>
+                    <p>Control de insumos, proveedores, niveles mínimos y alertas de stock crítico para proteger la continuidad de producción.</p>
+                    <a href="Pages/inventario.html">Explorar inventario</a>
+                </article>
+                <article>
+                    <span class="module-number">02</span>
+                    <h3>Producción por fases</h3>
+                    <p>Seguimiento de germinación, trasplante, crecimiento y despacho con recursos asignados y rendimiento por etapa.</p>
+                    <a href="Pages/produccion.html">Explorar producción</a>
+                </article>
+                <article>
+                    <span class="module-number">03</span>
+                    <h3>Trazabilidad por lote</h3>
+                    <p>Historial completo de eventos, responsables y observaciones para auditoría, calidad y cumplimiento interno.</p>
+                    <a href="Pages/trazabilidad.html">Explorar trazabilidad</a>
+                </article>
+            </section>
+        </section>
+
+        <section id="impacto" class="impact-section">
+            <header class="section-heading">
+                <p class="eyebrow">Impacto empresarial</p>
+                <h2>AiDEN ayuda a convertir la operación agrícola en una ventaja competitiva.</h2>
+            </header>
+
+            <section class="impact-layout">
+                <article class="impact-card">
+                    <h3>Para gerencia</h3>
+                    <p>Indicadores claros sobre cumplimiento, productividad, inventario y riesgo operativo sin esperar cierres manuales.</p>
+                </article>
+                <article class="impact-card">
+                    <h3>Para producción</h3>
+                    <p>Fases visibles, tareas priorizadas y alertas tempranas para mantener cada lote dentro del plan técnico.</p>
+                </article>
+                <article class="impact-card">
+                    <h3>Para calidad</h3>
+                    <p>Registros trazables que facilitan auditorías, análisis de desviaciones y control documental por lote.</p>
+                </article>
+                <aside class="impact-proof">
+                    <strong>96%</strong>
+                    <span>de registros completos permite tomar decisiones con respaldo operativo y reducir reprocesos.</span>
+                </aside>
+            </section>
+        </section>
+
+        <section class="cta-section" aria-labelledby="cta-title">
+            <article>
+                <p class="eyebrow">Siguiente paso</p>
+                <h2 id="cta-title">Lleve AiDEN a una conversación estratégica con su equipo.</h2>
+                <p>
+                    Presentemos cómo la plataforma puede adaptarse a sus viveros, roles, indicadores y flujo de producción por lotes.
+                </p>
+            </article>
+            <a href="Pages/singup.html" class="button button-primary">Solicitar demo ejecutiva</a>
+        </section>
     </main>
 
-    <footer id="contacto" class="pie-sitio">
-        <section class="footer-contacto">
-            <h4>Contacto</h4>
-            <p>Email: jordandavidaragon@outlook.com</p>
-            <p>Popayán, Colombia</p>
+    <footer id="contacto" class="site-footer">
+        <section class="footer-brand">
+            <h2>AiDEN</h2>
+            <p>Gestión agrícola tecnificada para operaciones que necesitan trazabilidad, control y crecimiento sostenible.</p>
         </section>
-        <section class="footer-copyright">
-            <p>&copy; 2026 AiDEN. Proyecto Académico.</p>
-        </section>
-    </footer>
 
+        <address>
+            <strong>Contacto</strong>
+            <a href="mailto:jordandavidaragon@outlook.com">jordandavidaragon@outlook.com</a>
+            <span>Popayán, Colombia</span>
+        </address>
+
+        <nav aria-label="Accesos rápidos">
+            <a href="Pages/login.html">Acceso</a>
+            <a href="Pages/inventario.html">Inventario</a>
+            <a href="Pages/produccion.html">Producción</a>
+            <a href="Pages/trazabilidad.html">Trazabilidad</a>
+        </nav>
+    </footer>
 </body>
 </html>
