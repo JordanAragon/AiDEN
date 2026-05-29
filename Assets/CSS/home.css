@@ -129,7 +129,7 @@ img {
     margin: 0 auto;
 }
 
-/* Aprendí que el hero funciona mejor con una imagen real y no solo con tarjetas simuladas. */
+
 .hero-section {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(340px, 0.88fr);
@@ -137,6 +137,11 @@ img {
     gap: 3rem;
     min-height: calc(100vh - 76px);
     padding: 4rem 0;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+
 }
 
 .hero-copy {
@@ -378,7 +383,7 @@ address a:hover,
     color: var(--dark-green);
 }
 
-/* xs: teléfonos verticales pequeños */
+/* xs: */
 @media (max-width: 480px) {
     .site-nav {
         align-items: flex-start;
@@ -426,7 +431,7 @@ address a:hover,
     }
 }
 
-/* s: celulares grandes y tablets pequeñas */
+/* s: */
 @media (min-width: 481px) and (max-width: 768px) {
     .site-nav {
         align-items: flex-start;
@@ -462,7 +467,7 @@ address a:hover,
     }
 }
 
-/* m: tablets horizontales */
+/* m: */
 @media (min-width: 769px) and (max-width: 1024px) {
     .site-nav {
         flex-wrap: wrap;
@@ -491,7 +496,7 @@ address a:hover,
     }
 }
 
-/* l: portátiles estándar */
+/* l: */
 @media (min-width: 1025px) and (max-width: 1280px) {
     .site-nav,
     .hero-section,
@@ -507,7 +512,7 @@ address a:hover,
     }
 }
 
-/* xl: escritorios amplios */
+/* xl: */
 @media (min-width: 1281px) and (max-width: 1440px) {
     .hero-section {
         gap: 3.4rem;
