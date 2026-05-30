@@ -298,26 +298,6 @@ p {
     text-decoration: underline;
 }
 
-.impact-proof {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-    gap: 1.2rem;
-    padding: 1.4rem;
-    background: var(--dark-green);
-}
-
-.impact-proof strong {
-    color: var(--surface);
-    font-size: 3rem;
-    line-height: 1;
-}
-
-.impact-proof span {
-    color: rgba(255, 255, 255, 0.82);
-    font-weight: 700;
-}
 
 .cta-section {
     display: grid;
