@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../Assets/CSS/inventario.css">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
     <title>AiDEN | Inventario</title>
 </head>
 <body>
@@ -11,54 +11,55 @@
         <a href="../index.html" class="nav-brand">AiDEN</a>
         <nav aria-label="Navegación de módulos">
             <ul class="nav-menu">
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="../Pages/produccion.html">Producción</a></li>
-                <li><a href="../Pages/inventario.html" class="active">Inventario</a></li>
-                <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
-                <li><a href="../Pages/users.html">Usuarios</a></li>
+                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="inventario.html" class="active">Inventario</a></li>
+                <li><a href="produccion.html">Cultivos</a></li>
+                <li><a href="trazabilidad.html">Trazabilidad</a></li>
+                <li><a href="ambiental.html">Ambiental</a></li>
+                <li><a href="calidad-alertas.html">Calidad</a></li>
+                <li><a href="personal.html">Personal</a></li>
+                <li><a href="costos.html">Costos</a></li>
+                <li><a href="reportes-dashboard.html">Reportes</a></li>
             </ul>
         </nav>
         <nav class="user-logout" aria-label="Sesión">
-            <a href="../index.html" class="logout-link">Cerrar sesión</a>
+            <a href="login.html">Supervisor · Cerrar sesión</a>
         </nav>
     </header>
 
     <main class="main-content">
-        <!-- Puse el resumen arriba porque ayuda a entender el estado del módulo sin leer la tabla completa. -->
         <header class="page-header">
             <section>
-                <span class="eyebrow">Inventario</span>
-                <h1>Control de insumos y proveedores</h1>
-                <p>Administra existencias, niveles mínimos, alertas de stock y proveedores del vivero desde una vista operativa.</p>
+                <span class="eyebrow">Módulo 2 · HU04-HU09</span>
+                <h1>Inventario e insumos</h1>
+                <p>Control de proveedores, alta de insumos, entradas, umbrales, filtros, semáforo de stock e historial de movimientos inmutable.</p>
             </section>
-            <button class="btn-success" type="button">Nuevo producto</button>
+            <section class="toolbar">
+                <a class="btn-outline" href="#historial">Historial</a>
+                <a class="btn" href="#entrada">Registrar entrada</a>
+            </section>
         </header>
 
-        <figure class="module-image">
-            <img src="../Assets/IMG/dash2.png" alt="Panel de inventario AiDEN en una tablet">
-            <figcaption>Vista del inventario inteligente: niveles, stock crítico y acciones rápidas.</figcaption>
-        </figure>
-
-        <section class="summary-grid" aria-label="Resumen de inventario">
+        <section class="summary-grid">
             <article class="metric-card">
-                <span class="metric-label">Productos activos</span>
+                <span class="metric-label">Insumos activos</span>
                 <strong class="metric-value">42</strong>
-                <p class="metric-note">7 categorías registradas</p>
+                <p class="metric-note">Solo activos aparecen en consumo y entradas.</p>
             </article>
             <article class="metric-card">
-                <span class="metric-label">Stock crítico</span>
-                <strong class="metric-value">3</strong>
-                <p class="metric-note">Requieren reposición</p>
+                <span class="metric-label">Stock bajo</span>
+                <strong class="metric-value">5</strong>
+                <p class="metric-note">Generan alerta amarilla automática.</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Críticos</span>
+                <strong class="metric-value">2</strong>
+                <p class="metric-note">Stock cero con alerta roja visible.</p>
             </article>
             <article class="metric-card">
                 <span class="metric-label">Proveedores</span>
                 <strong class="metric-value">8</strong>
-                <p class="metric-note">5 con suministro reciente</p>
-            </article>
-            <article class="metric-card">
-                <span class="metric-label">Última entrada</span>
-                <strong class="metric-value">20 May</strong>
-                <p class="metric-note">Semillas y sustratos</p>
+                <p class="metric-note">Inactivos ocultos de formularios.</p>
             </article>
         </section>
 
@@ -66,122 +67,197 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h2>Inventario actual</h2>
-                        <p>Consulta cantidades disponibles y estado de cada insumo.</p>
+                        <h2>Inventario actual con filtros simultáneos</h2>
+                        <p>Columnas requeridas por HU08, ordenables y exportables. El precio se oculta para Operario.</p>
                     </section>
-                    <button class="btn-secondary" type="button">Exportar</button>
+                    <button class="btn-outline" type="button">Exportar Excel</button>
                 </header>
+                <form class="form-grid">
+                    <label class="field">Buscar por nombre
+                        <input type="search" value="sustrato">
+                    </label>
+                    <label class="field">Categoría
+                        <select><option>Todas</option><option>Sustratos</option><option>Fitosanitario</option></select>
+                    </label>
+                    <label class="field">Proveedor
+                        <select><option>Todos</option><option>BioTierra</option><option>AgroAndes</option></select>
+                    </label>
+                    <label class="field">Estado
+                        <select><option>Todos</option><option>Normal</option><option>Bajo</option><option>Crítico</option><option>Sin umbral</option></select>
+                    </label>
+                </form>
                 <section class="table-wrap">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Producto</th>
+                                <th>Nombre</th>
                                 <th>Categoría</th>
-                                <th>Cantidad</th>
-                                <th>Proveedor</th>
+                                <th>Proveedor principal</th>
+                                <th>Stock actual</th>
+                                <th>Unidad</th>
                                 <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>Último movimiento</th>
+                                <th>Perfil</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Semillas de tomate</td>
-                                <td>Semillas</td>
-                                <td>200 unidades</td>
-                                <td>AgroProveedores S.A.</td>
-                                <td><span class="badge">En stock</span></td>
-                                <td><button class="btn-editar" type="button">Editar</button></td>
-                            </tr>
-                            <tr>
                                 <td>Sustrato orgánico</td>
-                                <td>Insumos</td>
-                                <td>18 sacos</td>
+                                <td>Sustratos</td>
                                 <td>BioTierra</td>
-                                <td><span class="badge-warning">Reposición cercana</span></td>
-                                <td><button class="btn-editar" type="button">Editar</button></td>
+                                <td>18</td>
+                                <td>sacos</td>
+                                <td><span class="semaforo"><span class="dot yellow"></span>Bajo</span></td>
+                                <td>Entrada compra · 2026-06-03</td>
+                                <td><button class="btn-outline" type="button">Abrir</button></td>
                             </tr>
                             <tr>
                                 <td>Bandejas germinadoras</td>
                                 <td>Herramientas</td>
-                                <td>6 unidades</td>
                                 <td>CampoVerde</td>
-                                <td><span class="badge-danger">Stock crítico</span></td>
-                                <td><button class="btn-editar" type="button">Editar</button></td>
+                                <td>0</td>
+                                <td>unidad</td>
+                                <td><span class="semaforo"><span class="dot red"></span>Crítico</span></td>
+                                <td>Consumo lote LOT-2026-001</td>
+                                <td><button class="btn-outline" type="button">Abrir</button></td>
+                            </tr>
+                            <tr>
+                                <td>Fungicida cobre</td>
+                                <td>Fitosanitario</td>
+                                <td>AgroAndes</td>
+                                <td>4</td>
+                                <td>L</td>
+                                <td><span class="semaforo"><span class="dot"></span>Normal</span></td>
+                                <td>Ajuste positivo · 2026-06-01</td>
+                                <td><button class="btn-outline" type="button">Abrir</button></td>
                             </tr>
                         </tbody>
                     </table>
                 </section>
             </article>
 
-            <section class="workspace grid-two">
+            <section class="grid-two">
                 <article class="panel-card">
                     <header class="panel-header">
                         <section>
-                            <h2>Alertas de stock</h2>
-                            <p>Define mínimos para activar alarmas antes de detener la producción.</p>
-                        </section>
-                    </header>
-                    <section class="table-wrap">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Nivel actual</th>
-                                    <th>Nivel mínimo</th>
-                                    <th>Alerta</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Bandejas germinadoras</td>
-                                    <td>6 unidades</td>
-                                    <td>10 unidades</td>
-                                    <td><span class="badge-alerta">Activa</span></td>
-                                    <td><button class="btn-editar" type="button">Configurar</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </section>
-                </article>
-
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Nuevo proveedor</h2>
-                            <p>Registra contactos para compras y trazabilidad de suministros.</p>
+                            <h2>Proveedor y alta de insumo</h2>
+                            <p>Incluye contacto secundario, observaciones, ficha técnica y campos obligatorios si es agroquímico.</p>
                         </section>
                     </header>
                     <form class="form-grid">
-                        <label class="field" for="proveedor">Proveedor
-                            <input type="text" id="proveedor" placeholder="Nombre comercial">
+                        <label class="field">Proveedor
+                            <input type="text" value="AgroAndes S.A.S.">
                         </label>
-                        <label class="field" for="contacto">Contacto
-                            <input type="text" id="contacto" placeholder="Persona encargada">
+                        <label class="field">Teléfono principal
+                            <input type="tel" value="300 000 0000">
                         </label>
-                        <label class="field" for="telefono">Teléfono
-                            <input type="tel" id="telefono" placeholder="300 000 0000">
+                        <label class="field">Correo
+                            <input type="email" value="compras@agroandes.com">
                         </label>
-                        <label class="field" for="producto">Producto
-                            <input type="text" id="producto" placeholder="Insumo suministrado">
+                        <label class="field">Tipo proveedor
+                            <select><option>Insumos químicos</option><option>Sustratos</option><option>Semillas</option></select>
                         </label>
-                        <button class="btn-success" type="submit">Guardar proveedor</button>
+                        <label class="field full">Insumo
+                            <input type="text" value="Fungicida cobre 1L">
+                        </label>
+                        <label class="field">Stock inicial
+                            <input type="number" value="12" min="0">
+                        </label>
+                        <label class="field">Precio referencia
+                            <input type="number" value="38000">
+                        </label>
+                        <label class="field">Periodo de carencia
+                            <input type="number" value="7">
+                        </label>
+                        <label class="field">Clase toxicológica
+                            <input type="text" value="III">
+                        </label>
+                    </form>
+                </article>
+
+                <article class="panel-card" id="entrada">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Entrada, umbral y corrección</h2>
+                            <p>Los movimientos guardados no se editan ni eliminan; se corrigen con ajuste justificado.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid single">
+                        <label class="field">Tipo de movimiento
+                            <select><option>Compra</option><option>Ajuste positivo</option><option>Donación</option></select>
+                        </label>
+                        <label class="field">Cantidad recibida mayor a cero
+                            <input type="number" value="20" min="1">
+                        </label>
+                        <label class="field">Proveedor obligatorio si es compra
+                            <select><option>BioTierra</option><option>AgroAndes</option></select>
+                        </label>
+                        <label class="field">Factura o remisión
+                            <input type="text" value="FAC-2480">
+                        </label>
+                        <label class="field">Vencimiento agroquímico
+                            <input type="date" value="2026-06-25">
+                        </label>
+                        <label class="field">Stock mínimo / punto reorden
+                            <input type="text" value="10 / 25 unidades">
+                        </label>
+                        <label class="field">Justificación ajuste negativo
+                            <textarea>Conteo físico evidencia 2 unidades menos por registro manual duplicado.</textarea>
+                        </label>
                     </form>
                 </article>
             </section>
+
+            <article class="panel-card" id="historial">
+                <header class="panel-header">
+                    <section>
+                        <h2>Historial de movimientos del insumo</h2>
+                        <p>Solo lectura, filtrable por tipo, fecha y usuario. Exportación Excel/PDF representada en acciones.</p>
+                    </section>
+                    <section class="toolbar">
+                        <button class="btn-outline" type="button">Excel</button>
+                        <button class="btn-outline" type="button">PDF</button>
+                    </section>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha/hora</th>
+                                <th>Tipo</th>
+                                <th>Cantidad</th>
+                                <th>Stock resultante</th>
+                                <th>Usuario</th>
+                                <th>Referencia</th>
+                                <th>Editable</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2026-06-03 09:10</td>
+                                <td>Entrada compra</td>
+                                <td>+20</td>
+                                <td>18</td>
+                                <td>Supervisor Vivero</td>
+                                <td>FAC-2480</td>
+                                <td><span class="badge-muted">Solo lectura</span></td>
+                            </tr>
+                            <tr>
+                                <td>2026-06-04 15:44</td>
+                                <td>Consumo</td>
+                                <td>-2</td>
+                                <td>16</td>
+                                <td>Operario Campo</td>
+                                <td>LOT-2026-001 · Riego</td>
+                                <td><span class="badge-muted">Solo lectura</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
         </section>
     </main>
 
-    <footer class="module-footer">
-        <section>
-            <strong>AiDEN</strong>
-            <p>Inventario conectado con producción, alarmas y trazabilidad por lote.</p>
-        </section>
-        <nav aria-label="Enlaces del módulo">
-            <a href="../index.html">Volver al Home</a>
-            <a href="../Pages/produccion.html">Producción</a>
-            <a href="../Pages/trazabilidad.html">Trazabilidad</a>
-        </nav>
-    </footer>
+    <footer class="module-footer">AiDEN v1.0 · Inventario, proveedores, stock y movimientos auditables.</footer>
 </body>
 </html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Configuración</title>
+</head>
+<body>
+    <header class="top-nav">
+        <a href="../index.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegación de módulos">
+            <ul class="nav-menu">
+                <li><a href="configuracion.html" class="active">Configuración</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="produccion.html">Cultivos</a></li>
+                <li><a href="trazabilidad.html">Trazabilidad</a></li>
+                <li><a href="ambiental.html">Ambiental</a></li>
+                <li><a href="calidad-alertas.html">Calidad</a></li>
+                <li><a href="personal.html">Personal</a></li>
+                <li><a href="costos.html">Costos</a></li>
+                <li><a href="reportes-dashboard.html">Reportes</a></li>
+            </ul>
+        </nav>
+        <nav class="user-logout" aria-label="Sesión">
+            <a href="login.html">Administrador · Cerrar sesión</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <header class="page-header">
+            <section>
+                <span class="eyebrow">Módulo 1 · HU01-HU03</span>
+                <h1>Configuración del sistema</h1>
+                <p>Panel exclusivo para Administrador con catálogos maestros, usuarios, roles, sesiones, auditoría y parámetros de seguridad.</p>
+            </section>
+            <section class="toolbar">
+                <a class="btn-outline" href="#auditoria">Ver auditoría</a>
+                <a class="btn" href="#usuarios">Nuevo usuario</a>
+            </section>
+        </header>
+
+        <section class="summary-grid" aria-label="Resumen de configuración">
+            <article class="metric-card">
+                <span class="metric-label">Listas maestras</span>
+                <strong class="metric-value">11</strong>
+                <p class="metric-note">Cultivos, unidades, zonas, actividades y variables.</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Roles oficiales</span>
+                <strong class="metric-value">3</strong>
+                <p class="metric-note">Administrador, Supervisor y Operario.</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Sesión</span>
+                <strong class="metric-value">30 min</strong>
+                <p class="metric-note">Configurable entre 15 y 120 minutos.</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Bloqueo</span>
+                <strong class="metric-value">5</strong>
+                <p class="metric-note">Intentos fallidos bloquean 15 minutos.</p>
+            </article>
+        </section>
+
+        <section class="workspace">
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Parámetros maestros configurables</h2>
+                        <p>Cada elemento tiene nombre único, descripción opcional y estado activo/inactivo. Los inactivos no aparecen en formularios, pero conservan histórico.</p>
+                    </section>
+                    <button class="btn-outline" type="button">Exportar Excel</button>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Lista</th>
+                                <th>Ejemplos activos</th>
+                                <th>Validación</th>
+                                <th>Uso en sistema</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tipos de cultivo</td>
+                                <td>Tomate, lechuga, café</td>
+                                <td>Nombre único</td>
+                                <td>Ciclos, lotes, umbrales, reportes</td>
+                                <td><span class="badge">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>Unidades de medida</td>
+                                <td>kg, L, unidad, saco</td>
+                                <td>Duplicados rechazados</td>
+                                <td>Insumos, consumos, sensores</td>
+                                <td><span class="badge">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>Categorías y subcategorías de insumos</td>
+                                <td>Fitosanitario, nutricional, sustratos</td>
+                                <td>Subcategorías independientes</td>
+                                <td>Inventario, tratamientos, reportes de gasto</td>
+                                <td><span class="badge">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>Tipos de actividad</td>
+                                <td>Riego, fertilización, poda, corrección</td>
+                                <td>Nombre único por catálogo</td>
+                                <td>Actividades, tareas, limitantes</td>
+                                <td><span class="badge">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>Zonas y variables ambientales</td>
+                                <td>Germinación, PAR, CO2, CE</td>
+                                <td>Inactivación sin borrar histórico</td>
+                                <td>Sensores, lotes y umbrales</td>
+                                <td><span class="badge-warn">1 inactivo oculto</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <section class="grid-two">
+                <article class="panel-card" id="usuarios">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Gestión de usuarios y roles</h2>
+                            <p>El usuario no se elimina: solo se inactiva. El último acceso y los fallidos quedan registrados.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field">Nombre completo
+                            <input type="text" value="María López Campo">
+                        </label>
+                        <label class="field">Correo único
+                            <input type="email" value="maria@vivero.com">
+                        </label>
+                        <label class="field">Rol
+                            <select>
+                                <option>Operario</option>
+                                <option>Supervisor</option>
+                                <option>Administrador</option>
+                            </select>
+                        </label>
+                        <label class="field">Estado
+                            <select>
+                                <option>Activo</option>
+                                <option>Inactivo</option>
+                            </select>
+                        </label>
+                        <label class="field">Contraseña inicial
+                            <input type="password" value="Temporal123">
+                        </label>
+                        <label class="field">Acción segura
+                            <select>
+                                <option>Generar temporal de un solo uso</option>
+                                <option>Mantener contraseña actual</option>
+                            </select>
+                        </label>
+                        <button class="btn" type="button">Guardar usuario</button>
+                        <button class="btn-outline" type="button">Restablecer contraseña</button>
+                    </form>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Permisos por rol</h2>
+                            <p>La navegación muestra el nombre completo y rol activo desde cualquier vista.</p>
+                        </section>
+                    </header>
+                    <ul class="checklist">
+                        <li><strong>Operario:</strong> tareas asignadas, actividades, consumos en lotes asignados e incidencias.</li>
+                        <li><strong>Supervisor:</strong> lotes, limitantes técnicos, alertas, producción y costos.</li>
+                        <li><strong>Administrador:</strong> acceso total a configuración, usuarios y reportes de costos.</li>
+                        <li>Acceso no autorizado muestra mensaje visible y genera registro de auditoría.</li>
+                        <li>Contraseñas representadas como hash criptográfico, nunca texto plano.</li>
+                    </ul>
+                </article>
+            </section>
+
+            <article class="panel-card" id="auditoria">
+                <header class="panel-header">
+                    <section>
+                        <h2>Bitácora de auditoría y seguridad</h2>
+                        <p>Cada cambio conserva usuario responsable, fecha/hora, campo modificado, valor anterior y valor nuevo.</p>
+                    </section>
+                    <span class="badge-blue">Últimos 10 intentos fallidos visibles</span>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha/hora</th>
+                                <th>Usuario</th>
+                                <th>Módulo</th>
+                                <th>Campo</th>
+                                <th>Antes</th>
+                                <th>Después</th>
+                                <th>Resultado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2026-06-05 08:12</td>
+                                <td>Administrador AiDEN</td>
+                                <td>Parámetros</td>
+                                <td>Zona</td>
+                                <td>Invernadero 1</td>
+                                <td>Germinación norte</td>
+                                <td><span class="badge">Registrado</span></td>
+                            </tr>
+                            <tr>
+                                <td>2026-06-05 08:19</td>
+                                <td>Supervisor Vivero</td>
+                                <td>Seguridad</td>
+                                <td>Acceso</td>
+                                <td>Intento a usuarios</td>
+                                <td>Bloqueado por rol</td>
+                                <td><span class="badge-danger">No autorizado</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+        </section>
+    </main>
+
+    <footer class="module-footer">AiDEN v1.0 · Configuración, usuarios y autenticación segura.</footer>
+</body>
+</html>

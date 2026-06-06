@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Monitoreo Ambiental</title>
+</head>
+<body>
+    <header class="top-nav">
+        <a href="../index.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegación de módulos">
+            <ul class="nav-menu">
+                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="produccion.html">Cultivos</a></li>
+                <li><a href="trazabilidad.html">Trazabilidad</a></li>
+                <li><a href="ambiental.html" class="active">Ambiental</a></li>
+                <li><a href="calidad-alertas.html">Calidad</a></li>
+                <li><a href="personal.html">Personal</a></li>
+                <li><a href="costos.html">Costos</a></li>
+                <li><a href="reportes-dashboard.html">Reportes</a></li>
+            </ul>
+        </nav>
+        <nav class="user-logout" aria-label="Sesión"><a href="login.html">Supervisor · Cerrar sesión</a></nav>
+    </header>
+
+    <main class="main-content">
+        <header class="page-header">
+            <section>
+                <span class="eyebrow">Módulo 5 · HU19-HU22</span>
+                <h1>Monitoreo ambiental</h1>
+                <p>Sensores por zona, lecturas recientes, tendencia 24 horas, umbrales específicos por cultivo/fase e histórico exportable.</p>
+            </section>
+            <section class="toolbar">
+                <button class="btn-outline" type="button">Histórico</button>
+                <button class="btn" type="button">Nuevo sensor</button>
+            </section>
+        </header>
+
+        <section class="summary-grid">
+            <article class="metric-card"><span class="metric-label">Sensores activos</span><strong class="metric-value">16</strong><p class="metric-note">Solo activos generan datos y alertas.</p></article>
+            <article class="metric-card"><span class="metric-label">Fuera de rango</span><strong class="metric-value">3</strong><p class="metric-note">Advertencia o crítico según umbral.</p></article>
+            <article class="metric-card"><span class="metric-label">Sin señal</span><strong class="metric-value">1</strong><p class="metric-note">Alerta tras 30 minutos configurables.</p></article>
+            <article class="metric-card"><span class="metric-label">Actualización</span><strong class="metric-value">5 min</strong><p class="metric-note">Frecuencia configurable 1, 5 o 15.</p></article>
+        </section>
+
+        <section class="workspace">
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Registro de dispositivo</h2>
+                            <p>Incluye alias, variable, unidad, ubicación, identificador único, calibración y estado.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field">Alias
+                            <input type="text" value="S-03 Humedad Germinación">
+                        </label>
+                        <label class="field">Variable
+                            <select><option>Temperatura ambiental</option><option>Humedad relativa</option><option>Humedad del sustrato</option><option>pH del suelo</option><option>Luminosidad PAR</option><option>CO2</option><option>Conductividad eléctrica</option><option>Otra configurable</option></select>
+                        </label>
+                        <label class="field">Unidad
+                            <input type="text" value="%">
+                        </label>
+                        <label class="field">Zona
+                            <select><option>Germinación norte</option><option>Crecimiento sur</option></select>
+                        </label>
+                        <label class="field">MAC / serial / IP
+                            <input type="text" value="SEN-GER-03">
+                        </label>
+                        <label class="field">Estado
+                            <select><option>Activo</option><option>Inactivo</option><option>En mantenimiento</option></select>
+                        </label>
+                        <label class="field full">Lotes o zonas vinculadas
+                            <input type="text" value="LOT-2026-001, LOT-2026-004">
+                        </label>
+                    </form>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Umbrales por cultivo y fase</h2>
+                            <p>Rangos óptimos, advertencia y críticos para temperatura, humedad, sustrato, pH, PAR, CO2, CE y variables adicionales.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field">Cultivo
+                            <select><option>Tomate</option><option>Lechuga</option></select>
+                        </label>
+                        <label class="field">Fase
+                            <select><option>Germinación</option><option>Crecimiento</option></select>
+                        </label>
+                        <label class="field">Variable
+                            <select><option>Humedad del sustrato</option><option>Conductividad eléctrica</option></select>
+                        </label>
+                        <label class="field">Rango óptimo
+                            <input type="text" value="65% - 78%">
+                        </label>
+                        <label class="field">Advertencia
+                            <input type="text" value="55-64% / 79-85%">
+                        </label>
+                        <label class="field">Crítico
+                            <input type="text" value="<55% / >85%">
+                        </label>
+                        <label class="field full">Acción rápida
+                            <select><option>Duplicar configuración hacia otro cultivo</option><option>Aplicar global por defecto</option></select>
+                        </label>
+                    </form>
+                </article>
+            </section>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Panel en tiempo real</h2>
+                        <p>Filtrable por zona y variable. Cada sensor muestra valor actual, timestamp, estado visual y tendencia de 24 horas.</p>
+                    </section>
+                    <section class="toolbar">
+                        <button class="btn-outline" type="button">Zona: todas</button>
+                        <button class="btn-outline" type="button">Variable: todas</button>
+                    </section>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Sensor</th>
+                                <th>Variable</th>
+                                <th>Valor</th>
+                                <th>Unidad</th>
+                                <th>Timestamp</th>
+                                <th>Estado</th>
+                                <th>Tendencia 24h</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>S-03 Humedad Germinación</td>
+                                <td>Humedad sustrato</td>
+                                <td>52</td>
+                                <td>%</td>
+                                <td>Hace 2 min</td>
+                                <td><span class="badge-danger">Crítico</span></td>
+                                <td>▁▂▃▂▁▁</td>
+                            </tr>
+                            <tr>
+                                <td>S-08 PAR Crecimiento</td>
+                                <td>Luminosidad PAR</td>
+                                <td>410</td>
+                                <td>µmol/m²/s</td>
+                                <td>Hace 4 min</td>
+                                <td><span class="badge">Normal</span></td>
+                                <td>▂▃▄▅▆▅</td>
+                            </tr>
+                            <tr>
+                                <td>S-11 CO2 Invernadero</td>
+                                <td>CO2</td>
+                                <td>--</td>
+                                <td>ppm</td>
+                                <td>Sin datos desde 08:15</td>
+                                <td><span class="badge-muted">Sin señal</span></td>
+                                <td>Sin datos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Histórico de lecturas ambientales</h2>
+                        <p>Permite seleccionar sensor, rango de fechas, comparar dos sensores y exportar Excel con estado y alerta asociada.</p>
+                    </section>
+                    <button class="btn-outline" type="button">Exportar Excel</button>
+                </header>
+                <section class="feature-grid">
+                    <article class="module-card"><h3>Gráfico de línea</h3><p>Marcadores en puntos donde se generaron alertas ambientales.</p></article>
+                    <article class="module-card"><h3>Estadísticas</h3><p>Mínimo 52%, máximo 84%, promedio 68%, 6 lecturas fuera de rango, 2 alertas.</p></article>
+                    <article class="module-card"><h3>Comparación</h3><p>S-03 vs S-04 superpuestos para comparar zonas de germinación.</p></article>
+                </section>
+            </article>
+        </section>
+    </main>
+
+    <footer class="module-footer">AiDEN v1.0 · Sensores, tiempo real, umbrales e histórico ambiental.</footer>
+</body>
+</html>

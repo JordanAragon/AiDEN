@@ -3,56 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../Assets/CSS/produccion.css">
-    <title>AiDEN | Producción</title>
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Gestión de Cultivos</title>
 </head>
 <body>
     <header class="top-nav">
         <a href="../index.html" class="nav-brand">AiDEN</a>
         <nav aria-label="Navegación de módulos">
             <ul class="nav-menu">
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="../Pages/produccion.html" class="active">Producción</a></li>
-                <li><a href="../Pages/inventario.html">Inventario</a></li>
-                <li><a href="../Pages/trazabilidad.html">Trazabilidad</a></li>
-                <li><a href="../Pages/users.html">Usuarios</a></li>
+                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="produccion.html" class="active">Cultivos</a></li>
+                <li><a href="trazabilidad.html">Trazabilidad</a></li>
+                <li><a href="ambiental.html">Ambiental</a></li>
+                <li><a href="calidad-alertas.html">Calidad</a></li>
+                <li><a href="personal.html">Personal</a></li>
+                <li><a href="costos.html">Costos</a></li>
+                <li><a href="reportes-dashboard.html">Reportes</a></li>
             </ul>
         </nav>
         <nav class="user-logout" aria-label="Sesión">
-            <a href="../index.html" class="logout-link">Cerrar sesión</a>
+            <a href="login.html">Supervisor · Cerrar sesión</a>
         </nav>
     </header>
 
     <main class="main-content">
         <header class="page-header">
             <section>
-                <span class="eyebrow">Producción</span>
-                <h1>Seguimiento de fases productivas</h1>
-                <p>Controla germinación, trasplante, crecimiento y despacho con recursos asignados por lote.</p>
+                <span class="eyebrow">Módulo 3 · HU10-HU16</span>
+                <h1>Gestión de cultivos y producción</h1>
+                <p>Ciclos por tipo de cultivo, lotes con QR, actividades, consumos, avances de fase, semáforo y bajas por merma.</p>
             </section>
-            <button class="btn-success" type="button">Nueva fase</button>
+            <section class="toolbar">
+                <a class="btn-outline" href="#kanban">Kanban</a>
+                <a class="btn" href="#nuevo-lote">Abrir lote</a>
+            </section>
         </header>
 
-        <section class="summary-grid" aria-label="Resumen de producción">
+        <section class="summary-grid">
             <article class="metric-card">
-                <span class="metric-label">Fases activas</span>
-                <strong class="metric-value">5</strong>
-                <p class="metric-note">2 próximas a cierre</p>
+                <span class="metric-label">Lotes activos</span>
+                <strong class="metric-value">18</strong>
+                <p class="metric-note">Todos vinculados a ciclo productivo.</p>
             </article>
             <article class="metric-card">
-                <span class="metric-label">Rendimiento</span>
-                <strong class="metric-value">85%</strong>
-                <p class="metric-note">Meta general 90%</p>
+                <span class="metric-label">En riesgo</span>
+                <strong class="metric-value">4</strong>
+                <p class="metric-note">Por retraso, alerta o limitante.</p>
             </article>
             <article class="metric-card">
-                <span class="metric-label">Recursos usados</span>
-                <strong class="metric-value">72%</strong>
-                <p class="metric-note">Consumo semanal</p>
+                <span class="metric-label">Actividades hoy</span>
+                <strong class="metric-value">27</strong>
+                <p class="metric-note">Ordenadas por usuario activo.</p>
             </article>
             <article class="metric-card">
-                <span class="metric-label">Desviación</span>
-                <strong class="metric-value">-5%</strong>
-                <p class="metric-note">En germinación</p>
+                <span class="metric-label">Mermas mes</span>
+                <strong class="metric-value">6.8%</strong>
+                <p class="metric-note">Agrupadas por causa para HU35.</p>
             </article>
         </section>
 
@@ -60,118 +67,247 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h2>Fases productivas</h2>
-                        <p>Estado operativo y recursos asignados por fase.</p>
+                        <h2>Ciclos productivos por cultivo</h2>
+                        <p>Las fases tienen orden, duración estimada, obligatoriedad y pueden clonarse. El orden no cambia si hay lotes activos.</p>
                     </section>
+                    <button class="btn-outline" type="button">Clonar ciclo</button>
                 </header>
                 <section class="table-wrap">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Fase</th>
-                                <th>Descripción</th>
-                                <th>Recursos asignados</th>
+                                <th>Ciclo</th>
+                                <th>Cultivo</th>
+                                <th>Fases secuenciales</th>
+                                <th>Duración</th>
+                                <th>Regla de edición</th>
                                 <th>Estado</th>
-                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Germinación</td>
-                                <td>Activación y brote inicial de semillas</td>
-                                <td>Semillas, agua, luz</td>
-                                <td><span class="badge-info">En progreso</span></td>
-                                <td><button class="btn-editar" type="button">Editar</button></td>
+                                <td>Tomate estándar</td>
+                                <td>Tomate</td>
+                                <td>Germinación · Trasplante · Crecimiento · Despacho</td>
+                                <td>75 días</td>
+                                <td>Orden bloqueado por 8 lotes activos</td>
+                                <td><span class="badge">Activo</span></td>
                             </tr>
                             <tr>
-                                <td>Trasplante</td>
-                                <td>Paso a bandejas y control de raíz</td>
-                                <td>Sustrato, bandejas, herramientas</td>
-                                <td><span class="badge-warning">Pendiente</span></td>
-                                <td><button class="btn-editar" type="button">Editar</button></td>
+                                <td>Lechuga rápida</td>
+                                <td>Lechuga</td>
+                                <td>Siembra · Crecimiento · Endurecimiento</td>
+                                <td>38 días</td>
+                                <td>Editable sin lotes activos</td>
+                                <td><span class="badge">Activo</span></td>
                             </tr>
                         </tbody>
                     </table>
                 </section>
             </article>
 
-            <section class="workspace grid-two">
-                <article class="panel-card">
+            <section class="grid-two">
+                <article class="panel-card" id="nuevo-lote">
                     <header class="panel-header">
                         <section>
-                            <h2>Indicadores clave</h2>
-                            <p>Comparación entre rendimiento actual y objetivo.</p>
-                        </section>
-                    </header>
-                    <section class="table-wrap">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Fase</th>
-                                    <th>Actual</th>
-                                    <th>Objetivo</th>
-                                    <th>Desviación</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Germinación</td>
-                                    <td>85%</td>
-                                    <td>90%</td>
-                                    <td><span class="badge-warning">-5%</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Trasplante</td>
-                                    <td>92%</td>
-                                    <td>88%</td>
-                                    <td><span class="badge">+4%</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </section>
-                </article>
-
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Asignar recurso</h2>
-                            <p>Relaciona insumos del inventario con una fase productiva.</p>
+                            <h2>Abrir lote de producción</h2>
+                            <p>Código único generado con patrón configurable, QR automático y responsables múltiples.</p>
                         </section>
                     </header>
                     <form class="form-grid">
-                        <label class="field" for="fase">Fase
-                            <select id="fase">
-                                <option>Germinación</option>
-                                <option>Trasplante</option>
-                                <option>Crecimiento</option>
-                            </select>
+                        <label class="field">Tipo de cultivo
+                            <select><option>Tomate</option><option>Lechuga</option><option>Café</option></select>
                         </label>
-                        <label class="field" for="recurso">Recurso
-                            <input type="text" id="recurso" placeholder="Semillas, agua, sustrato">
+                        <label class="field">Ciclo asociado
+                            <input type="text" value="Tomate estándar" readonly>
                         </label>
-                        <label class="field" for="asignada">Cantidad asignada
-                            <input type="number" id="asignada" placeholder="1000">
+                        <label class="field">Código de lote
+                            <input type="text" value="LOT-2026-001">
                         </label>
-                        <label class="field" for="utilizada">Cantidad utilizada
-                            <input type="number" id="utilizada" placeholder="850">
+                        <label class="field">Zona
+                            <select><option>Germinación norte</option><option>Crecimiento sur</option></select>
                         </label>
-                        <button class="btn-success" type="submit">Guardar asignación</button>
+                        <label class="field">Unidades sembradas
+                            <input type="number" min="1" value="500">
+                        </label>
+                        <label class="field">Fecha de inicio
+                            <input type="date" value="2026-06-05">
+                        </label>
+                        <label class="field">Responsable principal
+                            <select><option>Operario Campo</option><option>María López</option></select>
+                        </label>
+                        <label class="field">Co-responsables
+                            <input type="text" value="Juan Riego, Ana Calidad">
+                        </label>
+                        <label class="field full">Observaciones iniciales
+                            <textarea>Semilla lote S-248, sustrato BioTierra, sombreo parcial por ola de calor.</textarea>
+                        </label>
+                    </form>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Actividad y consumo en lote</h2>
+                            <p>La fase actual se precarga. El operario queda asociado al usuario activo y los consumos descuentan inventario.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field">Lote
+                            <select><option>LOT-2026-001</option><option>LOT-2026-002</option></select>
+                        </label>
+                        <label class="field">Fase actual
+                            <input type="text" value="Germinación" readonly>
+                        </label>
+                        <label class="field">Tipo actividad
+                            <select><option>Riego</option><option>Fertilización</option><option>Corrección</option></select>
+                        </label>
+                        <label class="field">Fecha y hora editable
+                            <input type="datetime-local" value="2026-06-05T09:00">
+                        </label>
+                        <label class="field full">Descripción obligatoria
+                            <textarea>Riego de germinación con solución nutritiva controlada.</textarea>
+                        </label>
+                        <label class="field">Insumo consumido
+                            <select><option>Solución nutritiva A</option><option>Sustrato orgánico</option></select>
+                        </label>
+                        <label class="field">Cantidad validada contra stock
+                            <input type="number" value="2">
+                        </label>
+                        <label class="field full">Evidencias
+                            <input type="text" value="foto-1.jpg, foto-2.jpg, foto-3.jpg">
+                        </label>
                     </form>
                 </article>
             </section>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Monitoreo de lotes activos</h2>
+                        <p>Porcentaje de avance, días en fase, días restantes y semáforo calculado con alertas, tiempos y limitantes.</p>
+                    </section>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Cultivo</th>
+                                <th>Fase</th>
+                                <th>Días fase</th>
+                                <th>Duración estimada</th>
+                                <th>Restantes</th>
+                                <th>Avance</th>
+                                <th>Semáforo</th>
+                                <th>Operario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>LOT-2026-001</td>
+                                <td>Tomate</td>
+                                <td>Germinación</td>
+                                <td>8</td>
+                                <td>10</td>
+                                <td>2</td>
+                                <td>25%</td>
+                                <td><span class="semaforo"><span class="dot yellow"></span>Advertencia</span></td>
+                                <td>Operario Campo</td>
+                            </tr>
+                            <tr>
+                                <td>LOT-2026-002</td>
+                                <td>Lechuga</td>
+                                <td>Crecimiento</td>
+                                <td>16</td>
+                                <td>14</td>
+                                <td>0</td>
+                                <td>66%</td>
+                                <td><span class="semaforo"><span class="dot red"></span>Crítico</span></td>
+                                <td>María López</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Avance de fase explícito</h2>
+                            <p>El sistema muestra incumplimientos críticos y exige justificación mínima de 30 caracteres para continuar.</p>
+                        </section>
+                    </header>
+                    <ul class="checklist">
+                        <li>Actividades obligatorias: riego registrado, inspección pendiente.</li>
+                        <li>Limitante crítico: humedad de sustrato fuera de rango 2 horas.</li>
+                        <li>No se permite retroceder de fase bajo ninguna condición.</li>
+                        <li>Al cerrar la última fase, el lote pasa a Listo para despacho.</li>
+                    </ul>
+                    <form class="form-grid single">
+                        <label class="field">Justificación de override
+                            <textarea>Se autoriza avance por revisión agronómica presencial y corrección aplicada al sustrato.</textarea>
+                        </label>
+                    </form>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Registro de baja o merma</h2>
+                            <p>Actualiza unidades vivas y cierra por pérdida si la baja es total.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field">Cantidad
+                            <input type="number" value="24" min="1">
+                        </label>
+                        <label class="field">Motivo
+                            <select><option>Plagas</option><option>Condiciones ambientales adversas</option><option>Error operativo</option><option>Descarte por calidad</option></select>
+                        </label>
+                        <label class="field full">Descripción mínima 20 caracteres
+                            <textarea>Plántulas con daño irreversible en cama 2, evidencia fotográfica adjunta.</textarea>
+                        </label>
+                        <label class="field">Fecha ocurrencia
+                            <input type="date" value="2026-06-05">
+                        </label>
+                        <label class="field">Confirmación pérdida total
+                            <select><option>No aplica</option><option>Confirmo cierre por pérdida</option></select>
+                        </label>
+                    </form>
+                </article>
+            </section>
+
+            <article class="panel-card" id="kanban">
+                <header class="panel-header">
+                    <section>
+                        <h2>Vista Kanban por fase actual</h2>
+                        <p>Cada tarjeta conserva acceso al perfil del lote y su semáforo visible.</p>
+                    </section>
+                </header>
+                <section class="kanban">
+                    <article class="kanban-column">
+                        <h3>Germinación</h3>
+                        <section class="kanban-card"><strong>LOT-2026-001</strong><br><span class="badge-warn">Amarillo</span></section>
+                    </article>
+                    <article class="kanban-column">
+                        <h3>Trasplante</h3>
+                        <section class="kanban-card"><strong>LOT-2026-004</strong><br><span class="badge">Verde</span></section>
+                    </article>
+                    <article class="kanban-column">
+                        <h3>Crecimiento</h3>
+                        <section class="kanban-card"><strong>LOT-2026-002</strong><br><span class="badge-danger">Rojo</span></section>
+                    </article>
+                    <article class="kanban-column">
+                        <h3>Despacho</h3>
+                        <section class="kanban-card"><strong>LOT-2026-006</strong><br><span class="badge">Listo</span></section>
+                    </article>
+                </section>
+            </article>
         </section>
     </main>
 
-    <footer class="module-footer">
-        <section>
-            <strong>AiDEN</strong>
-            <p>Producción por fases conectada con inventario, alarmas y trazabilidad.</p>
-        </section>
-        <nav aria-label="Enlaces del módulo">
-            <a href="../index.html">Volver al Home</a>
-            <a href="../Pages/inventario.html">Inventario</a>
-            <a href="../Pages/trazabilidad.html">Trazabilidad</a>
-        </nav>
-    </footer>
+    <footer class="module-footer">AiDEN v1.0 · Cultivos, lotes, actividades, consumos y mermas.</footer>
 </body>
 </html>
