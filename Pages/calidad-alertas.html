@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Calidad y Alertas</title>
+</head>
+<body>
+    <header class="top-nav">
+        <a href="../index.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegación de módulos">
+            <ul class="nav-menu">
+                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="produccion.html">Cultivos</a></li>
+                <li><a href="trazabilidad.html">Trazabilidad</a></li>
+                <li><a href="ambiental.html">Ambiental</a></li>
+                <li><a href="calidad-alertas.html" class="active">Calidad</a></li>
+                <li><a href="personal.html">Personal</a></li>
+                <li><a href="costos.html">Costos</a></li>
+                <li><a href="reportes-dashboard.html">Reportes</a></li>
+            </ul>
+        </nav>
+        <nav class="user-logout" aria-label="Sesión"><a href="login.html">Supervisor · Cerrar sesión</a></nav>
+    </header>
+
+    <main class="main-content">
+        <header class="page-header">
+            <section>
+                <span class="eyebrow">Módulo 6 · HU23-HU27</span>
+                <h1>Control de calidad y alertas</h1>
+                <p>Limitantes técnicos, semáforo automático, inbox de alertas, incidencias fitosanitarias y tratamientos con trazabilidad de agroquímicos.</p>
+            </section>
+            <section class="toolbar">
+                <button class="btn-outline" type="button">Historial</button>
+                <button class="btn" type="button">Reportar incidencia</button>
+            </section>
+        </header>
+
+        <section class="summary-grid">
+            <article class="metric-card"><span class="metric-label">Alertas críticas</span><strong class="metric-value">4</strong><p class="metric-note">Badge rojo visible desde el menú.</p></article>
+            <article class="metric-card"><span class="metric-label">Advertencias</span><strong class="metric-value">9</strong><p class="metric-note">No bloquean, pero informan al supervisor.</p></article>
+            <article class="metric-card"><span class="metric-label">Incidencias</span><strong class="metric-value">3</strong><p class="metric-note">Reportadas, en atención o resueltas.</p></article>
+            <article class="metric-card"><span class="metric-label">Tratamientos</span><strong class="metric-value">6</strong><p class="metric-note">Con revisión de efectividad programada.</p></article>
+        </section>
+
+        <section class="workspace">
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Limitantes técnicos por fase</h2>
+                            <p>Aplican a lotes futuros; los críticos bloquean avance de fase salvo justificación del supervisor.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field">Nombre
+                            <input type="text" value="Riego nutritivo cada 48 horas">
+                        </label>
+                        <label class="field">Tipo
+                            <select><option>Actividad obligatoria</option><option>Consumo mínimo de insumo</option><option>Condición ambiental</option></select>
+                        </label>
+                        <label class="field">Cultivo
+                            <select><option>Tomate</option><option>Lechuga</option></select>
+                        </label>
+                        <label class="field">Fase
+                            <select><option>Germinación</option><option>Crecimiento</option></select>
+                        </label>
+                        <label class="field">Valor o condición
+                            <input type="text" value="Actividad Riego registrada antes del cierre">
+                        </label>
+                        <label class="field">Criticidad
+                            <select><option>Crítico</option><option>Advertencia</option></select>
+                        </label>
+                        <label class="field full">Plantilla reutilizable
+                            <select><option>Guardar como plantilla para tomate</option><option>Aplicar plantilla existente</option></select>
+                        </label>
+                    </form>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Semáforo de lote y fase</h2>
+                            <p>Prioridad rojo sobre amarillo y verde. El detalle explica alertas, limitantes y días de retraso.</p>
+                        </section>
+                    </header>
+                    <section class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Lote</th><th>Fase</th><th>Estado</th><th>Detalle al clic</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>LOT-2026-001</td>
+                                    <td>Germinación</td>
+                                    <td><span class="semaforo"><span class="dot yellow"></span>Amarillo</span></td>
+                                    <td>Fase al 80%, humedad baja y 1 advertencia pendiente.</td>
+                                </tr>
+                                <tr>
+                                    <td>LOT-2026-002</td>
+                                    <td>Crecimiento</td>
+                                    <td><span class="semaforo"><span class="dot red"></span>Rojo</span></td>
+                                    <td>Limitante crítico sin cumplir y alerta fitosanitaria activa.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+            </section>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Panel centralizado de alertas</h2>
+                        <p>Ordenado por criticidad y fecha. Para atender una alerta se exige comentario mínimo de 15 caracteres.</p>
+                    </section>
+                    <section class="toolbar">
+                        <button class="btn-outline" type="button">Tipo</button>
+                        <button class="btn-outline" type="button">Criticidad</button>
+                        <button class="btn-outline" type="button">Rango de fechas</button>
+                    </section>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descripción</th>
+                                <th>Referencia</th>
+                                <th>Generada</th>
+                                <th>Tiempo</th>
+                                <th>Estado</th>
+                                <th>Resolución</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge-danger">Inventario</span></td>
+                                <td>Bandejas germinadoras en stock cero.</td>
+                                <td>Insumo BG-01</td>
+                                <td>2026-06-05 07:20</td>
+                                <td>2 h 15 min</td>
+                                <td>Activa</td>
+                                <td><input type="text" value="Compra urgente programada con proveedor CampoVerde."></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge-danger">Incidencia</span></td>
+                                <td>Plaga reportada en lote LOT-2026-002.</td>
+                                <td>Incidencia INC-18</td>
+                                <td>2026-06-05 08:40</td>
+                                <td>55 min</td>
+                                <td>Activa</td>
+                                <td><input type="text" value="Supervisor asignado para revisión inmediata."></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Incidencia fitosanitaria</h2>
+                            <p>El reporte genera alerta crítica y queda vinculado al historial y línea de tiempo del lote.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field">Lote afectado
+                            <select><option>LOT-2026-002</option><option>LOT-2026-001</option></select>
+                        </label>
+                        <label class="field">Tipo
+                            <select><option>Plaga</option><option>Enfermedad fúngica</option><option>Deficiencia nutricional</option><option>Daño ambiental</option></select>
+                        </label>
+                        <label class="field">Porcentaje afectado
+                            <input type="number" value="12" min="0" max="100">
+                        </label>
+                        <label class="field">Fecha y hora
+                            <input type="datetime-local" value="2026-06-05T08:40">
+                        </label>
+                        <label class="field full">Síntomas observados mínimo 30 caracteres
+                            <textarea>Manchas circulares y presencia visible de insecto en hojas jóvenes del costado oriental.</textarea>
+                        </label>
+                        <label class="field full">Fotografías hasta 5
+                            <input type="text" value="plaga-1.jpg, plaga-2.jpg">
+                        </label>
+                    </form>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Tratamiento aplicado</h2>
+                            <p>Vinculado a incidencia, descuenta inventario y calcula fecha temprana de despacho por periodo de carencia.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field">Incidencia
+                            <select><option>INC-18 · LOT-2026-002</option></select>
+                        </label>
+                        <label class="field">Insumo fitosanitario/nutricional
+                            <select><option>Fungicida cobre</option><option>Corrector nutricional Ca</option></select>
+                        </label>
+                        <label class="field">Cantidad y unidad
+                            <input type="text" value="1.5 L">
+                        </label>
+                        <label class="field">Método
+                            <select><option>Aspersión</option><option>Drench</option><option>Fertirriego</option><option>Aplicación foliar</option></select>
+                        </label>
+                        <label class="field">Fecha revisión
+                            <input type="date" value="2026-06-12">
+                        </label>
+                        <label class="field">Despacho más temprano
+                            <input type="date" value="2026-06-19" readonly>
+                        </label>
+                        <label class="field full">Resultado de revisión
+                            <select><option>Pendiente</option><option>Efectivo</option><option>Parcialmente efectivo</option><option>Inefectivo</option></select>
+                        </label>
+                    </form>
+                </article>
+            </section>
+        </section>
+    </main>
+
+    <footer class="module-footer">AiDEN v1.0 · Limitantes, semáforos, alertas, incidencias y tratamientos.</footer>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Reportes y Dashboard</title>
+</head>
+<body>
+    <header class="top-nav">
+        <a href="../index.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegación de módulos">
+            <ul class="nav-menu">
+                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="produccion.html">Cultivos</a></li>
+                <li><a href="trazabilidad.html">Trazabilidad</a></li>
+                <li><a href="ambiental.html">Ambiental</a></li>
+                <li><a href="calidad-alertas.html">Calidad <span class="badge-danger">4</span></a></li>
+                <li><a href="personal.html">Personal</a></li>
+                <li><a href="costos.html">Costos</a></li>
+                <li><a href="reportes-dashboard.html" class="active">Reportes</a></li>
+            </ul>
+        </nav>
+        <nav class="user-logout" aria-label="Sesión"><a href="login.html">Administrador · Cerrar sesión</a></nav>
+    </header>
+
+    <main class="main-content">
+        <header class="page-header">
+            <section>
+                <span class="eyebrow">Módulo 9 · HU34-HU38</span>
+                <h1>Reportes y dashboard</h1>
+                <p>Entrada principal adaptada por rol, reportes de producción, consumos, alertas/incidencias y notificaciones por sistema/correo electrónico.</p>
+            </section>
+            <section class="toolbar">
+                <button class="btn-outline" type="button">Actualizar cada 5 min</button>
+                <button class="btn" type="button">Exportar reporte</button>
+            </section>
+        </header>
+
+        <section class="summary-grid">
+            <article class="metric-card"><span class="metric-label">Alertas críticas</span><strong class="metric-value">4</strong><p class="metric-note">Badge rojo en menú principal.</p></article>
+            <article class="metric-card"><span class="metric-label">Lotes activos</span><strong class="metric-value">18</strong><p class="metric-note">Verde 10 · Amarillo 5 · Rojo 3.</p></article>
+            <article class="metric-card"><span class="metric-label">Costo mes</span><strong class="metric-value">$8.4M</strong><p class="metric-note">Widget exclusivo Administrador.</p></article>
+            <article class="metric-card"><span class="metric-label">Personal activo</span><strong class="metric-value">14</strong><p class="metric-note">Resumen visible para Administrador.</p></article>
+        </section>
+
+        <section class="workspace">
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Dashboard adaptado por rol</h2>
+                        <p>Cada widget es interactivo y lleva al módulo correspondiente. La estructura funciona en escritorio y móvil.</p>
+                    </section>
+                </header>
+                <section class="feature-grid">
+                    <article class="module-card">
+                        <h3>Operario</h3>
+                        <p>Mis tareas del día, lotes asignados con fase actual y últimas 5 actividades registradas.</p>
+                    </article>
+                    <article class="module-card">
+                        <h3>Supervisor</h3>
+                        <p>Alertas por criticidad, semáforo de lotes, insumos críticos y sensores fuera de rango.</p>
+                    </article>
+                    <article class="module-card">
+                        <h3>Administrador</h3>
+                        <p>Todo lo del supervisor más costos del mes, lotes del mes y personal activo.</p>
+                    </article>
+                </section>
+            </article>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Reporte de producción por periodo</h2>
+                        <p>Evalúa lotes, unidades iniciales/finales, merma y costo total; exporta PDF formal y Excel.</p>
+                    </section>
+                    <section class="toolbar"><button class="btn-outline" type="button">PDF</button><button class="btn-outline" type="button">Excel</button></section>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Lote</th><th>Cultivo</th><th>Inicio</th><th>Cierre</th><th>Estado final</th><th>Iniciales</th><th>Finales</th><th>Perdidas</th><th>Merma</th><th>Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>LOT-2026-001</td><td>Tomate</td><td>2026-04-01</td><td>2026-06-01</td><td>Finalizado</td><td>500</td><td>476</td><td>24</td><td>4.8%</td><td>$875K</td></tr>
+                            <tr><td>LOT-2026-002</td><td>Lechuga</td><td>2026-04-10</td><td>2026-05-20</td><td>Perdido</td><td>420</td><td>0</td><td>420</td><td>100%</td><td>$390K</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+                <section class="feature-grid" style="margin-top: 1rem;">
+                    <article class="module-card"><h3>Resumen periodo</h3><p>13 lotes · 5.940 plantas iniciadas · 4.812 producidas · 19% merma global.</p></article>
+                    <article class="module-card"><h3>Gráfico</h3><p>Producidas vs perdidas por cultivo: Tomate ███████░ · Lechuga ███░░.</p></article>
+                    <article class="module-card"><h3>Filtros</h3><p>Rango de fechas, tipo de cultivo y estado del lote.</p></article>
+                </section>
+            </article>
+
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Reporte de consumo y gasto</h2>
+                            <p>Para Administrador: insumo, categoría, lotes, fases, costo, comparación de periodos y consumo inusual.</p>
+                        </section>
+                    </header>
+                    <section class="table-wrap">
+                        <table class="data-table">
+                            <thead><tr><th>Insumo</th><th>Categoría</th><th>Cantidad</th><th>Costo</th><th>Lotes</th><th>Indicador</th></tr></thead>
+                            <tbody>
+                                <tr><td>Solución nutritiva A</td><td>Nutricional</td><td>88 L</td><td>$1.2M</td><td>8</td><td><span class="badge-warn">+34% inusual</span></td></tr>
+                                <tr><td>Fungicida cobre</td><td>Fitosanitario</td><td>12 L</td><td>$456K</td><td>3</td><td><span class="badge">Normal</span></td></tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Reporte de alertas e incidencias</h2>
+                            <p>Histórico con tiempos de resolución, ranking de cultivos/fases y tendencia mensual.</p>
+                        </section>
+                    </header>
+                    <ul class="checklist">
+                        <li>Alertas por tipo: inventario 6, ambiental 9, limitante 4, sensor 2.</li>
+                        <li>Criticidad: críticas 11, advertencias 10.</li>
+                        <li>Tiempo promedio de resolución: 3 h 20 min.</li>
+                        <li>Top cultivos: tomate, lechuga, café. Top fases: germinación, crecimiento.</li>
+                        <li>Incidencias con tratamiento y resultado: efectivo, parcial o inefectivo.</li>
+                    </ul>
+                </article>
+            </section>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Notificaciones del sistema</h2>
+                        <p>Canales v1.0: notificación en sistema y correo electrónico. SMS y WhatsApp quedan fuera del alcance inicial.</p>
+                    </section>
+                    <button class="btn-outline" type="button">Enviar prueba</button>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Tipo de alerta</th><th>Correo</th><th>Destinatarios</th><th>Silencio baja criticidad</th><th>Historial</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Stock crítico de insumo</td><td>Activado</td><td>Supervisor, Administrador</td><td>20:00-07:00</td><td>Último envío 2026-06-05 07:20</td></tr>
+                            <tr><td>Sensor sin señal</td><td>Activado</td><td>Supervisor</td><td>No aplica si es crítico</td><td>Último envío 2026-06-05 08:15</td></tr>
+                            <tr><td>Incidencia fitosanitaria reportada</td><td>Activado</td><td>Supervisor, Calidad</td><td>No aplica si es crítico</td><td>Último envío 2026-06-05 08:40</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+        </section>
+    </main>
+
+    <footer class="module-footer">AiDEN v1.0 · Dashboard, reportes y notificaciones.</footer>
+</body>
+</html>

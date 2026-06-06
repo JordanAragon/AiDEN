@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Personal y Tareas</title>
+</head>
+<body>
+    <header class="top-nav">
+        <a href="../index.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegación de módulos">
+            <ul class="nav-menu">
+                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="produccion.html">Cultivos</a></li>
+                <li><a href="trazabilidad.html">Trazabilidad</a></li>
+                <li><a href="ambiental.html">Ambiental</a></li>
+                <li><a href="calidad-alertas.html">Calidad</a></li>
+                <li><a href="personal.html" class="active">Personal</a></li>
+                <li><a href="costos.html">Costos</a></li>
+                <li><a href="reportes-dashboard.html">Reportes</a></li>
+            </ul>
+        </nav>
+        <nav class="user-logout" aria-label="Sesión"><a href="login.html">Supervisor · Cerrar sesión</a></nav>
+    </header>
+
+    <main class="main-content">
+        <header class="page-header">
+            <section>
+                <span class="eyebrow">Módulo 7 · HU28-HU30</span>
+                <h1>Personal y tareas diarias</h1>
+                <p>Registro del personal, vinculación a usuarios, jornal confidencial, plan diario, tareas del operario e informe de actividad por persona.</p>
+            </section>
+            <section class="toolbar">
+                <button class="btn-outline" type="button">Copiar plan anterior</button>
+                <button class="btn" type="button">Nueva tarea</button>
+            </section>
+        </header>
+
+        <section class="summary-grid">
+            <article class="metric-card"><span class="metric-label">Personal activo</span><strong class="metric-value">14</strong><p class="metric-note">Inactivos conservan histórico.</p></article>
+            <article class="metric-card"><span class="metric-label">Tareas hoy</span><strong class="metric-value">32</strong><p class="metric-note">Pendiente, en progreso o completada.</p></article>
+            <article class="metric-card"><span class="metric-label">Completadas</span><strong class="metric-value">68%</strong><p class="metric-note">Coinciden con actividades registradas.</p></article>
+            <article class="metric-card"><span class="metric-label">No ejecutadas</span><strong class="metric-value">4</strong><p class="metric-note">Van al reporte de cumplimiento.</p></article>
+        </section>
+
+        <section class="workspace">
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Registro de personal</h2>
+                            <p>El jornal diario es confidencial y solo visible para Administrador.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field">Nombre completo
+                            <input type="text" value="María López Campo">
+                        </label>
+                        <label class="field">Cargo o función
+                            <select><option>Operario</option><option>Técnico</option><option>Supervisor</option></select>
+                        </label>
+                        <label class="field">Zona habitual
+                            <select><option>Germinación norte</option><option>Crecimiento sur</option></select>
+                        </label>
+                        <label class="field">Teléfono
+                            <input type="tel" value="310 000 0000">
+                        </label>
+                        <label class="field">Fecha ingreso
+                            <input type="date" value="2026-01-15">
+                        </label>
+                        <label class="field">Usuario vinculado
+                            <select><option>maria@vivero.com</option><option>Sin usuario</option></select>
+                        </label>
+                        <label class="field">Jornal diario
+                            <input type="text" value="$80.000 · solo Administrador">
+                        </label>
+                        <label class="field">Estado
+                            <select><option>Activo</option><option>Inactivo</option></select>
+                        </label>
+                        <label class="field full">Observaciones
+                            <textarea>Turno mañana, fuerte en trasplante, restricción para agroquímicos categoría II.</textarea>
+                        </label>
+                    </form>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Listado activo</h2>
+                            <p>Muestra días trabajados del mes actual y datos básicos operativos.</p>
+                        </section>
+                    </header>
+                    <section class="table-wrap">
+                        <table class="data-table">
+                            <thead><tr><th>Nombre</th><th>Cargo</th><th>Zona</th><th>Teléfono</th><th>Días mes</th></tr></thead>
+                            <tbody>
+                                <tr><td>María López</td><td>Operario</td><td>Germinación</td><td>310 000 0000</td><td>18</td></tr>
+                                <tr><td>Juan Riego</td><td>Técnico</td><td>Crecimiento</td><td>311 000 0000</td><td>17</td></tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+            </section>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Plan de trabajo diario</h2>
+                        <p>Se crea por fecha hasta 7 días antes. Una actividad registrada con mismo lote y tipo marca la tarea como completada.</p>
+                    </section>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Operario</th>
+                                <th>Actividad</th>
+                                <th>Lote o zona</th>
+                                <th>Hora</th>
+                                <th>Observaciones</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2026-06-05</td>
+                                <td>María López</td>
+                                <td>Riego</td>
+                                <td>LOT-2026-001</td>
+                                <td>08:00</td>
+                                <td>Revisar humedad antes de aplicar.</td>
+                                <td><span class="badge">Completada</span></td>
+                            </tr>
+                            <tr>
+                                <td>2026-06-05</td>
+                                <td>Juan Riego, Ana Calidad</td>
+                                <td>Inspección visual</td>
+                                <td>Germinación norte</td>
+                                <td>10:30</td>
+                                <td>Reportar anomalías con foto.</td>
+                                <td><span class="badge-warn">En progreso</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Vista simplificada del operario</h2>
+                            <p>Al iniciar sesión ve sus tareas del día con lote, actividad, hora y observaciones.</p>
+                        </section>
+                    </header>
+                    <ul class="timeline">
+                        <li><small>08:00 · LOT-2026-001</small><strong>Riego</strong><p>Revisar humedad antes de aplicar.</p></li>
+                        <li><small>10:30 · Germinación norte</small><strong>Inspección visual</strong><p>Adjuntar foto si hay anomalía.</p></li>
+                        <li><small>14:00 · LOT-2026-004</small><strong>Fertilización</strong><p>Usar dosis indicada por supervisor.</p></li>
+                    </ul>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Historial por operario</h2>
+                            <p>Comparativa tareas asignadas vs actividades registradas, exportable en PDF.</p>
+                        </section>
+                    </header>
+                    <section class="feature-grid">
+                        <article class="module-card"><h3>Total actividades</h3><p>46 en el periodo seleccionado.</p></article>
+                        <article class="module-card"><h3>Lotes trabajados</h3><p>LOT-2026-001, LOT-2026-004, LOT-2026-006.</p></article>
+                        <article class="module-card"><h3>Discrepancia</h3><p><span class="badge-warn">34%</span> supera umbral configurable de 30%.</p></article>
+                    </section>
+                </article>
+            </section>
+        </section>
+    </main>
+
+    <footer class="module-footer">AiDEN v1.0 · Personal, planes de trabajo e historial por operario.</footer>
+</body>
+</html>

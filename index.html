@@ -27,7 +27,7 @@
     </header>
 
     <main>
-        <!-- Esta primera parte resume AiDEN rápido: qué resuelve y cómo se ve en operación. -->
+
         <section id="inicio" class="hero-section">
             <article class="hero-copy">
                 <p class="eyebrow">Sistema agrícola para viveros tecnificados</p>
@@ -38,7 +38,7 @@
                     control operativo.
                 </p>
                 <nav class="hero-actions" aria-label="Acciones principales">
-                    <a href="Pages/singup.html" class="button button-primary">Ver Muestra</a>
+                    <a href="Pages/reportes-dashboard.html" class="button button-primary">Ver prototipo</a>
                     <a href="#modulos" class="button button-secondary">Ver capacidades</a>
                 </nav>
             </article>
@@ -84,13 +84,23 @@
                 <h2>Una arquitectura operativa conectada de extremo a extremo.</h2>
             </header>
 
-            <section class="module-grid" aria-label="Módulos principales de AiDEN">
+            <section class="module-grid" aria-label="Nueve módulos de AiDEN v1.0">
+                <article>
+                    <figure class="module-figure">
+                        <img src="Assets/IMG/dash.png" alt="Panel de configuración de AiDEN">
+                        <figcaption>Parámetros maestros, usuarios, roles y auditoría.</figcaption>
+                    </figure>
+                    <span class="module-number">01</span>
+                    <h3>Configuración del sistema</h3>
+                    <p>Catálogos maestros, roles Administrador/Supervisor/Operario, sesiones, seguridad y bitácora de cambios.</p>
+                    <a href="Pages/configuracion.html">Explorar configuración</a>
+                </article>
                 <article>
                     <figure class="module-figure">
                         <img src="Assets/IMG/dash2.png" alt="Panel de inventario inteligente de AiDEN">
                         <figcaption>Inventario con niveles y alarmas visibles.</figcaption>
                     </figure>
-                    <span class="module-number">01</span>
+                    <span class="module-number">02</span>
                     <h3>Inventario inteligente</h3>
                     <p>Control de insumos, proveedores, niveles mínimos y alertas de stock crítico para proteger la continuidad de producción.</p>
                     <a href="Pages/inventario.html">Explorar inventario</a>
@@ -100,20 +110,70 @@
                         <img src="Assets/IMG/vivero2.png" alt="Vivero tecnificado con fases de producción automatizadas">
                         <figcaption>Fases productivas monitoreadas en el vivero.</figcaption>
                     </figure>
-                    <span class="module-number">02</span>
-                    <h3>Producción por fases</h3>
-                    <p>Seguimiento de germinación, trasplante, crecimiento y despacho con recursos asignados y rendimiento por etapa.</p>
-                    <a href="Pages/produccion.html">Explorar producción</a>
+                    <span class="module-number">03</span>
+                    <h3>Gestión de cultivos</h3>
+                    <p>Ciclos productivos, apertura de lotes, actividades, consumos, avances de fase, semáforo y mermas.</p>
+                    <a href="Pages/produccion.html">Explorar cultivos</a>
                 </article>
                 <article>
                     <figure class="module-figure">
                         <img src="Assets/IMG/vivero3.png" alt="Lotes de plantas con historial de trazabilidad">
                         <figcaption>Historial por lote desde siembra hasta despacho.</figcaption>
                     </figure>
-                    <span class="module-number">03</span>
+                    <span class="module-number">04</span>
                     <h3>Trazabilidad por lote</h3>
-                    <p>Historial completo de eventos, responsables y observaciones para auditoría, calidad y cumplimiento interno.</p>
+                    <p>QR imprimible, vista pública operativa e informe de trazabilidad con eventos y evidencias.</p>
                     <a href="Pages/trazabilidad.html">Explorar trazabilidad</a>
+                </article>
+                <article>
+                    <figure class="module-figure">
+                        <img src="Assets/IMG/dashvivero.png" alt="Panel ambiental en vivero tecnificado">
+                        <figcaption>Sensores activos, tendencias y condiciones por zona.</figcaption>
+                    </figure>
+                    <span class="module-number">05</span>
+                    <h3>Monitoreo ambiental</h3>
+                    <p>Sensores, lecturas en tiempo real, umbrales por cultivo/fase e histórico exportable.</p>
+                    <a href="Pages/ambiental.html">Explorar ambiental</a>
+                </article>
+                <article>
+                    <figure class="module-figure">
+                        <img src="Assets/IMG/vivero.png" alt="Operario inspeccionando calidad de plantas">
+                        <figcaption>Alertas centralizadas y control fitosanitario.</figcaption>
+                    </figure>
+                    <span class="module-number">06</span>
+                    <h3>Calidad y alertas</h3>
+                    <p>Limitantes técnicos, semáforo, panel de alertas, incidencias y tratamientos.</p>
+                    <a href="Pages/calidad-alertas.html">Explorar calidad</a>
+                </article>
+                <article>
+                    <figure class="module-figure">
+                        <img src="Assets/IMG/vivero2.png" alt="Equipo de trabajo en vivero">
+                        <figcaption>Planificación diaria y seguimiento por operario.</figcaption>
+                    </figure>
+                    <span class="module-number">07</span>
+                    <h3>Personal y tareas</h3>
+                    <p>Registro de personal, plan diario, tareas simplificadas e historial de actividad por operario.</p>
+                    <a href="Pages/personal.html">Explorar personal</a>
+                </article>
+                <article>
+                    <figure class="module-figure">
+                        <img src="Assets/IMG/dash2.png" alt="Panel de costos operativos">
+                        <figcaption>Costos acumulados por lote y cultivo.</figcaption>
+                    </figure>
+                    <span class="module-number">08</span>
+                    <h3>Costos operativos</h3>
+                    <p>Insumos, tratamientos, mano de obra, otros costos y comparativos por tipo de cultivo.</p>
+                    <a href="Pages/costos.html">Explorar costos</a>
+                </article>
+                <article>
+                    <figure class="module-figure">
+                        <img src="Assets/IMG/dash.png" alt="Dashboard principal de AiDEN">
+                        <figcaption>Indicadores, reportes y notificaciones.</figcaption>
+                    </figure>
+                    <span class="module-number">09</span>
+                    <h3>Reportes y dashboard</h3>
+                    <p>Dashboard por rol, reportes de producción, consumo, alertas/incidencias y notificaciones.</p>
+                    <a href="Pages/reportes-dashboard.html">Explorar reportes</a>
                 </article>
             </section>
         </section>
@@ -149,7 +209,7 @@
                     Presentemos cómo la plataforma puede adaptarse a sus viveros, roles, indicadores y flujo de producción por lotes.
                 </p>
             </article>
-            <a href="Pages/singup.html" class="button button-primary">Ver Muestra</a>
+            <a href="Pages/reportes-dashboard.html" class="button button-primary">Ver prototipo</a>
         </section>
     </main>
 
@@ -167,9 +227,11 @@
 
         <nav aria-label="Accesos rápidos">
             <a href="Pages/login.html">Acceso</a>
+            <a href="Pages/configuracion.html">Configuración</a>
             <a href="Pages/inventario.html">Inventario</a>
-            <a href="Pages/produccion.html">Producción</a>
+            <a href="Pages/produccion.html">Cultivos</a>
             <a href="Pages/trazabilidad.html">Trazabilidad</a>
+            <a href="Pages/reportes-dashboard.html">Reportes</a>
         </nav>
     </footer>
 </body>
