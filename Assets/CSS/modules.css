@@ -96,10 +96,12 @@ button {
 .nav-menu li:nth-child(5) a::before { content: "A"; }
 .nav-menu li:nth-child(6) a::before { content: "Q"; }
 .nav-menu li:nth-child(7) a::before { content: "P"; }
-.nav-menu li:nth-child(8) a::before { content: "R"; }
+.nav-menu li:nth-child(8) a::before { content: "$"; }
+.nav-menu li:nth-child(9) a::before { content: "R"; }
 
 .nav-menu a,
 .user-logout a {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 0.65rem;
@@ -121,6 +123,21 @@ button {
     font-weight: 900;
 }
 
+.nav-badge,
+.nav-menu .badge-danger {
+    display: inline-grid;
+    min-width: 1.35rem;
+    height: 1.35rem;
+    margin-left: auto;
+    padding: 0 0.35rem;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--red-100);
+    color: var(--red-700);
+    font-size: 0.72rem;
+    font-weight: 900;
+}
+
 .nav-menu a:hover,
 .user-logout a:hover {
     background: var(--green-100);
@@ -133,6 +150,12 @@ button {
 }
 
 .nav-menu a.active::before {
+    color: var(--white);
+}
+
+.nav-menu a.active .nav-badge,
+.nav-menu a.active .badge-danger {
+    background: rgba(255, 255, 255, 0.18);
     color: var(--white);
 }
 
@@ -450,6 +473,26 @@ p {
     grid-template-columns: 1fr;
 }
 
+.compact-actions,
+.modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    align-items: center;
+}
+
+.quick-panel {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.quick-panel .checklist {
+    padding: 0.85rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    background: var(--gray-100);
+}
+
 .field {
     display: grid;
     gap: 0.35rem;
@@ -477,6 +520,52 @@ p {
 .field textarea {
     min-height: 5.5rem;
     resize: vertical;
+}
+
+.modal-form {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.modal-form .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.modal-actions {
+    justify-content: flex-end;
+}
+
+.form-note {
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: var(--blue-100);
+    color: var(--blue-700);
+    font-size: 0.88rem;
+    font-weight: 750;
+}
+
+.detail-list {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.detail-list div {
+    display: grid;
+    gap: 0.15rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.detail-list dt {
+    color: var(--gray-500);
+    font-size: 0.78rem;
+    font-weight: 850;
+    text-transform: uppercase;
+}
+
+.detail-list dd {
+    color: var(--gray-900);
+    font-weight: 750;
 }
 
 .badge,
@@ -630,7 +719,9 @@ p {
 }
 
 .action-modal {
-    width: min(520px, 100%);
+    width: min(640px, 100%);
+    max-height: min(90vh, 760px);
+    overflow: auto;
     border: 1px solid var(--gray-200);
     border-radius: 8px;
     background: var(--white);
@@ -724,6 +815,17 @@ p {
         font-size: 1rem;
     }
 
+    .nav-badge,
+    .nav-menu .badge-danger {
+        position: absolute;
+        top: 0.25rem;
+        right: 0.25rem;
+        min-width: 1rem;
+        height: 1rem;
+        padding: 0 0.2rem;
+        font-size: 0.62rem;
+    }
+
     .profile-trigger {
         grid-template-columns: 1fr;
         justify-items: center;
@@ -755,7 +857,8 @@ p {
 
 @media (max-width: 640px) {
     .summary-grid,
-    .form-grid {
+    .form-grid,
+    .modal-form .form-grid {
         grid-template-columns: 1fr;
     }
 

@@ -31,19 +31,19 @@
             <section>
                 <span class="eyebrow">Módulo 1 · HU01-HU03</span>
                 <h1>Configuración del sistema</h1>
-                <p>Panel exclusivo para Administrador con catálogos maestros, usuarios, roles, sesiones, auditoría y parámetros de seguridad.</p>
+                <p>Panel exclusivo para Administrador con estructura ERP, catálogos maestros, usuarios, roles, sesiones, auditoría y parámetros de seguridad.</p>
             </section>
             <section class="toolbar">
                 <a class="btn-outline" href="#auditoria">Ver auditoría</a>
-                <a class="btn" href="#usuarios">Nuevo usuario</a>
+                <button class="btn" type="button">Nuevo usuario</button>
             </section>
         </header>
 
         <section class="summary-grid" aria-label="Resumen de configuración">
             <article class="metric-card">
-                <span class="metric-label">Listas maestras</span>
-                <strong class="metric-value">11</strong>
-                <p class="metric-note">Cultivos, unidades, zonas, actividades y variables.</p>
+                <span class="metric-label">Datos maestros</span>
+                <strong class="metric-value">16</strong>
+                <p class="metric-note">Viveros, sedes, bodegas, cultivos, unidades, zonas y variables.</p>
             </article>
             <article class="metric-card">
                 <span class="metric-label">Roles oficiales</span>
@@ -56,13 +56,66 @@
                 <p class="metric-note">Configurable entre 15 y 120 minutos.</p>
             </article>
             <article class="metric-card">
-                <span class="metric-label">Bloqueo</span>
-                <strong class="metric-value">5</strong>
-                <p class="metric-note">Intentos fallidos bloquean 15 minutos.</p>
+                <span class="metric-label">Centros costo</span>
+                <strong class="metric-value">7</strong>
+                <p class="metric-note">Producción, calidad, inventario, ambiental y administración.</p>
             </article>
         </section>
 
         <section class="workspace">
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Estructura ERP del vivero</h2>
+                        <p>Define la organización agrícola para que inventario, cultivos, trazabilidad, costos, personal y reportes hablen el mismo idioma.</p>
+                    </section>
+                    <button class="btn-outline" type="button">Nuevo centro de costo</button>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Entidad</th>
+                                <th>Ejemplo</th>
+                                <th>Uso ERP</th>
+                                <th>Módulos impactados</th>
+                                <th>Regla</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Vivero / sede</td>
+                                <td>Vivero Popayán · Sede Norte</td>
+                                <td>Separar operación, inventario y reportes ejecutivos</td>
+                                <td>Todos</td>
+                                <td><span class="badge">Obligatorio</span></td>
+                            </tr>
+                            <tr>
+                                <td>Bodega</td>
+                                <td>Bodega insumos químicos</td>
+                                <td>Ubicación de existencias, compras y salidas</td>
+                                <td>Inventario, Costos, Calidad</td>
+                                <td><span class="badge">Con responsable</span></td>
+                            </tr>
+                            <tr>
+                                <td>Centro de costo</td>
+                                <td>Producción café · Calidad fitosanitaria</td>
+                                <td>Imputación de insumos, mano de obra y otros gastos</td>
+                                <td>Cultivos, Personal, Costos, Reportes</td>
+                                <td><span class="badge-warn">No retroactivo</span></td>
+                            </tr>
+                            <tr>
+                                <td>Zona productiva</td>
+                                <td>Germinación norte · Cama 3</td>
+                                <td>Asignar sensores, lotes, tareas y responsables</td>
+                                <td>Cultivos, Ambiental, Personal</td>
+                                <td><span class="badge">Trazable</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
@@ -85,7 +138,7 @@
                         <tbody>
                             <tr>
                                 <td>Tipos de cultivo</td>
-                                <td>Tomate, lechuga, café</td>
+                                <td>Tomate, lechuga, café, ornamentales</td>
                                 <td>Nombre único</td>
                                 <td>Ciclos, lotes, umbrales, reportes</td>
                                 <td><span class="badge">Activo</span></td>
@@ -118,6 +171,13 @@
                                 <td>Sensores, lotes y umbrales</td>
                                 <td><span class="badge-warn">1 inactivo oculto</span></td>
                             </tr>
+                            <tr>
+                                <td>Proveedores y terceros</td>
+                                <td>BioTierra, AgroAndes, servicios externos</td>
+                                <td>NIT/correo único</td>
+                                <td>Compras, inventario, costos y reportes</td>
+                                <td><span class="badge">ERP</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </section>
@@ -131,38 +191,17 @@
                             <p>El usuario no se elimina: solo se inactiva. El último acceso y los fallidos quedan registrados.</p>
                         </section>
                     </header>
-                    <form class="form-grid">
-                        <label class="field">Nombre completo
-                            <input type="text" value="María López Campo">
-                        </label>
-                        <label class="field">Correo único
-                            <input type="email" value="maria@vivero.com">
-                        </label>
-                        <label class="field">Rol
-                            <select>
-                                <option>Operario</option>
-                                <option>Supervisor</option>
-                                <option>Administrador</option>
-                            </select>
-                        </label>
-                        <label class="field">Estado
-                            <select>
-                                <option>Activo</option>
-                                <option>Inactivo</option>
-                            </select>
-                        </label>
-                        <label class="field">Contraseña inicial
-                            <input type="password" value="Temporal123">
-                        </label>
-                        <label class="field">Acción segura
-                            <select>
-                                <option>Generar temporal de un solo uso</option>
-                                <option>Mantener contraseña actual</option>
-                            </select>
-                        </label>
-                        <button class="btn" type="button">Guardar usuario</button>
-                        <button class="btn-outline" type="button">Restablecer contraseña</button>
-                    </form>
+                    <section class="quick-panel">
+                        <ul class="checklist">
+                            <li>Alta y edición se hacen en pop-up con correo único, rol, estado y contraseña temporal.</li>
+                            <li>Los cambios quedan auditados con valor anterior, valor nuevo y usuario responsable.</li>
+                            <li>Solo Administrador puede crear usuarios, roles y restablecer credenciales.</li>
+                        </ul>
+                        <section class="compact-actions">
+                            <button class="btn-outline" type="button">Guardar usuario</button>
+                            <button class="btn-outline" type="button">Restablecer contraseña</button>
+                        </section>
+                    </section>
                 </article>
 
                 <article class="panel-card">

@@ -29,7 +29,7 @@
             <section>
                 <span class="eyebrow">Módulo 8 · HU31-HU33</span>
                 <h1>Costos operativos</h1>
-                <p>Panel financiero por lote, jornal por operario, costos automáticos por consumo y reporte comparativo por tipo de cultivo.</p>
+                <p>Contabilidad operativa del ERP agrícola: costos por lote, centro de costo, compras, jornal, consumos automáticos y comparativos por cultivo.</p>
             </section>
             <section class="toolbar">
                 <button class="btn-outline" type="button">Exportar Excel</button>
@@ -48,6 +48,37 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
+                        <h2>Libro operativo de costos ERP</h2>
+                        <p>Todo consumo, compra, tratamiento, jornada u otro gasto se imputa a lote, centro de costo, vivero y responsable.</p>
+                    </section>
+                    <button class="btn-outline" type="button">Cierre mensual</button>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Origen</th>
+                                <th>Documento</th>
+                                <th>Centro de costo</th>
+                                <th>Lote</th>
+                                <th>Valor</th>
+                                <th>Responsable</th>
+                                <th>Estado contable</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2026-06-05</td><td>Compra inventario</td><td>FAC-2591</td><td>Producción café</td><td>L-2026-001</td><td>$210.000</td><td>Supervisor Vivero</td><td><span class="badge">Imputado</span></td></tr>
+                            <tr><td>2026-06-05</td><td>Jornada</td><td>JOR-JR-0605</td><td>Producción tomate</td><td>LOT-2026-001</td><td>$80.000</td><td>Juan Riego</td><td><span class="badge">Imputado</span></td></tr>
+                            <tr><td>2026-06-07</td><td>Tratamiento</td><td>TRAT-018</td><td>Calidad fitosanitaria</td><td>LOT-2026-002</td><td>$85.000</td><td>Ana Calidad</td><td><span class="badge-warn">Por validar</span></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
                         <h2>Costo acumulado por lote</h2>
                         <p>Visible para Supervisor y Administrador; no para Operario. Compara estimado vs real.</p>
                     </section>
@@ -57,6 +88,7 @@
                         <thead>
                             <tr>
                                 <th>Lote</th>
+                                <th>Centro de costo</th>
                                 <th>Insumos</th>
                                 <th>Tratamientos</th>
                                 <th>Mano de obra</th>
@@ -70,6 +102,7 @@
                         <tbody>
                             <tr>
                                 <td>LOT-2026-001</td>
+                                <td>Producción tomate</td>
                                 <td>$420.000</td>
                                 <td>$85.000</td>
                                 <td>$310.000</td>
@@ -81,6 +114,7 @@
                             </tr>
                             <tr>
                                 <td>LOT-2026-006</td>
+                                <td>Producción tomate</td>
                                 <td>$210.000</td>
                                 <td>$0</td>
                                 <td>$190.000</td>
@@ -199,6 +233,7 @@
                     <article class="module-card"><h3>Gráfico de barras</h3><p>Insumos █████ · Mano de obra ███████ · Tratamientos ██ · Otros █.</p></article>
                     <article class="module-card"><h3>Orden descendente</h3><p>La tabla se puede ordenar por costo total o costo por planta.</p></article>
                     <article class="module-card"><h3>Filtro</h3><p>Periodo y uno o varios tipos de cultivo seleccionables.</p></article>
+                    <article class="module-card"><h3>ERP agrícola</h3><p>Costos conciliables por vivero, sede, lote, cultivo, proveedor y centro de costo.</p></article>
                 </section>
             </article>
         </section>

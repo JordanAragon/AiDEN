@@ -39,9 +39,9 @@
 
         <section class="summary-grid">
             <article class="metric-card"><span class="metric-label">Sensores activos</span><strong class="metric-value">16</strong><p class="metric-note">Solo activos generan datos y alertas.</p></article>
-            <article class="metric-card"><span class="metric-label">Fuera de rango</span><strong class="metric-value">3</strong><p class="metric-note">Advertencia o crítico según umbral.</p></article>
-            <article class="metric-card"><span class="metric-label">Sin señal</span><strong class="metric-value">1</strong><p class="metric-note">Alerta tras 30 minutos configurables.</p></article>
-            <article class="metric-card"><span class="metric-label">Actualización</span><strong class="metric-value">5 min</strong><p class="metric-note">Frecuencia configurable 1, 5 o 15.</p></article>
+            <article class="metric-card"><span class="metric-label">Temperatura</span><strong class="metric-value">24.8°C</strong><p class="metric-note">Actual en Germinación norte.</p></article>
+            <article class="metric-card"><span class="metric-label">Humedad</span><strong class="metric-value">52%</strong><p class="metric-note">Suelo bajo; riego sugerido.</p></article>
+            <article class="metric-card"><span class="metric-label">Anomalías IA</span><strong class="metric-value">2</strong><p class="metric-note">Una crítica y una preventiva.</p></article>
         </section>
 
         <section class="workspace">
@@ -50,32 +50,17 @@
                     <header class="panel-header">
                         <section>
                             <h2>Registro de dispositivo</h2>
-                            <p>Incluye alias, variable, unidad, ubicación, identificador único, calibración y estado.</p>
+                            <p>Incluye alias, variable, unidad, ubicación, identificador único, calibración, estado e integración IoT.</p>
                         </section>
                     </header>
-                    <form class="form-grid">
-                        <label class="field">Alias
-                            <input type="text" value="S-03 Humedad Germinación">
-                        </label>
-                        <label class="field">Variable
-                            <select><option>Temperatura ambiental</option><option>Humedad relativa</option><option>Humedad del sustrato</option><option>pH del suelo</option><option>Luminosidad PAR</option><option>CO2</option><option>Conductividad eléctrica</option><option>Otra configurable</option></select>
-                        </label>
-                        <label class="field">Unidad
-                            <input type="text" value="%">
-                        </label>
-                        <label class="field">Zona
-                            <select><option>Germinación norte</option><option>Crecimiento sur</option></select>
-                        </label>
-                        <label class="field">MAC / serial / IP
-                            <input type="text" value="SEN-GER-03">
-                        </label>
-                        <label class="field">Estado
-                            <select><option>Activo</option><option>Inactivo</option><option>En mantenimiento</option></select>
-                        </label>
-                        <label class="field full">Lotes o zonas vinculadas
-                            <input type="text" value="LOT-2026-001, LOT-2026-004">
-                        </label>
-                    </form>
+                    <section class="quick-panel">
+                        <ul class="checklist">
+                            <li>El alta de sensor vive en pop-up; la vista principal queda para lectura y análisis.</li>
+                            <li>Un sensor inactivo deja de generar alertas, pero mantiene su histórico consultable.</li>
+                            <li>Las zonas vinculadas se consumen desde Gestión de Cultivos.</li>
+                            <li>Variables cubiertas: temperatura, humedad ambiental, humedad del suelo y luminosidad.</li>
+                        </ul>
+                    </section>
                 </article>
 
                 <article class="panel-card">
@@ -84,32 +69,32 @@
                             <h2>Umbrales por cultivo y fase</h2>
                             <p>Rangos óptimos, advertencia y críticos para temperatura, humedad, sustrato, pH, PAR, CO2, CE y variables adicionales.</p>
                         </section>
+                        <button class="btn" type="button">Configurar umbral</button>
                     </header>
-                    <form class="form-grid">
-                        <label class="field">Cultivo
-                            <select><option>Tomate</option><option>Lechuga</option></select>
-                        </label>
-                        <label class="field">Fase
-                            <select><option>Germinación</option><option>Crecimiento</option></select>
-                        </label>
-                        <label class="field">Variable
-                            <select><option>Humedad del sustrato</option><option>Conductividad eléctrica</option></select>
-                        </label>
-                        <label class="field">Rango óptimo
-                            <input type="text" value="65% - 78%">
-                        </label>
-                        <label class="field">Advertencia
-                            <input type="text" value="55-64% / 79-85%">
-                        </label>
-                        <label class="field">Crítico
-                            <input type="text" value="<55% / >85%">
-                        </label>
-                        <label class="field full">Acción rápida
-                            <select><option>Duplicar configuración hacia otro cultivo</option><option>Aplicar global por defecto</option></select>
-                        </label>
-                    </form>
+                    <section class="quick-panel">
+                        <ul class="checklist">
+                            <li>Los umbrales se editan por cultivo, fase y variable sin salir del dashboard.</li>
+                            <li>Una lectura fuera de rango genera alerta, pero no modifica procesos de cultivos.</li>
+                            <li>Las comparaciones históricas siguen siendo solo lectura.</li>
+                        </ul>
+                    </section>
                 </article>
             </section>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Dashboard ambiental ideal</h2>
+                        <p>Lecturas actuales, estado del lote, tendencias, alertas, anomalías y control de riego en una sola vista operativa.</p>
+                    </section>
+                    <button class="btn" type="button">Automatizar riego</button>
+                </header>
+                <section class="feature-grid">
+                    <article class="module-card"><h3>Estado del lote</h3><p>LOT-2026-001 · Germinación · humedad suelo 52% · alerta crítica activa.</p></article>
+                    <article class="module-card"><h3>Tendencia</h3><p>Temperatura estable, luminosidad subiendo y humedad del suelo cayendo desde las 06:00.</p></article>
+                    <article class="module-card"><h3>Predicción IA</h3><p>Probabilidad de estrés hídrico 76% si no se activa riego en las próximas 2 horas.</p></article>
+                </section>
+            </article>
 
             <article class="panel-card">
                 <header class="panel-header">
@@ -136,6 +121,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <td>S-01 Temperatura Germinación</td>
+                                <td>Temperatura</td>
+                                <td>24.8</td>
+                                <td>°C</td>
+                                <td>Hace 1 min</td>
+                                <td><span class="badge">Normal</span></td>
+                                <td>▂▃▃▃▄▃</td>
+                            </tr>
                             <tr>
                                 <td>S-03 Humedad Germinación</td>
                                 <td>Humedad sustrato</td>

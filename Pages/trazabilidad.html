@@ -48,7 +48,7 @@
             <article class="metric-card">
                 <span class="metric-label">Eventos</span>
                 <strong class="metric-value">38</strong>
-                <p class="metric-note">Orden cronológico exacto.</p>
+                <p class="metric-note">Siembras, riegos, fertilizaciones, fitosanitarios y cosechas.</p>
             </article>
             <article class="metric-card">
                 <span class="metric-label">Evidencias</span>
@@ -56,9 +56,9 @@
                 <p class="metric-note">Miniaturas visibles en eventos.</p>
             </article>
             <article class="metric-card">
-                <span class="metric-label">Vista pública</span>
-                <strong class="metric-value">Sin costos</strong>
-                <p class="metric-note">Solo información operativa.</p>
+                <span class="metric-label">Reporte ICA</span>
+                <strong class="metric-value">Listo</strong>
+                <p class="metric-note">Formato con responsables, fechas y evidencia exportable.</p>
             </article>
         </section>
 
@@ -124,6 +124,7 @@
                     <section class="toolbar">
                         <button class="btn-outline" type="button">Filtro: actividades</button>
                         <button class="btn-outline" type="button">Filtro: junio 2026</button>
+                        <button class="btn-outline" type="button">Reporte ICA</button>
                     </section>
                 </header>
                 <ul class="timeline">
@@ -136,6 +137,11 @@
                         <small>2026-06-05 09:00 · Operario Campo · Actividad</small>
                         <strong>Riego inicial registrado en fase Germinación.</strong>
                         <p>3 fotografías adjuntas como evidencia. Actividad queda bloqueada para edición.</p>
+                    </li>
+                    <li>
+                        <small>2026-06-06 06:45 · Juan Riego · Fertilización</small>
+                        <strong>Aplicación NPK registrada con dosis, responsable e insumo descontado.</strong>
+                        <p>Movimiento enlazado a Inventario y visible para auditoría del lote.</p>
                     </li>
                     <li>
                         <small>2026-06-05 09:05 · Sistema · Consumo</small>
@@ -153,9 +159,19 @@
                         <p>Genera alerta crítica al supervisor y aparece en trazabilidad.</p>
                     </li>
                     <li>
+                        <small>2026-06-07 17:25 · Ana Calidad · Aplicación fitosanitaria</small>
+                        <strong>Tratamiento preventivo registrado con producto, dosis y periodo de carencia.</strong>
+                        <p>Evento preparado para reporte ICA y consulta cronológica.</p>
+                    </li>
+                    <li>
                         <small>2026-06-08 08:40 · Supervisor Vivero · Cambio de fase</small>
                         <strong>Avance autorizado con justificación por limitante técnico pendiente.</strong>
                         <p>Registra cierre de fase anterior, inicio de nueva fase y usuario autorizador.</p>
+                    </li>
+                    <li>
+                        <small>2026-06-30 11:10 · Supervisor Vivero · Cosecha</small>
+                        <strong>Cosecha parcial registrada con cantidad final, responsable y evidencia.</strong>
+                        <p>Actualiza estado productivo sin perder la historia completa del lote.</p>
                     </li>
                 </ul>
             </article>
@@ -163,8 +179,8 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h2>Informe de trazabilidad PDF</h2>
-                        <p>El prototipo muestra el contenido esperado del informe formal para lotes activos o cerrados.</p>
+                        <h2>Informe de trazabilidad e ICA</h2>
+                        <p>El prototipo muestra el contenido esperado del informe formal para lotes activos, cerrados o auditados por autoridad.</p>
                     </section>
                 </header>
                 <section class="feature-grid">
@@ -173,12 +189,16 @@
                         <p>Nombre del vivero, logo, fecha de generación y QR de verificación.</p>
                     </article>
                     <article class="module-card">
-                        <h3>Contenido</h3>
-                        <p>Datos del lote, línea de tiempo, costos acumulados y estado final.</p>
+                        <h3>Contenido ICA</h3>
+                        <p>Identificación única, especie, ubicación, fechas, responsables, aplicaciones y cosechas.</p>
                     </article>
                     <article class="module-card">
                         <h3>Evidencias</h3>
                         <p>Fotografías adjuntas como miniaturas dentro del evento correspondiente.</p>
+                    </article>
+                    <article class="module-card">
+                        <h3>Auditoría</h3>
+                        <p>Cambios con usuario, fecha, campo anterior, valor nuevo y justificación.</p>
                     </article>
                 </section>
             </article>

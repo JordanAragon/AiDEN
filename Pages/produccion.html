@@ -35,7 +35,7 @@
             </section>
             <section class="toolbar">
                 <a class="btn-outline" href="#kanban">Kanban</a>
-                <a class="btn" href="#nuevo-lote">Abrir lote</a>
+                <button class="btn" type="button">Abrir lote</button>
             </section>
         </header>
 
@@ -43,12 +43,12 @@
             <article class="metric-card">
                 <span class="metric-label">Lotes activos</span>
                 <strong class="metric-value">18</strong>
-                <p class="metric-note">Todos vinculados a ciclo productivo.</p>
+                <p class="metric-note">Todos vinculados a especie, siembra y ciclo productivo.</p>
             </article>
             <article class="metric-card">
-                <span class="metric-label">En riesgo</span>
-                <strong class="metric-value">4</strong>
-                <p class="metric-note">Por retraso, alerta o limitante.</p>
+                <span class="metric-label">Cosechas previstas</span>
+                <strong class="metric-value">6</strong>
+                <p class="metric-note">Predicción IA para los próximos 30 días.</p>
             </article>
             <article class="metric-card">
                 <span class="metric-label">Actividades hoy</span>
@@ -66,8 +66,8 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h2>Ciclos productivos por cultivo</h2>
-                        <p>Las fases tienen orden, duración estimada, obligatoriedad y pueden clonarse. El orden no cambia si hay lotes activos.</p>
+                        <h2>Especies y ciclos productivos</h2>
+                        <p>Registra especies cultivadas, ciclos, fases, duración estimada y reglas de edición. El orden no cambia si hay lotes activos.</p>
                     </section>
                     <button class="btn-outline" type="button">Clonar ciclo</button>
                 </header>
@@ -84,6 +84,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <td>Café Castillo</td>
+                                <td>Café</td>
+                                <td>Siembra · Germinación · Crecimiento · Endurecimiento · Despacho</td>
+                                <td>180 días</td>
+                                <td>Editable con aprobación agronómica</td>
+                                <td><span class="badge">Activo</span></td>
+                            </tr>
                             <tr>
                                 <td>Tomate estándar</td>
                                 <td>Tomate</td>
@@ -113,35 +121,13 @@
                             <p>Código único generado con patrón configurable, QR automático y responsables múltiples.</p>
                         </section>
                     </header>
-                    <form class="form-grid">
-                        <label class="field">Tipo de cultivo
-                            <select><option>Tomate</option><option>Lechuga</option><option>Café</option></select>
-                        </label>
-                        <label class="field">Ciclo asociado
-                            <input type="text" value="Tomate estándar" readonly>
-                        </label>
-                        <label class="field">Código de lote
-                            <input type="text" value="LOT-2026-001">
-                        </label>
-                        <label class="field">Zona
-                            <select><option>Germinación norte</option><option>Crecimiento sur</option></select>
-                        </label>
-                        <label class="field">Unidades sembradas
-                            <input type="number" min="1" value="500">
-                        </label>
-                        <label class="field">Fecha de inicio
-                            <input type="date" value="2026-06-05">
-                        </label>
-                        <label class="field">Responsable principal
-                            <select><option>Operario Campo</option><option>María López</option></select>
-                        </label>
-                        <label class="field">Co-responsables
-                            <input type="text" value="Juan Riego, Ana Calidad">
-                        </label>
-                        <label class="field full">Observaciones iniciales
-                            <textarea>Semilla lote S-248, sustrato BioTierra, sombreo parcial por ola de calor.</textarea>
-                        </label>
-                    </form>
+                    <section class="quick-panel">
+                        <ul class="checklist">
+                            <li>La creación de lote se resuelve en pop-up con cultivo, ciclo, zona, unidades y responsable.</li>
+                            <li>El QR se genera al guardar y queda fijo para trazabilidad.</li>
+                            <li>Operario solo consulta lotes asignados; Supervisor puede abrir y ajustar responsables.</li>
+                        </ul>
+                    </section>
                 </article>
 
                 <article class="panel-card">
@@ -150,33 +136,54 @@
                             <h2>Actividad y consumo en lote</h2>
                             <p>La fase actual se precarga. El operario queda asociado al usuario activo y los consumos descuentan inventario.</p>
                         </section>
+                        <button class="btn" type="button">Registrar actividad</button>
                     </header>
-                    <form class="form-grid">
-                        <label class="field">Lote
-                            <select><option>LOT-2026-001</option><option>LOT-2026-002</option></select>
-                        </label>
-                        <label class="field">Fase actual
-                            <input type="text" value="Germinación" readonly>
-                        </label>
-                        <label class="field">Tipo actividad
-                            <select><option>Riego</option><option>Fertilización</option><option>Corrección</option></select>
-                        </label>
-                        <label class="field">Fecha y hora editable
-                            <input type="datetime-local" value="2026-06-05T09:00">
-                        </label>
-                        <label class="field full">Descripción obligatoria
-                            <textarea>Riego de germinación con solución nutritiva controlada.</textarea>
-                        </label>
-                        <label class="field">Insumo consumido
-                            <select><option>Solución nutritiva A</option><option>Sustrato orgánico</option></select>
-                        </label>
-                        <label class="field">Cantidad validada contra stock
-                            <input type="number" value="2">
-                        </label>
-                        <label class="field full">Evidencias
-                            <input type="text" value="foto-1.jpg, foto-2.jpg, foto-3.jpg">
-                        </label>
-                    </form>
+                    <section class="quick-panel">
+                        <ul class="checklist">
+                            <li>Registro rápido con lote, actividad, consumo de inventario y evidencias.</li>
+                            <li>La fase actual se precarga desde Gestión de Cultivos.</li>
+                            <li>El consumo descuenta existencias, pero Inventario conserva el movimiento.</li>
+                        </ul>
+                    </section>
+                </article>
+            </section>
+
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Siembras, trasplantes y cosechas</h2>
+                            <p>Registros agrícolas con fechas, responsables, cantidades, evidencia fotográfica y efecto sobre el estado del lote.</p>
+                        </section>
+                        <button class="btn" type="button">Registrar cosecha</button>
+                    </header>
+                    <section class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Lote</th><th>Especie</th><th>Siembra</th><th>Trasplante</th><th>Cosecha prevista</th><th>Fotos</th><th>Estado</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>L-2026-001</td><td>Café Castillo</td><td>2026-05-12</td><td>2026-07-15</td><td>2026-11-08</td><td>8</td><td><span class="badge">Crecimiento</span></td></tr>
+                                <tr><td>LOT-2026-006</td><td>Tomate</td><td>2026-04-01</td><td>2026-04-21</td><td>2026-06-30</td><td>14</td><td><span class="badge-blue">Producción</span></td></tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Calendario agrícola e IA</h2>
+                            <p>Planifica actividades por fecha y anticipa cosechas según ciclo, ambiente, crecimiento y eventos de calidad.</p>
+                        </section>
+                        <button class="btn" type="button">Predicción IA</button>
+                    </header>
+                    <ul class="checklist">
+                        <li>Estados controlados: Germinación, Crecimiento, Producción, Cosechado y Perdido.</li>
+                        <li>Actividades planificadas: riego, fertilización, inspección, trasplante y cosecha.</li>
+                        <li>La predicción ajusta fecha y volumen si hay estrés ambiental o incidencias.</li>
+                        <li>Ejemplo: L-2026-001 · Café Castillo · siembra 12/05/2026 · estado Crecimiento.</li>
+                    </ul>
                 </article>
             </section>
 
@@ -244,11 +251,9 @@
                         <li>No se permite retroceder de fase bajo ninguna condición.</li>
                         <li>Al cerrar la última fase, el lote pasa a Listo para despacho.</li>
                     </ul>
-                    <form class="form-grid single">
-                        <label class="field">Justificación de override
-                            <textarea>Se autoriza avance por revisión agronómica presencial y corrección aplicada al sustrato.</textarea>
-                        </label>
-                    </form>
+                    <section class="compact-actions">
+                        <button class="btn-outline" type="button">Registrar justificación</button>
+                    </section>
                 </article>
 
                 <article class="panel-card">
@@ -258,23 +263,13 @@
                             <p>Actualiza unidades vivas y cierra por pérdida si la baja es total.</p>
                         </section>
                     </header>
-                    <form class="form-grid">
-                        <label class="field">Cantidad
-                            <input type="number" value="24" min="1">
-                        </label>
-                        <label class="field">Motivo
-                            <select><option>Plagas</option><option>Condiciones ambientales adversas</option><option>Error operativo</option><option>Descarte por calidad</option></select>
-                        </label>
-                        <label class="field full">Descripción mínima 20 caracteres
-                            <textarea>Plántulas con daño irreversible en cama 2, evidencia fotográfica adjunta.</textarea>
-                        </label>
-                        <label class="field">Fecha ocurrencia
-                            <input type="date" value="2026-06-05">
-                        </label>
-                        <label class="field">Confirmación pérdida total
-                            <select><option>No aplica</option><option>Confirmo cierre por pérdida</option></select>
-                        </label>
-                    </form>
+                    <section class="quick-panel">
+                        <ul class="checklist">
+                            <li>La baja se registra solo con cantidad, motivo, fecha y evidencia mínima.</li>
+                            <li>Si es pérdida total, el lote queda cerrado y visible en reportes.</li>
+                        </ul>
+                        <button class="btn" type="button">Registrar merma</button>
+                    </section>
                 </article>
             </section>
 

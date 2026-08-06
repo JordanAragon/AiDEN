@@ -41,7 +41,7 @@
             <article class="metric-card"><span class="metric-label">Personal activo</span><strong class="metric-value">14</strong><p class="metric-note">Inactivos conservan histórico.</p></article>
             <article class="metric-card"><span class="metric-label">Tareas hoy</span><strong class="metric-value">32</strong><p class="metric-note">Pendiente, en progreso o completada.</p></article>
             <article class="metric-card"><span class="metric-label">Completadas</span><strong class="metric-value">68%</strong><p class="metric-note">Coinciden con actividades registradas.</p></article>
-            <article class="metric-card"><span class="metric-label">No ejecutadas</span><strong class="metric-value">4</strong><p class="metric-note">Van al reporte de cumplimiento.</p></article>
+            <article class="metric-card"><span class="metric-label">Jornadas abiertas</span><strong class="metric-value">9</strong><p class="metric-note">Entrada, salida y productividad por operario.</p></article>
         </section>
 
         <section class="workspace">
@@ -52,36 +52,16 @@
                             <h2>Registro de personal</h2>
                             <p>El jornal diario es confidencial y solo visible para Administrador.</p>
                         </section>
+                        <button class="btn" type="button">Nuevo trabajador</button>
                     </header>
-                    <form class="form-grid">
-                        <label class="field">Nombre completo
-                            <input type="text" value="María López Campo">
-                        </label>
-                        <label class="field">Cargo o función
-                            <select><option>Operario</option><option>Técnico</option><option>Supervisor</option></select>
-                        </label>
-                        <label class="field">Zona habitual
-                            <select><option>Germinación norte</option><option>Crecimiento sur</option></select>
-                        </label>
-                        <label class="field">Teléfono
-                            <input type="tel" value="310 000 0000">
-                        </label>
-                        <label class="field">Fecha ingreso
-                            <input type="date" value="2026-01-15">
-                        </label>
-                        <label class="field">Usuario vinculado
-                            <select><option>maria@vivero.com</option><option>Sin usuario</option></select>
-                        </label>
-                        <label class="field">Jornal diario
-                            <input type="text" value="$80.000 · solo Administrador">
-                        </label>
-                        <label class="field">Estado
-                            <select><option>Activo</option><option>Inactivo</option></select>
-                        </label>
-                        <label class="field full">Observaciones
-                            <textarea>Turno mañana, fuerte en trasplante, restricción para agroquímicos categoría II.</textarea>
-                        </label>
-                    </form>
+                    <section class="quick-panel">
+                        <ul class="checklist">
+                            <li>El registro de personal se captura en pop-up con datos operativos mínimos.</li>
+                            <li>El jornal diario queda oculto para Supervisor y Operario.</li>
+                            <li>La vinculación a usuario se consume desde Configuración, no se crea aquí.</li>
+                            <li>Roles operativos soportados: Dueño, Administrador y Operario con permisos diferenciados.</li>
+                        </ul>
+                    </section>
                 </article>
 
                 <article class="panel-card">
@@ -102,6 +82,27 @@
                     </section>
                 </article>
             </section>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Control de acceso, jornada y productividad</h2>
+                        <p>Relaciona usuarios, roles, inicio de jornada, actividades ejecutadas, historial de acciones y notificaciones.</p>
+                    </section>
+                    <button class="btn" type="button">Registrar jornada</button>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Operario</th><th>Rol</th><th>Jornada</th><th>Riegos</th><th>Inspecciones</th><th>Fertilizaciones</th><th>Notificaciones</th><th>Productividad</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Juan Riego</td><td>Operario</td><td>07:00-15:30</td><td>5</td><td>2</td><td>1</td><td>3 leídas</td><td><span class="badge">92%</span></td></tr>
+                            <tr><td>Ana Calidad</td><td>Operario</td><td>08:00-en curso</td><td>0</td><td>7</td><td>0</td><td>1 pendiente</td><td><span class="badge-warn">74%</span></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
 
             <article class="panel-card">
                 <header class="panel-header">

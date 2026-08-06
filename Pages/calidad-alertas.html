@@ -33,6 +33,7 @@
             </section>
             <section class="toolbar">
                 <button class="btn-outline" type="button">Historial</button>
+                <button class="btn-outline" type="button">Nueva inspección</button>
                 <button class="btn" type="button">Reportar incidencia</button>
             </section>
         </header>
@@ -41,7 +42,7 @@
             <article class="metric-card"><span class="metric-label">Alertas críticas</span><strong class="metric-value">4</strong><p class="metric-note">Badge rojo visible desde el menú.</p></article>
             <article class="metric-card"><span class="metric-label">Advertencias</span><strong class="metric-value">9</strong><p class="metric-note">No bloquean, pero informan al supervisor.</p></article>
             <article class="metric-card"><span class="metric-label">Incidencias</span><strong class="metric-value">3</strong><p class="metric-note">Reportadas, en atención o resueltas.</p></article>
-            <article class="metric-card"><span class="metric-label">Tratamientos</span><strong class="metric-value">6</strong><p class="metric-note">Con revisión de efectividad programada.</p></article>
+            <article class="metric-card"><span class="metric-label">Clasificación A</span><strong class="metric-value">82%</strong><p class="metric-note">Plantas sanas o listas para despacho.</p></article>
         </section>
 
         <section class="workspace">
@@ -52,30 +53,15 @@
                             <h2>Limitantes técnicos por fase</h2>
                             <p>Aplican a lotes futuros; los críticos bloquean avance de fase salvo justificación del supervisor.</p>
                         </section>
+                        <button class="btn" type="button">Nueva limitante</button>
                     </header>
-                    <form class="form-grid">
-                        <label class="field">Nombre
-                            <input type="text" value="Riego nutritivo cada 48 horas">
-                        </label>
-                        <label class="field">Tipo
-                            <select><option>Actividad obligatoria</option><option>Consumo mínimo de insumo</option><option>Condición ambiental</option></select>
-                        </label>
-                        <label class="field">Cultivo
-                            <select><option>Tomate</option><option>Lechuga</option></select>
-                        </label>
-                        <label class="field">Fase
-                            <select><option>Germinación</option><option>Crecimiento</option></select>
-                        </label>
-                        <label class="field">Valor o condición
-                            <input type="text" value="Actividad Riego registrada antes del cierre">
-                        </label>
-                        <label class="field">Criticidad
-                            <select><option>Crítico</option><option>Advertencia</option></select>
-                        </label>
-                        <label class="field full">Plantilla reutilizable
-                            <select><option>Guardar como plantilla para tomate</option><option>Aplicar plantilla existente</option></select>
-                        </label>
-                    </form>
+                    <section class="quick-panel">
+                        <ul class="checklist">
+                            <li>Las limitantes se gestionan en pop-up para no mezclar configuración con monitoreo.</li>
+                            <li>Una limitante crítica bloquea avance de fase hasta justificar o resolver.</li>
+                            <li>Aplica solo sobre calidad; no edita actividades ni sensores de otros módulos.</li>
+                        </ul>
+                    </section>
                 </article>
 
                 <article class="panel-card">
@@ -106,6 +92,44 @@
                             </tbody>
                         </table>
                     </section>
+                </article>
+            </section>
+
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Inspecciones y evaluación fitosanitaria</h2>
+                            <p>Control sanitario con plagas, enfermedades, severidad, tratamiento, evidencias y seguimiento de incidencias.</p>
+                        </section>
+                    </header>
+                    <section class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Incidencia</th><th>Lote</th><th>Problema</th><th>Severidad</th><th>Clasificación</th><th>Acción recomendada</th><th>Evidencia</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>INC-023</td><td>B-003</td><td>Roya</td><td><span class="badge-warn">Media</span></td><td>B</td><td>Fungicida X</td><td>3 fotos</td></tr>
+                                <tr><td>INC-024</td><td>LOT-2026-002</td><td>Trips</td><td><span class="badge-danger">Alta</span></td><td>C</td><td>Aislar lote y tratamiento foliar</td><td>5 fotos</td></tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Clasificación y recomendaciones IA</h2>
+                            <p>Evalúa calidad por lote, estado sanitario, incidencia visual y respuesta esperada al tratamiento.</p>
+                        </section>
+                        <button class="btn" type="button">Clasificar plantas</button>
+                    </header>
+                    <ul class="checklist">
+                        <li>Clasificación A, B, C o descarte con motivo obligatorio.</li>
+                        <li>La IA sugiere acción, prioridad y fecha de revisión, pero el supervisor confirma.</li>
+                        <li>Tratamientos quedan ligados a inventario, periodo de carencia y trazabilidad.</li>
+                        <li>Las evidencias fotográficas acompañan inspección, incidencia y cierre.</li>
+                    </ul>
                 </article>
             </section>
 
@@ -142,7 +166,7 @@
                                 <td>2026-06-05 07:20</td>
                                 <td>2 h 15 min</td>
                                 <td>Activa</td>
-                                <td><input type="text" value="Compra urgente programada con proveedor CampoVerde."></td>
+                                <td><button class="btn-outline" type="button" data-modal-action="Atender alerta">Atender stock</button></td>
                             </tr>
                             <tr>
                                 <td><span class="badge-danger">Incidencia</span></td>
@@ -151,7 +175,7 @@
                                 <td>2026-06-05 08:40</td>
                                 <td>55 min</td>
                                 <td>Activa</td>
-                                <td><input type="text" value="Supervisor asignado para revisión inmediata."></td>
+                                <td><button class="btn-outline" type="button" data-modal-action="Atender alerta">Atender plaga</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -166,26 +190,12 @@
                             <p>El reporte genera alerta crítica y queda vinculado al historial y línea de tiempo del lote.</p>
                         </section>
                     </header>
-                    <form class="form-grid">
-                        <label class="field">Lote afectado
-                            <select><option>LOT-2026-002</option><option>LOT-2026-001</option></select>
-                        </label>
-                        <label class="field">Tipo
-                            <select><option>Plaga</option><option>Enfermedad fúngica</option><option>Deficiencia nutricional</option><option>Daño ambiental</option></select>
-                        </label>
-                        <label class="field">Porcentaje afectado
-                            <input type="number" value="12" min="0" max="100">
-                        </label>
-                        <label class="field">Fecha y hora
-                            <input type="datetime-local" value="2026-06-05T08:40">
-                        </label>
-                        <label class="field full">Síntomas observados mínimo 30 caracteres
-                            <textarea>Manchas circulares y presencia visible de insecto en hojas jóvenes del costado oriental.</textarea>
-                        </label>
-                        <label class="field full">Fotografías hasta 5
-                            <input type="text" value="plaga-1.jpg, plaga-2.jpg">
-                        </label>
-                    </form>
+                    <section class="quick-panel">
+                        <ul class="checklist">
+                            <li>El reporte exige lote, tipo, porcentaje, síntomas y evidencias.</li>
+                            <li>Al guardar se crea alerta crítica y evento de trazabilidad.</li>
+                        </ul>
+                    </section>
                 </article>
 
                 <article class="panel-card">
@@ -194,30 +204,14 @@
                             <h2>Tratamiento aplicado</h2>
                             <p>Vinculado a incidencia, descuenta inventario y calcula fecha temprana de despacho por periodo de carencia.</p>
                         </section>
+                        <button class="btn" type="button">Nuevo tratamiento</button>
                     </header>
-                    <form class="form-grid">
-                        <label class="field">Incidencia
-                            <select><option>INC-18 · LOT-2026-002</option></select>
-                        </label>
-                        <label class="field">Insumo fitosanitario/nutricional
-                            <select><option>Fungicida cobre</option><option>Corrector nutricional Ca</option></select>
-                        </label>
-                        <label class="field">Cantidad y unidad
-                            <input type="text" value="1.5 L">
-                        </label>
-                        <label class="field">Método
-                            <select><option>Aspersión</option><option>Drench</option><option>Fertirriego</option><option>Aplicación foliar</option></select>
-                        </label>
-                        <label class="field">Fecha revisión
-                            <input type="date" value="2026-06-12">
-                        </label>
-                        <label class="field">Despacho más temprano
-                            <input type="date" value="2026-06-19" readonly>
-                        </label>
-                        <label class="field full">Resultado de revisión
-                            <select><option>Pendiente</option><option>Efectivo</option><option>Parcialmente efectivo</option><option>Inefectivo</option></select>
-                        </label>
-                    </form>
+                    <section class="quick-panel">
+                        <ul class="checklist">
+                            <li>El tratamiento consume inventario sin editar el módulo de Inventario directamente.</li>
+                            <li>La fecha de despacho se calcula desde el periodo de carencia del insumo.</li>
+                        </ul>
+                    </section>
                 </article>
             </section>
         </section>
