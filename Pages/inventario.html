@@ -7,258 +7,50 @@
     <title>AiDEN | Inventario</title>
 </head>
 <body>
-    <header class="top-nav">
-        <a href="../index.html" class="nav-brand">AiDEN</a>
-        <nav aria-label="Navegación de módulos">
-            <ul class="nav-menu">
-                <li><a href="configuracion.html">Configuración</a></li>
-                <li><a href="inventario.html" class="active">Inventario</a></li>
-                <li><a href="produccion.html">Cultivos</a></li>
-                <li><a href="trazabilidad.html">Trazabilidad</a></li>
-                <li><a href="ambiental.html">Ambiental</a></li>
-                <li><a href="calidad-alertas.html">Calidad</a></li>
-                <li><a href="personal.html">Personal</a></li>
-                <li><a href="reportes-dashboard.html">Reportes</a></li>
-            </ul>
-        </nav>
-        <nav class="user-logout" aria-label="Sesión">
-            <a href="login.html">Supervisor · Cerrar sesión</a>
-        </nav>
-    </header>
+    <aside class="top-nav">
+        <a href="dashboard.html" class="nav-brand">AiDEN</a>
+        <nav><ul class="nav-menu">
+            <li><a href="dashboard.html"><span class="nav-icon">D</span>Dashboard</a></li><li><a href="inventario.html" class="active"><span class="nav-icon">I</span>Inventario</a></li><li><a href="produccion.html"><span class="nav-icon">P</span>Produccion</a></li><li><a href="ambiental.html"><span class="nav-icon">A</span>Ambiental</a></li><li><a href="calidad-alertas.html"><span class="nav-icon">C</span>Calidad</a></li><li><a href="trazabilidad.html"><span class="nav-icon">T</span>Trazabilidad</a></li><li><a href="personal.html"><span class="nav-icon">U</span>Personal</a></li><li><a href="reportes-dashboard.html"><span class="nav-icon">R</span>Reportes</a></li>
+        </ul></nav>
+        <nav class="nav-bottom"><a href="configuracion.html"><span class="nav-icon">S</span>Configuracion</a><a href="login.html" class="logout-link"><span class="nav-icon">X</span>Cerrar sesion</a></nav>
+    </aside>
+    <header class="app-header"><section><strong>Inventario del vivero</strong><p>Insumos, stock minimo y alertas operativas</p></section><section class="header-actions"><span class="notification">2</span><section class="profile-pill"><span class="avatar">SV</span><span class="profile-copy"><strong>Supervisor Vivero</strong><span>Juan Perez</span></span></section></section></header>
 
     <main class="main-content">
         <header class="page-header">
-            <section>
-                <span class="eyebrow">Módulo 2 · HU04-HU09</span>
-                <h1>Inventario e insumos</h1>
-                <p>Control de proveedores, alta de insumos, entradas, umbrales, filtros, semáforo de stock e historial de movimientos inmutable.</p>
-            </section>
-            <section class="toolbar">
-                <a class="btn-outline" href="#historial">Historial</a>
-                <button class="btn" type="button">Registrar entrada</button>
-            </section>
+            <section><span class="eyebrow">Gestion de insumos</span><h1>Inventario</h1><p>Consulta el estado de fertilizantes, sustratos, herramientas y materiales clave para la produccion.</p></section>
+            <button class="btn" type="button" data-action="nuevo-insumo">+ Nuevo insumo</button>
         </header>
 
         <section class="summary-grid">
-            <article class="metric-card">
-                <span class="metric-label">Insumos activos</span>
-                <strong class="metric-value">42</strong>
-                <p class="metric-note">Fertilizantes, sustratos, plaguicidas, herramientas y semillas.</p>
-            </article>
-            <article class="metric-card">
-                <span class="metric-label">Inventario vivo</span>
-                <strong class="metric-value">18</strong>
-                <p class="metric-note">Plantas, plántulas y lotes de cultivo registrados.</p>
-            </article>
-            <article class="metric-card">
-                <span class="metric-label">Alertas stock</span>
-                <strong class="metric-value">7</strong>
-                <p class="metric-note">5 bajos y 2 críticos por debajo del mínimo.</p>
-            </article>
-            <article class="metric-card">
-                <span class="metric-label">Valorización</span>
-                <strong class="metric-value">$18.4M</strong>
-                <p class="metric-note">Valor estimado entre insumos, compras y plantas vivas.</p>
-            </article>
+            <article class="metric-card"><span class="metric-label">Insumos registrados</span><strong class="metric-value">42</strong><p class="metric-note">5 categorias activas.</p></article>
+            <article class="metric-card"><span class="metric-label">Stock disponible</span><strong class="metric-value">86%</strong><p class="metric-note">Nivel general saludable.</p></article>
+            <article class="metric-card"><span class="metric-label">Stock bajo</span><strong class="metric-value">2</strong><p class="metric-note">Requieren compra.</p></article>
+            <article class="metric-card"><span class="metric-label">Ultima entrada</span><strong class="metric-value">Hoy</strong><p class="metric-note">Sustrato orgánico.</p></article>
         </section>
 
-        <section class="workspace">
-            <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Inventario actual con filtros simultáneos</h2>
-                        <p>Columnas requeridas por HU08, ordenables y exportables. El precio se oculta para Operario.</p>
-                    </section>
-                    <section class="toolbar">
-                        <button class="btn-outline" type="button">Aplicar filtros</button>
-                        <button class="btn-outline" type="button">Exportar Excel</button>
-                    </section>
-                </header>
-                <section class="table-wrap">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Categoría</th>
-                                <th>Proveedor principal</th>
-                                <th>Stock actual</th>
-                                <th>Unidad</th>
-                                <th>Estado</th>
-                                <th>Último movimiento</th>
-                                <th>Perfil</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Sustrato orgánico</td>
-                                <td>Sustratos</td>
-                                <td>BioTierra</td>
-                                <td>18</td>
-                                <td>sacos</td>
-                                <td><span class="semaforo"><span class="dot yellow"></span>Bajo</span></td>
-                                <td>Entrada compra · 2026-06-03</td>
-                                <td><button class="btn-outline" type="button" data-modal-action="Abrir">Ver sustrato</button></td>
-                            </tr>
-                            <tr>
-                                <td>Fertilizante NPK</td>
-                                <td>Fertilizantes</td>
-                                <td>AgroAndes</td>
-                                <td>15</td>
-                                <td>kg</td>
-                                <td><span class="semaforo"><span class="dot yellow"></span>Bajo</span></td>
-                                <td>Salida fertilización · mínimo 20 kg</td>
-                                <td><button class="btn-outline" type="button" data-modal-action="Atender alerta">Ver alerta</button></td>
-                            </tr>
-                            <tr>
-                                <td>Bandejas germinadoras</td>
-                                <td>Herramientas</td>
-                                <td>CampoVerde</td>
-                                <td>0</td>
-                                <td>unidad</td>
-                                <td><span class="semaforo"><span class="dot red"></span>Crítico</span></td>
-                                <td>Consumo lote LOT-2026-001</td>
-                                <td><button class="btn-outline" type="button" data-modal-action="Abrir">Ver bandejas</button></td>
-                            </tr>
-                            <tr>
-                                <td>Fungicida cobre</td>
-                                <td>Fitosanitario</td>
-                                <td>AgroAndes</td>
-                                <td>4</td>
-                                <td>L</td>
-                                <td><span class="semaforo"><span class="dot"></span>Normal</span></td>
-                                <td>Ajuste positivo · 2026-06-01</td>
-                                <td><button class="btn-outline" type="button" data-modal-action="Abrir">Ver fungicida</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-            </article>
-
-            <section class="grid-two">
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Proveedor y alta de insumo</h2>
-                            <p>Incluye contacto secundario, observaciones, ficha técnica y campos obligatorios si es agroquímico.</p>
-                        </section>
-                        <button class="btn" type="button">Nuevo insumo</button>
-                    </header>
-                    <section class="quick-panel">
-                        <ul class="checklist">
-                            <li>El alta se captura en pop-up para no interrumpir la consulta del inventario.</li>
-                            <li>Los campos agroquímicos aparecen solo cuando el tipo de insumo lo requiere.</li>
-                            <li>Los proveedores inactivos se ocultan de nuevas entradas, pero conservan histórico.</li>
-                        </ul>
-                    </section>
-                </article>
-
-                <article class="panel-card" id="entrada">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Entrada, umbral y corrección</h2>
-                            <p>Los movimientos guardados no se editan ni eliminan; se corrigen con ajuste justificado.</p>
-                        </section>
-                    </header>
-                    <section class="quick-panel">
-                        <ul class="checklist">
-                            <li>Compra exige proveedor y soporte documental.</li>
-                            <li>Ajuste negativo exige justificación y no altera el movimiento original.</li>
-                            <li>El stock se actualiza en inventario y alerta si cruza el umbral mínimo.</li>
-                        </ul>
-                    </section>
-                </article>
+        <article class="panel-card">
+            <header class="panel-header"><section><h2>Tabla de inventario</h2><p>Busqueda y filtros basicos para el MVP.</p></section></header>
+            <section class="filters">
+                <input type="search" placeholder="Buscar insumo">
+                <select><option>Todas las categorias</option><option>Fertilizantes</option><option>Sustratos</option></select>
+                <select><option>Todos los estados</option><option>Disponible</option><option>Stock bajo</option></select>
             </section>
-
-            <section class="grid-two">
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Inventario vivo</h2>
-                            <p>Registra plantas, plántulas y lotes de cultivo con estado, ubicación, cantidad viva y valor estimado.</p>
-                        </section>
-                        <button class="btn" type="button">Registrar inventario vivo</button>
-                    </header>
-                    <section class="table-wrap">
-                        <table class="data-table">
-                            <thead>
-                                <tr><th>Código</th><th>Tipo</th><th>Especie</th><th>Cantidad viva</th><th>Ubicación</th><th>Valor unitario</th><th>Estado</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>VIV-CAF-001</td><td>Plántulas</td><td>Café Castillo</td><td>1.240</td><td>Cama 3</td><td>$1.250</td><td><span class="badge">Activo</span></td></tr>
-                                <tr><td>LOT-2026-001</td><td>Lote cultivo</td><td>Tomate</td><td>476</td><td>Germinación norte</td><td>$2.900</td><td><span class="badge-warn">Seguimiento</span></td></tr>
-                            </tbody>
-                        </table>
-                    </section>
-                </article>
-
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Compras, pérdidas y valorización</h2>
-                            <p>Consolida proveedores, órdenes de compra, desperdicios, bajas y costo total del inventario.</p>
-                        </section>
-                        <button class="btn" type="button">Registrar compra</button>
-                    </header>
-                    <ul class="checklist">
-                        <li>Compras con proveedor, factura, cantidad, costo unitario y soporte documental.</li>
-                        <li>Salidas por consumo, pérdida, desperdicio o ajuste justificado.</li>
-                        <li>Valorización por costo promedio y alerta preventiva antes del agotamiento.</li>
-                        <li>Ejemplo activo: quedan 15 kg de fertilizante NPK y el mínimo es 20 kg.</li>
-                    </ul>
-                </article>
+            <section class="table-wrap">
+                <table class="data-table">
+                    <thead><tr><th>Insumo</th><th>Categoria</th><th>Cantidad</th><th>Unidad</th><th>Stock minimo</th><th>Estado</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                        <tr><td>Fertilizante NPK</td><td>Fertilizantes</td><td>25</td><td>kg</td><td>10</td><td><span class="badge">Disponible</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button">Editar</button></td></tr>
+                        <tr><td>Sustrato organico</td><td>Sustratos</td><td>8</td><td>bultos</td><td>10</td><td><span class="badge-warn">Stock bajo</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button">Reponer</button></td></tr>
+                        <tr><td>Fungicida cobre</td><td>Fitosanitario</td><td>12</td><td>L</td><td>5</td><td><span class="badge">Disponible</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button">Editar</button></td></tr>
+                        <tr><td>Bandejas germinadoras</td><td>Herramientas</td><td>6</td><td>unidad</td><td>12</td><td><span class="badge-danger">Critico</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button">Reponer</button></td></tr>
+                    </tbody>
+                </table>
             </section>
-
-            <article class="panel-card" id="historial">
-                <header class="panel-header">
-                    <section>
-                        <h2>Historial de movimientos del insumo</h2>
-                        <p>Solo lectura, filtrable por tipo, fecha y usuario. Exportación Excel/PDF representada en acciones.</p>
-                    </section>
-                    <section class="toolbar">
-                        <button class="btn-outline" type="button">Excel</button>
-                        <button class="btn-outline" type="button">PDF</button>
-                    </section>
-                </header>
-                <section class="table-wrap">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Fecha/hora</th>
-                                <th>Tipo</th>
-                                <th>Cantidad</th>
-                                <th>Stock resultante</th>
-                                <th>Usuario</th>
-                                <th>Referencia</th>
-                                <th>Editable</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>2026-06-03 09:10</td>
-                                <td>Entrada compra</td>
-                                <td>+20</td>
-                                <td>18</td>
-                                <td>Supervisor Vivero</td>
-                                <td>FAC-2480</td>
-                                <td><span class="badge-muted">Solo lectura</span></td>
-                            </tr>
-                            <tr>
-                                <td>2026-06-04 15:44</td>
-                                <td>Consumo</td>
-                                <td>-2</td>
-                                <td>16</td>
-                                <td>Operario Campo</td>
-                                <td>LOT-2026-001 · Riego</td>
-                                <td><span class="badge-muted">Solo lectura</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-            </article>
-        </section>
+        </article>
     </main>
 
-    <footer class="module-footer">AiDEN v1.0 · Inventario, proveedores, stock y movimientos auditables.</footer>
+    <footer class="module-footer">AiDEN MVP · Inventario.</footer>
     <script src="../Assets/JS/modules.js"></script>
 </body>
 </html>

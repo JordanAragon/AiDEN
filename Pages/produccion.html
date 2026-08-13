@@ -4,234 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Assets/CSS/modules.css">
-    <title>AiDEN | Gestión de Cultivos</title>
+    <title>AiDEN | Produccion</title>
 </head>
 <body>
-    <header class="top-nav">
-        <a href="../index.html" class="nav-brand">AiDEN</a>
-        <nav aria-label="Navegación de módulos">
-            <ul class="nav-menu">
-                <li><a href="configuracion.html">Configuración</a></li>
-                <li><a href="inventario.html">Inventario</a></li>
-                <li><a href="produccion.html" class="active">Cultivos</a></li>
-                <li><a href="trazabilidad.html">Trazabilidad</a></li>
-                <li><a href="ambiental.html">Ambiental</a></li>
-                <li><a href="calidad-alertas.html">Calidad</a></li>
-                <li><a href="personal.html">Personal</a></li>
-                <li><a href="reportes-dashboard.html">Reportes</a></li>
-            </ul>
-        </nav>
-        <nav class="user-logout" aria-label="Sesión">
-            <a href="login.html">Supervisor · Cerrar sesión</a>
-        </nav>
-    </header>
+    <aside class="top-nav"><a href="dashboard.html" class="nav-brand">AiDEN</a><nav><ul class="nav-menu">
+        <li><a href="dashboard.html"><span class="nav-icon">D</span>Dashboard</a></li><li><a href="inventario.html"><span class="nav-icon">I</span>Inventario</a></li><li><a href="produccion.html" class="active"><span class="nav-icon">P</span>Produccion</a></li><li><a href="ambiental.html"><span class="nav-icon">A</span>Ambiental</a></li><li><a href="calidad-alertas.html"><span class="nav-icon">C</span>Calidad</a></li><li><a href="trazabilidad.html"><span class="nav-icon">T</span>Trazabilidad</a></li><li><a href="personal.html"><span class="nav-icon">U</span>Personal</a></li><li><a href="reportes-dashboard.html"><span class="nav-icon">R</span>Reportes</a></li>
+    </ul></nav><nav class="nav-bottom"><a href="configuracion.html"><span class="nav-icon">S</span>Configuracion</a><a href="login.html" class="logout-link"><span class="nav-icon">X</span>Cerrar sesion</a></nav></aside>
+    <header class="app-header"><section><strong>Lotes de produccion</strong><p>Seguimiento por especie, etapa y responsable</p></section><section class="header-actions"><span class="notification">4</span><section class="profile-pill"><span class="avatar">SV</span><span class="profile-copy"><strong>Supervisor Vivero</strong><span>Juan Perez</span></span></section></section></header>
 
     <main class="main-content">
         <header class="page-header">
-            <section>
-                <span class="eyebrow">Módulo 3 · HU10-HU16</span>
-                <h1>Gestión de cultivos y producción</h1>
-                <p>Ciclos por tipo de cultivo, lotes con QR, actividades, consumos, avances de fase, semáforo y bajas por merma.</p>
-            </section>
-            <section class="toolbar">
-                <a class="btn-outline" href="#kanban">Kanban</a>
-                <button class="btn" type="button">Abrir lote</button>
-            </section>
+            <section><span class="eyebrow">Cultivos y lotes</span><h1>Produccion</h1><p>Gestiona lotes activos, fechas de siembra, cantidades y avance del cultivo.</p></section>
+            <button class="btn" type="button" data-action="nuevo-lote">+ Nuevo lote</button>
         </header>
 
         <section class="summary-grid">
-            <article class="metric-card">
-                <span class="metric-label">Lotes activos</span>
-                <strong class="metric-value">18</strong>
-                <p class="metric-note">Todos vinculados a especie, siembra y ciclo productivo.</p>
-            </article>
-            <article class="metric-card">
-                <span class="metric-label">Cosechas previstas</span>
-                <strong class="metric-value">6</strong>
-                <p class="metric-note">Predicción IA para los próximos 30 días.</p>
-            </article>
-            <article class="metric-card">
-                <span class="metric-label">Actividades hoy</span>
-                <strong class="metric-value">27</strong>
-                <p class="metric-note">Ordenadas por usuario activo.</p>
-            </article>
-            <article class="metric-card">
-                <span class="metric-label">Mermas mes</span>
-                <strong class="metric-value">6.8%</strong>
-                <p class="metric-note">Agrupadas por causa para HU35.</p>
-            </article>
+            <article class="metric-card"><span class="metric-label">Lotes activos</span><strong class="metric-value">18</strong><p class="metric-note">Produccion en curso.</p></article>
+            <article class="metric-card"><span class="metric-label">Plantas registradas</span><strong class="metric-value">4.860</strong><p class="metric-note">Inventario vivo.</p></article>
+            <article class="metric-card"><span class="metric-label">En germinacion</span><strong class="metric-value">6</strong><p class="metric-note">Lotes recientes.</p></article>
+            <article class="metric-card"><span class="metric-label">Inspeccion</span><strong class="metric-value">3</strong><p class="metric-note">Pendientes hoy.</p></article>
         </section>
 
         <section class="workspace">
             <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Especies y ciclos productivos</h2>
-                        <p>Registra especies cultivadas, ciclos, fases, duración estimada y reglas de edición. El orden no cambia si hay lotes activos.</p>
-                    </section>
-                    <button class="btn-outline" type="button">Clonar ciclo</button>
-                </header>
+                <header class="panel-header"><section><h2>Lotes de produccion</h2><p>Vista sencilla para consulta y accion rapida.</p></section></header>
                 <section class="table-wrap">
                     <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Ciclo</th>
-                                <th>Cultivo</th>
-                                <th>Fases secuenciales</th>
-                                <th>Duración</th>
-                                <th>Regla de edición</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Numero de lote</th><th>Especie</th><th>Fecha de siembra</th><th>Cantidad</th><th>Etapa</th><th>Estado</th><th>Responsable</th><th>Acciones</th></tr></thead>
                         <tbody>
-                            <tr>
-                                <td>Café Castillo</td>
-                                <td>Café</td>
-                                <td>Siembra · Germinación · Crecimiento · Endurecimiento · Despacho</td>
-                                <td>180 días</td>
-                                <td>Editable con aprobación agronómica</td>
-                                <td><span class="badge">Activo</span></td>
-                            </tr>
-                            <tr>
-                                <td>Tomate estándar</td>
-                                <td>Tomate</td>
-                                <td>Germinación · Trasplante · Crecimiento · Despacho</td>
-                                <td>75 días</td>
-                                <td>Orden bloqueado por 8 lotes activos</td>
-                                <td><span class="badge">Activo</span></td>
-                            </tr>
-                            <tr>
-                                <td>Lechuga rápida</td>
-                                <td>Lechuga</td>
-                                <td>Siembra · Crecimiento · Endurecimiento</td>
-                                <td>38 días</td>
-                                <td>Editable sin lotes activos</td>
-                                <td><span class="badge">Activo</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-            </article>
-
-            <section class="grid-two">
-                <article class="panel-card" id="nuevo-lote">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Abrir lote de producción</h2>
-                            <p>Código único generado con patrón configurable, QR automático y responsables múltiples.</p>
-                        </section>
-                    </header>
-                    <section class="quick-panel">
-                        <ul class="checklist">
-                            <li>La creación de lote se resuelve en pop-up con cultivo, ciclo, zona, unidades y responsable.</li>
-                            <li>El QR se genera al guardar y queda fijo para trazabilidad.</li>
-                            <li>Operario solo consulta lotes asignados; Supervisor puede abrir y ajustar responsables.</li>
-                        </ul>
-                    </section>
-                </article>
-
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Actividad y consumo en lote</h2>
-                            <p>La fase actual se precarga. El operario queda asociado al usuario activo y los consumos descuentan inventario.</p>
-                        </section>
-                        <button class="btn" type="button">Registrar actividad</button>
-                    </header>
-                    <section class="quick-panel">
-                        <ul class="checklist">
-                            <li>Registro rápido con lote, actividad, consumo de inventario y evidencias.</li>
-                            <li>La fase actual se precarga desde Gestión de Cultivos.</li>
-                            <li>El consumo descuenta existencias, pero Inventario conserva el movimiento.</li>
-                        </ul>
-                    </section>
-                </article>
-            </section>
-
-            <section class="grid-two">
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Siembras, trasplantes y cosechas</h2>
-                            <p>Registros agrícolas con fechas, responsables, cantidades, evidencia fotográfica y efecto sobre el estado del lote.</p>
-                        </section>
-                        <button class="btn" type="button">Registrar cosecha</button>
-                    </header>
-                    <section class="table-wrap">
-                        <table class="data-table">
-                            <thead>
-                                <tr><th>Lote</th><th>Especie</th><th>Siembra</th><th>Trasplante</th><th>Cosecha prevista</th><th>Fotos</th><th>Estado</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>L-2026-001</td><td>Café Castillo</td><td>2026-05-12</td><td>2026-07-15</td><td>2026-11-08</td><td>8</td><td><span class="badge">Crecimiento</span></td></tr>
-                                <tr><td>LOT-2026-006</td><td>Tomate</td><td>2026-04-01</td><td>2026-04-21</td><td>2026-06-30</td><td>14</td><td><span class="badge-blue">Producción</span></td></tr>
-                            </tbody>
-                        </table>
-                    </section>
-                </article>
-
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Calendario agrícola e IA</h2>
-                            <p>Planifica actividades por fecha y anticipa cosechas según ciclo, ambiente, crecimiento y eventos de calidad.</p>
-                        </section>
-                        <button class="btn" type="button">Predicción IA</button>
-                    </header>
-                    <ul class="checklist">
-                        <li>Estados controlados: Germinación, Crecimiento, Producción, Cosechado y Perdido.</li>
-                        <li>Actividades planificadas: riego, fertilización, inspección, trasplante y cosecha.</li>
-                        <li>La predicción ajusta fecha y volumen si hay estrés ambiental o incidencias.</li>
-                        <li>Ejemplo: L-2026-001 · Café Castillo · siembra 12/05/2026 · estado Crecimiento.</li>
-                    </ul>
-                </article>
-            </section>
-
-            <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Monitoreo de lotes activos</h2>
-                        <p>Porcentaje de avance, días en fase, días restantes y semáforo calculado con alertas, tiempos y limitantes.</p>
-                    </section>
-                </header>
-                <section class="table-wrap">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Cultivo</th>
-                                <th>Fase</th>
-                                <th>Días fase</th>
-                                <th>Duración estimada</th>
-                                <th>Restantes</th>
-                                <th>Avance</th>
-                                <th>Semáforo</th>
-                                <th>Operario</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>LOT-2026-001</td>
-                                <td>Tomate</td>
-                                <td>Germinación</td>
-                                <td>8</td>
-                                <td>10</td>
-                                <td>2</td>
-                                <td>25%</td>
-                                <td><span class="semaforo"><span class="dot yellow"></span>Advertencia</span></td>
-                                <td>Operario Campo</td>
-                            </tr>
-                            <tr>
-                                <td>LOT-2026-002</td>
-                                <td>Lechuga</td>
-                                <td>Crecimiento</td>
-                                <td>16</td>
-                                <td>14</td>
-                                <td>0</td>
-                                <td>66%</td>
-                                <td><span class="semaforo"><span class="dot red"></span>Crítico</span></td>
-                                <td>María López</td>
-                            </tr>
+                            <tr><td>L-001</td><td>Cafe Castillo</td><td>12/05/2026</td><td>500</td><td>Crecimiento</td><td><span class="badge">Activo</span></td><td>Juan Perez</td><td><button class="btn-outline" data-action="ver-lote" type="button">Ver lote</button></td></tr>
+                            <tr><td>L-002</td><td>Aguacate Hass</td><td>20/05/2026</td><td>300</td><td>Germinacion</td><td><span class="badge">Activo</span></td><td>Maria Lopez</td><td><button class="btn-outline" data-action="ver-lote" type="button">Ver lote</button></td></tr>
+                            <tr><td>L-003</td><td>Cafe Castillo</td><td>12/05/2026</td><td>500</td><td>Crecimiento</td><td><span class="badge-warn">Revision</span></td><td>Juan Perez</td><td><button class="btn-outline" data-action="ver-lote" type="button">Ver lote</button></td></tr>
                         </tbody>
                     </table>
                 </section>
@@ -239,70 +42,19 @@
 
             <section class="grid-two">
                 <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Avance de fase explícito</h2>
-                            <p>El sistema muestra incumplimientos críticos y exige justificación mínima de 30 caracteres para continuar.</p>
-                        </section>
-                    </header>
-                    <ul class="checklist">
-                        <li>Actividades obligatorias: riego registrado, inspección pendiente.</li>
-                        <li>Limitante crítico: humedad de sustrato fuera de rango 2 horas.</li>
-                        <li>No se permite retroceder de fase bajo ninguna condición.</li>
-                        <li>Al cerrar la última fase, el lote pasa a Listo para despacho.</li>
-                    </ul>
-                    <section class="compact-actions">
-                        <button class="btn-outline" type="button">Registrar justificación</button>
-                    </section>
+                    <header class="panel-header"><h2>Progreso del lote L-003</h2></header>
+                    <p>Cafe Castillo · Responsable: Juan Perez · Etapa: Crecimiento.</p>
+                    <div class="progress" style="margin-top: 0.8rem;"><span style="width: 64%;"></span></div>
+                    <p class="metric-note">64% del ciclo estimado completado.</p>
                 </article>
-
                 <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Registro de baja o merma</h2>
-                            <p>Actualiza unidades vivas y cierra por pérdida si la baja es total.</p>
-                        </section>
-                    </header>
-                    <section class="quick-panel">
-                        <ul class="checklist">
-                            <li>La baja se registra solo con cantidad, motivo, fecha y evidencia mínima.</li>
-                            <li>Si es pérdida total, el lote queda cerrado y visible en reportes.</li>
-                        </ul>
-                        <button class="btn" type="button">Registrar merma</button>
-                    </section>
+                    <header class="panel-header"><h2>Actividades recientes</h2></header>
+                    <ul class="activity-list"><li>Riego controlado registrado.</li><li>Fertilizacion NPK aplicada.</li><li>Inspeccion visual programada para hoy.</li></ul>
                 </article>
             </section>
-
-            <article class="panel-card" id="kanban">
-                <header class="panel-header">
-                    <section>
-                        <h2>Vista Kanban por fase actual</h2>
-                        <p>Cada tarjeta conserva acceso al perfil del lote y su semáforo visible.</p>
-                    </section>
-                </header>
-                <section class="kanban">
-                    <article class="kanban-column">
-                        <h3>Germinación</h3>
-                        <section class="kanban-card"><strong>LOT-2026-001</strong><br><span class="badge-warn">Amarillo</span></section>
-                    </article>
-                    <article class="kanban-column">
-                        <h3>Trasplante</h3>
-                        <section class="kanban-card"><strong>LOT-2026-004</strong><br><span class="badge">Verde</span></section>
-                    </article>
-                    <article class="kanban-column">
-                        <h3>Crecimiento</h3>
-                        <section class="kanban-card"><strong>LOT-2026-002</strong><br><span class="badge-danger">Rojo</span></section>
-                    </article>
-                    <article class="kanban-column">
-                        <h3>Despacho</h3>
-                        <section class="kanban-card"><strong>LOT-2026-006</strong><br><span class="badge">Listo</span></section>
-                    </article>
-                </section>
-            </article>
         </section>
     </main>
-
-    <footer class="module-footer">AiDEN v1.0 · Cultivos, lotes, actividades, consumos y mermas.</footer>
+    <footer class="module-footer">AiDEN MVP · Produccion.</footer>
     <script src="../Assets/JS/modules.js"></script>
 </body>
 </html>

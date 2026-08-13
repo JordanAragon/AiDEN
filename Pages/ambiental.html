@@ -4,182 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Assets/CSS/modules.css">
-    <title>AiDEN | Monitoreo Ambiental</title>
+    <title>AiDEN | Ambiental</title>
 </head>
 <body>
-    <header class="top-nav">
-        <a href="../index.html" class="nav-brand">AiDEN</a>
-        <nav aria-label="Navegación de módulos">
-            <ul class="nav-menu">
-                <li><a href="configuracion.html">Configuración</a></li>
-                <li><a href="inventario.html">Inventario</a></li>
-                <li><a href="produccion.html">Cultivos</a></li>
-                <li><a href="trazabilidad.html">Trazabilidad</a></li>
-                <li><a href="ambiental.html" class="active">Ambiental</a></li>
-                <li><a href="calidad-alertas.html">Calidad</a></li>
-                <li><a href="personal.html">Personal</a></li>
-                <li><a href="reportes-dashboard.html">Reportes</a></li>
-            </ul>
-        </nav>
-        <nav class="user-logout" aria-label="Sesión"><a href="login.html">Supervisor · Cerrar sesión</a></nav>
-    </header>
+    <aside class="top-nav"><a href="dashboard.html" class="nav-brand">AiDEN</a><nav><ul class="nav-menu">
+        <li><a href="dashboard.html"><span class="nav-icon">D</span>Dashboard</a></li><li><a href="inventario.html"><span class="nav-icon">I</span>Inventario</a></li><li><a href="produccion.html"><span class="nav-icon">P</span>Produccion</a></li><li><a href="ambiental.html" class="active"><span class="nav-icon">A</span>Ambiental</a></li><li><a href="calidad-alertas.html"><span class="nav-icon">C</span>Calidad</a></li><li><a href="trazabilidad.html"><span class="nav-icon">T</span>Trazabilidad</a></li><li><a href="personal.html"><span class="nav-icon">U</span>Personal</a></li><li><a href="reportes-dashboard.html"><span class="nav-icon">R</span>Reportes</a></li>
+    </ul></nav><nav class="nav-bottom"><a href="configuracion.html"><span class="nav-icon">S</span>Configuracion</a><a href="login.html" class="logout-link"><span class="nav-icon">X</span>Cerrar sesion</a></nav></aside>
+    <header class="app-header"><section><strong>Monitoreo ambiental</strong><p>Sensores IoT del vivero norte</p></section><section class="header-actions"><span class="notification">1</span><section class="profile-pill"><span class="avatar">SV</span><span class="profile-copy"><strong>Supervisor Vivero</strong><span>Juan Perez</span></span></section></section></header>
 
     <main class="main-content">
-        <header class="page-header">
-            <section>
-                <span class="eyebrow">Módulo 5 · HU19-HU22</span>
-                <h1>Monitoreo ambiental</h1>
-                <p>Sensores por zona, lecturas recientes, tendencia 24 horas, umbrales específicos por cultivo/fase e histórico exportable.</p>
-            </section>
-            <section class="toolbar">
-                <button class="btn-outline" type="button">Histórico</button>
-                <button class="btn" type="button">Nuevo sensor</button>
-            </section>
-        </header>
+        <header class="page-header"><section><span class="eyebrow">Sensores</span><h1>Ambiental</h1><p>Lecturas actuales y tendencias simples para mantener cada lote dentro del rango recomendado.</p></section><button class="btn-outline" type="button">Actualizar datos</button></header>
 
-        <section class="summary-grid">
-            <article class="metric-card"><span class="metric-label">Sensores activos</span><strong class="metric-value">16</strong><p class="metric-note">Solo activos generan datos y alertas.</p></article>
-            <article class="metric-card"><span class="metric-label">Temperatura</span><strong class="metric-value">24.8°C</strong><p class="metric-note">Actual en Germinación norte.</p></article>
-            <article class="metric-card"><span class="metric-label">Humedad</span><strong class="metric-value">52%</strong><p class="metric-note">Suelo bajo; riego sugerido.</p></article>
-            <article class="metric-card"><span class="metric-label">Anomalías IA</span><strong class="metric-value">2</strong><p class="metric-note">Una crítica y una preventiva.</p></article>
+        <section class="sensor-grid" style="margin-bottom: 1rem;">
+            <article class="sensor-card"><span class="metric-label">Temperatura</span><strong class="metric-value">24 C</strong><p>Invernadero 1</p></article>
+            <article class="sensor-card"><span class="metric-label">Humedad ambiental</span><strong class="metric-value">72%</strong><p>Rango adecuado</p></article>
+            <article class="sensor-card"><span class="metric-label">Humedad del suelo</span><strong class="metric-value">61%</strong><p>Lote L-003 en observacion</p></article>
+            <article class="sensor-card"><span class="metric-label">Luminosidad</span><strong class="metric-value">680 lux</strong><p>Cubierta parcial</p></article>
         </section>
 
         <section class="workspace">
             <section class="grid-two">
                 <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Registro de dispositivo</h2>
-                            <p>Incluye alias, variable, unidad, ubicación, identificador único, calibración, estado e integración IoT.</p>
-                        </section>
-                    </header>
-                    <section class="quick-panel">
-                        <ul class="checklist">
-                            <li>El alta de sensor vive en pop-up; la vista principal queda para lectura y análisis.</li>
-                            <li>Un sensor inactivo deja de generar alertas, pero mantiene su histórico consultable.</li>
-                            <li>Las zonas vinculadas se consumen desde Gestión de Cultivos.</li>
-                            <li>Variables cubiertas: temperatura, humedad ambiental, humedad del suelo y luminosidad.</li>
-                        </ul>
+                    <header class="panel-header"><h2>Evolucion de temperatura</h2></header>
+                    <section class="line-chart">
+                        <div class="trend"><span>06:00</span><span class="track"><span class="fill blue" style="width: 58%;"></span></span><strong>22 C</strong></div>
+                        <div class="trend"><span>09:00</span><span class="track"><span class="fill blue" style="width: 66%;"></span></span><strong>24 C</strong></div>
+                        <div class="trend"><span>12:00</span><span class="track"><span class="fill blue" style="width: 73%;"></span></span><strong>26 C</strong></div>
+                        <div class="trend"><span>15:00</span><span class="track"><span class="fill blue" style="width: 69%;"></span></span><strong>25 C</strong></div>
                     </section>
                 </article>
-
                 <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Umbrales por cultivo y fase</h2>
-                            <p>Rangos óptimos, advertencia y críticos para temperatura, humedad, sustrato, pH, PAR, CO2, CE y variables adicionales.</p>
-                        </section>
-                        <button class="btn" type="button">Configurar umbral</button>
-                    </header>
-                    <section class="quick-panel">
-                        <ul class="checklist">
-                            <li>Los umbrales se editan por cultivo, fase y variable sin salir del dashboard.</li>
-                            <li>Una lectura fuera de rango genera alerta, pero no modifica procesos de cultivos.</li>
-                            <li>Las comparaciones históricas siguen siendo solo lectura.</li>
-                        </ul>
+                    <header class="panel-header"><h2>Evolucion de humedad</h2></header>
+                    <section class="line-chart">
+                        <div class="trend"><span>06:00</span><span class="track"><span class="fill" style="width: 76%;"></span></span><strong>76%</strong></div>
+                        <div class="trend"><span>09:00</span><span class="track"><span class="fill" style="width: 72%;"></span></span><strong>72%</strong></div>
+                        <div class="trend"><span>12:00</span><span class="track"><span class="fill" style="width: 64%;"></span></span><strong>64%</strong></div>
+                        <div class="trend"><span>15:00</span><span class="track"><span class="fill" style="width: 61%;"></span></span><strong>61%</strong></div>
                     </section>
                 </article>
             </section>
 
             <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Dashboard ambiental ideal</h2>
-                        <p>Lecturas actuales, estado del lote, tendencias, alertas, anomalías y control de riego en una sola vista operativa.</p>
-                    </section>
-                    <button class="btn" type="button">Automatizar riego</button>
-                </header>
-                <section class="feature-grid">
-                    <article class="module-card"><h3>Estado del lote</h3><p>LOT-2026-001 · Germinación · humedad suelo 52% · alerta crítica activa.</p></article>
-                    <article class="module-card"><h3>Tendencia</h3><p>Temperatura estable, luminosidad subiendo y humedad del suelo cayendo desde las 06:00.</p></article>
-                    <article class="module-card"><h3>Predicción IA</h3><p>Probabilidad de estrés hídrico 76% si no se activa riego en las próximas 2 horas.</p></article>
-                </section>
-            </article>
-
-            <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Panel en tiempo real</h2>
-                        <p>Filtrable por zona y variable. Cada sensor muestra valor actual, timestamp, estado visual y tendencia de 24 horas.</p>
-                    </section>
-                    <section class="toolbar">
-                        <button class="btn-outline" type="button">Zona: todas</button>
-                        <button class="btn-outline" type="button">Variable: todas</button>
-                    </section>
-                </header>
-                <section class="table-wrap">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Sensor</th>
-                                <th>Variable</th>
-                                <th>Valor</th>
-                                <th>Unidad</th>
-                                <th>Timestamp</th>
-                                <th>Estado</th>
-                                <th>Tendencia 24h</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>S-01 Temperatura Germinación</td>
-                                <td>Temperatura</td>
-                                <td>24.8</td>
-                                <td>°C</td>
-                                <td>Hace 1 min</td>
-                                <td><span class="badge">Normal</span></td>
-                                <td>▂▃▃▃▄▃</td>
-                            </tr>
-                            <tr>
-                                <td>S-03 Humedad Germinación</td>
-                                <td>Humedad sustrato</td>
-                                <td>52</td>
-                                <td>%</td>
-                                <td>Hace 2 min</td>
-                                <td><span class="badge-danger">Crítico</span></td>
-                                <td>▁▂▃▂▁▁</td>
-                            </tr>
-                            <tr>
-                                <td>S-08 PAR Crecimiento</td>
-                                <td>Luminosidad PAR</td>
-                                <td>410</td>
-                                <td>µmol/m²/s</td>
-                                <td>Hace 4 min</td>
-                                <td><span class="badge">Normal</span></td>
-                                <td>▂▃▄▅▆▅</td>
-                            </tr>
-                            <tr>
-                                <td>S-11 CO2 Invernadero</td>
-                                <td>CO2</td>
-                                <td>--</td>
-                                <td>ppm</td>
-                                <td>Sin datos desde 08:15</td>
-                                <td><span class="badge-muted">Sin señal</span></td>
-                                <td>Sin datos</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-            </article>
-
-            <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Histórico de lecturas ambientales</h2>
-                        <p>Permite seleccionar sensor, rango de fechas, comparar dos sensores y exportar Excel con estado y alerta asociada.</p>
-                    </section>
-                    <button class="btn-outline" type="button">Exportar Excel</button>
-                </header>
-                <section class="feature-grid">
-                    <article class="module-card"><h3>Gráfico de línea</h3><p>Marcadores en puntos donde se generaron alertas ambientales.</p></article>
-                    <article class="module-card"><h3>Estadísticas</h3><p>Mínimo 52%, máximo 84%, promedio 68%, 6 lecturas fuera de rango, 2 alertas.</p></article>
-                    <article class="module-card"><h3>Comparación</h3><p>S-03 vs S-04 superpuestos para comparar zonas de germinación.</p></article>
-                </section>
+                <header class="panel-header"><h2>Alertas ambientales</h2></header>
+                <ul class="alert-list"><li class="warning">El lote L-003 presenta humedad del suelo inferior al rango recomendado.</li><li>Sensor T-02 reporta datos estables en invernadero 1.</li></ul>
             </article>
         </section>
     </main>
-
-    <footer class="module-footer">AiDEN v1.0 · Sensores, tiempo real, umbrales e histórico ambiental.</footer>
+    <footer class="module-footer">AiDEN MVP · Ambiental.</footer>
     <script src="../Assets/JS/modules.js"></script>
 </body>
 </html>

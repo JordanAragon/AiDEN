@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Dashboard</title>
+</head>
+<body>
+    <aside class="top-nav">
+        <a href="dashboard.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegacion principal">
+            <ul class="nav-menu">
+                <li><a href="dashboard.html" class="active"><span class="nav-icon">D</span>Dashboard</a></li>
+                <li><a href="inventario.html"><span class="nav-icon">I</span>Inventario</a></li>
+                <li><a href="produccion.html"><span class="nav-icon">P</span>Produccion</a></li>
+                <li><a href="ambiental.html"><span class="nav-icon">A</span>Ambiental</a></li>
+                <li><a href="calidad-alertas.html"><span class="nav-icon">C</span>Calidad</a></li>
+                <li><a href="trazabilidad.html"><span class="nav-icon">T</span>Trazabilidad</a></li>
+                <li><a href="personal.html"><span class="nav-icon">U</span>Personal</a></li>
+                <li><a href="reportes-dashboard.html"><span class="nav-icon">R</span>Reportes</a></li>
+            </ul>
+        </nav>
+        <nav class="nav-bottom" aria-label="Sesion">
+            <a href="configuracion.html"><span class="nav-icon">S</span>Configuracion</a>
+            <a href="login.html" class="logout-link"><span class="nav-icon">X</span>Cerrar sesion</a>
+        </nav>
+    </aside>
+
+    <header class="app-header">
+        <section>
+            <strong>Vivero Popayan · Sede Norte</strong>
+            <p>Monitoreo operativo actualizado hoy</p>
+        </section>
+        <section class="header-actions">
+            <span class="notification">3</span>
+            <section class="profile-pill"><span class="avatar">SV</span><span class="profile-copy"><strong>Supervisor Vivero</strong><span>Juan Perez</span></span></section>
+        </section>
+    </header>
+
+    <main class="main-content">
+        <header class="page-header">
+            <section>
+                <span class="eyebrow">Resumen general</span>
+                <h1>Hola, Juan. Asi va el vivero hoy.</h1>
+                <p>AiDEN concentra produccion, inventario, ambiente, calidad y actividades para detectar prioridades rapidamente.</p>
+            </section>
+            <section class="toolbar">
+                <a class="btn-outline" href="reportes-dashboard.html">Ver reportes</a>
+            </section>
+        </header>
+
+        <section class="summary-grid">
+            <article class="metric-card"><span class="metric-label">Cultivos activos</span><strong class="metric-value">18</strong><p class="metric-note">Cafe, aguacate y cacao.</p></article>
+            <article class="metric-card"><span class="metric-label">Lotes en produccion</span><strong class="metric-value">26</strong><p class="metric-note">4 requieren revision.</p></article>
+            <article class="metric-card"><span class="metric-label">Stock disponible</span><strong class="metric-value">86%</strong><p class="metric-note">2 insumos bajo minimo.</p></article>
+            <article class="metric-card"><span class="metric-label">Alertas</span><strong class="metric-value">5</strong><p class="metric-note">Calidad, ambiente e inventario.</p></article>
+        </section>
+
+        <section class="workspace">
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Produccion semanal</h2>
+                            <p>Plantas registradas por etapa durante los ultimos dias.</p>
+                        </section>
+                    </header>
+                    <section class="chart" aria-label="Grafica de produccion">
+                        <div class="bar"><span style="height: 54%;"></span><small>Lun</small></div>
+                        <div class="bar"><span style="height: 68%;"></span><small>Mar</small></div>
+                        <div class="bar"><span style="height: 72%;"></span><small>Mie</small></div>
+                        <div class="bar"><span style="height: 60%;"></span><small>Jue</small></div>
+                        <div class="bar"><span style="height: 82%;"></span><small>Vie</small></div>
+                        <div class="bar"><span style="height: 45%;"></span><small>Sab</small></div>
+                    </section>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header"><h2>Condiciones ambientales</h2></header>
+                    <section class="sensor-grid">
+                        <article class="sensor-card"><span class="metric-label">Temperatura</span><strong class="metric-value">24 C</strong></article>
+                        <article class="sensor-card"><span class="metric-label">Humedad</span><strong class="metric-value">72%</strong></article>
+                        <article class="sensor-card"><span class="metric-label">Suelo</span><strong class="metric-value">61%</strong></article>
+                    </section>
+                </article>
+            </section>
+
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header"><h2>Alertas recientes</h2><a class="btn-ghost" href="calidad-alertas.html">Ver todas</a></header>
+                    <ul class="alert-list">
+                        <li class="warning">Stock bajo de fertilizante NPK.</li>
+                        <li class="warning">Humedad del suelo por debajo del rango recomendado.</li>
+                        <li class="danger">Lote L-003 requiere inspeccion.</li>
+                    </ul>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header"><h2>Actividades recientes</h2><a class="btn-ghost" href="personal.html">Ver tareas</a></header>
+                    <ul class="activity-list">
+                        <li>Maria Lopez registro fertilizacion del lote L-002.</li>
+                        <li>Carlos Rivas verifico sensor ambiental de invernadero 1.</li>
+                        <li>Juan Perez consulto trazabilidad del lote L-003.</li>
+                    </ul>
+                </article>
+            </section>
+        </section>
+    </main>
+
+    <footer class="module-footer">AiDEN MVP · Gestion inteligente para viveros.</footer>
+    <script src="../Assets/JS/modules.js"></script>
+</body>
+</html>

@@ -7,205 +7,43 @@
     <title>AiDEN | Trazabilidad</title>
 </head>
 <body>
-    <header class="top-nav">
-        <a href="../index.html" class="nav-brand">AiDEN</a>
-        <nav aria-label="Navegación de módulos">
-            <ul class="nav-menu">
-                <li><a href="configuracion.html">Configuración</a></li>
-                <li><a href="inventario.html">Inventario</a></li>
-                <li><a href="produccion.html">Cultivos</a></li>
-                <li><a href="trazabilidad.html" class="active">Trazabilidad</a></li>
-                <li><a href="ambiental.html">Ambiental</a></li>
-                <li><a href="calidad-alertas.html">Calidad</a></li>
-                <li><a href="personal.html">Personal</a></li>
-                <li><a href="reportes-dashboard.html">Reportes</a></li>
-            </ul>
-        </nav>
-        <nav class="user-logout" aria-label="Sesión">
-            <a href="login.html">Supervisor · Cerrar sesión</a>
-        </nav>
-    </header>
+    <aside class="top-nav"><a href="dashboard.html" class="nav-brand">AiDEN</a><nav><ul class="nav-menu">
+        <li><a href="dashboard.html"><span class="nav-icon">D</span>Dashboard</a></li><li><a href="inventario.html"><span class="nav-icon">I</span>Inventario</a></li><li><a href="produccion.html"><span class="nav-icon">P</span>Produccion</a></li><li><a href="ambiental.html"><span class="nav-icon">A</span>Ambiental</a></li><li><a href="calidad-alertas.html"><span class="nav-icon">C</span>Calidad</a></li><li><a href="trazabilidad.html" class="active"><span class="nav-icon">T</span>Trazabilidad</a></li><li><a href="personal.html"><span class="nav-icon">U</span>Personal</a></li><li><a href="reportes-dashboard.html"><span class="nav-icon">R</span>Reportes</a></li>
+    </ul></nav><nav class="nav-bottom"><a href="configuracion.html"><span class="nav-icon">S</span>Configuracion</a><a href="login.html" class="logout-link"><span class="nav-icon">X</span>Cerrar sesion</a></nav></aside>
+    <header class="app-header"><section><strong>Historia del lote</strong><p>Consulta de eventos agricolas registrados</p></section><section class="header-actions"><span class="notification">0</span><section class="profile-pill"><span class="avatar">SV</span><span class="profile-copy"><strong>Supervisor Vivero</strong><span>Juan Perez</span></span></section></section></header>
 
     <main class="main-content">
-        <header class="page-header">
-            <section>
-                <span class="eyebrow">Módulo 4 · HU17-HU18</span>
-                <h1>Trazabilidad de lotes</h1>
-                <p>Código QR permanente, etiqueta imprimible y línea de tiempo completa con fases, actividades, consumos, alertas, incidencias, tratamientos y lecturas ambientales.</p>
+        <header class="page-header"><section><span class="eyebrow">Trazabilidad</span><h1>Consulta de lote</h1><p>Revisa el historial de siembra, germinacion, fertilizacion e inspecciones de cada lote.</p></section><button class="btn" type="button" data-action="consultar-trazabilidad">Consultar trazabilidad</button></header>
+
+        <article class="panel-card" style="margin-bottom: 1rem;">
+            <section class="filters">
+                <input type="search" value="L-003" aria-label="Codigo de lote">
+                <select><option>L-003 · Cafe Castillo</option><option>L-001 · Cafe Castillo</option><option>L-002 · Aguacate Hass</option></select>
+                <button class="btn-outline" type="button" data-action="consultar-trazabilidad">Buscar lote</button>
             </section>
-            <section class="toolbar">
-                <button class="btn-outline" type="button">Descargar QR PNG</button>
-                <button class="btn" type="button">Generar informe PDF</button>
-            </section>
-        </header>
+        </article>
 
-        <section class="summary-grid">
-            <article class="metric-card">
-                <span class="metric-label">Lote consultado</span>
-                <strong class="metric-value">LOT-2026-001</strong>
-                <p class="metric-note">QR invariable durante todo el ciclo.</p>
-            </article>
-            <article class="metric-card">
-                <span class="metric-label">Eventos</span>
-                <strong class="metric-value">38</strong>
-                <p class="metric-note">Siembras, riegos, fertilizaciones, fitosanitarios y cosechas.</p>
-            </article>
-            <article class="metric-card">
-                <span class="metric-label">Evidencias</span>
-                <strong class="metric-value">14</strong>
-                <p class="metric-note">Miniaturas visibles en eventos.</p>
-            </article>
-            <article class="metric-card">
-                <span class="metric-label">Reporte ICA</span>
-                <strong class="metric-value">Listo</strong>
-                <p class="metric-note">Formato con responsables, fechas y evidencia exportable.</p>
-            </article>
-        </section>
-
-        <section class="workspace grid-two">
+        <section class="grid-two">
             <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Etiqueta QR lista para imprimir</h2>
-                        <p>Incluye QR, código de lote, cultivo, fecha de inicio y zona. Puede imprimirse en múltiples copias.</p>
-                    </section>
-                </header>
-                <section class="module-card">
-                    <div style="width: 210px; height: 210px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; padding: 12px; border: 1px solid var(--gray-200); background: white;">
-                        <span style="background:#0a4f31"></span><span></span><span style="background:#0a4f31"></span><span style="background:#0a4f31"></span><span></span><span style="background:#0a4f31"></span><span></span>
-                        <span></span><span style="background:#0a4f31"></span><span></span><span></span><span style="background:#0a4f31"></span><span></span><span style="background:#0a4f31"></span>
-                        <span style="background:#0a4f31"></span><span></span><span style="background:#0a4f31"></span><span></span><span></span><span style="background:#0a4f31"></span><span></span>
-                        <span style="background:#0a4f31"></span><span style="background:#0a4f31"></span><span></span><span style="background:#0a4f31"></span><span></span><span></span><span style="background:#0a4f31"></span>
-                        <span></span><span style="background:#0a4f31"></span><span></span><span></span><span style="background:#0a4f31"></span><span style="background:#0a4f31"></span><span></span>
-                        <span style="background:#0a4f31"></span><span></span><span style="background:#0a4f31"></span><span></span><span></span><span style="background:#0a4f31"></span><span style="background:#0a4f31"></span>
-                        <span></span><span style="background:#0a4f31"></span><span></span><span style="background:#0a4f31"></span><span style="background:#0a4f31"></span><span></span><span style="background:#0a4f31"></span>
-                    </div>
-                    <h2 style="margin-top: 1rem;">LOT-2026-001 · Tomate</h2>
-                    <p>Inicio: 2026-06-05 · Zona: Germinación norte</p>
-                    <p>URL pública: /lote-publico/LOT-2026-001</p>
-                </section>
+                <header class="panel-header"><h2>Lote L-003</h2><span class="badge-warn">En revision</span></header>
+                <p><strong>Especie:</strong> Cafe Castillo</p>
+                <p><strong>Fecha de siembra:</strong> 12/05/2026</p>
+                <p><strong>Responsable:</strong> Juan Perez</p>
+                <p><strong>Cantidad inicial:</strong> 500 semillas</p>
             </article>
 
             <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Vista pública al escanear</h2>
-                        <p>Consulta móvil sin información financiera ni datos confidenciales.</p>
-                    </section>
-                </header>
-                <section class="table-wrap">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Dato visible</th>
-                                <th>Valor</th>
-                                <th>Confidencialidad</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Código</td><td>LOT-2026-001</td><td><span class="badge">Operativo</span></td></tr>
-                            <tr><td>Cultivo</td><td>Tomate</td><td><span class="badge">Operativo</span></td></tr>
-                            <tr><td>Fase actual</td><td>Germinación</td><td><span class="badge">Operativo</span></td></tr>
-                            <tr><td>Días en producción</td><td>8</td><td><span class="badge">Operativo</span></td></tr>
-                            <tr><td>Semáforo</td><td>Amarillo</td><td><span class="badge-warn">Sin costos</span></td></tr>
-                        </tbody>
-                    </table>
-                </section>
-            </article>
-        </section>
-
-        <section class="workspace">
-            <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Línea de tiempo completa del lote</h2>
-                        <p>Filtrable por tipo de evento y rango de fechas. Cada evento muestra fecha/hora, usuario, descripción y evidencias.</p>
-                    </section>
-                    <section class="toolbar">
-                        <button class="btn-outline" type="button">Filtro: actividades</button>
-                        <button class="btn-outline" type="button">Filtro: junio 2026</button>
-                        <button class="btn-outline" type="button">Reporte ICA</button>
-                    </section>
-                </header>
+                <header class="panel-header"><h2>Linea de tiempo</h2></header>
                 <ul class="timeline">
-                    <li>
-                        <small>2026-06-05 07:30 · Supervisor Vivero · Apertura</small>
-                        <strong>Se crea LOT-2026-001 con 500 unidades sembradas y QR permanente.</strong>
-                        <p>Origen semilla S-248, sustrato BioTierra, zona Germinación norte.</p>
-                    </li>
-                    <li>
-                        <small>2026-06-05 09:00 · Operario Campo · Actividad</small>
-                        <strong>Riego inicial registrado en fase Germinación.</strong>
-                        <p>3 fotografías adjuntas como evidencia. Actividad queda bloqueada para edición.</p>
-                    </li>
-                    <li>
-                        <small>2026-06-06 06:45 · Juan Riego · Fertilización</small>
-                        <strong>Aplicación NPK registrada con dosis, responsable e insumo descontado.</strong>
-                        <p>Movimiento enlazado a Inventario y visible para auditoría del lote.</p>
-                    </li>
-                    <li>
-                        <small>2026-06-05 09:05 · Sistema · Consumo</small>
-                        <strong>Descuento automático de 2 L de solución nutritiva.</strong>
-                        <p>Costo acumulado al lote y movimiento visible en inventario.</p>
-                    </li>
-                    <li>
-                        <small>2026-06-06 14:20 · Sensor S-03 · Lectura ambiental</small>
-                        <strong>Humedad de sustrato fuera de rango óptimo durante 40 minutos.</strong>
-                        <p>Evento vinculado a zona y lote activo.</p>
-                    </li>
-                    <li>
-                        <small>2026-06-07 16:10 · Operario Campo · Incidencia</small>
-                        <strong>Reporte fitosanitario por daño físico en 4% del lote.</strong>
-                        <p>Genera alerta crítica al supervisor y aparece en trazabilidad.</p>
-                    </li>
-                    <li>
-                        <small>2026-06-07 17:25 · Ana Calidad · Aplicación fitosanitaria</small>
-                        <strong>Tratamiento preventivo registrado con producto, dosis y periodo de carencia.</strong>
-                        <p>Evento preparado para reporte ICA y consulta cronológica.</p>
-                    </li>
-                    <li>
-                        <small>2026-06-08 08:40 · Supervisor Vivero · Cambio de fase</small>
-                        <strong>Avance autorizado con justificación por limitante técnico pendiente.</strong>
-                        <p>Registra cierre de fase anterior, inicio de nueva fase y usuario autorizador.</p>
-                    </li>
-                    <li>
-                        <small>2026-06-30 11:10 · Supervisor Vivero · Cosecha</small>
-                        <strong>Cosecha parcial registrada con cantidad final, responsable y evidencia.</strong>
-                        <p>Actualiza estado productivo sin perder la historia completa del lote.</p>
-                    </li>
+                    <li><small>12/05/2026</small><strong>Siembra</strong><p>500 semillas registradas.</p></li>
+                    <li><small>18/05/2026</small><strong>Germinacion</strong><p>420 plantas germinadas.</p></li>
+                    <li><small>25/05/2026</small><strong>Fertilizacion</strong><p>Aplicacion de fertilizante NPK.</p></li>
+                    <li><small>02/06/2026</small><strong>Inspeccion</strong><p>Sin incidencias.</p></li>
                 </ul>
-            </article>
-
-            <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Informe de trazabilidad e ICA</h2>
-                        <p>El prototipo muestra el contenido esperado del informe formal para lotes activos, cerrados o auditados por autoridad.</p>
-                    </section>
-                </header>
-                <section class="feature-grid">
-                    <article class="module-card">
-                        <h3>Encabezado</h3>
-                        <p>Nombre del vivero, logo, fecha de generación y QR de verificación.</p>
-                    </article>
-                    <article class="module-card">
-                        <h3>Contenido ICA</h3>
-                        <p>Identificación única, especie, ubicación, fechas, responsables, aplicaciones y cosechas.</p>
-                    </article>
-                    <article class="module-card">
-                        <h3>Evidencias</h3>
-                        <p>Fotografías adjuntas como miniaturas dentro del evento correspondiente.</p>
-                    </article>
-                    <article class="module-card">
-                        <h3>Auditoría</h3>
-                        <p>Cambios con usuario, fecha, campo anterior, valor nuevo y justificación.</p>
-                    </article>
-                </section>
             </article>
         </section>
     </main>
-
-    <footer class="module-footer">AiDEN v1.0 · QR, vista pública e informe de trazabilidad.</footer>
+    <footer class="module-footer">AiDEN MVP · Trazabilidad.</footer>
     <script src="../Assets/JS/modules.js"></script>
 </body>
 </html>

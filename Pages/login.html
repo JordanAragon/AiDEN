@@ -3,58 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/login.css">
-    <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="../Assets/CSS/login.css">
     <title>Login - AiDEN</title>
 </head>
 <body>
     <main class="login-page">
-        
         <section class="form-container">
-            
-            <a href="../landing/home.html" class="btn-regresar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                </svg>
-                Regresar
-            </a>
+            <a href="../index.html" class="btn-regresar">Regresar</a>
 
             <header class="encabezado-login">
-                <h1>Ingresa a tu cuenta</h1>
-                <p>Ingresa tus datos para continuar</p>
+                <p class="brand-mark">AiDEN</p>
+                <h1>Gestion inteligente de viveros</h1>
+                <p>Bienvenido. Centraliza cultivos, inventario, ambiente, calidad y reportes en una sola plataforma agricola.</p>
             </header>
 
             <article class="formulario-login">
-                <form action="../Usuarios/users.html" method="GET">
+                <form action="dashboard.html" method="GET">
                     <section class="campo">
-                        <label for="correo">Correo</label>
-                        <input type="email" id="correo" placeholder="Ingresa tu correo" required>
+                        <label for="correo">Correo electronico</label>
+                        <input type="email" id="correo" placeholder="supervisor@aiden.co" required>
                     </section>
 
                     <section class="campo">
                         <div class="header-campo">
-                            <label for="contraseña">Contraseña</label>
-                            <a href="../Recuperacion/recuperacion.html" class="olvido">Olvidé mi contraseña</a>
+                            <label for="password">Contrasena</label>
+                            <a href="recuperacion.html" class="olvido">Olvidaste tu contrasena?</a>
                         </div>
-                        <input type="password" id="contraseña" placeholder="Ingresa tu contraseña" required>
+                        <input type="password" id="password" placeholder="Ingresa tu contrasena" required>
                     </section>
 
-                    <section class="recordar-opcion">
-                        <input type="checkbox" id="recordar">
-                        <label for="recordar">Recordar cuenta</label>
-                    </section>
-
-                    <button type="submit" class="btn-inicio">Inicio</button>
+                    <button type="submit" class="btn-inicio">Iniciar sesion</button>
                 </form>
             </article>
-
-            <footer class="pie-pagina">
-                <p>¿No tienes cuenta? <a href="../Registro/singup.html">Regístrate</a></p>
-            </footer>
         </section>
 
         <aside class="banner-lateral">
-            <img src="img/vivero.png" alt="Banner decorativo de Vivero">
+            <figure>
+                <img src="../Assets/IMG/vivero2.png" alt="Vivero tecnificado monitoreado con AiDEN">
+                <figcaption>Datos claros para decidir mejor en cada lote del vivero.</figcaption>
+            </figure>
         </aside>
     </main>
 </body>

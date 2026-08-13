@@ -57,6 +57,28 @@ body {
     margin-bottom: 2rem;
 }
 
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.75rem;
+    color: var(--dark-green);
+    font-size: 1.35rem;
+    font-weight: 900;
+}
+
+.brand-mark::before {
+    content: "A";
+    display: grid;
+    width: 2.2rem;
+    height: 2.2rem;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--dark-green);
+    color: var(--surface);
+    font-size: 0.95rem;
+}
+
 h1 {
     color: var(--text-primary);
     font-size: clamp(2rem, 5vw, 3rem);

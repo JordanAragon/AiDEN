@@ -4,220 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Assets/CSS/modules.css">
-    <title>AiDEN | Calidad y Alertas</title>
+    <title>AiDEN | Calidad</title>
 </head>
 <body>
-    <header class="top-nav">
-        <a href="../index.html" class="nav-brand">AiDEN</a>
-        <nav aria-label="Navegación de módulos">
-            <ul class="nav-menu">
-                <li><a href="configuracion.html">Configuración</a></li>
-                <li><a href="inventario.html">Inventario</a></li>
-                <li><a href="produccion.html">Cultivos</a></li>
-                <li><a href="trazabilidad.html">Trazabilidad</a></li>
-                <li><a href="ambiental.html">Ambiental</a></li>
-                <li><a href="calidad-alertas.html" class="active">Calidad</a></li>
-                <li><a href="personal.html">Personal</a></li>
-                <li><a href="reportes-dashboard.html">Reportes</a></li>
-            </ul>
-        </nav>
-        <nav class="user-logout" aria-label="Sesión"><a href="login.html">Supervisor · Cerrar sesión</a></nav>
-    </header>
+    <aside class="top-nav"><a href="dashboard.html" class="nav-brand">AiDEN</a><nav><ul class="nav-menu">
+        <li><a href="dashboard.html"><span class="nav-icon">D</span>Dashboard</a></li><li><a href="inventario.html"><span class="nav-icon">I</span>Inventario</a></li><li><a href="produccion.html"><span class="nav-icon">P</span>Produccion</a></li><li><a href="ambiental.html"><span class="nav-icon">A</span>Ambiental</a></li><li><a href="calidad-alertas.html" class="active"><span class="nav-icon">C</span>Calidad</a></li><li><a href="trazabilidad.html"><span class="nav-icon">T</span>Trazabilidad</a></li><li><a href="personal.html"><span class="nav-icon">U</span>Personal</a></li><li><a href="reportes-dashboard.html"><span class="nav-icon">R</span>Reportes</a></li>
+    </ul></nav><nav class="nav-bottom"><a href="configuracion.html"><span class="nav-icon">S</span>Configuracion</a><a href="login.html" class="logout-link"><span class="nav-icon">X</span>Cerrar sesion</a></nav></aside>
+    <header class="app-header"><section><strong>Calidad y sanidad vegetal</strong><p>Incidencias, severidad y responsables</p></section><section class="header-actions"><span class="notification">2</span><section class="profile-pill"><span class="avatar">SV</span><span class="profile-copy"><strong>Supervisor Vivero</strong><span>Juan Perez</span></span></section></section></header>
 
     <main class="main-content">
-        <header class="page-header">
-            <section>
-                <span class="eyebrow">Módulo 6 · HU23-HU27</span>
-                <h1>Control de calidad y alertas</h1>
-                <p>Limitantes técnicos, semáforo automático, inbox de alertas, incidencias fitosanitarias y tratamientos con trazabilidad de agroquímicos.</p>
-            </section>
-            <section class="toolbar">
-                <button class="btn-outline" type="button">Historial</button>
-                <button class="btn-outline" type="button">Nueva inspección</button>
-                <button class="btn" type="button">Reportar incidencia</button>
-            </section>
-        </header>
+        <header class="page-header"><section><span class="eyebrow">Control sanitario</span><h1>Calidad</h1><p>Registra y consulta problemas de calidad o sanidad vegetal por lote.</p></section><button class="btn" type="button" data-action="registrar-incidencia">+ Registrar incidencia</button></header>
 
         <section class="summary-grid">
-            <article class="metric-card"><span class="metric-label">Alertas críticas</span><strong class="metric-value">4</strong><p class="metric-note">Badge rojo visible desde el menú.</p></article>
-            <article class="metric-card"><span class="metric-label">Advertencias</span><strong class="metric-value">9</strong><p class="metric-note">No bloquean, pero informan al supervisor.</p></article>
-            <article class="metric-card"><span class="metric-label">Incidencias</span><strong class="metric-value">3</strong><p class="metric-note">Reportadas, en atención o resueltas.</p></article>
-            <article class="metric-card"><span class="metric-label">Clasificación A</span><strong class="metric-value">82%</strong><p class="metric-note">Plantas sanas o listas para despacho.</p></article>
+            <article class="metric-card"><span class="metric-label">Incidencias abiertas</span><strong class="metric-value">5</strong><p class="metric-note">2 de alta prioridad.</p></article>
+            <article class="metric-card"><span class="metric-label">En revision</span><strong class="metric-value">3</strong><p class="metric-note">Seguimiento tecnico.</p></article>
+            <article class="metric-card"><span class="metric-label">Resueltas</span><strong class="metric-value">12</strong><p class="metric-note">Ultimos 30 dias.</p></article>
+            <article class="metric-card"><span class="metric-label">Lote critico</span><strong class="metric-value">L-005</strong><p class="metric-note">Plaga alta.</p></article>
         </section>
 
-        <section class="workspace">
-            <section class="grid-two">
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Limitantes técnicos por fase</h2>
-                            <p>Aplican a lotes futuros; los críticos bloquean avance de fase salvo justificación del supervisor.</p>
-                        </section>
-                        <button class="btn" type="button">Nueva limitante</button>
-                    </header>
-                    <section class="quick-panel">
-                        <ul class="checklist">
-                            <li>Las limitantes se gestionan en pop-up para no mezclar configuración con monitoreo.</li>
-                            <li>Una limitante crítica bloquea avance de fase hasta justificar o resolver.</li>
-                            <li>Aplica solo sobre calidad; no edita actividades ni sensores de otros módulos.</li>
-                        </ul>
-                    </section>
-                </article>
-
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Semáforo de lote y fase</h2>
-                            <p>Prioridad rojo sobre amarillo y verde. El detalle explica alertas, limitantes y días de retraso.</p>
-                        </section>
-                    </header>
-                    <section class="table-wrap">
-                        <table class="data-table">
-                            <thead>
-                                <tr><th>Lote</th><th>Fase</th><th>Estado</th><th>Detalle al clic</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>LOT-2026-001</td>
-                                    <td>Germinación</td>
-                                    <td><span class="semaforo"><span class="dot yellow"></span>Amarillo</span></td>
-                                    <td>Fase al 80%, humedad baja y 1 advertencia pendiente.</td>
-                                </tr>
-                                <tr>
-                                    <td>LOT-2026-002</td>
-                                    <td>Crecimiento</td>
-                                    <td><span class="semaforo"><span class="dot red"></span>Rojo</span></td>
-                                    <td>Limitante crítico sin cumplir y alerta fitosanitaria activa.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </section>
-                </article>
+        <article class="panel-card">
+            <header class="panel-header"><h2>Incidencias registradas</h2></header>
+            <section class="table-wrap">
+                <table class="data-table">
+                    <thead><tr><th>Lote</th><th>Tipo de incidencia</th><th>Fecha</th><th>Severidad</th><th>Estado</th><th>Responsable</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                        <tr><td>L-003</td><td>Roya</td><td>08/08/2026</td><td><span class="badge-warn">Media</span></td><td>En revision</td><td>Juan Perez</td><td><button class="btn-outline" data-action="registrar-incidencia" type="button">Actualizar</button></td></tr>
+                        <tr><td>L-005</td><td>Plaga</td><td>07/08/2026</td><td><span class="badge-danger">Alta</span></td><td>Pendiente</td><td>Maria Lopez</td><td><button class="btn-outline" data-action="registrar-incidencia" type="button">Atender</button></td></tr>
+                        <tr><td>L-002</td><td>Deficiencia nutricional</td><td>05/08/2026</td><td><span class="badge">Baja</span></td><td>Controlada</td><td>Carlos Rivas</td><td><button class="btn-outline" data-action="registrar-incidencia" type="button">Ver</button></td></tr>
+                    </tbody>
+                </table>
             </section>
-
-            <section class="grid-two">
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Inspecciones y evaluación fitosanitaria</h2>
-                            <p>Control sanitario con plagas, enfermedades, severidad, tratamiento, evidencias y seguimiento de incidencias.</p>
-                        </section>
-                    </header>
-                    <section class="table-wrap">
-                        <table class="data-table">
-                            <thead>
-                                <tr><th>Incidencia</th><th>Lote</th><th>Problema</th><th>Severidad</th><th>Clasificación</th><th>Acción recomendada</th><th>Evidencia</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>INC-023</td><td>B-003</td><td>Roya</td><td><span class="badge-warn">Media</span></td><td>B</td><td>Fungicida X</td><td>3 fotos</td></tr>
-                                <tr><td>INC-024</td><td>LOT-2026-002</td><td>Trips</td><td><span class="badge-danger">Alta</span></td><td>C</td><td>Aislar lote y tratamiento foliar</td><td>5 fotos</td></tr>
-                            </tbody>
-                        </table>
-                    </section>
-                </article>
-
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Clasificación y recomendaciones IA</h2>
-                            <p>Evalúa calidad por lote, estado sanitario, incidencia visual y respuesta esperada al tratamiento.</p>
-                        </section>
-                        <button class="btn" type="button">Clasificar plantas</button>
-                    </header>
-                    <ul class="checklist">
-                        <li>Clasificación A, B, C o descarte con motivo obligatorio.</li>
-                        <li>La IA sugiere acción, prioridad y fecha de revisión, pero el supervisor confirma.</li>
-                        <li>Tratamientos quedan ligados a inventario, periodo de carencia y trazabilidad.</li>
-                        <li>Las evidencias fotográficas acompañan inspección, incidencia y cierre.</li>
-                    </ul>
-                </article>
-            </section>
-
-            <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Panel centralizado de alertas</h2>
-                        <p>Ordenado por criticidad y fecha. Para atender una alerta se exige comentario mínimo de 15 caracteres.</p>
-                    </section>
-                    <section class="toolbar">
-                        <button class="btn-outline" type="button">Tipo</button>
-                        <button class="btn-outline" type="button">Criticidad</button>
-                        <button class="btn-outline" type="button">Rango de fechas</button>
-                    </section>
-                </header>
-                <section class="table-wrap">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Tipo</th>
-                                <th>Descripción</th>
-                                <th>Referencia</th>
-                                <th>Generada</th>
-                                <th>Tiempo</th>
-                                <th>Estado</th>
-                                <th>Resolución</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="badge-danger">Inventario</span></td>
-                                <td>Bandejas germinadoras en stock cero.</td>
-                                <td>Insumo BG-01</td>
-                                <td>2026-06-05 07:20</td>
-                                <td>2 h 15 min</td>
-                                <td>Activa</td>
-                                <td><button class="btn-outline" type="button" data-modal-action="Atender alerta">Atender stock</button></td>
-                            </tr>
-                            <tr>
-                                <td><span class="badge-danger">Incidencia</span></td>
-                                <td>Plaga reportada en lote LOT-2026-002.</td>
-                                <td>Incidencia INC-18</td>
-                                <td>2026-06-05 08:40</td>
-                                <td>55 min</td>
-                                <td>Activa</td>
-                                <td><button class="btn-outline" type="button" data-modal-action="Atender alerta">Atender plaga</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-            </article>
-
-            <section class="grid-two">
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Incidencia fitosanitaria</h2>
-                            <p>El reporte genera alerta crítica y queda vinculado al historial y línea de tiempo del lote.</p>
-                        </section>
-                    </header>
-                    <section class="quick-panel">
-                        <ul class="checklist">
-                            <li>El reporte exige lote, tipo, porcentaje, síntomas y evidencias.</li>
-                            <li>Al guardar se crea alerta crítica y evento de trazabilidad.</li>
-                        </ul>
-                    </section>
-                </article>
-
-                <article class="panel-card">
-                    <header class="panel-header">
-                        <section>
-                            <h2>Tratamiento aplicado</h2>
-                            <p>Vinculado a incidencia, descuenta inventario y calcula fecha temprana de despacho por periodo de carencia.</p>
-                        </section>
-                        <button class="btn" type="button">Nuevo tratamiento</button>
-                    </header>
-                    <section class="quick-panel">
-                        <ul class="checklist">
-                            <li>El tratamiento consume inventario sin editar el módulo de Inventario directamente.</li>
-                            <li>La fecha de despacho se calcula desde el periodo de carencia del insumo.</li>
-                        </ul>
-                    </section>
-                </article>
-            </section>
-        </section>
+        </article>
     </main>
-
-    <footer class="module-footer">AiDEN v1.0 · Limitantes, semáforos, alertas, incidencias y tratamientos.</footer>
+    <footer class="module-footer">AiDEN MVP · Calidad.</footer>
     <script src="../Assets/JS/modules.js"></script>
 </body>
 </html>
