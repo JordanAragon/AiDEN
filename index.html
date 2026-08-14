@@ -3,223 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AiDEN es un ERP agrícola especializado para viveros: centraliza inventario, producción por lotes, trazabilidad, costos, personal, sensores y reportes.">
+    <meta name="description" content="AiDEN centraliza la gestion de viveros: lotes, inventario, alertas, trazabilidad y reportes en una interfaz sencilla.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="Assets/CSS/home.css">
-    <title>AiDEN Sistema de Gestion Inteligente</title>
+    <title>AiDEN | Gestion inteligente de viveros</title>
 </head>
 <body>
     <header class="site-header">
-        <nav class="site-nav" aria-label="Navegación principal">
+        <nav class="site-nav" aria-label="Navegacion principal">
             <a href="#inicio" class="brand">AiDEN</a>
-
             <ul class="nav-links">
-                <li><a href="#propuesta">Propuesta</a></li>
-                <li><a href="#modulos">Módulos</a></li>
-                <li><a href="#impacto">Impacto</a></li>
-                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#capacidades">Capacidades</a></li>
+                <li><a href="#acceso">Acceso</a></li>
             </ul>
-
-            <section class="nav-actions" aria-label="Accesos de cuenta">
-                <a href="Pages/login.html" class="button button-secondary">Iniciar sesión</a>
-                <a href="Pages/singup.html" class="button button-primary">Probar Ahora</a>
-            </section>
+            <a href="Pages/login.html" class="button button-primary">Entrar al sistema</a>
         </nav>
     </header>
 
     <main>
-
         <section id="inicio" class="hero-section">
             <article class="hero-copy">
-                <p class="eyebrow">ERP agrícola especializado para viveros tecnificados</p>
-                <h1 class="hero-title">AiDEN convierte la operación del vivero en una gestión integrada, trazable y rentable.</h1>
-                <p class="hero-summary">
-                    Una plataforma ERP para controlar inventario físico y vivo, compras, fases productivas, recursos, costos, personal y alertas de cumplimiento
-                    desde una sola vista ejecutiva. Diseñada para empresas agrícolas que necesitan escalar sin perder
-                    control operativo.
-                </p>
+                <p class="eyebrow">ERP agricola para viveros</p>
+                <h1>Gestiona el vivero con datos claros.</h1>
+                <p class="hero-summary">AiDEN ayuda a controlar lotes, inventario, alertas y trazabilidad sin depender de registros dispersos.</p>
                 <nav class="hero-actions" aria-label="Acciones principales">
-                    <a href="Pages/reportes-dashboard.html" class="button button-primary">Ver prototipo</a>
-                    <a href="#modulos" class="button button-secondary">Ver capacidades</a>
+                    <a href="Pages/login.html" class="button button-primary">Iniciar sesion</a>
+                    <a href="Pages/dashboard.html" class="button button-secondary">Ver demo</a>
                 </nav>
             </article>
 
             <figure class="hero-figure">
-                <img src="Assets/IMG/dashvivero.png" alt="Operario revisando datos de AiDEN en un vivero tecnificado">
-                <figcaption>
-                    Vista de campo: lotes, recursos y cumplimiento revisados desde el vivero.
-                </figcaption>
+                <img src="Assets/IMG/dashvivero.png" alt="Vista del sistema AiDEN para viveros">
             </figure>
         </section>
 
-        <section id="propuesta" class="value-section">
+        <section id="capacidades" class="capabilities-section">
             <header class="section-heading">
-                <p class="eyebrow">Propuesta de valor</p>
-                <h2>El problema no es producir más. Es producir con evidencia.</h2>
-                <p>
-                    En operaciones agrícolas de alto volumen, la información suele dispersarse entre inventarios,
-                    compras, costos, reportes manuales y seguimiento informal de fases. AiDEN ordena ese flujo y lo convierte en
-                    gestión ERP verificable.
-                </p>
-            </header>
-            <article>
-                <figure class="value-figure">
-                    <img src="" alt="Vivero tecnificado con fases de producción automatizadas">
-                    <figcaption>Vista de campo: lotes, recursos y cumplimiento revisados desde el vivero.</figcaption>
-                </figure>
-                <p>
-                    AiDEN es un ERP agrícola especializado para viveros que centraliza inventario, producción por lotes, trazabilidad, costos, personal, sensores y reportes.
-                    La plataforma permite a gerencia, producción y calidad tomar decisiones basadas en datos confiables y trazables.
-                </p>
-            </article>
-        </section>
-
-        <section id="modulos" class="modules-section">
-            <header class="section-heading">
-                <p class="eyebrow">Módulos clave</p>
-                <h2>Una arquitectura operativa conectada de extremo a extremo.</h2>
+                <p class="eyebrow">Capacidades principales</p>
+                <h2>Lo necesario para operar y decidir.</h2>
             </header>
 
-            <section class="module-grid" aria-label="Módulos de AiDEN ERP">
+            <section class="capability-grid" aria-label="Capacidades de AiDEN">
                 <article>
-                    <figure class="module-figure">
-                        <img src="Assets/IMG/dash.png" alt="Panel de configuración de AiDEN">
-                        <figcaption>Parámetros maestros, usuarios, roles y auditoría.</figcaption>
-                    </figure>
-                    <span class="module-number">01</span>
-                    <h3>Configuración del sistema</h3>
-                    <p>Estructura ERP, viveros, sedes, bodegas, centros de costo, catálogos, roles, seguridad y auditoría.</p>
-                    <a href="Pages/configuracion.html">Explorar configuración</a>
+                    <span>01</span>
+                    <h3>Operacion diaria</h3>
+                    <p>Lotes, tareas, personal e incidencias en una sola vista.</p>
                 </article>
                 <article>
-                    <figure class="module-figure">
-                        <img src="Assets/IMG/dash2.png" alt="Panel de inventario inteligente de AiDEN">
-                        <figcaption>Inventario con niveles y alarmas visibles.</figcaption>
-                    </figure>
-                    <span class="module-number">02</span>
-                    <h3>Inventario inteligente</h3>
-                    <p>Control de insumos, inventario vivo, proveedores, compras, niveles mínimos, pérdidas y valorización.</p>
-                    <a href="Pages/inventario.html">Explorar inventario</a>
+                    <span>02</span>
+                    <h3>Control de recursos</h3>
+                    <p>Inventario, costos y alertas de stock con estados visibles.</p>
                 </article>
                 <article>
-                    <figure class="module-figure">
-                        <img src="Assets/IMG/vivero2.png" alt="Vivero tecnificado con fases de producción automatizadas">
-                        <figcaption>Fases productivas monitoreadas en el vivero.</figcaption>
-                    </figure>
-                    <span class="module-number">03</span>
-                    <h3>Gestión de cultivos</h3>
-                    <p>Ciclos productivos, apertura de lotes, actividades, consumos, avances de fase, semáforo y mermas.</p>
-                    <a href="Pages/produccion.html">Explorar cultivos</a>
-                </article>
-                <article>
-                    <figure class="module-figure">
-                        <img src="Assets/IMG/vivero3.png" alt="Lotes de plantas con historial de trazabilidad">
-                        <figcaption>Historial por lote desde siembra hasta despacho.</figcaption>
-                    </figure>
-                    <span class="module-number">04</span>
-                    <h3>Trazabilidad por lote</h3>
-                    <p>QR imprimible, vista pública operativa e informe de trazabilidad con eventos y evidencias.</p>
-                    <a href="Pages/trazabilidad.html">Explorar trazabilidad</a>
-                </article>
-                <article>
-                    <figure class="module-figure">
-                        <img src="Assets/IMG/dashvivero.png" alt="Panel ambiental en vivero tecnificado">
-                        <figcaption>Sensores activos, tendencias y condiciones por zona.</figcaption>
-                    </figure>
-                    <span class="module-number">05</span>
-                    <h3>Monitoreo ambiental</h3>
-                    <p>Sensores IoT, lecturas en tiempo real, umbrales por cultivo/fase, anomalías, IA y riego automatizado.</p>
-                    <a href="Pages/ambiental.html">Explorar ambiental</a>
-                </article>
-                <article>
-                    <figure class="module-figure">
-                        <img src="Assets/IMG/vivero.png" alt="Operario inspeccionando calidad de plantas">
-                        <figcaption>Alertas centralizadas y control fitosanitario.</figcaption>
-                    </figure>
-                    <span class="module-number">06</span>
-                    <h3>Calidad y alertas</h3>
-                    <p>Limitantes técnicos, semáforo, panel de alertas, incidencias y tratamientos.</p>
-                    <a href="Pages/calidad-alertas.html">Explorar calidad</a>
-                </article>
-                <article>
-                    <figure class="module-figure">
-                        <img src="Assets/IMG/vivero2.png" alt="Equipo de trabajo en vivero">
-                        <figcaption>Planificación diaria y seguimiento por operario.</figcaption>
-                    </figure>
-                    <span class="module-number">07</span>
-                    <h3>Personal y tareas</h3>
-                    <p>Usuarios, roles, acceso, jornadas, plan diario, productividad, notificaciones e historial por operario.</p>
-                    <a href="Pages/personal.html">Explorar personal</a>
-                </article>
-                <article>
-                    <figure class="module-figure">
-                        <img src="Assets/IMG/dash.png" alt="Dashboard principal de AiDEN">
-                        <figcaption>Indicadores, reportes y notificaciones.</figcaption>
-                    </figure>
-                    <span class="module-number">08</span>
-                    <h3>Costos operativos</h3>
-                    <p>Contabilidad operativa por lote, centro de costo, compras, jornadas, tratamientos y cierre mensual.</p>
-                    <a href="Pages/costos.html">Explorar costos</a>
-                </article>
-                <article>
-                    <figure class="module-figure">
-                        <img src="Assets/IMG/dash.png" alt="Dashboard principal de AiDEN">
-                        <figcaption>Indicadores, reportes y notificaciones.</figcaption>
-                    </figure>
-                    <span class="module-number">09</span>
-                    <h3>Reportes y dashboard</h3>
-                    <p>Dashboard por rol, reportes de inventario, producción, ambiente, fitosanitarios, trazabilidad, costos y personal.</p>
-                    <a href="Pages/reportes-dashboard.html">Explorar reportes</a>
+                    <span>03</span>
+                    <h3>Seguimiento</h3>
+                    <p>Trazabilidad, ambiente, calidad y reportes para revisar avances.</p>
                 </article>
             </section>
         </section>
 
-        <section id="impacto" class="impact-section">
+        <section id="acceso" class="access-section">
             <header class="section-heading">
-                <p class="eyebrow">Impacto empresarial</p>
-                <h2>AiDEN ayuda a convertir la operación agrícola en una ventaja competitiva.</h2>
+                <p class="eyebrow">Demo por rol</p>
+                <h2>Accede segun la responsabilidad del usuario.</h2>
             </header>
 
-            <section class="impact-layout">
-                <article class="impact-card">
-                    <h3>Para gerencia</h3>
-                    <p>Indicadores claros sobre cumplimiento, productividad, inventario y riesgo operativo sin esperar cierres manuales.</p>
-                </article>
-                <article class="impact-card">
-                    <h3>Para producción</h3>
-                    <p>Fases visibles, tareas priorizadas y alertas tempranas para mantener cada lote dentro del plan técnico.</p>
-                </article>
-                <article class="impact-card">
-                    <h3>Para calidad</h3>
-                    <p>Registros trazables que facilitan auditorías, análisis de desviaciones y control documental por lote.</p>
-                </article>
+            <section class="role-grid" aria-label="Acceso por rol">
+                <a href="Pages/dashboard-admin.html">
+                    <strong>Administrador</strong>
+                    <span>Usuarios, configuracion, costos y auditoria.</span>
+                </a>
+                <a href="Pages/dashboard.html">
+                    <strong>Supervisor</strong>
+                    <span>Produccion, inventario, alertas y reportes.</span>
+                </a>
+                <a href="Pages/dashboard-operario.html">
+                    <strong>Operario</strong>
+                    <span>Tareas, lotes asignados e incidencias.</span>
+                </a>
             </section>
-        </section>
-
-        <!-- Esta sección queda como cierre comercial, porque el usuario ya vio problema, módulos e impacto. -->
-        <section class="cta-section" aria-labelledby="cta-title">
-            <article>
-                <p class="eyebrow">Siguiente paso</p>
-                <h2 id="cta-title">Lleve AiDEN a una conversación estratégica con su equipo.</h2>
-                <p>
-                    Presentemos cómo la plataforma puede adaptarse a sus viveros, roles, indicadores y flujo de producción por lotes.
-                </p>
-            </article>
-            <a href="Pages/reportes-dashboard.html" class="button button-primary">Ver prototipo</a>
         </section>
     </main>
 
-    <footer id="contacto" class="site-footer">
-        <section class="footer-brand">
-            <h2>AiDEN</h2>
-            <p>Gestión agrícola tecnificada para operaciones que necesitan trazabilidad, control y crecimiento sostenible.</p>
-        </section>
-
-        <address>
-            <strong>Contacto</strong>
-            <a href="mailto:jordandavidaragon@outlook.com">jordandavidaragon@outlook.com</a>
-            <span>Popayán, Colombia</span>
-        </address>
-
+    <footer class="site-footer">
+        <span>AiDEN</span>
+        <a href="mailto:jordandavidaragon@outlook.com">jordandavidaragon@outlook.com</a>
     </footer>
 </body>
 </html>

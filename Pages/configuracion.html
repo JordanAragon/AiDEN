@@ -3,39 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../Assets/CSS/modules.css">
     <title>AiDEN | Configuración</title>
 </head>
 <body>
-    <header class="top-nav">
-        <a href="../index.html" class="nav-brand">AiDEN</a>
-        <nav aria-label="Navegación de módulos">
+    <aside class="top-nav">
+        <a href="dashboard.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegación principal">
             <ul class="nav-menu">
-                <li><a href="configuracion.html" class="active">Configuración</a></li>
-                <li><a href="inventario.html">Inventario</a></li>
-                <li><a href="produccion.html">Cultivos</a></li>
-                <li><a href="trazabilidad.html">Trazabilidad</a></li>
-                <li><a href="ambiental.html">Ambiental</a></li>
-                <li><a href="calidad-alertas.html">Calidad</a></li>
-                <li><a href="personal.html">Personal</a></li>
-                <li><a href="reportes-dashboard.html">Reportes</a></li>
+                <li><a href="dashboard.html"><span class="nav-icon">D</span>Dashboard</a></li>
+                <li><a href="inventario.html"><span class="nav-icon">I</span>Inventario</a></li>
+                <li><a href="produccion.html"><span class="nav-icon">P</span>Producción</a></li>
+                <li><a href="ambiental.html"><span class="nav-icon">A</span>Ambiental</a></li>
+                <li><a href="calidad-alertas.html"><span class="nav-icon">C</span>Calidad</a></li>
+                <li><a href="trazabilidad.html"><span class="nav-icon">T</span>Trazabilidad</a></li>
+                <li><a href="personal.html"><span class="nav-icon">U</span>Personal</a></li>
+                <li><a href="reportes-dashboard.html"><span class="nav-icon">R</span>Reportes</a></li>
             </ul>
         </nav>
-        <nav class="user-logout" aria-label="Sesión">
-            <a href="login.html">Administrador · Cerrar sesión</a>
+        <nav class="nav-bottom" aria-label="Sesión">
+            <a href="configuracion.html" class="active"><span class="nav-icon">S</span>Configuración</a>
+            <a href="login.html" class="logout-link"><span class="nav-icon">X</span>Cerrar sesión</a>
         </nav>
+    </aside>
+
+    <header class="app-header">
+        <section>
+            <strong>Configuración administrativa</strong>
+            <p>Usuarios, permisos y datos maestros del sistema</p>
+        </section>
+        <section class="header-actions">
+            <button class="notification" data-action="ver-alertas" type="button" aria-label="Ver alertas">2</button>
+            <button class="profile-pill" data-action="ver-perfil" type="button">
+                <span class="avatar">AD</span>
+                <span class="profile-copy"><strong>Administrador</strong><span>Ana Torres</span></span>
+            </button>
+        </section>
     </header>
 
     <main class="main-content">
         <header class="page-header">
             <section>
-                <span class="eyebrow">Módulo 1 · HU01-HU03</span>
+                <span class="eyebrow">Administración</span>
                 <h1>Configuración del sistema</h1>
-                <p>Panel exclusivo para Administrador con estructura ERP, catálogos maestros, usuarios, roles, sesiones, auditoría y parámetros de seguridad.</p>
+                <p>Usuarios, roles y parámetros base.</p>
             </section>
             <section class="toolbar">
                 <a class="btn-outline" href="#auditoria">Ver auditoría</a>
-                <button class="btn" type="button">Nuevo usuario</button>
+                <button class="btn" data-action="nuevo-usuario" type="button">Nuevo usuario</button>
             </section>
         </header>
 
@@ -66,10 +82,10 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h2>Estructura ERP del vivero</h2>
-                        <p>Define la organización agrícola para que inventario, cultivos, trazabilidad, costos, personal y reportes hablen el mismo idioma.</p>
+                            <h2>Estructura ERP del vivero</h2>
+                            <p>Estructura operativa del vivero.</p>
                     </section>
-                    <button class="btn-outline" type="button">Nuevo centro de costo</button>
+                    <button class="btn-outline" data-action="nuevo-centro-costo" type="button">Nuevo centro de costo</button>
                 </header>
                 <section class="table-wrap">
                     <table class="data-table">
@@ -119,10 +135,10 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h2>Parámetros maestros configurables</h2>
-                        <p>Cada elemento tiene nombre único, descripción opcional y estado activo/inactivo. Los inactivos no aparecen en formularios, pero conservan histórico.</p>
+                            <h2>Parámetros maestros</h2>
+                            <p>Catálogos activos.</p>
                     </section>
-                    <button class="btn-outline" type="button">Exportar Excel</button>
+                    <button class="btn-outline" data-action="exportar-excel" type="button">Exportar Excel</button>
                 </header>
                 <section class="table-wrap">
                     <table class="data-table">
@@ -187,8 +203,8 @@
                 <article class="panel-card" id="usuarios">
                     <header class="panel-header">
                         <section>
-                            <h2>Gestión de usuarios y roles</h2>
-                            <p>El usuario no se elimina: solo se inactiva. El último acceso y los fallidos quedan registrados.</p>
+                            <h2>Usuarios y roles</h2>
+                            <p>Accesos y recuperación.</p>
                         </section>
                     </header>
                     <section class="quick-panel">
@@ -198,8 +214,8 @@
                             <li>Solo Administrador puede crear usuarios, roles y restablecer credenciales.</li>
                         </ul>
                         <section class="compact-actions">
-                            <button class="btn-outline" type="button">Guardar usuario</button>
-                            <button class="btn-outline" type="button">Restablecer contraseña</button>
+                            <button class="btn-outline" data-action="nuevo-usuario" type="button">Editar usuario</button>
+                            <button class="btn-outline" data-action="restablecer-contrasena" type="button">Restablecer contraseña</button>
                         </section>
                     </section>
                 </article>
@@ -208,7 +224,7 @@
                     <header class="panel-header">
                         <section>
                             <h2>Permisos por rol</h2>
-                            <p>La navegación muestra el nombre completo y rol activo desde cualquier vista.</p>
+                            <p>Responsabilidades por rol.</p>
                         </section>
                     </header>
                     <ul class="checklist">
@@ -225,7 +241,7 @@
                 <header class="panel-header">
                     <section>
                         <h2>Bitácora de auditoría y seguridad</h2>
-                        <p>Cada cambio conserva usuario responsable, fecha/hora, campo modificado, valor anterior y valor nuevo.</p>
+                        <p>Cambios y accesos del sistema.</p>
                     </section>
                     <span class="badge-blue">Últimos 10 intentos fallidos visibles</span>
                 </header>
@@ -267,8 +283,6 @@
             </article>
         </section>
     </main>
-
-    <footer class="module-footer">AiDEN v1.0 · Configuración, usuarios y autenticación segura.</footer>
     <script src="../Assets/JS/modules.js"></script>
 </body>
 </html>
