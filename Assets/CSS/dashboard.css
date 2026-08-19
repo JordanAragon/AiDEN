@@ -62,7 +62,6 @@ textarea {
     flex-wrap: wrap;
     gap: 0.4rem;
     list-style: none;
-    background-color: #16803c;
 }
 
 .nav-menu a,
