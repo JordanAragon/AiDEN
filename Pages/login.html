@@ -1,56 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../Assets/CSS/login.css">
-    <title>Login - AiDEN</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - GREENMIND</title>
+  <link rel="stylesheet" href="login.css">
 </head>
 <body>
-    <main class="login-page">
-        <section class="form-container">
-            <a href="../index.html" class="btn-regresar">← Regresar</a>
 
-            <header class="encabezado-login">
-                <h1>Ingresa a tu cuenta</h1>
-                <p>Accede al control de lotes, inventario, fases y alarmas de cumplimiento.</p>
-            </header>
+  <main class="auth-card">
+    
+    <!-- Sección Formulario -->
+    <section class="auth-section">
+      <nav class="top-nav">
+        <a href="#" class="back-link">&larr; Regresar</a>
+      </nav>
 
-            <article class="formulario-login">
-                <form action="../Pages/reportes-dashboard.html" method="GET">
-                    <fieldset class="campo">
-                        <label for="correo">Correo</label>
-                        <input type="email" id="correo" placeholder="Ingresa tu correo" required>
-                    </fieldset>
+      <header class="auth-header">
+        <h1>Ingresa a tu cuenta</h1>
+        <p class="subtitle">Ingresa tus datos para continuar</p>
+      </header>
 
-                    <fieldset class="campo">
-                        <header class="header-campo">
-                            <label for="contrasena">Contraseña</label>
-                            <a href="../Pages/recuperacion.html" class="olvido">Olvidé mi contraseña</a>
-                        </header>
-                        <input type="password" id="contrasena" placeholder="Ingresa tu contraseña" required>
-                    </fieldset>
+      <form action="#" method="POST" class="auth-form">
+        <p class="form-group">
+          <label for="login-email">Correo</label>
+          <input type="email" id="login-email" name="email" placeholder="Ingresa tu correo" required>
+        </p>
 
-                    <fieldset class="recordar-opcion">
-                        <input type="checkbox" id="recordar">
-                        <label for="recordar">Recordar cuenta</label>
-                    </fieldset>
+        <p class="form-group">
+          <span class="label-row">
+            <label for="login-password">Contraseña</label>
+            <a href="#" class="forgot-link">Olvidé mi contraseña</a>
+          </span>
+          <input type="password" id="login-password" name="password" placeholder="Ingresa tu contraseña" required>
+        </p>
 
-                    <button type="submit" class="btn-inicio">Entrar al sistema</button>
-                </form>
-            </article>
+        <p class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" name="remember">
+            <span>Recordar cuenta</span>
+          </label>
+        </p>
 
-            <footer class="pie-pagina">
-                <p>¿No tienes cuenta? <a href="../Pages/singup.html">Regístrate</a></p>
-            </footer>
-        </section>
+        <button type="submit" class="btn-primary">Inicio</button>
+      </form>
 
-        <aside class="banner-lateral">
-            <figure>
-                <img src="../Assets/IMG/vivero.png" alt="Vivero tecnificado AiDEN">
-                <figcaption>AiDEN conecta el trabajo de campo con información útil para decidir.</figcaption>
-            </figure>
-        </aside>
-    </main>
+      <footer class="auth-footer">
+        <p>¿No tienes cuenta? <a href="signup.html" class="highlight-link">Regístrate</a></p>
+      </footer>
+    </section>
+
+    <!-- Sección Visual (Imagen Lateral) -->
+    <aside class="auth-media">
+      <img src="plant-greenhouse.jpg" alt="Persona trabajando en un vivero cuidando plantas">
+    </aside>
+
+  </main>
+
 </body>
 </html>

@@ -1,270 +1,200 @@
+/* ==========================================================================
+   Variables y Reset
+   ========================================================================== */
 :root {
-    --dark-green: #0a4f31;
-    --bright-green: #1f9d55;
-    --bg-main: #f3f6f9;
-    --text-primary: #1f2937;
-    --border-color: #e5e7eb;
-    --surface: #ffffff;
-    --muted-text: #61716a;
+  --primary-green: #1e5622;
+  --primary-green-hover: #164019;
+  --text-dark: #111827;
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
+  --bg-body: #f3f4f6;
+  --bg-card: #ffffff;
+  --radius: 8px;
+  --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Segoe UI", system-ui, sans-serif;
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    min-height: 100vh;
-    background: var(--bg-main);
-    color: var(--text-primary);
+  font-family: var(--font-family);
+  background-color: var(--bg-body);
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
 }
 
-/* Dejé esta pantalla en dos columnas porque se entiende rápido: formulario + contexto visual. */
-.login-page {
-    display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
-    min-height: 100vh;
+/* ==========================================================================
+   Estructura Principal
+   ========================================================================== */
+.auth-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  max-width: 1050px;
+  min-height: 720px;
+  background-color: var(--bg-card);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
-.form-container,
-.formulario {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 5rem clamp(1.25rem, 8vw, 6rem);
-    background: var(--surface);
+@media (min-width: 900px) {
+  .auth-card {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-.btn-regresar {
-    position: absolute;
-    top: 1.5rem;
-    left: clamp(1.25rem, 8vw, 6rem);
-    color: var(--muted-text);
-    font-weight: 800;
-    text-decoration: none;
+.auth-section {
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem;
 }
 
-.btn-regresar:hover {
-    color: var(--dark-green);
+.top-nav {
+  margin-bottom: 1rem;
 }
 
-.encabezado-login,
-.titulo,
-.encabezado-tarjeta {
-    margin-bottom: 2rem;
+.back-link {
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
-h1 {
-    color: var(--text-primary);
-    font-size: clamp(2rem, 5vw, 3rem);
-    line-height: 1.1;
+.auth-header {
+  margin-bottom: 1.5rem;
 }
 
-p {
-    margin-top: 0.5rem;
-    color: var(--muted-text);
+.auth-header h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--primary-green);
+  letter-spacing: -0.02em;
 }
 
-form,
-.campo,
-.datos,
-.grupo-formulario {
-    display: grid;
-    gap: 1rem;
+/* ==========================================================================
+   Formulario y Campos
+   ========================================================================== */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-grow: 1;
 }
 
-fieldset {
-    border: 0;
-    padding: 0;
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
-label {
-    color: var(--text-primary);
-    font-size: 0.92rem;
-    font-weight: 800;
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-dark);
 }
 
-.header-campo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  background-color: #ffffff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.olvido,
-.pie-pagina a,
-.redireccionLogin a {
-    color: var(--dark-green);
-    font-weight: 800;
-    text-decoration: none;
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(30, 86, 34, 0.15);
 }
 
-input,
-select {
-    width: 100%;
-    min-height: 3rem;
-    padding: 0.8rem 0.9rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: var(--surface);
-    color: var(--text-primary);
+.form-group input::placeholder {
+  color: #9ca3af;
 }
 
-input:focus,
-select:focus {
-    border-color: var(--bright-green);
-    outline: 3px solid rgba(31, 157, 85, 0.14);
+.checkbox-group {
+  flex-direction: row;
+  align-items: center;
+  margin-top: 0.2rem;
 }
 
-.recordar-opcion,
-.terminos {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.recordar-opcion input,
-.terminos input {
-    width: auto;
-    min-height: auto;
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary-green);
+  cursor: pointer;
 }
 
-.btn-inicio,
-.boton_registro,
-.btn-enviar {
-    width: 100%;
-    min-height: 3rem;
-    border: 0;
-    border-radius: 8px;
-    background: var(--dark-green);
-    color: var(--surface);
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 900;
+.btn-primary {
+  width: 100%;
+  padding: 0.85rem;
+  margin-top: 0.5rem;
+  background-color: var(--primary-green);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.btn-inicio:hover,
-.boton_registro:hover,
-.btn-enviar:hover {
-    background: #073c26;
+.btn-primary:hover {
+  background-color: var(--primary-green-hover);
 }
 
-.pie-pagina,
-.redireccionLogin {
-    margin-top: 1.5rem;
-    text-align: center;
+/* ==========================================================================
+   Pie y Lateral
+   ========================================================================== */
+.auth-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-.banner-lateral,
-.image {
-    display: grid;
-    place-items: center;
-    padding: clamp(1.5rem, 6vw, 5rem);
-    background: var(--dark-green);
+.auth-footer .highlight-link {
+  color: var(--primary-green);
+  text-decoration: none;
+  font-weight: 700;
 }
 
-.banner-lateral figure,
-.image figure {
-    overflow: hidden;
-    border-radius: 8px;
-    background: var(--surface);
+.auth-footer .highlight-link:hover {
+  text-decoration: underline;
 }
 
-.banner-lateral img,
-.image img {
+.auth-media {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: #f9fafb;
+  border-left: 1px solid #f3f4f6;
+}
+
+@media (min-width: 900px) {
+  .auth-media {
     display: block;
-    width: 100%;
-    max-height: 430px;
-    object-fit: cover;
-}
-
-.banner-lateral figcaption,
-.image figcaption {
-    padding: 0.9rem 1rem;
-    color: var(--muted-text);
-    font-weight: 700;
-}
-
-/* xs: celulares pequeños */
-@media (max-width: 480px) {
-    .login-page,
-    .form {
-        grid-template-columns: 1fr;
-    }
-
-    .form-container,
-    .formulario {
-        padding: 5rem 1.25rem 2rem;
-    }
-
-    .btn-regresar {
-        left: 1.25rem;
-    }
-
-    .banner-lateral,
-    .image {
-        order: -1;
-        padding: 1rem;
-    }
-}
-
-/* s: celulares grandes */
-@media (min-width: 481px) and (max-width: 768px) {
-    .login-page,
-    .form {
-        grid-template-columns: 1fr;
-    }
-
-    .banner-lateral,
-    .image {
-        order: -1;
-        min-height: 260px;
-    }
-}
-
-/* m: tablets */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .form-container,
-    .formulario {
-        padding: 5rem 2rem;
-    }
-}
-
-/* l: portátiles normales */
-@media (min-width: 1025px) and (max-width: 1280px) {
-    .form-container,
-    .formulario {
-        padding: 5rem 4rem;
-    }
-}
-
-/* xl: escritorios amplios */
-@media (min-width: 1281px) and (max-width: 1440px) {
-    .banner-lateral img,
-    .image img {
-        max-height: 480px;
-    }
-}
-
-/* xxl: pantallas grandes */
-@media (min-width: 1441px) {
-    .form-container,
-    .formulario {
-        padding: 5rem 8rem;
-    }
-}
-
-.form {
-    display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
-    min-height: 100vh;
-}
-
-@media (max-width: 768px) {
-    .form {
-        grid-template-columns: 1fr;
-    }
+  }
 }

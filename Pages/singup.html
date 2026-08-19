@@ -1,63 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../Assets/CSS/singup.css">
-    <title>Registro - AiDEN</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - GREENMIND</title>
+  <link rel="stylesheet" href="signup.css">
 </head>
 <body>
-    <main class="form">
-        <section class="formulario">
-            <a href="../index.html" class="btn-regresar">← Regresar</a>
 
-            <header class="titulo">
-                <h1>Crear cuenta en AiDEN</h1>
-                <p>Registra tu perfil para empezar a gestionar viveros, lotes y recursos.</p>
-            </header>
+  <main class="auth-card">
+    
+    <!-- Sección Formulario -->
+    <section class="auth-section">
+      <nav class="top-nav">
+        <a href="#" class="back-link">&larr; Regresar</a>
+      </nav>
 
-            <form action="../Pages/reportes-dashboard.html" method="GET" class="register">
-                <fieldset class="datos">
-                    <label for="nombre">Nombre</label>
-                    <input class="itext" id="nombre" type="text" placeholder="Ingrese su nombre" required>
+      <header class="auth-header">
+        <h1>¡Empecemos!</h1>
+      </header>
 
-                    <label for="apellido">Apellidos</label>
-                    <input class="itext" id="apellido" type="text" placeholder="Ingrese sus apellidos" required>
+      <form action="#" method="POST" class="auth-form">
+        <p class="form-group">
+          <label for="signup-nombre">Nombre</label>
+          <input type="text" id="signup-nombre" name="nombre" placeholder="Ingrese su nombre" required>
+        </p>
 
-                    <label for="email">Correo electrónico</label>
-                    <input class="itext" id="email" type="email" placeholder="correo@empresa.com" required>
+        <p class="form-group">
+          <label for="signup-apellidos">Apellidos</label>
+          <input type="text" id="signup-apellidos" name="apellidos" placeholder="Ingrese sus apellidos" required>
+        </p>
 
-                    <label for="pass">Contraseña</label>
-                    <input class="itext" id="pass" type="password" placeholder="Cree una nueva contraseña" required>
+        <p class="form-group">
+          <label for="signup-email">Correo Electrónico</label>
+          <input type="email" id="signup-email" name="email" placeholder="Ej: Correo@gmail.com" required>
+        </p>
 
-                    <label for="rol">Rol</label>
-                    <select id="rol" name="rol" required>
-                        <option value="">Seleccione su rol</option>
-                        <option value="administrador">Administrador</option>
-                        <option value="supervisor">Supervisor</option>
-                        <option value="operario">Operario</option>
-                    </select>
-                </fieldset>
+        <p class="form-group">
+          <label for="signup-password">Contraseña</label>
+          <input type="password" id="signup-password" name="password" placeholder="Cree una nueva contraseña" required>
+        </p>
 
-                <fieldset class="terminos">
-                    <input type="checkbox" id="check-term" required>
-                    <label for="check-term" class="textterm">Acepto los términos y condiciones</label>
-                </fieldset>
+        <p class="form-group">
+          <label for="signup-roles">Roles</label>
+          <select id="signup-roles" name="roles" required>
+            <option value="" disabled selected>Seleccione su rol</option>
+            <option value="viverista">Viverista</option>
+            <option value="cliente">Cliente</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </p>
 
-                <button class="boton_registro" type="submit">Registrarme</button>
-            </form>
+        <p class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" name="terms" required>
+            <span>Acepto los términos y Condiciones</span>
+          </label>
+        </p>
 
-            <footer class="redireccionLogin">
-                <p>¿Tienes una cuenta? <a href="../Pages/login.html">Inicia sesión</a></p>
-            </footer>
-        </section>
+        <button type="submit" class="btn-primary">Regístrate</button>
+      </form>
 
-        <aside class="image">
-            <figure>
-                <img src="../Assets/IMG/dash.png" alt="Dashboard ejecutivo de AiDEN">
-                <figcaption>Un tablero para revisar cumplimiento, alertas y trazabilidad.</figcaption>
-            </figure>
-        </aside>
-    </main>
+      <footer class="auth-footer">
+        <p>¿Tienes una cuenta? <a href="login.html" class="highlight-link">Inicia Sesión</a></p>
+      </footer>
+    </section>
+
+    <!-- Sección Visual Reservada -->
+    <aside class="auth-media">
+      <!-- Espacio reservado para banner visual o imagen -->
+    </aside>
+
+  </main>
+
 </body>
 </html>
