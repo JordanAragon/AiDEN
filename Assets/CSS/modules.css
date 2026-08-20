@@ -697,8 +697,8 @@ textarea:focus {
 
 .modal-close {
     display: grid;
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 5.1rem;
+    height: 3.1rem;
     place-items: center;
     border: 1px solid var(--gray-200);
     border-radius: 8px;

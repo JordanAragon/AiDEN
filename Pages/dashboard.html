@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="../Assets/CSS/modules.css">
     <title>AiDEN | Dashboard</title>
 </head>
 <body>
-    <aside class="top-nav">
-        <a href="dashboard.html" class="nav-brand">AiDEN</a>
-        <nav aria-label="Navegacion principal">
-            <ul class="nav-menu">
-                <li><a href="dashboard.html" class="active"><span class="nav-icon">D</span>Dashboard</a></li>
-                <li><a href="inventario.html"><span class="nav-icon">I</span>Inventario</a></li>
-                <li><a href="produccion.html"><span class="nav-icon">P</span>Produccion</a></li>
-                <li><a href="ambiental.html"><span class="nav-icon">A</span>Ambiental</a></li>
-                <li><a href="calidad-alertas.html"><span class="nav-icon">C</span>Calidad</a></li>
-                <li><a href="trazabilidad.html"><span class="nav-icon">T</span>Trazabilidad</a></li>
-                <li><a href="personal.html"><span class="nav-icon">U</span>Personal</a></li>
-                <li><a href="reportes-dashboard.html"><span class="nav-icon">R</span>Reportes</a></li>
-            </ul>
-        </nav>
-        <nav class="nav-bottom" aria-label="Sesion">
-            <a href="configuracion.html"><span class="nav-icon">⚙️</span>Configuracion</a>
-            <a href="login.html" class="logout-link"><span class="nav-icon">❌</span>Cerrar sesion</a>
+  <aside class="top-nav">
+     <a href="dashboard.html" class="nav-brand">AiDEN</a>
+     <nav><ul class="nav-menu">
+         <li><a href="dashboard.html" class="active"><span class="nav-icon"><i class="fa-solid fa-table-cells-large"></i></span>Dashboard</a></li>
+         <li><a href="inventario.html"><span class="nav-icon"><i class="fa-solid fa-box-open"></i></span>Inventario</a></li>
+         <li><a href="produccion.html"><span class="nav-icon"><i class="fa-solid fa-seedling"></i></span>Produccion</a></li>
+           <li><a href="ambiental.html"><span class="nav-icon"><i class="fa-solid fa-leaf"></i></span>Ambiental</a></li>
+           <li><a href="calidad-alertas.html"><span class="nav-icon"><i class="fa-solid fa-circle-check"></i></span>Calidad</a></li>
+         <li><a href="trazabilidad.html"><span class="nav-icon"><i class="fa-solid fa-route"></i></span>Trazabilidad</a></li>
+         <li><a href="personal.html"><span class="nav-icon"><i class="fa-solid fa-users"></i></span>Personal</a></li>
+         <li><a href="reportes-dashboard.html"><span class="nav-icon"><i class="fa-solid fa-file-lines"></i></span>Reportes</a></li>
+        </ul></nav>
+        <nav class="nav-bottom">
+            <a href="configuracion.html"><span class="nav-icon"><i class="fa-solid fa-gear"></i></span>Configuracion</a>
+            <a href="login.html" class="logout-link"><span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span>Cerrar sesion</a>
         </nav>
     </aside>
 
@@ -33,8 +32,11 @@
             <p>Monitoreo operativo actualizado hoy</p>
         </section>
         <section class="header-actions">
-            <span class="notification">3</span>
-            <section class="profile-pill"><span class="avatar">SV</span><span class="profile-copy"><strong>Supervisor Vivero</strong><span>Juan Perez</span></span></section>
+         <span class="notification"><i class="fa-solid fa-bell"></i></span>
+         <section class="profile-pill">
+            <span class="avatar">SV</span>
+           <span class="profile-copy"><strong>Supervisor Vivero</strong><span>Juan Perez</span></span>
+          </section>
         </section>
     </header>
 

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="../Assets/CSS/modules.css">
     <title>AiDEN | Inventario</title>
 </head>
@@ -10,16 +11,32 @@
     <aside class="top-nav">
         <a href="dashboard.html" class="nav-brand">AiDEN</a>
         <nav><ul class="nav-menu">
-            <li><a href="dashboard.html"><span class="nav-icon">D</span>Dashboard</a></li><li><a href="inventario.html" class="active"><span class="nav-icon">I</span>Inventario</a></li><li><a href="produccion.html"><span class="nav-icon">P</span>Produccion</a></li><li><a href="ambiental.html"><span class="nav-icon">A</span>Ambiental</a></li><li><a href="calidad-alertas.html"><span class="nav-icon">C</span>Calidad</a></li><li><a href="trazabilidad.html"><span class="nav-icon">T</span>Trazabilidad</a></li><li><a href="personal.html"><span class="nav-icon">U</span>Personal</a></li><li><a href="reportes-dashboard.html"><span class="nav-icon">R</span>Reportes</a></li>
+            <li><a href="dashboard.html"><span class="nav-icon"><i class="fa-solid fa-table-cells-large"></i></span>Dashboard</a></li>
+            <li><a href="inventario.html" class="active"><span class="nav-icon"><i class="fa-solid fa-box-open"></i></span>Inventario</a></li>
+            <li><a href="produccion.html"><span class="nav-icon"><i class="fa-solid fa-seedling"></i></span>Produccion</a></li>
+            <li><a href="ambiental.html"><span class="nav-icon"><i class="fa-solid fa-leaf"></i></span>Ambiental</a></li>
+            <li><a href="calidad-alertas.html"><span class="nav-icon"><i class="fa-solid fa-circle-check"></i></span>Calidad</a></li>
+            <li><a href="trazabilidad.html"><span class="nav-icon"><i class="fa-solid fa-route"></i></span>Trazabilidad</a></li>
+            <li><a href="personal.html"><span class="nav-icon"><i class="fa-solid fa-users"></i></span>Personal</a></li>
+            <li><a href="reportes-dashboard.html"><span class="nav-icon"><i class="fa-solid fa-file-lines"></i></span>Reportes</a></li>
         </ul></nav>
-        <nav class="nav-bottom"><a href="configuracion.html"><span class="nav-icon">S</span>Configuracion</a><a href="login.html" class="logout-link"><span class="nav-icon">X</span>Cerrar sesion</a></nav>
+        <nav class="nav-bottom">
+            <a href="configuracion.html"><span class="nav-icon"><i class="fa-solid fa-gear"></i></span>Configuracion</a>
+            <a href="login.html" class="logout-link"><span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span>Cerrar sesion</a>
+        </nav>
     </aside>
-    <header class="app-header"><section><strong>Inventario del vivero</strong><p>Insumos, stock minimo y alertas operativas</p></section><section class="header-actions"><span class="notification">2</span><section class="profile-pill"><span class="avatar">SV</span><span class="profile-copy"><strong>Supervisor Vivero</strong><span>Juan Perez</span></span></section></section></header>
+    <header class="app-header">
+        <section><strong>Inventario del vivero</strong><p>Insumos, stock minimo y alertas operativas</p></section>
+        <section class="header-actions">
+            <span class="notification"><i class="fa-solid fa-bell"></i></span>
+            <section class="profile-pill"><span class="avatar">SV</span><span class="profile-copy"><strong>Supervisor Vivero</strong><span>Juan Perez</span></span></section>
+        </section>
+    </header>
 
     <main class="main-content">
         <header class="page-header">
             <section><span class="eyebrow">Gestion de insumos</span><h1>Inventario</h1><p>Consulta el estado de fertilizantes, sustratos, herramientas y materiales clave para la produccion.</p></section>
-            <button class="btn" type="button" data-action="nuevo-insumo">+ Nuevo insumo</button>
+            <button class="btn" type="button" id="btnNuevoInsumo"><i class="fa-solid fa-plus"></i> Nuevo insumo</button>
         </header>
 
         <section class="summary-grid">
@@ -31,26 +48,81 @@
 
         <article class="panel-card">
             <header class="panel-header"><section><h2>Tabla de inventario</h2><p>Busqueda y filtros basicos para el MVP.</p></section></header>
-            <section class="filters">
-                <input type="search" placeholder="Buscar insumo">
-                <select><option>Todas las categorias</option><option>Fertilizantes</option><option>Sustratos</option></select>
-                <select><option>Todos los estados</option><option>Disponible</option><option>Stock bajo</option></select>
+          <section class="filters">
+             <span class="search-wrap">
+                 <i class="fa-solid fa-magnifying-glass"></i>
+                 <input type="search" id="buscarInsumo" placeholder="Buscar insumo">
+             </span>
+             <select id="filtroCategoria">
+                 <option value="">Todas las categorias</option>
+                  <option value="Fertilizantes">Fertilizantes</option>
+                  <option value="Sustratos">Sustratos</option>
+                 <option value="Fitosanitario">Fitosanitario</option>
+                  <option value="Herramientas">Herramientas</option>
+                 <option value="Semillas">Semillas</option>
+             </select>
+              <select id="filtroEstado">
+                  <option value="">Todos los estados</option>
+                 <option value="Disponible">Disponible</option>
+                 <option value="Stock bajo">Stock bajo</option>
+                  <option value="Critico">Critico</option>
+              </select>
             </section>
             <section class="table-wrap">
                 <table class="data-table">
                     <thead><tr><th>Insumo</th><th>Categoria</th><th>Cantidad</th><th>Unidad</th><th>Stock minimo</th><th>Estado</th><th>Acciones</th></tr></thead>
                     <tbody>
-                        <tr><td>Fertilizante NPK</td><td>Fertilizantes</td><td>25</td><td>kg</td><td>10</td><td><span class="badge">Disponible</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button">Editar</button></td></tr>
-                        <tr><td>Sustrato organico</td><td>Sustratos</td><td>8</td><td>bultos</td><td>10</td><td><span class="badge-warn">Stock bajo</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button">Reponer</button></td></tr>
-                        <tr><td>Fungicida cobre</td><td>Fitosanitario</td><td>12</td><td>L</td><td>5</td><td><span class="badge">Disponible</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button">Editar</button></td></tr>
-                        <tr><td>Bandejas germinadoras</td><td>Herramientas</td><td>6</td><td>unidad</td><td>12</td><td><span class="badge-danger">Critico</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button">Reponer</button></td></tr>
+                        <tr><td>Fertilizante NPK</td><td>Fertilizantes</td><td>25</td><td>kg</td><td>10</td><td><span class="badge">Disponible</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button"><i class="fa-solid fa-pen"></i> Editar</button></td></tr>
+                        <tr><td>Sustrato organico</td><td>Sustratos</td><td>8</td><td>bultos</td><td>10</td><td><span class="badge-warn">Stock bajo</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button"><i class="fa-solid fa-cart-plus"></i> Reponer</button></td></tr>
+                        <tr><td>Fungicida cobre</td><td>Fitosanitario</td><td>12</td><td>L</td><td>5</td><td><span class="badge">Disponible</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button"><i class="fa-solid fa-pen"></i> Editar</button></td></tr>
+                        <tr><td>Bandejas germinadoras</td><td>Herramientas</td><td>6</td><td>unidad</td><td>12</td><td><span class="badge-danger">Critico</span></td><td><button class="btn-outline" data-action="nuevo-insumo" type="button"><i class="fa-solid fa-cart-plus"></i> Reponer</button></td></tr>
                     </tbody>
                 </table>
             </section>
         </article>
     </main>
+   <aside class="modal-backdrop" id="modalNuevoInsumo">
+    <section class="action-modal">
+        <header>
+            <section>
+                <h2>Nuevo insumo</h2>
+                <p>Completa los datos para agregarlo al inventario.</p>
+            </section>
+            <button class="modal-close" type="button" id="cerrarModal"><i class="fa-solid fa-xmark"></i></button>
+        </header>
+        <form id="formNuevoInsumo" class="modal-body">
+            <section class="form-grid">
+                <label class="field full">Nombre del insumo
+                    <input type="text" id="insumoNombre" required>
+                </label>
+                <label class="field">Categoria
+                    <select id="insumoCategoria" required>
+                        <option value="Fertilizantes">Fertilizantes</option>
+                        <option value="Sustratos">Sustratos</option>
+                        <option value="Fitosanitario">Fitosanitario</option>
+                        <option value="Herramientas">Herramientas</option>
+                        <option value="Semillas">Semillas</option>
+                    </select>
+                </label>
+                <label class="field">Cantidad
+                    <input type="number" id="insumoCantidad" min="0" required>
+                </label>
+                <label class="field">Unidad
+                    <input type="text" id="insumoUnidad" placeholder="kg, L, unidad..." required>
+                </label>
+                <label class="field">Stock minimo
+                    <input type="number" id="insumoStockMin" min="0" required>
+                </label>
+            </section>
+            <footer class="modal-actions" style="margin-top: 0.85rem;">
+                <button type="button" class="btn-outline" id="cancelarModal">Cancelar</button>
+                <button type="submit" class="btn"><i class="fa-solid fa-plus"></i> Agregar</button>
+            </footer>
+        </form>
+    </section>
+</aside>
 
     <footer class="module-footer">AiDEN MVP · Inventario.</footer>
-    <script src="../Assets/JS/modules.js"></script>
+    <script src="../Assets/JS/inventario.js"></script>
 </body>
 </html>
