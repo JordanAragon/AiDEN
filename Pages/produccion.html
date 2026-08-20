@@ -69,7 +69,231 @@
             </section>
         </section>
     </main>
+    <aside class="modal-backdrop" id="modalNuevoLote">
+    <section class="action-modal">
+        <header>
+            <section>
+                <span class="eyebrow">AiDEN MVP</span>
+                <h2>Nuevo lote de producción</h2>
+            </section>
+            <button class="modal-close" type="button" id="cerrarModal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </header>
+        <form id="formNuevoLote" class="modal-body">
+            <section class="form-grid">
+                <label class="field">
+                    Número de lote
+                    <input
+                        type="text"
+                        id="numeroLote"
+                        placeholder="Ej: L-006"
+                        required
+                    >
+                </label>
+                <label class="field">
+                    Especie
+                    <select id="especieLote" required>
+                        <option value="">Seleccione una especie</option>
+                        <option value="Cafe Castillo">
+                            Cafe Castillo
+                        </option>
+                        <option value="Aguacate Hass">
+                            Aguacate Hass
+                        </option>
+                        <option value="Cafe Caturra">
+                            Cafe Caturra
+                        </option>
+                        <option value="Limon">
+                            Limon
+                        </option>
+                    </select>
+                </label>
+                <label class="field">
+                    Fecha de siembra
+                    <input
+                        type="date"
+                        id="fechaSiembra"
+                        required
+                    >
+                </label>
+                <label class="field">
+                    Cantidad
+                    <input
+                        type="number"
+                        id="cantidadLote"
+                        min="1"
+                        placeholder="Ej: 400"
+                        required
+                    >
+                </label>
+                <label class="field">
+                    Etapa inicial
+                    <select id="etapaLote" required>
+                        <option value="Siembra">
+                            Siembra
+                        </option>
+                        <option value="Germinacion">
+                            Germinacion
+                        </option>
+                        <option value="Crecimiento">
+                            Crecimiento
+                        </option>
+                        <option value="Inspeccion">
+                            Inspeccion
+                        </option>
+                    </select>
+                </label>
+                <label class="field">
+                    Responsable
+                    <select id="responsableLote" required>
+                        <option value="">Seleccione responsable</option>
+                        <option value="Juan Perez">
+                            Juan Perez
+                        </option>
+                        <option value="Maria Lopez">
+                            Maria Lopez
+                        </option>
+                        <option value="Carlos Rodriguez">
+                            Carlos Rodriguez
+                        </option>
+                    </select>
+                </label>
+            </section>
+            <footer class="modal-actions">
+                <button
+                    type="button"
+                    class="btn-outline"
+                    id="cancelarModal"
+                >
+                    Cancelar
+                </button>
+                <button
+                    type="submit"
+                    class="btn"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Crear lote
+                </button>
+            </footer>
+        </form>
+    </section>
+</aside>
+<aside class="modal-backdrop" id="modalVerLote">
+
+    <section class="action-modal">
+        <header>
+            <section>
+                <span class="eyebrow">Información del lote</span>
+                <h2 id="tituloVerLote">Detalle del lote</h2>
+                <p id="textoVerLote">
+                    Consulta la información del lote.
+                </p>
+            </section>
+            <button
+                class="modal-close"
+                type="button"
+                id="cerrarVerLote"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </header>
+        <form id="formEditarLote" class="modal-body">
+            <section class="form-grid">
+                <label class="field">
+                    Número de lote
+                    <input
+                        type="text"
+                        id="editarNumeroLote"
+                        required
+                    >
+                </label>
+                <label class="field">
+                    Especie
+                    <select id="editarEspecie" required>
+                        <option value="Cafe Castillo">
+                            Cafe Castillo
+                        </option>
+                        <option value="Aguacate Hass">
+                            Aguacate Hass
+                        </option>
+                        <option value="Cafe Caturra">
+                            Cafe Caturra
+                        </option>
+                        <option value="Limon">
+                            Limon
+                        </option>
+                    </select>
+                </label>
+                <label class="field">
+                    Fecha de siembra
+                    <input
+                        type="date"
+                        id="editarFecha"
+                        required
+                    >
+                </label>
+                <label class="field">
+                    Cantidad
+                    <input
+                        type="number"
+                        id="editarCantidad"
+                        min="1"
+                        required
+                    >
+                </label>
+                <label class="field">
+                    Etapa
+                    <select id="editarEtapa" required>
+                        <option value="Siembra">
+                            Siembra
+                        </option>
+                        <option value="Germinacion">
+                            Germinacion
+                        </option>
+                        <option value="Crecimiento">
+                            Crecimiento
+                        </option>
+                        <option value="Inspeccion">
+                            Inspeccion
+                        </option>
+                    </select>
+                </label>
+                <label class="field">
+                    Responsable
+                    <select id="editarResponsable" required>
+                        <option value="Juan Perez">
+                            Juan Perez
+                        </option>
+                        <option value="Maria Lopez">
+                            Maria Lopez
+                        </option>
+                        <option value="Carlos Rodriguez">
+                            Carlos Rodriguez
+                        </option>
+                    </select>
+                </label>
+            </section>
+            <footer class="modal-actions">
+                <button
+                    type="button"
+                    class="btn-outline"
+                    id="cancelarEditar"
+                >
+                    Cerrar
+                </button>
+                <button
+                    type="submit"
+                    class="btn"
+                >
+                    <i class="fa-solid fa-pen"></i>
+                    Guardar cambios
+                </button>
+            </footer>
+        </form>
+    </section>
+</aside>
     <footer class="module-footer">AiDEN MVP · Produccion.</footer>
-    <script src="../Assets/JS/modules.js"></script>
+    <script src="../Assets/JS/productos.js"></script>
 </body>
 </html>
