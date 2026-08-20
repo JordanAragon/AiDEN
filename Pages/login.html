@@ -8,63 +8,59 @@
     <title>Login - AiDEN</title>
 </head>
 <body>
-    <main class="login-page">
-        <section class="form-container">
-            <a href="../index.html" class="btn-regresar">Regresar</a>
+    <main class="auth-page">
+        <section class="auth-shell">
+            <article class="auth-form-panel" aria-label="Inicio de sesion">
+                <header class="auth-heading">
+                    <a href="../index.html" class="auth-brand">AiDEN</a>
+                    <p class="eyebrow">Acceso al sistema</p>
+                    <h1>Bienvenido de vuelta</h1>
+                    <p>Ingresa tus credenciales para continuar con la gestion del vivero.</p>
+                </header>
 
-            <header class="encabezado-login">
-                <p class="brand-mark">AiDEN</p>
-                <h1>Gestion inteligente de viveros</h1>
-                <p>Bienvenido. Centraliza cultivos, inventario, ambiente, calidad y reportes en una sola plataforma agricola.</p>
-            </header>
-
-            <article class="formulario-login">
-                <form action="dashboard.html" method="GET">
-                    <section class="campo">
-                        <label for="correo">Correo electronico</label>
-                        <input type="email" id="correo" placeholder="supervisor@aiden.co" required>
-                    </section>
-
-                    <section class="campo">
-                        <section class="header-campo">
-                            <label for="password">Contrasena</label>
-                            <a href="recuperacion.html" class="olvido">Olvidaste tu contrasena?</a>
+                <form action="dashboard.html" method="GET" class="auth-form">
+                    <fieldset>
+                        <legend>Credenciales</legend>
+                        <section class="mb-3">
+                            <label for="correo" class="form-label">Correo electronico</label>
+                            <input type="email" id="correo" name="correo" class="form-control" placeholder="nombre@correo.com" required>
                         </section>
-                        <input type="password" id="password" placeholder="Ingresa tu contrasena" required>
+
+                        <section class="mb-2">
+                            <section class="field-row">
+                                <label for="password" class="form-label">Contrasena</label>
+                                <a href="recuperacion.html">Olvide mi contrasena</a>
+                            </section>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Ingresa tu contrasena" required>
+                        </section>
+                    </fieldset>
+
+                    <section class="form-check">
+                        <input type="checkbox" id="recordar" name="recordar" class="form-check-input">
+                        <label class="form-check-label" for="recordar">Recordar sesion</label>
                     </section>
 
-                    <section class="campo">
-                        <label for="rol-demo">Rol para la demostracion</label>
-                        <select id="rol-demo" name="rol">
-                            <option value="supervisor">Supervisor</option>
-                            <option value="administrador">Administrador</option>
-                            <option value="operario">Operario</option>
-                        </select>
-                    </section>
-
-                    <button type="submit" class="btn-inicio">Iniciar sesion</button>
+                    <button type="submit" class="btn btn-aiden w-100">Iniciar sesion</button>
                 </form>
-            </article>
-        </section>
 
-        <aside class="banner-lateral">
-            <figure>
-                <img src="../Assets/IMG/vivero2.png" alt="Vivero tecnificado monitoreado con AiDEN">
-                <figcaption>Datos claros para decidir mejor en cada lote del vivero.</figcaption>
-            </figure>
-        </aside>
+                <footer class="auth-footer">
+                    <p>No tienes cuenta? <a href="singup.html">Registrate</a></p>
+                </footer>
+            </article>
+
+            <aside class="auth-visual">
+                <figure>
+                    <img src="../Assets/IMG/vivero.png" alt="Vivero con plantas monitoreadas por AiDEN">
+                    <figcaption>Gestion de lotes, inventario y alertas desde una sola interfaz.</figcaption>
+                </figure>
+            </aside>
+        </section>
     </main>
     <script>
         document.querySelector("form").addEventListener("submit", function (event) {
-            const role = document.querySelector("#rol-demo").value;
-            const homes = {
-                administrador: "dashboard-admin.html",
-                supervisor: "dashboard.html",
-                operario: "dashboard-operario.html"
-            };
-            localStorage.setItem("aiden-role", role);
             event.preventDefault();
-            window.location.href = homes[role];
+            localStorage.removeItem("aiden-role");
+            window.location.href = "dashboard.html";
         });
     </script>
 </body>

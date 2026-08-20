@@ -187,6 +187,7 @@
         modal.querySelector("#modal-title").textContent = title;
         modal.querySelector("#modal-body").innerHTML = body;
         modal.classList.add("open");
+        animateVisualElements(modal);
         modal.querySelector(".modal-close").focus();
     }
 
@@ -257,6 +258,7 @@
     function enhanceActionButtons() {
         document.querySelectorAll("[data-action]").forEach((button) => {
             const action = button.dataset.action;
+            if (button.classList.contains("profile-pill")) return;
             if (!actionIcons[action] || button.dataset.enhanced) return;
             const label = button.textContent.trim() || button.getAttribute("aria-label") || "Accion";
             const tableCell = button.closest("td");
@@ -295,6 +297,90 @@
         });
     }
 
+    function animateVisualElements(scope = document) {
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const visualSelector = [
+            ".metric-card",
+            ".sensor-card",
+            ".report-card",
+            ".chart",
+            ".line-chart",
+            ".progress"
+        ].join(",");
+
+        scope.querySelectorAll(visualSelector).forEach((element, index) => {
+            if (!element.dataset.visualReady) {
+                element.dataset.visualReady = "true";
+                element.classList.add("visual-animate");
+
+                if (!reducedMotion) {
+                    element.style.transitionDelay = `${Math.min(index * 45, 260)}ms`;
+                    setTimeout(() => {
+                        element.style.transitionDelay = "";
+                    }, 720);
+                }
+
+                element.addEventListener("mouseenter", () => {
+                    element.classList.add("is-hovered");
+                });
+
+                element.addEventListener("mouseleave", () => {
+                    element.classList.remove("is-hovered");
+                });
+            }
+
+            requestAnimationFrame(() => {
+                element.classList.add("is-visible");
+            });
+        });
+
+        scope.querySelectorAll(".bar-fill").forEach((bar) => {
+            if (bar.dataset.barReady) return;
+            bar.dataset.barReady = "true";
+            const finalHeight = bar.style.height || getComputedStyle(bar).height;
+            const chart = bar.closest(".chart");
+            const chartBars = chart ? [...chart.querySelectorAll(".bar-fill")] : [];
+            const barIndex = chartBars.indexOf(bar);
+            const delay = Math.max(barIndex, 0) * 110;
+            chart?.classList.add("is-loading");
+            bar.style.height = "0";
+
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    bar.style.height = finalHeight;
+                });
+            }, reducedMotion ? 0 : 320 + delay);
+
+            setTimeout(() => {
+                chart?.classList.remove("is-loading");
+                chart?.classList.add("is-loaded");
+            }, reducedMotion ? 0 : 1650 + delay);
+        });
+
+        scope.querySelectorAll(".track .fill, .progress span").forEach((fill) => {
+            if (fill.dataset.fillReady) return;
+            fill.dataset.fillReady = "true";
+            const finalWidth = fill.style.width || getComputedStyle(fill).width;
+            const container = fill.closest(".line-chart, .progress");
+            const loadingFills = container ? [...container.querySelectorAll(".fill, .progress span")] : [];
+            const fillIndex = loadingFills.indexOf(fill);
+            const delay = Math.max(fillIndex, 0) * 95;
+            container?.classList.add("is-loading");
+            fill.style.width = "0";
+
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    fill.style.width = finalWidth;
+                });
+            }, reducedMotion ? 0 : 320 + delay);
+
+            setTimeout(() => {
+                container?.classList.remove("is-loading");
+                container?.classList.add("is-loaded");
+            }, reducedMotion ? 0 : 1680 + delay);
+        });
+    }
+
     function simulateLoading(button, done) {
         const original = button.innerHTML;
         button.disabled = true;
@@ -310,6 +396,7 @@
     renderShell();
     enhanceActionButtons();
     enableTableSearch();
+    animateVisualElements();
 
     document.addEventListener("click", (event) => {
         const actionButton = event.target.closest("[data-action]");

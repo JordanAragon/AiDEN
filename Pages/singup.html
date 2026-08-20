@@ -8,57 +8,78 @@
     <title>Registro - AiDEN</title>
 </head>
 <body>
-    <main class="form">
-        <section class="formulario">
-            <a href="../index.html" class="btn-regresar">← Regresar</a>
+    <main class="auth-page">
+        <section class="auth-shell">
+            <article class="auth-form-panel" aria-label="Registro de usuario">
+                <header class="auth-heading">
+                    <a href="../index.html" class="auth-brand">AiDEN</a>
+                    <p class="eyebrow">Crear cuenta</p>
+                    <h1>Registra tu acceso</h1>
+                    <p>Completa los datos basicos para ingresar a la demo de gestion del vivero.</p>
+                </header>
 
-            <header class="titulo">
-                <h1>Crear cuenta en AiDEN</h1>
-                <p>Registra tu perfil para empezar a gestionar viveros, lotes y recursos.</p>
-            </header>
+                <form action="dashboard.html" method="GET" class="auth-form register">
+                    <fieldset>
+                        <legend>Datos de usuario</legend>
+                        <section class="row g-3">
+                            <section class="col-sm-6">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input id="nombre" name="nombre" type="text" class="form-control" placeholder="Tu nombre" required>
+                            </section>
+                            <section class="col-sm-6">
+                                <label for="apellido" class="form-label">Apellidos</label>
+                                <input id="apellido" name="apellido" type="text" class="form-control" placeholder="Tus apellidos" required>
+                            </section>
+                            <section class="col-12">
+                                <label for="email" class="form-label">Correo electronico</label>
+                                <input id="email" name="email" type="email" class="form-control" placeholder="nombre@correo.com" required>
+                            </section>
+                            <section class="col-sm-6">
+                                <label for="pass" class="form-label">Contrasena</label>
+                                <input id="pass" name="pass" type="password" class="form-control" placeholder="Crea una contrasena" required>
+                            </section>
+                            <section class="col-sm-6">
+                                <label for="pass2" class="form-label">Confirmar contrasena</label>
+                                <input id="pass2" name="pass2" type="password" class="form-control" placeholder="Repite la contrasena" required>
+                            </section>
+                        </section>
+                    </fieldset>
 
-            <form action="../Pages/reportes-dashboard.html" method="GET" class="register">
-                <fieldset class="datos">
-                    <label for="nombre">Nombre</label>
-                    <input class="itext" id="nombre" type="text" placeholder="Ingrese su nombre" required>
+                    <section class="form-check">
+                        <input type="checkbox" id="check-term" class="form-check-input" required>
+                        <label class="form-check-label" for="check-term">Acepto los terminos y condiciones</label>
+                    </section>
 
-                    <label for="apellido">Apellidos</label>
-                    <input class="itext" id="apellido" type="text" placeholder="Ingrese sus apellidos" required>
+                    <button class="btn btn-aiden w-100" type="submit">Registrarme</button>
+                </form>
 
-                    <label for="email">Correo electrónico</label>
-                    <input class="itext" id="email" type="email" placeholder="correo@empresa.com" required>
+                <footer class="auth-footer">
+                    <p>Ya tienes una cuenta? <a href="login.html">Inicia sesion</a></p>
+                </footer>
+            </article>
 
-                    <label for="pass">Contraseña</label>
-                    <input class="itext" id="pass" type="password" placeholder="Cree una nueva contraseña" required>
-
-                    <label for="rol">Rol</label>
-                    <select id="rol" name="rol" required>
-                        <option value="">Seleccione su rol</option>
-                        <option value="administrador">Administrador</option>
-                        <option value="supervisor">Supervisor</option>
-                        <option value="operario">Operario</option>
-                    </select>
-                </fieldset>
-
-                <fieldset class="terminos">
-                    <input type="checkbox" id="check-term" required>
-                    <label for="check-term" class="textterm">Acepto los términos y condiciones</label>
-                </fieldset>
-
-                <button class="boton_registro" type="submit">Registrarme</button>
-            </form>
-
-            <footer class="redireccionLogin">
-                <p>¿Tienes una cuenta? <a href="../Pages/login.html">Inicia sesión</a></p>
-            </footer>
+            <aside class="auth-visual">
+                <figure>
+                    <img src="../Assets/IMG/vivero.png" alt="Vivero con plantas monitoreadas por AiDEN">
+                    <figcaption>Roles, permisos y modulos conectados para operar el vivero.</figcaption>
+                </figure>
+            </aside>
         </section>
-
-        <aside class="image">
-            <figure>
-                <img src="../Assets/IMG/dash.png" alt="Dashboard ejecutivo de AiDEN">
-                <figcaption>Un tablero para revisar cumplimiento, alertas y trazabilidad.</figcaption>
-            </figure>
-        </aside>
     </main>
+    <script>
+        document.querySelector("form").addEventListener("submit", function (event) {
+            const pass = document.querySelector("#pass").value;
+            const pass2 = document.querySelector("#pass2").value;
+
+            event.preventDefault();
+            if (pass !== pass2) {
+                alert("Las contrasenas no coinciden.");
+                return;
+            }
+
+            localStorage.removeItem("aiden-role");
+            window.location.href = "dashboard.html";
+        });
+    </script>
 </body>
 </html>

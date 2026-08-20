@@ -13,7 +13,7 @@
     <header class="app-header">
         <section>
             <strong>Costos operativos</strong>
-            <p>Libro de costos, cierres y comparativos por cultivo</p>
+            <p>Movimientos, lotes, centros de costo y cierre mensual</p>
         </section>
         <section class="header-actions"></section>
     </header>
@@ -21,9 +21,9 @@
     <main class="main-content">
         <header class="page-header">
             <section>
-                <span class="eyebrow">Módulo 8 · HU31-HU33</span>
-                <h1>Costos operativos</h1>
-                <p>Costos por lote, centro de costo y periodo.</p>
+                <span class="eyebrow">Modulo de costos</span>
+                <h1>Control de costos del vivero</h1>
+                <p>Consulta registros imputados, valores por lote y comparativos por cultivo.</p>
             </section>
             <section class="toolbar">
                 <button class="btn-outline" data-action="exportar-excel" type="button">Exportar Excel</button>
@@ -31,22 +31,42 @@
             </section>
         </header>
 
-        <section class="summary-grid">
-            <article class="metric-card"><span class="metric-label">Costo mes</span><strong class="metric-value">$8.4M</strong><p class="metric-note">Administrador ve el total completo.</p></article>
-            <article class="metric-card"><span class="metric-label">Costo por planta</span><strong class="metric-value">$1.240</strong><p class="metric-note">Calculado sobre unidades vivas.</p></article>
-            <article class="metric-card"><span class="metric-label">Insumos</span><strong class="metric-value">42%</strong><p class="metric-note">Consumos de actividades y tratamientos.</p></article>
-            <article class="metric-card"><span class="metric-label">Mano de obra</span><strong class="metric-value">48%</strong><p class="metric-note">Solo cuando hay duración registrada.</p></article>
+        <section class="summary-grid" aria-label="Resumen financiero">
+            <article class="metric-card"><span class="metric-label">Costo del mes</span><strong class="metric-value">$8.4M</strong><p class="metric-note">Junio 2026 en revision.</p></article>
+            <article class="metric-card"><span class="metric-label">Por validar</span><strong class="metric-value">3</strong><p class="metric-note">Registros pendientes de cierre.</p></article>
+            <article class="metric-card"><span class="metric-label">Costo planta</span><strong class="metric-value">$1.240</strong><p class="metric-note">Promedio sobre unidades vivas.</p></article>
+            <article class="metric-card"><span class="metric-label">Mayor rubro</span><strong class="metric-value">48%</strong><p class="metric-note">Mano de obra registrada.</p></article>
         </section>
 
         <section class="workspace">
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h2>Libro operativo de costos ERP</h2>
-                        <p>Movimientos imputados a lote y responsable.</p>
+                        <h2>Libro de costos</h2>
+                        <p>Movimientos operativos asociados a lote y responsable.</p>
                     </section>
                     <button class="btn-outline" data-action="cierre-mensual" type="button">Cierre mensual</button>
                 </header>
+                <form class="filters" aria-label="Filtros de costos">
+                    <label class="field">Buscar registro
+                        <input type="search" placeholder="Lote, documento o responsable">
+                    </label>
+                    <label class="field">Centro de costo
+                        <select>
+                            <option>Todos</option>
+                            <option>Produccion cafe</option>
+                            <option>Produccion tomate</option>
+                            <option>Calidad fitosanitaria</option>
+                        </select>
+                    </label>
+                    <label class="field">Estado
+                        <select>
+                            <option>Todos</option>
+                            <option>Imputado</option>
+                            <option>Por validar</option>
+                        </select>
+                    </label>
+                </form>
                 <section class="table-wrap">
                     <table class="data-table">
                         <thead>
@@ -58,66 +78,14 @@
                                 <th>Lote</th>
                                 <th>Valor</th>
                                 <th>Responsable</th>
-                                <th>Estado contable</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>2026-06-05</td><td>Compra inventario</td><td>FAC-2591</td><td>Producción café</td><td>L-2026-001</td><td>$210.000</td><td>Supervisor Vivero</td><td><span class="badge">Imputado</span></td></tr>
-                            <tr><td>2026-06-05</td><td>Jornada</td><td>JOR-JR-0605</td><td>Producción tomate</td><td>LOT-2026-001</td><td>$80.000</td><td>Juan Riego</td><td><span class="badge">Imputado</span></td></tr>
-                            <tr><td>2026-06-07</td><td>Tratamiento</td><td>TRAT-018</td><td>Calidad fitosanitaria</td><td>LOT-2026-002</td><td>$85.000</td><td>Ana Calidad</td><td><span class="badge-warn">Por validar</span></td></tr>
-                        </tbody>
-                    </table>
-                </section>
-            </article>
-
-            <article class="panel-card">
-                <header class="panel-header">
-                    <section>
-                        <h2>Costo acumulado por lote</h2>
-                        <p>Estimado frente a costo real.</p>
-                    </section>
-                </header>
-                <section class="table-wrap">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Lote</th>
-                                <th>Centro de costo</th>
-                                <th>Insumos</th>
-                                <th>Tratamientos</th>
-                                <th>Mano de obra</th>
-                                <th>Otros costos</th>
-                                <th>Total</th>
-                                <th>Unidades vivas</th>
-                                <th>Costo unidad</th>
-                                <th>Estimado vs real</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>LOT-2026-001</td>
-                                <td>Producción tomate</td>
-                                <td>$420.000</td>
-                                <td>$85.000</td>
-                                <td>$310.000</td>
-                                <td>$60.000</td>
-                                <td>$875.000</td>
-                                <td>476</td>
-                                <td>$1.838</td>
-                                <td><span class="badge-warn">+8%</span></td>
-                            </tr>
-                            <tr>
-                                <td>LOT-2026-006</td>
-                                <td>Producción tomate</td>
-                                <td>$210.000</td>
-                                <td>$0</td>
-                                <td>$190.000</td>
-                                <td>$25.000</td>
-                                <td>$425.000</td>
-                                <td>390</td>
-                                <td>$1.089</td>
-                                <td><span class="badge">-4%</span></td>
-                            </tr>
+                            <tr><td>2026-06-05</td><td>Compra inventario</td><td>FAC-2591</td><td>Produccion cafe</td><td>L-2026-001</td><td>$210.000</td><td>Supervisor Vivero</td><td><span class="badge">Imputado</span></td><td><button class="btn-outline" data-action="agregar-costo" type="button">Editar</button></td></tr>
+                            <tr><td>2026-06-05</td><td>Jornada</td><td>JOR-JR-0605</td><td>Produccion tomate</td><td>LOT-2026-001</td><td>$80.000</td><td>Juan Riego</td><td><span class="badge">Imputado</span></td><td><button class="btn-outline" data-action="agregar-costo" type="button">Editar</button></td></tr>
+                            <tr><td>2026-06-07</td><td>Tratamiento</td><td>TRAT-018</td><td>Calidad fitosanitaria</td><td>LOT-2026-002</td><td>$85.000</td><td>Ana Calidad</td><td><span class="badge-warn">Por validar</span></td><td><button class="btn-outline" data-action="cierre-mensual" type="button">Revisar</button></td></tr>
                         </tbody>
                     </table>
                 </section>
@@ -127,25 +95,68 @@
                 <article class="panel-card">
                     <header class="panel-header">
                         <section>
-                            <h2>Costo de mano de obra</h2>
+                            <h2>Costo acumulado por lote</h2>
+                            <p>Resumen calculado con registros existentes.</p>
+                        </section>
+                    </header>
+                    <section class="table-wrap">
+                        <table class="data-table compact-table">
+                            <thead>
+                                <tr>
+                                    <th>Lote</th>
+                                    <th>Centro</th>
+                                    <th>Insumos</th>
+                                    <th>Mano obra</th>
+                                    <th>Total</th>
+                                    <th>Costo unidad</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>LOT-2026-001</td><td>Produccion tomate</td><td>$420.000</td><td>$310.000</td><td>$875.000</td><td>$1.838</td><td><span class="badge-warn">+8%</span></td></tr>
+                                <tr><td>LOT-2026-006</td><td>Produccion tomate</td><td>$210.000</td><td>$190.000</td><td>$425.000</td><td>$1.089</td><td><span class="badge">-4%</span></td></tr>
+                                <tr><td>L-2026-001</td><td>Produccion cafe</td><td>$210.000</td><td>$260.000</td><td>$530.000</td><td>$1.325</td><td><span class="badge">Normal</span></td></tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Distribucion del mes</h2>
+                            <p>Participacion por concepto.</p>
+                        </section>
+                    </header>
+                    <section class="line-chart">
+                        <article class="trend"><span>Mano obra</span><section class="track"><span class="fill" style="width: 48%;"></span></section><strong>48%</strong></article>
+                        <article class="trend"><span>Insumos</span><section class="track"><span class="fill blue" style="width: 42%;"></span></section><strong>42%</strong></article>
+                        <article class="trend"><span>Tratamientos</span><section class="track"><span class="fill amber" style="width: 7%;"></span></section><strong>7%</strong></article>
+                        <article class="trend"><span>Otros</span><section class="track"><span class="fill muted" style="width: 3%;"></span></section><strong>3%</strong></article>
+                    </section>
+                </article>
+            </section>
+
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Mano de obra</h2>
                             <p>Valores vigentes por jornada.</p>
                         </section>
                     </header>
                     <form class="form-grid">
                         <label class="field">Operario
-                            <select><option>María López</option><option>Juan Riego</option></select>
+                            <select><option>Maria Lopez</option><option>Juan Riego</option></select>
                         </label>
                         <label class="field">Jornal diario
                             <input type="text" value="$80.000">
                         </label>
-                        <label class="field">Valor hora calculado
+                        <label class="field">Valor hora
                             <input type="text" value="$10.000" readonly>
                         </label>
                         <label class="field">Vigencia desde
                             <input type="date" value="2026-06-05">
-                        </label>
-                        <label class="field full">Regla de imputación
-                            <textarea>Actividad de 45 minutos en LOT-2026-001: 45/60 x $10.000 = $7.500. Si no hay duración, queda sin dato.</textarea>
                         </label>
                     </form>
                 </article>
@@ -153,15 +164,15 @@
                 <article class="panel-card">
                     <header class="panel-header">
                         <section>
-                            <h2>Otros costos del lote</h2>
-                            <p>Transporte, equipos o servicios.</p>
+                            <h2>Otros costos</h2>
+                            <p>Transporte, equipos o servicios registrados por lote.</p>
                         </section>
                     </header>
                     <form class="form-grid single">
                         <label class="field">Lote
                             <select><option>LOT-2026-001</option><option>LOT-2026-006</option></select>
                         </label>
-                        <label class="field">Descripción
+                        <label class="field">Descripcion
                             <input type="text" value="Transporte de sustrato desde proveedor">
                         </label>
                         <label class="field">Valor
@@ -174,8 +185,8 @@
             <article class="panel-card">
                 <header class="panel-header">
                     <section>
-                        <h2>Reporte de costos por tipo de cultivo</h2>
-                        <p>Comparativo por cultivo y periodo.</p>
+                        <h2>Reporte por cultivo</h2>
+                        <p>Comparativo del periodo actual.</p>
                     </section>
                     <section class="toolbar">
                         <button class="btn-outline" data-action="exportar-pdf" type="button">PDF</button>
@@ -188,7 +199,7 @@
                             <tr>
                                 <th>Cultivo</th>
                                 <th>Lotes cerrados</th>
-                                <th>Unidades producidas</th>
+                                <th>Unidades</th>
                                 <th>Insumos</th>
                                 <th>Mano de obra</th>
                                 <th>Tratamientos</th>
@@ -198,28 +209,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Tomate</td>
-                                <td>8</td>
-                                <td>3.840</td>
-                                <td>$2.4M</td>
-                                <td>$3.1M</td>
-                                <td>$620K</td>
-                                <td>$280K</td>
-                                <td>$6.4M</td>
-                                <td>$1.667</td>
-                            </tr>
-                            <tr>
-                                <td>Lechuga</td>
-                                <td>5</td>
-                                <td>2.100</td>
-                                <td>$980K</td>
-                                <td>$1.2M</td>
-                                <td>$120K</td>
-                                <td>$90K</td>
-                                <td>$2.39M</td>
-                                <td>$1.138</td>
-                            </tr>
+                            <tr><td>Tomate</td><td>8</td><td>3.840</td><td>$2.4M</td><td>$3.1M</td><td>$620K</td><td>$280K</td><td>$6.4M</td><td>$1.667</td></tr>
+                            <tr><td>Lechuga</td><td>5</td><td>2.100</td><td>$980K</td><td>$1.2M</td><td>$120K</td><td>$90K</td><td>$2.39M</td><td>$1.138</td></tr>
                         </tbody>
                     </table>
                 </section>

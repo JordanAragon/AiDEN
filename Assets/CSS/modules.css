@@ -14,6 +14,8 @@
     --gray-200: #e5e7eb;
     --gray-100: #f3f6f9;
     --white: #ffffff;
+    --shadow-sm: 0 10px 28px rgba(31, 41, 55, 0.06);
+    --shadow-md: 0 18px 48px rgba(31, 41, 55, 0.1);
 }
 
 * {
@@ -24,7 +26,9 @@
 
 body {
     min-height: 100vh;
-    background: var(--gray-100);
+    background:
+        linear-gradient(180deg, #f7faf8 0%, var(--gray-100) 36%),
+        var(--gray-100);
     color: var(--gray-900);
     font-family: "Segoe UI", system-ui, sans-serif;
     line-height: 1.5;
@@ -63,6 +67,7 @@ button {
     padding: 1rem;
     background: var(--white);
     border-right: 1px solid var(--gray-200);
+    box-shadow: 8px 0 30px rgba(31, 41, 55, 0.04);
 }
 
 .nav-brand {
@@ -114,6 +119,7 @@ button {
     font-size: 0.9rem;
     font-weight: 750;
     text-decoration: none;
+    transition: background 150ms ease, color 150ms ease;
 }
 
 .nav-menu a:hover,
@@ -187,6 +193,7 @@ button {
     padding: 0.85rem 2rem;
     background: rgba(255, 255, 255, 0.94);
     border-bottom: 1px solid var(--gray-200);
+    backdrop-filter: blur(14px);
 }
 
 .app-header p {
@@ -273,7 +280,7 @@ button {
 
 .main-content {
     width: min(1180px, calc(100% - 292px));
-    padding: 1.35rem 0 2.25rem;
+    padding: 1.6rem 0 2.5rem;
     margin-right: auto;
     margin-left: calc(260px + 1.5rem);
 }
@@ -283,7 +290,11 @@ button {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.15rem;
+    padding: 1.1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.78);
 }
 
 .eyebrow {
@@ -335,6 +346,7 @@ p {
     border-radius: 8px;
     font-weight: 850;
     text-decoration: none;
+    transition: border-color 150ms ease, background 150ms ease, color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
 }
 
 .btn {
@@ -358,6 +370,7 @@ p {
 .btn:hover,
 .btn-outline:hover,
 .btn-ghost:hover {
+    box-shadow: var(--shadow-sm);
     transform: translateY(-1px);
 }
 
@@ -408,13 +421,36 @@ p {
     border: 1px solid var(--gray-200);
     border-radius: 8px;
     background: var(--white);
+    box-shadow: var(--shadow-sm);
 }
 
 .metric-card,
 .panel-card,
 .report-card,
 .sensor-card {
-    padding: 1rem;
+    padding: 1.05rem;
+}
+
+.visual-animate {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    transition:
+        opacity 360ms ease,
+        transform 360ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+    will-change: opacity, transform;
+}
+
+.visual-animate.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.visual-animate.is-hovered {
+    border-color: rgba(21, 115, 71, 0.28);
+    box-shadow: 0 14px 32px rgba(31, 41, 55, 0.11);
+    transform: translateY(-2px) scale(1.01);
 }
 
 .metric-label {
@@ -426,7 +462,7 @@ p {
 .metric-value {
     display: block;
     margin-top: 0.18rem;
-    font-size: 1.55rem;
+    font-size: clamp(1.35rem, 2vw, 1.65rem);
     font-weight: 900;
 }
 
@@ -437,7 +473,7 @@ p {
 
 .workspace {
     display: grid;
-    gap: 1rem;
+    gap: 1.1rem;
 }
 
 .workspace > *,
@@ -455,6 +491,8 @@ p {
     justify-content: space-between;
     gap: 1rem;
     margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--gray-200);
 }
 
 .panel-header p,
@@ -490,6 +528,10 @@ p {
     grid-template-columns: minmax(220px, 1fr) repeat(2, minmax(150px, 0.35fr));
     gap: 0.75rem;
     margin-bottom: 1rem;
+    padding: 0.85rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    background: #fbfcfd;
 }
 
 .table-wrap {
@@ -501,6 +543,11 @@ p {
     width: 100%;
     min-width: 720px;
     border-collapse: collapse;
+    font-size: 0.93rem;
+}
+
+.compact-table {
+    min-width: 620px;
 }
 
 .data-table th,
@@ -516,6 +563,7 @@ p {
     color: var(--gray-700);
     font-size: 0.75rem;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .data-table tbody tr {
@@ -557,6 +605,11 @@ textarea,
     border-radius: 8px;
     background: var(--white);
     color: var(--gray-900);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #9aa4b2;
 }
 
 textarea {
@@ -612,6 +665,7 @@ textarea:focus {
 }
 
 .chart {
+    position: relative;
     display: flex;
     align-items: end;
     gap: 0.65rem;
@@ -620,6 +674,29 @@ textarea:focus {
     border: 1px solid var(--gray-200);
     border-radius: 8px;
     background: linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+}
+
+.chart.is-loading::after,
+.line-chart.is-loading .track::after,
+.progress.is-loading::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.68), transparent);
+    transform: translateX(-100%);
+    animation: chartLoadingSweep 850ms ease-out forwards;
+    pointer-events: none;
+}
+
+.line-chart.is-loading .track,
+.progress.is-loading {
+    position: relative;
+}
+
+.line-chart.is-loading .track::after,
+.progress.is-loading::after {
+    animation-duration: 720ms;
 }
 
 .bar {
@@ -635,6 +712,11 @@ textarea:focus {
     min-height: 24px;
     border-radius: 8px 8px 3px 3px;
     background: var(--green-700);
+    transition: height 1050ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.chart.is-loading .bar .bar-fill {
+    min-height: 0;
 }
 
 .bar:nth-child(even) .bar-fill {
@@ -674,10 +756,19 @@ textarea:focus {
     height: 100%;
     border-radius: inherit;
     background: var(--green-700);
+    transition: width 1100ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .fill.blue {
     background: var(--blue-700);
+}
+
+.fill.amber {
+    background: var(--amber-700);
+}
+
+.fill.muted {
+    background: var(--gray-500);
 }
 
 .alert-list,
@@ -737,6 +828,31 @@ textarea:focus {
     height: 100%;
     border-radius: inherit;
     background: var(--green-700);
+    transition: width 1100ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes chartLoadingSweep {
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .visual-animate,
+    .bar .bar-fill,
+    .fill,
+    .progress span,
+    .chart.is-loading::after,
+    .line-chart.is-loading .track::after,
+    .progress.is-loading::after {
+        animation: none;
+        transition: none;
+    }
+
+    .visual-animate {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 .report-card {
