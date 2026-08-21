@@ -1,0 +1,280 @@
+:root {
+    --dark-green: #0a4f31;
+    --bright-green: #1f9d55;
+    --bg-main: #f3f6f9;
+    --text-primary: #1f2937;
+    --border-color: #e5e7eb;
+    --surface: #ffffff;
+    --muted-text: #61716a;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg-main);
+    color: var(--text-primary);
+}
+
+/* Dejé esta pantalla en dos columnas porque se entiende rápido: formulario + contexto visual. */
+.login-page {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
+    min-height: 100vh;
+}
+
+.form-container,
+.formulario {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem clamp(1.25rem, 8vw, 6rem);
+    background: var(--surface);
+}
+
+.btn-regresar {
+    position: absolute;
+    top: 1.5rem;
+    left: clamp(1.25rem, 8vw, 6rem);
+    color: var(--muted-text);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.btn-regresar:hover {
+    color: var(--dark-green);
+}
+
+.encabezado-login,
+.titulo,
+.encabezado-tarjeta {
+    margin-bottom: 2rem;
+}
+
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.75rem;
+    color: var(--dark-green);
+    font-size: 1.35rem;
+    font-weight: 900;
+}
+
+.brand-mark::before {
+    content: "A";
+    display: grid;
+    width: 2.2rem;
+    height: 2.2rem;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--dark-green);
+    color: var(--surface);
+    font-size: 0.95rem;
+}
+
+h1 {
+    color: var(--text-primary);
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+}
+
+p {
+    margin-top: 0.5rem;
+    color: var(--muted-text);
+}
+
+form,
+.campo,
+.datos,
+.grupo-formulario {
+    display: grid;
+    gap: 1rem;
+}
+
+fieldset {
+    border: 0;
+    padding: 0;
+}
+
+label {
+    color: var(--text-primary);
+    font-size: 0.92rem;
+    font-weight: 800;
+}
+
+.header-campo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.olvido,
+.pie-pagina a,
+.redireccionLogin a {
+    color: var(--dark-green);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+input,
+select {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text-primary);
+}
+
+input:focus,
+select:focus {
+    border-color: var(--bright-green);
+    outline: 3px solid rgba(31, 157, 85, 0.14);
+}
+
+.recordar-opcion,
+.terminos {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.recordar-opcion input,
+.terminos input {
+    width: auto;
+    min-height: auto;
+}
+
+.btn-inicio,
+.boton_registro,
+.btn-enviar {
+    width: 100%;
+    min-height: 3rem;
+    border: 0;
+    border-radius: 8px;
+    background: var(--dark-green);
+    color: var(--surface);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+.btn-inicio:hover,
+.boton_registro:hover,
+.btn-enviar:hover {
+    background: #073c26;
+}
+
+.pie-pagina,
+.redireccionLogin {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.banner-lateral,
+.image {
+    display: grid;
+    place-items: center;
+    padding: clamp(1.5rem, 6vw, 5rem);
+    background: var(--dark-green);
+}
+
+.banner-lateral figure,
+.image figure {
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--surface);
+}
+
+.banner-lateral img,
+.image img {
+    display: block;
+    width: 100%;
+    max-height: 430px;
+    object-fit: cover;
+}
+
+.banner-lateral figcaption,
+.image figcaption {
+    padding: 0.9rem 1rem;
+    color: var(--muted-text);
+    font-weight: 700;
+}
+
+/* xs: celulares pequeños */
+@media (max-width: 480px) {
+    .login-page,
+    .form {
+        grid-template-columns: 1fr;
+    }
+
+    .form-container,
+    .formulario {
+        padding: 5rem 1.25rem 2rem;
+    }
+
+    .btn-regresar {
+        left: 1.25rem;
+    }
+
+    .banner-lateral,
+    .image {
+        order: -1;
+        padding: 1rem;
+    }
+}
+
+/* s: celulares grandes */
+@media (min-width: 481px) and (max-width: 768px) {
+    .login-page,
+    .form {
+        grid-template-columns: 1fr;
+    }
+
+    .banner-lateral,
+    .image {
+        order: -1;
+        min-height: 260px;
+    }
+}
+
+/* m: tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .form-container,
+    .formulario {
+        padding: 5rem 2rem;
+    }
+}
+
+/* l: portátiles normales */
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .form-container,
+    .formulario {
+        padding: 5rem 4rem;
+    }
+}
+
+/* xl: escritorios amplios */
+@media (min-width: 1281px) and (max-width: 1440px) {
+    .banner-lateral img,
+    .image img {
+        max-height: 480px;
+    }
+}
+
+/* xxl: pantallas grandes */
+@media (min-width: 1441px) {
+    .form-container,
+    .formulario {
+        padding: 5rem 8rem;
+    }
+}

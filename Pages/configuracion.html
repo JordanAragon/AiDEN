@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Configuración</title>
+</head>
+<body>
+    <aside class="top-nav">
+        <a href="dashboard.html" class="nav-brand">AiDEN</a>
+        <nav aria-label="Navegación principal">
+            <ul class="nav-menu">
+                <li><a href="dashboard.html"><span class="nav-icon">D</span>Dashboard</a></li>
+                <li><a href="inventario.html"><span class="nav-icon">I</span>Inventario</a></li>
+                <li><a href="produccion.html"><span class="nav-icon">P</span>Producción</a></li>
+                <li><a href="ambiental.html"><span class="nav-icon">A</span>Ambiental</a></li>
+                <li><a href="calidad-alertas.html"><span class="nav-icon">C</span>Calidad</a></li>
+                <li><a href="trazabilidad.html"><span class="nav-icon">T</span>Trazabilidad</a></li>
+                <li><a href="personal.html"><span class="nav-icon">U</span>Personal</a></li>
+                <li><a href="reportes-dashboard.html"><span class="nav-icon">R</span>Reportes</a></li>
+            </ul>
+        </nav>
+        <nav class="nav-bottom" aria-label="Sesión">
+            <a href="configuracion.html" class="active"><span class="nav-icon">S</span>Configuración</a>
+            <a href="login.html" class="logout-link"><span class="nav-icon">X</span>Cerrar sesión</a>
+        </nav>
+    </aside>
+
+    <header class="app-header">
+        <section>
+            <strong>Configuración administrativa</strong>
+            <p>Usuarios, permisos y datos maestros del sistema</p>
+        </section>
+        <section class="header-actions">
+            <button class="notification" data-action="ver-alertas" type="button" aria-label="Ver alertas">2</button>
+            <button class="profile-pill" data-action="ver-perfil" type="button">
+                <span class="avatar">AD</span>
+                <span class="profile-copy"><strong>Administrador</strong><span>Ana Torres</span></span>
+            </button>
+        </section>
+    </header>
+
+    <main class="main-content">
+        <header class="page-header">
+            <section>
+                <span class="eyebrow">Administración</span>
+                <h1>Configuración del sistema</h1>
+                <p>Usuarios, roles y parámetros base.</p>
+            </section>
+            <section class="toolbar">
+                <a class="btn-outline" href="#auditoria">Ver auditoría</a>
+                <button class="btn" data-action="nuevo-usuario" type="button">Nuevo usuario</button>
+            </section>
+        </header>
+
+        <section class="summary-grid" aria-label="Resumen de configuración">
+            <article class="metric-card">
+                <span class="metric-label">Datos maestros</span>
+                <strong class="metric-value">16</strong>
+                <p class="metric-note">Viveros, sedes, bodegas, cultivos, unidades, zonas y variables.</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Roles oficiales</span>
+                <strong class="metric-value">3</strong>
+                <p class="metric-note">Administrador, Supervisor y Operario.</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Sesión</span>
+                <strong class="metric-value">30 min</strong>
+                <p class="metric-note">Configurable entre 15 y 120 minutos.</p>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Centros costo</span>
+                <strong class="metric-value">7</strong>
+                <p class="metric-note">Producción, calidad, inventario, ambiental y administración.</p>
+            </article>
+        </section>
+
+        <section class="workspace">
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                            <h2>Estructura ERP del vivero</h2>
+                            <p>Estructura operativa del vivero.</p>
+                    </section>
+                    <button class="btn-outline" data-action="nuevo-centro-costo" type="button">Nuevo centro de costo</button>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Entidad</th>
+                                <th>Ejemplo</th>
+                                <th>Uso ERP</th>
+                                <th>Módulos impactados</th>
+                                <th>Regla</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Vivero / sede</td>
+                                <td>Vivero Popayán · Sede Norte</td>
+                                <td>Separar operación, inventario y reportes ejecutivos</td>
+                                <td>Todos</td>
+                                <td><span class="badge">Obligatorio</span></td>
+                            </tr>
+                            <tr>
+                                <td>Bodega</td>
+                                <td>Bodega insumos químicos</td>
+                                <td>Ubicación de existencias, compras y salidas</td>
+                                <td>Inventario, Costos, Calidad</td>
+                                <td><span class="badge">Con responsable</span></td>
+                            </tr>
+                            <tr>
+                                <td>Centro de costo</td>
+                                <td>Producción café · Calidad fitosanitaria</td>
+                                <td>Imputación de insumos, mano de obra y otros gastos</td>
+                                <td>Cultivos, Personal, Costos, Reportes</td>
+                                <td><span class="badge-warn">No retroactivo</span></td>
+                            </tr>
+                            <tr>
+                                <td>Zona productiva</td>
+                                <td>Germinación norte · Cama 3</td>
+                                <td>Asignar sensores, lotes, tareas y responsables</td>
+                                <td>Cultivos, Ambiental, Personal</td>
+                                <td><span class="badge">Trazable</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                            <h2>Parámetros maestros</h2>
+                            <p>Catálogos activos.</p>
+                    </section>
+                    <button class="btn-outline" data-action="exportar-excel" type="button">Exportar Excel</button>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Lista</th>
+                                <th>Ejemplos activos</th>
+                                <th>Validación</th>
+                                <th>Uso en sistema</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tipos de cultivo</td>
+                                <td>Tomate, lechuga, café, ornamentales</td>
+                                <td>Nombre único</td>
+                                <td>Ciclos, lotes, umbrales, reportes</td>
+                                <td><span class="badge">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>Unidades de medida</td>
+                                <td>kg, L, unidad, saco</td>
+                                <td>Duplicados rechazados</td>
+                                <td>Insumos, consumos, sensores</td>
+                                <td><span class="badge">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>Categorías y subcategorías de insumos</td>
+                                <td>Fitosanitario, nutricional, sustratos</td>
+                                <td>Subcategorías independientes</td>
+                                <td>Inventario, tratamientos, reportes de gasto</td>
+                                <td><span class="badge">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>Tipos de actividad</td>
+                                <td>Riego, fertilización, poda, corrección</td>
+                                <td>Nombre único por catálogo</td>
+                                <td>Actividades, tareas, limitantes</td>
+                                <td><span class="badge">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>Zonas y variables ambientales</td>
+                                <td>Germinación, PAR, CO2, CE</td>
+                                <td>Inactivación sin borrar histórico</td>
+                                <td>Sensores, lotes y umbrales</td>
+                                <td><span class="badge-warn">1 inactivo oculto</span></td>
+                            </tr>
+                            <tr>
+                                <td>Proveedores y terceros</td>
+                                <td>BioTierra, AgroAndes, servicios externos</td>
+                                <td>NIT/correo único</td>
+                                <td>Compras, inventario, costos y reportes</td>
+                                <td><span class="badge">ERP</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <section class="grid-two">
+                <article class="panel-card" id="usuarios">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Usuarios y roles</h2>
+                            <p>Accesos y recuperación.</p>
+                        </section>
+                    </header>
+                    <section class="quick-panel">
+                        <ul class="checklist">
+                            <li>Alta y edición se hacen en pop-up con correo único, rol, estado y contraseña temporal.</li>
+                            <li>Los cambios quedan auditados con valor anterior, valor nuevo y usuario responsable.</li>
+                            <li>Solo Administrador puede crear usuarios, roles y restablecer credenciales.</li>
+                        </ul>
+                        <section class="compact-actions">
+                            <button class="btn-outline" data-action="nuevo-usuario" type="button">Editar usuario</button>
+                            <button class="btn-outline" data-action="restablecer-contrasena" type="button">Restablecer contraseña</button>
+                        </section>
+                    </section>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Permisos por rol</h2>
+                            <p>Responsabilidades por rol.</p>
+                        </section>
+                    </header>
+                    <ul class="checklist">
+                        <li><strong>Operario:</strong> tareas asignadas, actividades, consumos en lotes asignados e incidencias.</li>
+                        <li><strong>Supervisor:</strong> lotes, limitantes técnicos, alertas, producción y costos.</li>
+                        <li><strong>Administrador:</strong> acceso total a configuración, usuarios y reportes de costos.</li>
+                        <li>Acceso no autorizado muestra mensaje visible y genera registro de auditoría.</li>
+                        <li>Contraseñas representadas como hash criptográfico, nunca texto plano.</li>
+                    </ul>
+                </article>
+            </section>
+
+            <article class="panel-card" id="auditoria">
+                <header class="panel-header">
+                    <section>
+                        <h2>Bitácora de auditoría y seguridad</h2>
+                        <p>Cambios y accesos del sistema.</p>
+                    </section>
+                    <span class="badge-blue">Últimos 10 intentos fallidos visibles</span>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha/hora</th>
+                                <th>Usuario</th>
+                                <th>Módulo</th>
+                                <th>Campo</th>
+                                <th>Antes</th>
+                                <th>Después</th>
+                                <th>Resultado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2026-06-05 08:12</td>
+                                <td>Administrador AiDEN</td>
+                                <td>Parámetros</td>
+                                <td>Zona</td>
+                                <td>Invernadero 1</td>
+                                <td>Germinación norte</td>
+                                <td><span class="badge">Registrado</span></td>
+                            </tr>
+                            <tr>
+                                <td>2026-06-05 08:19</td>
+                                <td>Supervisor Vivero</td>
+                                <td>Seguridad</td>
+                                <td>Acceso</td>
+                                <td>Intento a usuarios</td>
+                                <td>Bloqueado por rol</td>
+                                <td><span class="badge-danger">No autorizado</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+        </section>
+    </main>
+    <script src="../Assets/JS/modules.js"></script>
+</body>
+</html>
