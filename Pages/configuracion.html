@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Configuracion</title>
+</head>
+<body>
+    <aside class="top-nav"></aside>
+
+    <header class="app-header">
+        <section>
+            <strong>Configuracion administrativa</strong>
+            <p>Usuarios, permisos, datos maestros y auditoria</p>
+        </section>
+        <section class="header-actions"></section>
+    </header>
+
+    <main class="main-content">
+        <header class="page-header">
+            <section>
+                <span class="eyebrow">Administracion</span>
+                <h1>Configuracion del sistema</h1>
+                <p>Controla los datos base que conectan inventario, produccion, costos y reportes.</p>
+            </section>
+            <section class="toolbar">
+                <a class="btn-outline" href="#auditoria">Ver auditoria</a>
+                <button class="btn" data-action="nuevo-usuario" type="button">Nuevo usuario</button>
+            </section>
+        </header>
+
+        <section class="summary-grid" aria-label="Resumen de configuracion">
+            <article class="metric-card"><span class="metric-label">Datos maestros</span><strong class="metric-value">16</strong><p class="metric-note">Catalogos activos.</p></article>
+            <article class="metric-card"><span class="metric-label">Roles oficiales</span><strong class="metric-value">3</strong><p class="metric-note">Admin, Supervisor y Operario.</p></article>
+            <article class="metric-card"><span class="metric-label">Sesion demo</span><strong class="metric-value">30 min</strong><p class="metric-note">Parametro visible.</p></article>
+            <article class="metric-card"><span class="metric-label">Centros costo</span><strong class="metric-value">7</strong><p class="metric-note">2 por validar.</p></article>
+        </section>
+
+        <section class="workspace">
+            <section class="grid-two">
+                <article class="panel-card" id="usuarios">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Usuarios y roles</h2>
+                            <p>Accesos disponibles en la demo.</p>
+                        </section>
+                        <section class="toolbar">
+                            <button class="btn-outline" data-action="nuevo-usuario" type="button">Crear usuario</button>
+                            <button class="btn-outline" data-action="restablecer-contrasena" type="button">Restablecer acceso</button>
+                        </section>
+                    </header>
+                    <section class="table-wrap">
+                        <table class="data-table compact-table">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Correo</th>
+                                    <th>Rol</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Ana Torres</td><td>ana@aiden.co</td><td>Administrador</td><td><span class="badge">Activo</span></td><td><button class="btn-outline" data-action="nuevo-usuario" type="button">Editar</button></td></tr>
+                                <tr><td>Juan Perez</td><td>juan@aiden.co</td><td>Supervisor</td><td><span class="badge">Activo</span></td><td><button class="btn-outline" data-action="nuevo-usuario" type="button">Editar</button></td></tr>
+                                <tr><td>Maria Lopez</td><td>maria@aiden.co</td><td>Operario</td><td><span class="badge-warn">Pendiente</span></td><td><button class="btn-outline" data-action="restablecer-contrasena" type="button">Acceso</button></td></tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Permisos por rol</h2>
+                            <p>Responsabilidades principales.</p>
+                        </section>
+                    </header>
+                    <ul class="checklist">
+                        <li><strong>Operario:</strong> tareas asignadas, actividades, consumos e incidencias.</li>
+                        <li><strong>Supervisor:</strong> lotes, inventario, alertas, produccion, costos y reportes.</li>
+                        <li><strong>Administrador:</strong> usuarios, configuracion, auditoria y acceso completo.</li>
+                    </ul>
+                </article>
+            </section>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Estructura operativa del vivero</h2>
+                        <p>Entidades que ordenan los registros del sistema.</p>
+                    </section>
+                    <button class="btn-outline" data-action="nuevo-centro-costo" type="button">Nuevo centro de costo</button>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Entidad</th>
+                                <th>Ejemplo</th>
+                                <th>Uso</th>
+                                <th>Modulos</th>
+                                <th>Regla</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Vivero / sede</td><td>Vivero Popayan · Sede Norte</td><td>Separar operacion, inventario y reportes</td><td>Todos</td><td><span class="badge">Obligatorio</span></td></tr>
+                            <tr><td>Bodega</td><td>Bodega insumos quimicos</td><td>Ubicacion de existencias y salidas</td><td>Inventario, Costos, Calidad</td><td><span class="badge">Con responsable</span></td></tr>
+                            <tr><td>Centro de costo</td><td>Produccion cafe</td><td>Imputacion de insumos y mano de obra</td><td>Personal, Costos, Reportes</td><td><span class="badge-warn">No retroactivo</span></td></tr>
+                            <tr><td>Zona productiva</td><td>Germinacion norte · Cama 3</td><td>Asignar sensores, lotes y tareas</td><td>Produccion, Ambiental, Personal</td><td><span class="badge">Trazable</span></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Parametros maestros</h2>
+                        <p>Catalogos activos usados por los modulos.</p>
+                    </section>
+                    <button class="btn-outline" data-action="exportar-excel" type="button">Exportar Excel</button>
+                </header>
+                <form class="filters" aria-label="Filtros de parametros">
+                    <label class="field">Buscar parametro
+                        <input type="search" placeholder="Cultivo, unidad, proveedor">
+                    </label>
+                    <label class="field">Modulo
+                        <select>
+                            <option>Todos</option>
+                            <option>Inventario</option>
+                            <option>Produccion</option>
+                            <option>Costos</option>
+                        </select>
+                    </label>
+                    <label class="field">Estado
+                        <select>
+                            <option>Todos</option>
+                            <option>Activo</option>
+                            <option>Inactivo</option>
+                        </select>
+                    </label>
+                </form>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Lista</th>
+                                <th>Ejemplos activos</th>
+                                <th>Validacion</th>
+                                <th>Uso en sistema</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Tipos de cultivo</td><td>Tomate, lechuga, cafe, ornamentales</td><td>Nombre unico</td><td>Ciclos, lotes, umbrales, reportes</td><td><span class="badge">Activo</span></td></tr>
+                            <tr><td>Unidades de medida</td><td>kg, L, unidad, saco</td><td>Duplicados rechazados</td><td>Insumos, consumos, sensores</td><td><span class="badge">Activo</span></td></tr>
+                            <tr><td>Categorias de insumos</td><td>Fitosanitario, nutricional, sustratos</td><td>Subcategorias independientes</td><td>Inventario, tratamientos, gasto</td><td><span class="badge">Activo</span></td></tr>
+                            <tr><td>Zonas y variables ambientales</td><td>Germinacion, PAR, CO2, CE</td><td>No borrar historico</td><td>Sensores, lotes y umbrales</td><td><span class="badge-warn">1 inactivo</span></td></tr>
+                            <tr><td>Proveedores</td><td>BioTierra, AgroAndes</td><td>NIT/correo unico</td><td>Compras, inventario y costos</td><td><span class="badge">Activo</span></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <article class="panel-card" id="auditoria">
+                <header class="panel-header">
+                    <section>
+                        <h2>Bitacora de auditoria</h2>
+                        <p>Cambios administrativos y accesos bloqueados.</p>
+                    </section>
+                    <span class="badge-blue">Ultimos registros</span>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha/hora</th>
+                                <th>Usuario</th>
+                                <th>Modulo</th>
+                                <th>Campo</th>
+                                <th>Antes</th>
+                                <th>Despues</th>
+                                <th>Resultado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2026-06-05 08:12</td><td>Administrador AiDEN</td><td>Parametros</td><td>Zona</td><td>Invernadero 1</td><td>Germinacion norte</td><td><span class="badge">Registrado</span></td></tr>
+                            <tr><td>2026-06-05 08:19</td><td>Supervisor Vivero</td><td>Seguridad</td><td>Acceso</td><td>Intento a usuarios</td><td>Bloqueado por rol</td><td><span class="badge-danger">No autorizado</span></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+        </section>
+    </main>
+    <script src="../Assets/JS/modules.js"></script>
+</body>
+</html>
