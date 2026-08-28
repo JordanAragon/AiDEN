@@ -87,27 +87,80 @@
                 </article>
             </section>
 
-            <section class="grid-two">
-                <article class="panel-card">
-                    <header class="panel-header"><h2>Alertas recientes</h2><a class="btn-ghost" href="calidad-alertas.html">Ver todas</a></header>
-                    <ul class="alert-list">
-                        <li class="warning">Stock bajo de fertilizante NPK.</li>
-                        <li class="warning">Humedad del suelo por debajo del rango recomendado.</li>
-                        <li class="danger">Lote L-003 requiere inspeccion.</li>
+        <section class="grid-two">
+            <article class="panel-card">
+                <header class="panel-header"><h2>Actividades Recientes</h2></header>
+                <ul class="activity-list">
+                    <li>
+                        <section class="activity-item-content">
+                            <span class="status-dot green"></span>
+                            <section>
+                                <strong>Registró siembra en lote LT-2024-091</strong>
+                                <p><small>Luis Torres</small> &bull; <small>08:15</small></p>
+                            </section>
+                        </section>
+                    </li>
+                    <li>
+                        <section class="activity-item-content">
+                            <span class="status-dot amber"></span>
+                            <section>
+                                <strong>Alerta: temperatura alta en Invernadero 2</strong>
+                                <p><small>Ana Ruiz</small> &bull; <small>09:30</small></p>
+                            </section>
+                        </section>
+                    </li>
+                        <li>
+                            <section class="activity-item-content">
+                                <span class="status-dot blue"></span>
+                                <section>
+                                    <strong>Actualización de stock: Sustrato Premium</strong>
+                                    <p><small>Pedro Vargas</small> &bull; <small>10:45</small></p>
+                                </section>
+                            </section>
+                        </li>
+                        <li>
+                            <section class="activity-item-content">
+                                <span class="status-dot green"></span>
+                                <section>
+                                    <strong>Lote LT-2024-078 completó etapa de germinación</strong>
+                                    <p><small>Sistema</small> &bull; <small>11:20</small></p>
+                                </section>
+                            </section>
+                        </li>
+                        <li>
+                            <section class="activity-item-content">
+                                <span class="status-dot red"></span>
+                                <section>
+                                    <strong>Incidencia de calidad registrada en rosa roja</strong>
+                                    <p><small>Ana Ruiz</small> &bull; <small>12:05</small></p>
+                                </section>
+                            </section>
+                        </li>
                     </ul>
                 </article>
 
                 <article class="panel-card">
-                    <header class="panel-header"><h2>Actividades recientes</h2><a class="btn-ghost" href="personal.html">Ver tareas</a></header>
-                    <ul class="activity-list">
-                        <li>Maria Lopez registro fertilizacion del lote L-002.</li>
-                        <li>Carlos Rivas verifico sensor ambiental de invernadero 1.</li>
-                        <li>Juan Perez consulto trazabilidad del lote L-003.</li>
+                    <header class="panel-header"><h2>Alertas Activas</h2></header>
+                    <ul class="alert-list-styled">
+                        <li>
+                            <header class="alert-card-header">
+                                <span class="alert-icon">&#9888;</span>
+                                <span class="badge-danger">Alta</span>
+                            </header>
+                            <p>Temperatura elevada &middot; Invernadero 2 (32&deg;C)</p>
+                        </li>
+                        <li>
+                            <header class="alert-card-header">
+                                <span class="alert-icon">&#9888;</span>
+                                <span class="badge-warn">Media</span>
+                            </header>
+                            <p>Stock bajo &middot; Sustrato Premium (15% del mínimo)</p>
+                        </li>
                     </ul>
+                    <a href="calidad-alertas.html" class="btn btn-outline w-100 mt-3 text-center" style="display: block; margin-top: 1rem;">Ver todas las alertas</a>
                 </article>
             </section>
-        </section>
-    </main>
+
     <script src="../Assets/JS/modules.js"></script>
 </body>
 </html>

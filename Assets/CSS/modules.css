@@ -1027,6 +1027,81 @@ textarea:focus {
     background: #fbfcfd;
 }
 
+/* Estilos para Actividades Recientes con puntos de estado */
+.activity-list {
+    display: grid;
+    gap: 0.8rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.activity-list li {
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    background: var(--white);
+}
+
+.activity-item-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.status-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    margin-top: 0.45rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-dot.green { background: #157347; }
+.status-dot.amber { background: #d97706; }
+.status-dot.blue { background: #2563eb; }
+.status-dot.red { background: #dc2626; }
+
+.activity-item-content small {
+    color: var(--gray-500);
+    font-weight: 600;
+}
+
+/* Estilos para Alertas Activas en tarjetas separadas */
+.alert-list-styled {
+    display: grid;
+    gap: 0.8rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.alert-list-styled li {
+    padding: 1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    background: #fdfefe;
+}
+
+.alert-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+}
+
+.alert-icon {
+    font-size: 1.1rem;
+    color: var(--amber-700);
+}
+
+.alert-list-styled p {
+    color: var(--gray-900);
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+
 @media (max-width: 980px) {
     .page-header,
     .grid-two,
