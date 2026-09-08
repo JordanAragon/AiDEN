@@ -28,7 +28,9 @@
                             <label for="password" class="form-label">Contraseña</label>
                             <section class="password-group">
                                 <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
-                                <button type="button" class="password-toggle-btn" aria-label="Mostrar contraseña">()</button>
+                                <button type="button" class="password-toggle-btn" aria-label="Mostrar u ocultar contraseña">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
                             </section>
                         </section>
                     </fieldset>
@@ -47,7 +49,7 @@
 
 
                 <footer class="auth-footer">
-                    <p>¿No tienes cuenta? <a href="singup.html">Crear cuenta</a></p>
+                    <p>¿No tienes cuenta? <a href="signup.html">Crear cuenta</a></p>
                     <a href="../index.html" class="back-home">&larr; Volver al inicio</a>
                 </footer>
             </article>
@@ -58,12 +60,25 @@
                 </header>
                 <section class="visual-content">
                     <h2>Inteligencia artificial para la gestión de viveros</h2>
-                    <p>Control total de tu operación agrícola: lotes, inventario, personal, costos y trazabilidad.</p>
+                    <p>Accede para administrar lotes, monitorear sensores, registrar insumos y consultar reportes operativos en tiempo real.</p>
                 </section>
             </aside>
         </section>
     </main>
     <script>
+        const toggleBtn = document.querySelector(".password-toggle-btn");
+        const passInput = document.querySelector("#password");
+        if (toggleBtn && passInput) {
+            toggleBtn.addEventListener("click", function () {
+                const isPassword = passInput.type === "password";
+                passInput.type = isPassword ? "text" : "password";
+                toggleBtn.setAttribute("aria-label", isPassword ? "Ocultar contraseña" : "Mostrar contraseña");
+                toggleBtn.innerHTML = isPassword
+                    ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" x2="22" y1="2" y2="22"></line></svg>`
+                    : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+            });
+        }
+
         document.querySelector("form").addEventListener("submit", function (event) {
             event.preventDefault();
             localStorage.removeItem("aiden-role");

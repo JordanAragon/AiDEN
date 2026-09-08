@@ -3,246 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AiDEN centraliza la gestion de viveros: lotes, inventario, alertas, trazabilidad, costos y reportes en una interfaz sencilla.">
+    <meta name="description" content="AiDEN centraliza la gestión de viveros: lotes, inventario, alertas, trazabilidad, costos y reportes en una interfaz sencilla.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="Assets/CSS/home.css">
-    <title>AiDEN | Gestión de viveros</title>
+    <title>AiDEN | Sistema ERP para Viveros Inteligentes</title>
 </head>
 <body>
+    <!-- Navbar Flotante Glassmorphism -->
     <header class="site-header">
-        <nav class="navbar navbar-expand-lg" aria-label="Navegacion principal">
-            <section class="container-xl">
-                <a href="#inicio" class="navbar-brand brand-mark">
+        <nav class="navbar navbar-expand-lg" aria-label="Navegación principal">
+            <div class="container-xl">
+                <a href="#inicio" class="brand-mark">
                     <span class="logo-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
                     </span>
                     AiDEN
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-principal" aria-controls="menu-principal" aria-expanded="false" aria-label="Abrir menu">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-principal" aria-controls="menu-principal" aria-expanded="false" aria-label="Abrir menú">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <section class="collapse navbar-collapse" id="menu-principal">
-                    <ul class="navbar-nav main-nav mx-lg-auto">
-                        <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#aiden">¿Qué es?</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#modulos">Módulos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#roles">Acceso</a></li>
+                <div class="collapse navbar-collapse" id="menu-principal">
+                    <ul class="main-nav mx-lg-auto">
+                        <li><a class="nav-link" href="#inicio">Inicio</a></li>
+                        <li><a class="nav-link" href="#que-es">¿Qué es?</a></li>
+                        <li><a class="nav-link" href="#modulos">Módulos</a></li>
+                        <li><a class="nav-link" href="#roles">Acceso</a></li>
                     </ul>
-                    <nav class="nav-actions" aria-label="Acciones de acceso">
-                        <a href="Pages/login.html" class="btn btn-aiden-light">Iniciar Sesión</a>
-                        <a href="Pages/singup.html" class="btn btn-aiden">Registrarse</a>
-                    </nav>
-                </section>
-            </section>
+                    <div class="nav-actions">
+                        <a href="Pages/login.html" class="btn-aiden-secondary">Iniciar Sesión</a>
+                        <a href="Pages/signup.html" class="btn-aiden-primary">Registrarse</a>
+                    </div>
+                </div>
+            </div>
         </nav>
     </header>
 
-    <main>
-        <section id="inicio" class="hero-section">
-            <section class="container-xl">
-                <section class="row align-items-center g-5">
-                    <article class="col-lg-6 hero-copy">
-                        <h1>AiDEN organiza la <span class="text-highlight">operación diaria del vivero</span></h1>
+    <main id="inicio">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container-xl">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-6 hero-copy">
+                        <div class="hero-pill">
+                            <span class="pill-dot"></span>
+                            <span>ERP Vivero Inteligente · v2.0</span>
+                        </div>
+                        <h1>AiDEN organiza la <span class="text-highlight">operación diaria</span> del vivero</h1>
                         <p class="hero-summary">Control integral de lotes, inventario, costos, alertas, personal y trazabilidad. Toda la gestión de tu vivero agrícola en una plataforma moderna e inteligente.</p>
-                        <nav class="hero-actions" aria-label="Acciones principales">
-                            <a href="Pages/login.html" class="btn btn-aiden">Iniciar Sesión &rarr;</a>
-                            <a href="Pages/dashboard.html" class="btn btn-aiden-light">Ver Panel Demo</a>
-                            <a href="#modulos" class="btn btn-aiden-link">Explorar Módulos &darr;</a>
-                        </nav>
-                        <aside class="hero-stats" aria-label="Resumen funcional de AiDEN">
+                        
+                        <div class="hero-actions">
+                            <a href="Pages/login.html" class="btn-aiden-primary">
+                                Iniciar Sesión
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                            </a>
+                            <a href="Pages/dashboard.html" class="btn-aiden-secondary">Ver Panel Demo</a>
+                            <a href="#modulos" class="btn-aiden-ghost">Explorar Módulos &darr;</a>
+                        </div>
+
+                        <div class="hero-stats">
                             <article><strong>3</strong><span>Roles Demo</span></article>
                             <article><strong>9</strong><span>Módulos Operativos</span></article>
                             <article><strong>ERP</strong><span>Vivero Inteligente</span></article>
-                        </aside>
-                    </article>
-                    <figure class="col-lg-6 hero-visual">
-                        <img src="Assets/IMG/landing.png" alt="Tierra y macetas vivero">
-                        <aside class="hero-overlay-card" aria-label="Estadísticas rápidas">
-                            <article class="stat-item">
-                                <span class="stat-label">Lotes Activos</span>
-                                <strong class="stat-value">48</strong>
-                                <span class="stat-trend up">&uarr; 3</span>
-                            </article>
-                            <article class="stat-item">
-                                <span class="stat-label">Inventario</span>
-                                <strong class="stat-value">94%</strong>
-                                <span class="stat-trend neutral">OK</span>
-                            </article>
-                            <article class="stat-item">
-                                <span class="stat-label">Alertas</span>
-                                <strong class="stat-value">2</strong>
-                                <span class="stat-trend down">&darr;</span>
-                            </article>
-                        </aside>
-                    </figure>
-                </section>
-            </section>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="hero-visual-wrapper">
+                            <div class="hero-decor-1"></div>
+                            <div class="hero-decor-2"></div>
+                            <div class="hero-card-preview">
+                                <picture>
+                                    <source srcset="Assets/IMG/landing.webp" type="image/webp">
+                                    <img src="Assets/IMG/landing.png" alt="Panel de gestión de vivero AiDEN" width="1408" height="768" fetchpriority="high">
+                                </picture>
+                                <div class="hero-kpis-bar">
+                                    <div class="kpi-mini-pill">
+                                        <span class="kpi-label">Lotes Activos</span>
+                                        <strong>48</strong>
+                                        <span class="kpi-trend up">&uarr; 3</span>
+                                    </div>
+                                    <div class="kpi-mini-pill">
+                                        <span class="kpi-label">Inventario</span>
+                                        <strong>94%</strong>
+                                        <span class="kpi-trend ok">OK</span>
+                                    </div>
+                                    <div class="kpi-mini-pill">
+                                        <span class="kpi-label">Alertas</span>
+                                        <strong>2</strong>
+                                        <span class="kpi-trend down">&darr;</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section id="aiden" class="content-section">
-            <section class="container-xl">
-                <header class="section-heading text-center mx-auto">
+        <!-- Gestión Centralizada -->
+        <section id="que-es" class="content-section">
+            <div class="container-xl">
+                <div class="section-heading text-center mx-auto">
                     <p class="eyebrow">Gestión Centralizada</p>
                     <h2>Todo lo que necesita tu vivero, en un solo lugar</h2>
-                </header>
-                <section class="row g-4">
-                    <article class="col-md-4">
-                        <section class="info-card">
-                            <span class="card-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                            </span>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="info-card">
+                            <div class="card-icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </div>
                             <h3>Operación Visible</h3>
                             <p>Monitorea en tiempo real el estado de lotes, inventarios, personal y condiciones ambientales desde un dashboard unificado.</p>
-                        </section>
-                    </article>
-                    <article class="col-md-4">
-                        <section class="info-card">
-                            <span class="card-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5V19A9 3 0 0 0 21 19V5"></path><path d="M3 12A9 3 0 0 0 21 12"></path></svg>
-                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info-card">
+                            <div class="card-icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5V19A9 3 0 0 0 21 19V5"></path><path d="M3 12A9 3 0 0 0 21 12"></path></svg>
+                            </div>
                             <h3>Recursos Controlados</h3>
                             <p>Gestiona materiales, herramientas, insumos y presupuestos con alertas automáticas de stock mínimo y desvíos de costo.</p>
-                        </section>
-                    </article>
-                    <article class="col-md-4">
-                        <section class="info-card">
-                            <span class="card-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info-card">
+                            <div class="card-icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            </div>
                             <h3>Historial Consultable</h3>
                             <p>Trazabilidad completa de cada lote: desde la siembra hasta la venta, con registros de inspecciones, incidencias y actividades.</p>
-                        </section>
-                    </article>
-                </section>
-            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
+        <!-- Módulos Operativos -->
         <section id="modulos" class="content-section modules-section">
-            <section class="container-xl">
-                <header class="section-heading text-center mx-auto compact">
+            <div class="container-xl">
+                <div class="section-heading text-center mx-auto">
                     <p class="eyebrow">Módulos Operativos</p>
                     <h2>9 módulos diseñados para el vivero</h2>
-                </header>
-                <section class="module-grid" aria-label="Módulos de AiDEN">
-                    <article>
-                        <span class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></span>
-                        <h3>Inventario</h3><p>Control de stock, entradas y salidas con alertas de mínimos.</p>
-                    </article>
-                    <article>
-                        <span class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c4-4 4-10 0-14-4 4-4 10 0 14Z"></path><path d="M12 8V2"></path><path d="M15 5h-6"></path></svg></span>
-                        <h3>Producción</h3><p>Gestión de lotes, etapas de crecimiento y responsables.</p>
-                    </article>
-                    <article>
-                        <span class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg></span>
-                        <h3>Ambiental</h3><p>Monitoreo de sensores, temperatura, humedad y luminosidad.</p>
-                    </article>
-                    <article>
-                        <span class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>
-                        <h3>Calidad</h3><p>Sistema de incidencias con severidad, estado y seguimiento.</p>
-                    </article>
-                    <article>
-                        <span class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M13 6h3a2 2 0 0 1 2 2v7"></path><line x1="6" y1="9" x2="6" y2="21"></line></svg></span>
-                        <h3>Trazabilidad</h3><p>Timeline completo de eventos e historial por lote.</p>
-                    </article>
-                    <article>
-                        <span class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><line x1="12" y1="18" x2="12" y2="22"></line><line x1="12" y1="2" x2="12" y2="6"></line></svg></span>
-                        <h3>Costos</h3><p>Dashboard financiero con centros de costo y gastos por lote.</p>
-                    </article>
-                    <article>
-                        <span class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
-                        <h3>Personal</h3><p>Empleados, roles, tareas asignadas y desempeño operativo.</p>
-                    </article>
-                    <article>
-                        <span class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
-                        <h3>Reportes</h3><p>Biblioteca de reportes con exportación PDF/Excel y KPIs.</p>
-                    </article>
-                </section>
-            </section>
+                </div>
+                <div class="module-grid" aria-label="Módulos de AiDEN">
+                    <a href="Pages/inventario.html" class="module-card">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+                        </div>
+                        <h3>Inventario</h3>
+                        <p>Control de stock, entradas y salidas con alertas de mínimos.</p>
+                    </a>
+                    <a href="Pages/produccion.html" class="module-card">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"></path><path d="M10 20c5.5-2.5.8-6.4 3-10"></path><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"></path><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"></path></svg>
+                        </div>
+                        <h3>Producción</h3>
+                        <p>Gestión de lotes, etapas de crecimiento y responsables.</p>
+                    </a>
+                    <a href="Pages/ambiental.html" class="module-card">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"></path></svg>
+                        </div>
+                        <h3>Ambiental</h3>
+                        <p>Monitoreo de sensores, temperatura, humedad y luminosidad.</p>
+                    </a>
+                    <a href="Pages/calidad-alertas.html" class="module-card">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                        </div>
+                        <h3>Calidad</h3>
+                        <p>Sistema de incidencias con severidad, estado y seguimiento.</p>
+                    </a>
+                    <a href="Pages/trazabilidad.html" class="module-card">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="6" y1="3" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
+                        </div>
+                        <h3>Trazabilidad</h3>
+                        <p>Timeline completo de eventos e historial por lote.</p>
+                    </a>
+                    <a href="Pages/costos.html" class="module-card">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path></svg>
+                        </div>
+                        <h3>Costos</h3>
+                        <p>Dashboard financiero con centros de costo y gastos por lote.</p>
+                    </a>
+                    <a href="Pages/personal.html" class="module-card">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        </div>
+                        <h3>Personal</h3>
+                        <p>Empleados, roles, tareas asignadas y desempeño operativo.</p>
+                    </a>
+                    <a href="Pages/reportes-dashboard.html" class="module-card">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+                        </div>
+                        <h3>Reportes</h3>
+                        <p>Biblioteca de reportes con exportación PDF/Excel y KPIs.</p>
+                    </a>
+                </div>
+            </div>
         </section>
 
-        <section id="roles" class="content-section access-section">
-            <section class="container-xl">
-                <header class="section-heading text-center mx-auto compact">
+        <!-- Acceso por Rol -->
+        <section id="roles" class="content-section">
+            <div class="container-xl">
+                <div class="section-heading text-center mx-auto">
                     <p class="eyebrow">Acceso por rol</p>
                     <h2>Cada usuario ve lo que necesita</h2>
-                </header>
-                <section class="role-grid" aria-label="Accesos disponibles">
-                    <article class="role-card">
-                        <span class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+                </div>
+                <div class="role-grid" aria-label="Accesos disponibles">
+                    <!-- Administrador -->
+                    <div class="role-card admin">
+                        <div class="role-icon-box">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
                         <h3>Administrador</h3>
                         <ul class="role-features">
-                            <li>Gestión de usuarios y roles</li>
-                            <li>Auditoría completa del sistema</li>
-                            <li>Configuración avanzada</li>
-                            <li>Acceso a todos los módulos</li>
-                            <li>Reportes estratégicos</li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A4F31" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Gestión de usuarios y roles
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A4F31" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Auditoría completa del sistema
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A4F31" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Configuración avanzada
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A4F31" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Acceso a todos los módulos
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A4F31" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Reportes estratégicos
+                            </li>
                         </ul>
-                        <a href="Pages/dashboard-admin.html" class="btn btn-aiden-light w-100 mt-auto">Ver demo Administrador</a>
-                    </article>
-                    <article class="role-card">
-                        <span class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></span>
+                        <a href="Pages/dashboard-admin.html" class="btn-aiden-secondary role-btn">Ver demo como Administrador</a>
+                    </div>
+
+                    <!-- Supervisor -->
+                    <div class="role-card supervisor">
+                        <div class="role-icon-box">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
                         <h3>Supervisor</h3>
                         <ul class="role-features">
-                            <li>Dashboard operativo completo</li>
-                            <li>Gestión de lotes y producción</li>
-                            <li>Control de inventario</li>
-                            <li>Monitoreo ambiental</li>
-                            <li>Incidencias de calidad</li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#157347" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Dashboard operativo completo
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#157347" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Gestión de lotes y producción
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#157347" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Control de inventario
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#157347" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Monitoreo ambiental
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#157347" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Incidencias de calidad
+                            </li>
                         </ul>
-                        <a href="Pages/dashboard.html" class="btn btn-aiden-light w-100 mt-auto">Ver demo Supervisor</a>
-                    </article>
-                    <article class="role-card">
-                        <span class="card-icon" style="color: var(--blue-700); background: var(--blue-100);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
-                        <h3 style="color: var(--blue-700);">Operario</h3>
+                        <a href="Pages/dashboard.html" class="btn-aiden-secondary role-btn">Ver demo como Supervisor</a>
+                    </div>
+
+                    <!-- Operario -->
+                    <div class="role-card operario">
+                        <div class="role-icon-box">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
+                        <h3>Operario</h3>
                         <ul class="role-features">
-                            <li>Tareas del día asignadas</li>
-                            <li>Registro de actividades</li>
-                            <li>Lotes a cargo</li>
-                            <li>Incidencias propias</li>
-                            <li>Producción personal</li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Tareas del día asignadas
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Registro de actividades
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Lotes a cargo
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Incidencias propias
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                Producción personal
+                            </li>
                         </ul>
-                        <a href="Pages/dashboard-operario.html" class="btn btn-aiden-light w-100 mt-auto" style="color: var(--blue-700); border-color: var(--blue-700);">Ver demo Operario</a>
-                    </article>
-                </section>
-            </section>
+                        <a href="Pages/dashboard-operario.html" class="btn-aiden-secondary role-btn">Ver demo como Operario</a>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
+    <!-- Footer Corporativo Verde Profundo -->
     <footer class="site-footer">
-        <section class="container-xl footer-grid">
-            <nav class="footer-column" aria-label="Navegacion del landing">
-                <h2>Landing</h2>
-                <a href="#inicio">Inicio</a>
-                <a href="#aiden">Que es AiDEN</a>
-                <a href="#modulos">Modulos</a>
-                <a href="#roles">Acceso por rol</a>
-            </nav>
+        <div class="container-xl">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <a href="#inicio" class="brand-mark">
+                        <span class="logo-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
+                        </span>
+                        AiDEN
+                    </a>
+                    <p>Sistema ERP para gestión integral de viveros agrícolas. Inteligente, moderno y preparado para producción.</p>
+                </div>
 
-            <nav class="footer-column" aria-label="Accesos del sistema">
-                <h2>Acceso</h2>
-                <a href="Pages/login.html">Iniciar sesion</a>
-                <a href="Pages/singup.html">Registrarse</a>
-                <a href="Pages/dashboard-admin.html">Demo administrador</a>
-                <a href="Pages/dashboard.html">Demo supervisor</a>
-                <a href="Pages/dashboard-operario.html">Demo operario</a>
-            </nav>
+                <div class="footer-column">
+                    <h3>Plataforma</h3>
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#que-es">¿Qué es AiDEN?</a></li>
+                        <li><a href="#modulos">Módulos</a></li>
+                        <li><a href="#roles">Acceso Demo</a></li>
+                    </ul>
+                </div>
 
-            <nav class="footer-column" aria-label="Modulos principales">
-                <h2>Modulos</h2>
-                <a href="Pages/inventario.html">Inventario</a>
-                <a href="Pages/produccion.html">Produccion</a>
-                <a href="Pages/ambiental.html">Ambiental</a>
-                <a href="Pages/reportes-dashboard.html">Reportes</a>
-            </nav>
-        </section>
+                <div class="footer-column">
+                    <h3>Módulos</h3>
+                    <ul>
+                        <li><a href="Pages/inventario.html">Inventario</a></li>
+                        <li><a href="Pages/produccion.html">Producción</a></li>
+                        <li><a href="Pages/trazabilidad.html">Trazabilidad</a></li>
+                        <li><a href="Pages/ambiental.html">Ambiental</a></li>
+                        <li><a href="Pages/calidad-alertas.html">Calidad</a></li>
+                    </ul>
+                </div>
 
-        <section class="container-xl footer-bottom">
-            <p>© 2026 AiDEN. Proyecto formativo SENA.</p>
-            <nav aria-label="Enlaces finales">
-                <a href="#inicio">Volver arriba</a>
-                <a href="Pages/login.html">Entrar al sistema</a>
-            </nav>
-        </section>
+                <div class="footer-column">
+                    <h3>Acceso</h3>
+                    <ul>
+                        <li><a href="Pages/login.html">Iniciar Sesión</a></li>
+                        <li><a href="Pages/signup.html">Registrarse</a></li>
+                        <li><a href="Pages/recuperacion.html">Recuperar Contraseña</a></li>
+                        <li><a href="Pages/dashboard.html">Demo Supervisor</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 AiDEN · Artificial Intelligence for Nursery Management. Todos los derechos reservados.</p>
+                <div class="footer-bottom-pills">
+                    <a href="Pages/login.html" class="footer-bottom-pill">Acceso al Sistema</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -8,6 +8,8 @@ Por ahora el proyecto no implementa backend ni base de datos. La prioridad es re
 
 ## Módulos del prototipo
 
+- Acceso y registro: `Pages/login.html`, `Pages/signup.html`, `Pages/recuperacion.html`
+- Dashboards por rol: `Pages/dashboard.html` (Supervisor), `Pages/dashboard-admin.html` (Admin), `Pages/dashboard-operario.html` (Operario)
 1. Configuración del sistema: `Pages/configuracion.html`
 2. Inventario e insumos: `Pages/inventario.html`
 3. Gestión de cultivos y producción: `Pages/produccion.html`

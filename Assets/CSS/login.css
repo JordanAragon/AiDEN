@@ -199,7 +199,7 @@ legend {
     flex-direction: column;
     justify-content: space-between;
     padding: 3rem;
-    background-image: linear-gradient(rgba(10, 79, 49, 0.75), rgba(10, 79, 49, 0.85)), url("../Assets/IMG/vivero.jpg");
+    background-image: linear-gradient(rgba(10, 79, 49, 0.75), rgba(10, 79, 49, 0.85)), url("../Assets/IMG/vivero.webp");
     background-size: cover;
     background-position: center;
     color: var(--surface);
@@ -331,7 +331,7 @@ legend {
     justify-content: space-between;
     padding: 3rem;
     /* Capa verde translúcida (rgba) combinada con la ruta de tu imagen de fondo */
-    background-image: linear-gradient(rgba(18, 79, 53, 0.82), rgba(18, 79, 53, 0.88)), url("../Assets/IMG/vivero.jpg");
+    background-image: linear-gradient(rgba(18, 79, 53, 0.82), rgba(18, 79, 53, 0.88)), url("../Assets/IMG/vivero.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
