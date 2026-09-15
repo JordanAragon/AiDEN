@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Dashboard Administrador</title>
+</head>
+<body>
+    <aside class="top-nav"></aside>
+
+    <header class="app-header">
+        <section>
+            <strong>Administracion AiDEN</strong>
+        </section>
+        <section class="header-actions"></section>
+    </header>
+
+    <main class="main-content">
+        <header class="page-header">
+            <section>
+                <span class="eyebrow">Dashboard administrativo</span>
+                <h1>Hola, Ana. Este es el estado del sistema.</h1>
+            </section>
+            <section class="toolbar">
+                <a class="btn-outline" href="configuracion.html"><i class="bi bi-gear" aria-hidden="true"></i> Configuracion</a>
+                <button class="btn" data-action="nuevo-usuario" type="button">Nuevo usuario</button>
+            </section>
+        </header>
+
+        <section class="summary-grid">
+            <article class="metric-card"><span class="metric-label">Usuarios activos</span><strong class="metric-value">9</strong><p class="metric-note">3 roles oficiales.</p></article>
+            <article class="metric-card"><span class="metric-label">Centros de costo</span><strong class="metric-value">7</strong><p class="metric-note">2 por validar.</p></article>
+            <article class="metric-card"><span class="metric-label">Alertas sistema</span><strong class="metric-value">2</strong><p class="metric-note">Accesos y stock.</p></article>
+            <article class="metric-card"><span class="metric-label">Costo mensual</span><strong class="metric-value">$8.4M</strong><p class="metric-note">Cierre en revision.</p></article>
+        </section>
+
+        <section class="workspace">
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Administracion rapida</h2>
+                            <p>Gestion de usuarios y parametros.</p>
+                        </section>
+                    </header>
+                    <section class="compact-actions">
+                        <button class="btn-outline" data-action="nuevo-usuario" type="button">Crear usuario</button>
+                        <button class="btn-outline" data-action="restablecer-contrasena" type="button">Restablecer acceso</button>
+                        <button class="btn-outline" data-action="nuevo-centro-costo" type="button">Centro de costo</button>
+                        <button class="btn-outline" data-action="exportar-excel" type="button">Exportar Excel</button>
+                    </section>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Permisos visibles</h2>
+                            <p>Acceso completo al sistema.</p>
+                        </section>
+                    </header>
+                    <ul class="checklist">
+                        <li>Crear, editar y recuperar usuarios.</li>
+                        <li>Configurar parametros maestros y centros de costo.</li>
+                        <li>Consultar auditoria, costos y reportes consolidados.</li>
+                    </ul>
+                </article>
+            </section>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Actividad administrativa reciente</h2>
+                        <p>Cambios y accesos recientes.</p>
+                    </section>
+                    <a class="btn-ghost" href="configuracion.html#auditoria">Ver auditoria</a>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead><tr><th>Hora</th><th>Usuario</th><th>Modulo</th><th>Accion</th><th>Estado</th><th>Acciones</th></tr></thead>
+                        <tbody>
+                            <tr><td>09:10</td><td>Ana Torres</td><td>Usuarios</td><td>Creo acceso de Laura Martinez</td><td><span class="badge">Registrado</span></td><td><button class="btn-outline" data-action="nuevo-usuario" type="button">Ver</button></td></tr>
+                            <tr><td>09:24</td><td>Juan Perez</td><td>Costos</td><td>Solicito cierre mensual</td><td><span class="badge-warn">Por validar</span></td><td><button class="btn-outline" data-action="cierre-mensual" type="button">Revisar</button></td></tr>
+                            <tr><td>10:02</td><td>Sistema</td><td>Seguridad</td><td>Intento de acceso bloqueado</td><td><span class="badge-danger">Bloqueado</span></td><td><button class="btn-outline" data-action="ver-alertas" type="button">Detalle</button></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+        </section>
+    </main>
+    <script src="../Assets/JS/modules.js"></script>
+</body>
+</html>

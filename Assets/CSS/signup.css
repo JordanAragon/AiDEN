@@ -1,0 +1,20 @@
+@import url("login.css");
+
+.register {
+    gap: 0.9rem;
+}
+
+.register .row {
+    --bs-gutter-y: 0.85rem;
+}
+
+@media (min-width: 901px) {
+    .register .form-control {
+        min-height: 2.7rem;
+    }
+
+    .register + .auth-footer,
+    .auth-footer {
+        padding-top: 1rem;
+    }
+}

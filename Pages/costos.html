@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Costos Operativos</title>
+</head>
+<body>
+    <aside class="top-nav"></aside>
+
+    <header class="app-header">
+        <section>
+            <strong>Costos operativos</strong>
+            <p>Movimientos, lotes, centros de costo y cierre mensual</p>
+        </section>
+        <section class="header-actions"></section>
+    </header>
+
+    <main class="main-content">
+        <header class="page-header">
+            <section>
+                <span class="eyebrow">Modulo de costos</span>
+                <h1>Control de costos del vivero</h1>
+                <p>Consulta registros imputados, valores por lote y comparativos por cultivo.</p>
+            </section>
+            <section class="toolbar">
+                <button class="btn-outline" data-action="exportar-excel" type="button">Exportar Excel</button>
+                <button class="btn" data-action="agregar-costo" type="button">Agregar costo</button>
+            </section>
+        </header>
+
+        <section class="summary-grid" aria-label="Resumen financiero">
+            <article class="metric-card"><span class="metric-label">Costo del mes</span><strong class="metric-value">$8.4M</strong><p class="metric-note">Junio 2026 en revision.</p></article>
+            <article class="metric-card"><span class="metric-label">Por validar</span><strong class="metric-value">3</strong><p class="metric-note">Registros pendientes de cierre.</p></article>
+            <article class="metric-card"><span class="metric-label">Costo planta</span><strong class="metric-value">$1.240</strong><p class="metric-note">Promedio sobre unidades vivas.</p></article>
+            <article class="metric-card"><span class="metric-label">Mayor rubro</span><strong class="metric-value">48%</strong><p class="metric-note">Mano de obra registrada.</p></article>
+        </section>
+
+        <section class="workspace">
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Libro de costos</h2>
+                        <p>Movimientos operativos asociados a lote y responsable.</p>
+                    </section>
+                    <button class="btn-outline" data-action="cierre-mensual" type="button">Cierre mensual</button>
+                </header>
+                <form class="filters" aria-label="Filtros de costos">
+                    <label class="field">Buscar registro
+                        <input type="search" placeholder="Lote, documento o responsable">
+                    </label>
+                    <label class="field">Centro de costo
+                        <select>
+                            <option>Todos</option>
+                            <option>Produccion cafe</option>
+                            <option>Produccion tomate</option>
+                            <option>Calidad fitosanitaria</option>
+                        </select>
+                    </label>
+                    <label class="field">Estado
+                        <select>
+                            <option>Todos</option>
+                            <option>Imputado</option>
+                            <option>Por validar</option>
+                        </select>
+                    </label>
+                </form>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Origen</th>
+                                <th>Documento</th>
+                                <th>Centro de costo</th>
+                                <th>Lote</th>
+                                <th>Valor</th>
+                                <th>Responsable</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2026-06-05</td><td>Compra inventario</td><td>FAC-2591</td><td>Produccion cafe</td><td>L-2026-001</td><td>$210.000</td><td>Supervisor Vivero</td><td><span class="badge">Imputado</span></td><td><button class="btn-outline" data-action="agregar-costo" type="button">Editar</button></td></tr>
+                            <tr><td>2026-06-05</td><td>Jornada</td><td>JOR-JR-0605</td><td>Produccion tomate</td><td>LOT-2026-001</td><td>$80.000</td><td>Juan Riego</td><td><span class="badge">Imputado</span></td><td><button class="btn-outline" data-action="agregar-costo" type="button">Editar</button></td></tr>
+                            <tr><td>2026-06-07</td><td>Tratamiento</td><td>TRAT-018</td><td>Calidad fitosanitaria</td><td>LOT-2026-002</td><td>$85.000</td><td>Ana Calidad</td><td><span class="badge-warn">Por validar</span></td><td><button class="btn-outline" data-action="cierre-mensual" type="button">Revisar</button></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Costo acumulado por lote</h2>
+                            <p>Resumen calculado con registros existentes.</p>
+                        </section>
+                    </header>
+                    <section class="table-wrap">
+                        <table class="data-table compact-table">
+                            <thead>
+                                <tr>
+                                    <th>Lote</th>
+                                    <th>Centro</th>
+                                    <th>Insumos</th>
+                                    <th>Mano obra</th>
+                                    <th>Total</th>
+                                    <th>Costo unidad</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>LOT-2026-001</td><td>Produccion tomate</td><td>$420.000</td><td>$310.000</td><td>$875.000</td><td>$1.838</td><td><span class="badge-warn">+8%</span></td></tr>
+                                <tr><td>LOT-2026-006</td><td>Produccion tomate</td><td>$210.000</td><td>$190.000</td><td>$425.000</td><td>$1.089</td><td><span class="badge">-4%</span></td></tr>
+                                <tr><td>L-2026-001</td><td>Produccion cafe</td><td>$210.000</td><td>$260.000</td><td>$530.000</td><td>$1.325</td><td><span class="badge">Normal</span></td></tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Distribucion del mes</h2>
+                            <p>Participacion por concepto.</p>
+                        </section>
+                    </header>
+                    <section class="line-chart">
+                        <article class="trend"><span>Mano obra</span><section class="track"><span class="fill" style="width: 48%;"></span></section><strong>48%</strong></article>
+                        <article class="trend"><span>Insumos</span><section class="track"><span class="fill blue" style="width: 42%;"></span></section><strong>42%</strong></article>
+                        <article class="trend"><span>Tratamientos</span><section class="track"><span class="fill amber" style="width: 7%;"></span></section><strong>7%</strong></article>
+                        <article class="trend"><span>Otros</span><section class="track"><span class="fill muted" style="width: 3%;"></span></section><strong>3%</strong></article>
+                    </section>
+                </article>
+            </section>
+
+            <section class="grid-two">
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Mano de obra</h2>
+                            <p>Valores vigentes por jornada.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid">
+                        <label class="field">Operario
+                            <select><option>Maria Lopez</option><option>Juan Riego</option></select>
+                        </label>
+                        <label class="field">Jornal diario
+                            <input type="text" value="$80.000">
+                        </label>
+                        <label class="field">Valor hora
+                            <input type="text" value="$10.000" readonly>
+                        </label>
+                        <label class="field">Vigencia desde
+                            <input type="date" value="2026-06-05">
+                        </label>
+                    </form>
+                </article>
+
+                <article class="panel-card">
+                    <header class="panel-header">
+                        <section>
+                            <h2>Otros costos</h2>
+                            <p>Transporte, equipos o servicios registrados por lote.</p>
+                        </section>
+                    </header>
+                    <form class="form-grid single">
+                        <label class="field">Lote
+                            <select><option>LOT-2026-001</option><option>LOT-2026-006</option></select>
+                        </label>
+                        <label class="field">Descripcion
+                            <input type="text" value="Transporte de sustrato desde proveedor">
+                        </label>
+                        <label class="field">Valor
+                            <input type="number" value="60000">
+                        </label>
+                    </form>
+                </article>
+            </section>
+
+            <article class="panel-card">
+                <header class="panel-header">
+                    <section>
+                        <h2>Reporte por cultivo</h2>
+                        <p>Comparativo del periodo actual.</p>
+                    </section>
+                    <section class="toolbar">
+                        <button class="btn-outline" data-action="exportar-pdf" type="button">PDF</button>
+                        <button class="btn-outline" data-action="exportar-excel" type="button">Excel</button>
+                    </section>
+                </header>
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Cultivo</th>
+                                <th>Lotes cerrados</th>
+                                <th>Unidades</th>
+                                <th>Insumos</th>
+                                <th>Mano de obra</th>
+                                <th>Tratamientos</th>
+                                <th>Otros</th>
+                                <th>Total</th>
+                                <th>Promedio planta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Tomate</td><td>8</td><td>3.840</td><td>$2.4M</td><td>$3.1M</td><td>$620K</td><td>$280K</td><td>$6.4M</td><td>$1.667</td></tr>
+                            <tr><td>Lechuga</td><td>5</td><td>2.100</td><td>$980K</td><td>$1.2M</td><td>$120K</td><td>$90K</td><td>$2.39M</td><td>$1.138</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+        </section>
+    </main>
+    <script src="../Assets/JS/modules.js"></script>
+</body>
+</html>

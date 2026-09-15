@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AiDEN conecta producción, ambiente, inventario, calidad, trazabilidad y costos para facilitar la gestión de viveros.">
+    <link rel="stylesheet" href="Assets/CSS/home.css">
+    <title>AiDEN | Gestión de viveros</title>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navegacion-principal" aria-label="Navegación principal">
+            <a href="#inicio" class="marca">AiDEN</a>
+            <ul class="menu">
+                <li><a href="#problema">El problema</a></li>
+                <li><a href="#operacion">Operación</a></li>
+                <li><a href="#lote">El lote</a></li>
+                <li><a href="#modulos">Módulos</a></li>
+                <li><a href="#roles">Roles</a></li>
+            </ul>
+            <nav class="acciones-navegacion" aria-label="Acciones de cuenta">
+                <a href="Pages/login.html" class="boton boton-secundario">Iniciar sesión</a>
+                <a href="Pages/signup.html" class="boton boton-principal">Registrarse</a>
+            </nav>
+        </nav>
+    </header>
+
+    <main id="inicio">
+        <section class="hero" aria-labelledby="titulo-principal">
+            <article class="hero-contenido">
+                <p class="etiqueta">Sistema de gestión para viveros</p>
+                <h1 id="titulo-principal">Conoce lo que está pasando en tu vivero antes de que se convierta en un problema.</h1>
+                <p class="hero-texto">AiDEN conecta producción, ambiente, inventario, calidad, trazabilidad y costos en un solo sistema.</p>
+                <nav class="hero-acciones" aria-label="Acciones principales">
+                    <a href="Pages/signup.html" class="boton boton-principal">Conocer AiDEN</a>
+                    <a href="Pages/dashboard.html" class="boton boton-secundario">Ver panel demo</a>
+                </nav>
+                <ul class="datos-rapidos" aria-label="Resumen de AiDEN">
+                    <li><strong>3</strong><span>roles</span></li>
+                    <li><strong>9</strong><span>módulos</span></li>
+                    <li><strong>1</strong><span>operación conectada</span></li>
+                </ul>
+            </article>
+
+            <figure class="vista-producto">
+                <img src="Assets/IMG/landing.webp" alt="Vista del panel de gestión de AiDEN" width="1408" height="768">
+                <figcaption>Panel de gestión del vivero con información operativa centralizada.</figcaption>
+                <aside class="indicadores-producto" aria-label="Ejemplo de información del sistema">
+                    <article>
+                        <span>Lote activo</span>
+                        <strong>024</strong>
+                        <small>Tomate · Invernadero 03</small>
+                    </article>
+                    <article>
+                        <span>Humedad</span>
+                        <strong>71%</strong>
+                        <small>Condición registrada</small>
+                    </article>
+                    <article>
+                        <span>Temperatura</span>
+                        <strong>24.8 °C</strong>
+                        <small>Condición registrada</small>
+                    </article>
+                </aside>
+            </figure>
+        </section>
+
+        <section id="problema" class="seccion problema" aria-labelledby="titulo-problema">
+            <header class="encabezado-seccion">
+                <p class="etiqueta">El problema</p>
+                <h2 id="titulo-problema">Cuando la información está dispersa, la operación también.</h2>
+                <p>Un vivero genera registros durante todo el día. El reto aparece cuando esa información termina separada entre diferentes medios.</p>
+            </header>
+            <section class="problema-lista" aria-label="Situaciones habituales">
+                <article><strong>Registros dispersos</strong><p>La información de la operación queda repartida.</p></article>
+                <article><strong>Seguimiento manual</strong><p>Consultar el estado de un lote puede tomar tiempo.</p></article>
+                <article><strong>Historial difícil de consultar</strong><p>Encontrar qué ocurrió antes requiere revisar varios registros.</p></article>
+                <article><strong>Información sin conexión</strong><p>Producción, inventario y calidad pueden terminar viéndose como procesos separados.</p></article>
+            </section>
+        </section>
+
+        <section id="operacion" class="seccion operacion" aria-labelledby="titulo-operacion">
+            <header class="encabezado-seccion">
+                <p class="etiqueta">El cambio</p>
+                <h2 id="titulo-operacion">AiDEN conecta cada parte de la operación.</h2>
+                <p>La información de un área puede aportar contexto a las demás, haciendo más sencillo consultar y seguir la operación.</p>
+            </header>
+            <ol class="flujo-operacion">
+                <li><strong>Producción</strong><span>Registra lotes y actividades.</span></li>
+                <li><strong>Ambiente</strong><span>Consulta condiciones del vivero.</span></li>
+                <li><strong>Calidad</strong><span>Registra incidencias y seguimiento.</span></li>
+                <li><strong>Trazabilidad</strong><span>Conserva el historial del lote.</span></li>
+                <li><strong>Inventario</strong><span>Controla insumos y existencias.</span></li>
+                <li><strong>Costos</strong><span>Relaciona gastos con la operación.</span></li>
+            </ol>
+        </section>
+
+        <section id="lote" class="seccion lote-seccion" aria-labelledby="titulo-lote">
+            <header class="encabezado-seccion">
+                <p class="etiqueta">El protagonista</p>
+                <h2 id="titulo-lote">Sigue un lote durante todo su recorrido.</h2>
+                <p>La trazabilidad se entiende mejor cuando podemos ver la historia de un lote, no solo el nombre de un módulo.</p>
+            </header>
+            <article class="lote-panel">
+                <header class="lote-cabecera">
+                    <section>
+                        <p class="etiqueta">Lote 024</p>
+                        <h3>Tomate · Invernadero 03</h3>
+                    </section>
+                    <p class="estado estado-activo">En crecimiento</p>
+                </header>
+                <ol class="linea-tiempo">
+                    <li><strong>Registro</strong><span>Ingreso del lote</span></li>
+                    <li><strong>Producción</strong><span>Seguimiento de crecimiento</span></li>
+                    <li><strong>Ambiente</strong><span>24.8 °C · 71% humedad</span></li>
+                    <li><strong>Calidad</strong><span>Inspección registrada</span></li>
+                    <li><strong>Incidencia</strong><span>Seguimiento de novedad</span></li>
+                    <li><strong>Historial</strong><span>Eventos disponibles</span></li>
+                </ol>
+            </article>
+        </section>
+
+        <section class="seccion ambiente" aria-labelledby="titulo-ambiente">
+            <header class="encabezado-seccion">
+                <p class="etiqueta">Ambiente y producción</p>
+                <h2 id="titulo-ambiente">Los datos del vivero tienen contexto.</h2>
+                <p>Temperatura, humedad y luminosidad pueden consultarse junto al estado de los lotes y las alertas de la operación.</p>
+            </header>
+            <section class="ambiente-panel">
+                <article class="lectura-principal">
+                    <p>Condiciones registradas</p>
+                    <strong>Invernadero 03</strong>
+                    <span>Estado normal</span>
+                </article>
+                <dl class="mediciones">
+                    <dt>Temperatura</dt>
+                    <dd>24.8 °C</dd>
+                    <dt>Humedad</dt>
+                    <dd>71%</dd>
+                    <dt>Luminosidad</dt>
+                    <dd>82%</dd>
+                </dl>
+            </section>
+        </section>
+
+        <section id="roles" class="seccion roles" aria-labelledby="titulo-roles">
+            <header class="encabezado-seccion">
+                <p class="etiqueta">La operación por roles</p>
+                <h2 id="titulo-roles">Cada persona ve lo que necesita para trabajar.</h2>
+            </header>
+            <section class="roles-lista">
+                <article><span>01</span><h3>Administrador</h3><p>Consulta la visión general del sistema y administra la información.</p></article>
+                <article><span>02</span><h3>Supervisor</h3><p>Da seguimiento a la operación, registros, incidencias y actividades.</p></article>
+                <article><span>03</span><h3>Operario</h3><p>Registra las actividades y novedades que ocurren durante la operación.</p></article>
+            </section>
+            <p class="nota-roles">Los tres roles alimentan el mismo sistema de información.</p>
+        </section>
+
+        <section class="seccion informacion" aria-labelledby="titulo-informacion">
+            <header class="encabezado-seccion">
+                <p class="etiqueta">Información para decidir</p>
+                <h2 id="titulo-informacion">De registros a información útil.</h2>
+                <p>AiDEN reúne los datos de la operación para facilitar la consulta de indicadores, reportes, alertas e historial.</p>
+            </header>
+            <section class="indicadores-grid" aria-label="Indicadores de ejemplo">
+                <article><strong>12</strong><span>Lotes activos</span></article>
+                <article><strong>3</strong><span>Incidencias abiertas</span></article>
+                <article><strong>8</strong><span>Actividades pendientes</span></article>
+                <article><strong>5</strong><span>Insumos por revisar</span></article>
+            </section>
+            <p class="texto-demo">Datos demostrativos del prototipo académico.</p>
+        </section>
+
+        <section id="modulos" class="seccion modulos" aria-labelledby="titulo-modulos">
+            <header class="encabezado-seccion">
+                <p class="etiqueta">El sistema completo</p>
+                <h2 id="titulo-modulos">Todo lo necesario para gestionar la operación, conectado.</h2>
+                <p>Los nueve módulos forman parte del prototipo actual de AiDEN y representan las diferentes áreas de gestión del vivero.</p>
+            </header>
+            <section class="modulos-grid" aria-label="Módulos de AiDEN">
+                <article><a href="Pages/configuracion.html"><span>01</span><h3>Configuración</h3><p>Parámetros y administración del sistema.</p></a></article>
+                <article><a href="Pages/inventario.html"><span>02</span><h3>Inventario</h3><p>Existencias, entradas, salidas y mínimos.</p></a></article>
+                <article><a href="Pages/produccion.html"><span>03</span><h3>Producción</h3><p>Lotes, cultivos, etapas y actividades.</p></a></article>
+                <article><a href="Pages/trazabilidad.html"><span>04</span><h3>Trazabilidad</h3><p>Historial y eventos asociados a cada lote.</p></a></article>
+                <article><a href="Pages/ambiental.html"><span>05</span><h3>Monitoreo ambiental</h3><p>Temperatura, humedad y luminosidad.</p></a></article>
+                <article><a href="Pages/calidad-alertas.html"><span>06</span><h3>Calidad y alertas</h3><p>Incidencias, severidad y seguimiento.</p></a></article>
+                <article><a href="Pages/personal.html"><span>07</span><h3>Personal</h3><p>Responsables y tareas diarias.</p></a></article>
+                <article><a href="Pages/costos.html"><span>08</span><h3>Costos</h3><p>Gastos y centros de costo.</p></a></article>
+                <article><a href="Pages/reportes-dashboard.html"><span>09</span><h3>Reportes</h3><p>Indicadores, consultas y reportes.</p></a></article>
+            </section>
+        </section>
+
+        <section class="seccion demostracion" aria-labelledby="titulo-demostracion">
+            <figure>
+                <img src="Assets/IMG/dashvivero.jpg" alt="Vista de un vivero utilizada como contexto visual para AiDEN" width="1280" height="720" loading="lazy">
+                <figcaption>AiDEN busca representar la realidad del vivero desde su operación diaria.</figcaption>
+            </figure>
+            <article>
+                <p class="etiqueta">Ver cómo funciona</p>
+                <h2 id="titulo-demostracion">La mejor forma de entender AiDEN es recorrer su operación.</h2>
+                <p>Explora el panel y las interfaces del prototipo para conocer cómo se representan los diferentes procesos.</p>
+                <a href="Pages/dashboard.html" class="boton boton-principal">Ver panel demo</a>
+            </article>
+        </section>
+
+        <section class="cta" aria-labelledby="titulo-cta">
+            <p class="etiqueta">AiDEN</p>
+            <h2 id="titulo-cta">Empieza a ver tu operación de otra manera.</h2>
+            <p>Un prototipo académico orientado a centralizar la gestión de viveros.</p>
+            <nav aria-label="Acciones finales">
+                <a href="Pages/signup.html" class="boton boton-principal">Conocer AiDEN</a>
+                <a href="Pages/login.html" class="boton boton-secundario">Iniciar sesión</a>
+            </nav>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <section>
+            <strong>AiDEN</strong>
+            <p>Sistema de gestión para viveros.</p>
+        </section>
+        <nav aria-label="Enlaces del pie de página">
+            <a href="#inicio">Inicio</a>
+            <a href="#modulos">Módulos</a>
+            <a href="Pages/login.html">Iniciar sesión</a>
+        </nav>
+        <p>&copy; 2026 AiDEN. Proyecto académico.</p>
+    </footer>
+</body>
+</html>

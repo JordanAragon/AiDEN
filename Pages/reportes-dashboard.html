@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../Assets/CSS/modules.css">
+    <title>AiDEN | Reportes</title>
+</head>
+<body>
+    <aside class="top-nav"><a href="dashboard.html" class="nav-brand">AiDEN</a><nav><ul class="nav-menu">
+        <li><a href="dashboard.html"><span class="nav-icon">D</span>Dashboard</a></li><li><a href="inventario.html"><span class="nav-icon">I</span>Inventario</a></li><li><a href="produccion.html"><span class="nav-icon">P</span>Produccion</a></li><li><a href="ambiental.html"><span class="nav-icon">A</span>Ambiental</a></li><li><a href="calidad-alertas.html"><span class="nav-icon">C</span>Calidad</a></li><li><a href="trazabilidad.html"><span class="nav-icon">T</span>Trazabilidad</a></li><li><a href="personal.html"><span class="nav-icon">U</span>Personal</a></li><li><a href="reportes-dashboard.html" class="active"><span class="nav-icon">R</span>Reportes</a></li>
+    </ul></nav><nav class="nav-bottom"><a href="configuracion.html"><span class="nav-icon">S</span>Configuracion</a><a href="login.html" class="logout-link"><span class="nav-icon">X</span>Cerrar sesion</a></nav></aside>
+    <header class="app-header"><section><strong>Reportes</strong><p>Indicadores y exportaciones</p></section><section class="header-actions"><button class="notification" data-action="ver-alertas" type="button" aria-label="Ver alertas">0</button><button class="profile-pill" data-action="ver-perfil" type="button"><span class="avatar">SV</span><span class="profile-copy"><strong>Supervisor Vivero</strong><span>Juan Perez</span></span></button></section></header>
+
+    <main class="main-content">
+        <header class="page-header"><section><span class="eyebrow">Analisis</span><h1>Reportes</h1><p>Consultas por modulo y periodo.</p></section><section class="toolbar"><button class="btn" data-action="generar-reporte" type="button">Generar reporte</button><button class="btn-outline" data-action="exportar-pdf" type="button">Exportar PDF</button></section></header>
+
+        <section class="report-grid section-gap">
+            <article class="report-card"><h3>Inventario <span class="badge">Stock</span></h3><p>Disponibilidad, movimientos y alertas de insumos.</p></article>
+            <article class="report-card"><h3>Produccion <span class="badge-blue">Lotes</span></h3><p>Avance de cultivo, etapas y responsables.</p></article>
+            <article class="report-card"><h3>Ambiental <span class="badge-blue">Sensores</span></h3><p>Temperatura, humedad, suelo y luminosidad.</p></article>
+            <article class="report-card"><h3>Calidad <span class="badge-warn">Incidencias</span></h3><p>Problemas sanitarios, severidad y estado.</p></article>
+            <article class="report-card"><h3>Trazabilidad <span class="badge">Lotes</span></h3><p>Historia completa por lote consultado.</p></article>
+        </section>
+
+        <section class="grid-two">
+            <article class="panel-card">
+                <header class="panel-header"><h2>Parametros del reporte</h2></header>
+                <form class="form-grid">
+                    <label class="field">Tipo de reporte<select><option>Reporte de produccion</option><option>Reporte de inventario</option><option>Reporte ambiental</option><option>Reporte de calidad</option><option>Reporte de trazabilidad</option></select></label>
+                    <label class="field">Fecha inicial<input type="date" value="2026-08-01"></label>
+                    <label class="field">Fecha final<input type="date" value="2026-08-10"></label>
+                    <label class="field">Responsable<select><option>Todos</option><option>Juan Perez</option><option>Maria Lopez</option></select></label>
+                </form>
+                <section class="compact-actions action-gap"><button class="btn" data-action="generar-reporte" type="button">Generar reporte</button><button class="btn-outline" data-action="exportar-pdf" type="button">Exportar PDF</button></section>
+            </article>
+
+            <article class="panel-card">
+                <header class="panel-header"><h2>Resumen visual</h2></header>
+                <section class="summary-grid">
+                    <article class="metric-card"><span class="metric-label">Lotes</span><strong class="metric-value">18</strong></article>
+                    <article class="metric-card"><span class="metric-label">Stock</span><strong class="metric-value">86%</strong></article>
+                    <article class="metric-card"><span class="metric-label">Alertas</span><strong class="metric-value">5</strong></article>
+                    <article class="metric-card"><span class="metric-label">Tareas</span><strong class="metric-value">7</strong></article>
+                </section>
+                <section class="chart" aria-label="Resumen de produccion">
+                    <article class="bar"><i class="bar-fill" style="height: 70%;"></i><small>Inv.</small></article>
+                    <article class="bar"><i class="bar-fill" style="height: 82%;"></i><small>Prod.</small></article>
+                    <article class="bar"><i class="bar-fill" style="height: 58%;"></i><small>Amb.</small></article>
+                    <article class="bar"><i class="bar-fill" style="height: 42%;"></i><small>Cal.</small></article>
+                </section>
+            </article>
+        </section>
+    </main>
+    <script src="../Assets/JS/modules.js"></script>
+</body>
+</html>
