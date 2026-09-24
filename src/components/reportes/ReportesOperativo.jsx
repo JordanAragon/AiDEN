@@ -3,6 +3,9 @@ import {
   BarChart3,
   Download,
   FileText,
+  Printer,
+  CalendarDays,
+  Filter,
   Leaf,
   Package,
   ShieldCheck,
@@ -52,6 +55,7 @@ function construir(id) {
       Etapa: r.etapa,
       Responsable: r.responsable,
       Ubicacion: r.ubicacion,
+      Fecha: r.fecha || r.creadoEn || "",
     }));
   }
   if (id === "inventario") {
@@ -62,6 +66,7 @@ function construir(id) {
       Minimo: r.minimo,
       Unidad: r.unidad,
       Estado: Number(r.stock) <= Number(r.minimo) ? "Bajo" : "Disponible",
+      Fecha: r.fecha || r.actualizadoEn || "",
     }));
   }
   if (id === "calidad") {
@@ -112,6 +117,7 @@ function construir(id) {
         CostoPorPlanta: money(l.cantidad ? gastos / Number(l.cantidad) : 0),
         Ingresos: money(ingresos),
         Balance: money(ingresos - gastos),
+        Fecha: l.fecha || l.creadoEn || "",
       };
     })
     .filter((r) => Number(r.Plantas) > 0);
@@ -120,11 +126,11 @@ function construir(id) {
 function exportar(nombre, rows) {
   if (!rows.length) return;
   const headers = Object.keys(rows[0]);
-  const csv = [
+  const csv = ["\\ufeff" + headers.join(";"),
     headers.join(","),
-    ...rows.map((row) => headers.map((header) => JSON.stringify(row[header] ?? "")).join(",")),
+    ...rows.map((row) => headers.map((header) => JSON.stringify(row[header] ?? "")).join(";")),
   ].join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const blob = new Blob([csv.join("\n")], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
@@ -136,6 +142,9 @@ function exportar(nombre, rows) {
 export default function ReportesOperativo() {
   const [selected, setSelected] = useState("produccion");
   const [version, setVersion] = useState(0);
+  const [fechaInicio, setFechaInicio] = useState("");
+  const [fechaFin, setFechaFin] = useState("");
+  const [responsableFiltro, setResponsableFiltro] = useState("Todos");
   useEffect(() => {
     const refresh = () => setVersion((v) => v + 1);
     window.addEventListener("aiden-data-change", refresh);
@@ -147,8 +156,22 @@ export default function ReportesOperativo() {
   }, []);
 
   const rows = useMemo(() => construir(selected), [selected, version]);
+  const responsables = useMemo(
+    () => ["Todos", ...new Set(rows.map((row) => row.Responsable).filter(Boolean))],
+    [rows],
+  );
+  const filteredRows = useMemo(
+    () => rows.filter((row) => {
+      const date = row.Fecha ? String(row.Fecha).slice(0, 10) : "";
+      const inStart = !fechaInicio || !date || date >= fechaInicio;
+      const inEnd = !fechaFin || !date || date <= fechaFin;
+      const byResponsible = responsableFiltro === "Todos" || !row.Responsable || row.Responsable === responsableFiltro;
+      return inStart && inEnd && byResponsible;
+    }),
+    [rows, fechaInicio, fechaFin, responsableFiltro],
+  );
   const selectedMeta = reportes.find((r) => r.id === selected);
-  const columns = rows[0] ? Object.keys(rows[0]) : [];
+  const columns = filteredRows[0] ? Object.keys(filteredRows[0]) : [];
 
   return (
     <section className="space-y-6">
@@ -159,11 +182,21 @@ export default function ReportesOperativo() {
           <p className="mt-1 max-w-2xl text-sm text-slate-500">Consulta información consolidada de los módulos. Cada reporte se construye con los datos actuales de AiDEN.</p>
         </section>
         {rows.length > 0 && (
-          <button type="button" onClick={() => exportar(selected, rows)} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-600 hover:border-emerald-200 hover:text-emerald-700">
+          <button type="button" onClick={() => exportar(selected, filteredRows)} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-600 hover:border-emerald-200 hover:text-emerald-700">
             <Download size={15} /> Exportar CSV
           </button>
         )}
       </header>
+
+      <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <header className="flex items-center gap-2"><Filter size={16} className="text-emerald-700" /><section><h2 className="text-sm font-semibold text-slate-900">Parámetros del reporte</h2><p className="text-xs text-slate-400">Filtra la consulta sin modificar los datos de los módulos.</p></section></header>
+        <section className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <label className="text-xs font-semibold text-slate-500">Fecha inicial<input type="date" value={fechaInicio} onChange={(e) => setFechaInicio(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-normal text-slate-700" /></label>
+          <label className="text-xs font-semibold text-slate-500">Fecha final<input type="date" value={fechaFin} onChange={(e) => setFechaFin(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-normal text-slate-700" /></label>
+          <label className="text-xs font-semibold text-slate-500">Responsable<select value={responsableFiltro} onChange={(e) => setResponsableFiltro(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal text-slate-700">{responsables.map((item) => <option key={item}>{item}</option>)}</select></label>
+          <section className="flex items-end"><button type="button" onClick={() => { setFechaInicio(""); setFechaFin(""); setResponsableFiltro("Todos"); }} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-600 hover:border-emerald-200">Limpiar filtros</button></section>
+        </section>
+      </section>
 
       <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-3" aria-label="Tipos de reporte">
         {reportes.map((report) => {
@@ -184,7 +217,7 @@ export default function ReportesOperativo() {
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 text-slate-600"><FileText size={16} /></span>
           <section>
             <h2 className="font-semibold text-slate-900">{selectedMeta?.titulo}</h2>
-            <p className="text-xs text-slate-400">{rows.length} registros disponibles</p>
+            <p className="text-xs text-slate-400">{filteredRows.length} registros disponibles</p>
           </section>
         </header>
         <section className="overflow-x-auto">
@@ -197,7 +230,7 @@ export default function ReportesOperativo() {
                 </tr>
               </thead>
               <tbody>
-                {rows.slice(0, 50).map((row, index) => (
+                {filteredRows.slice(0, 50).map((row, index) => (
                   <tr key={`${row.Lote || row.Insumo || row.Persona || "row"}-${index}`} className="border-t border-slate-100">
                     {columns.map((column) => <td key={column} className="px-4 py-3 text-sm text-slate-700">{String(row[column] ?? "—")}</td>)}
                   </tr>
