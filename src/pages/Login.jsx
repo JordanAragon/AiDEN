@@ -31,6 +31,19 @@ export default function Login() {
     setLoading(true);
 
     window.setTimeout(() => {
+      let storedUser = null;
+      try {
+        const users = JSON.parse(localStorage.getItem("aiden_users") || "[]");
+        const normalizedEmail = String(email || "").trim().toLowerCase();
+        storedUser = Array.isArray(users) ? users.find((user) => String(user.email || "").toLowerCase() === normalizedEmail) : null;
+      } catch {
+        storedUser = null;
+      }
+      if (storedUser?.status === "Inactivo") {
+        setLoading(false);
+        setError("La cuenta está inactiva. Solicita acceso al administrador.");
+        return;
+      }
       const result = login(email, password, remember);
       setLoading(false);
       if (!result.ok) {
