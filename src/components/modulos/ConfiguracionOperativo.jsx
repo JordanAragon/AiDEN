@@ -88,6 +88,180 @@ export default function ConfiguracionOperativo() {
     ],
     [rules],
   );
+  const refreshAdminData = () => {
+    setUsers(readList(USERS_KEY, []));
+    setCenters(readList(CENTERS_KEY, DEFAULT_CENTERS));
+    setAuditVersion((value) => value + 1);
+  };
+
+  const createUser = () => {
+    const name = window.prompt("Nombre completo del nuevo usuario:");
+    const email = window.prompt("Correo electrónico:");
+    const password = window.prompt("Contraseña temporal (mínimo 8 caracteres):");
+    if (!name || !email || !password || password.length < 8) return;
+    const role = window.prompt("Rol: admin, supervisor u operario", "operario") || "operario";
+    if (!["admin", "supervisor", "operario"].includes(role)) return;
+    const result = register({ name, email, password });
+    if (!result.ok) {
+      window.alert(result.message);
+      return;
+    }
+    const current = readList(USERS_KEY, []);
+    const cleanEmail = String(email).trim().toLowerCase();
+    const next = current.map((user) => user.email === cleanEmail ? { ...user, role, status: "Activo" } : user);
+    localStorage.setItem(USERS_KEY, JSON.stringify(next));
+    registrarAuditoria({
+      accion: "Creación",
+      modulo: "Usuarios y roles",
+      entidad: cleanEmail,
+      detalle: name + " creado como " + roleLabel(role) + ".",
+      usuario: session?.name,
+      despues: { name, email: cleanEmail, role, status: "Activo" },
+    });
+    refreshAdminData();
+    window.dispatchEvent(new Event("aiden-user-change"));
+  };
+
+  const editUser = (user) => {
+    const name = window.prompt("Nombre completo:", user.name);
+    const role = window.prompt("Rol (admin, supervisor u operario):", user.role);
+    if (!name || !["admin", "supervisor", "operario"].includes(role)) return;
+    const next = users.map((item) => item.id === user.id ? { ...item, name, role } : item);
+    localStorage.setItem(USERS_KEY, JSON.stringify(next));
+    registrarAuditoria({
+      accion: "Edición",
+      modulo: "Usuarios y roles",
+      entidad: user.email,
+      detalle: name + " actualizado.",
+      usuario: session?.name,
+      antes: { name: user.name, role: user.role },
+      despues: { name, role },
+    });
+    refreshAdminData();
+    window.dispatchEvent(new Event("aiden-user-change"));
+  };
+
+  const toggleUser = (user) => {
+    const currentStatus = user.status ?? "Activo";
+    const nextStatus = currentStatus === "Activo" ? "Inactivo" : "Activo";
+    const next = users.map((item) => item.id === user.id ? { ...item, status: nextStatus } : item);
+    localStorage.setItem(USERS_KEY, JSON.stringify(next));
+    registrarAuditoria({
+      accion: "Cambio de estado",
+      modulo: "Usuarios y roles",
+      entidad: user.email,
+      detalle: user.name + ": " + currentStatus + " → " + nextStatus + ".",
+      usuario: session?.name,
+      antes: { status: currentStatus },
+      despues: { status: nextStatus },
+    });
+    refreshAdminData();
+    window.dispatchEvent(new Event("aiden-user-change"));
+  };
+
+  const resetUser = (user) => {
+    const password = window.prompt("Nueva contraseña para " + user.name + ":");
+    if (!password || password.length < 8) return;
+    const result = resetPassword(user.email, password);
+    if (!result.ok) {
+      window.alert(result.message);
+      return;
+    }
+    registrarAuditoria({
+      accion: "Restablecimiento",
+      modulo: "Usuarios y roles",
+      entidad: user.email,
+      detalle: "Se restableció el acceso.",
+      usuario: session?.name,
+    });
+    setAuditVersion((value) => value + 1);
+  };
+
+  const addCenter = () => {
+    const nombre = window.prompt("Nombre del centro de costo:");
+    if (!nombre) return;
+    const modulo = window.prompt("Módulo principal:", "Producción") || "Producción";
+    const responsable = window.prompt("Responsable:", "Supervisor") || "Supervisor";
+    const newCenter = {
+      id: "CC-" + String(centers.length + 1).padStart(3, "0"),
+      nombre,
+      modulo,
+      responsable,
+      estado: "Activo",
+    };
+    const next = [newCenter, ...centers];
+    localStorage.setItem(CENTERS_KEY, JSON.stringify(next));
+    setCenters(next);
+    registrarAuditoria({
+      accion: "Creación",
+      modulo: "Centros de costo",
+      entidad: newCenter.id,
+      detalle: nombre + " creado.",
+      usuario: session?.name,
+      despues: newCenter,
+    });
+  };
+
+  const editCenter = (center) => {
+    const nombre = window.prompt("Nombre:", center.nombre);
+    if (!nombre) return;
+    const next = centers.map((item) => item.id === center.id ? { ...item, nombre } : item);
+    localStorage.setItem(CENTERS_KEY, JSON.stringify(next));
+    setCenters(next);
+    registrarAuditoria({
+      accion: "Edición",
+      modulo: "Centros de costo",
+      entidad: center.id,
+      detalle: nombre + " actualizado.",
+      usuario: session?.name,
+      antes: { nombre: center.nombre },
+      despues: { nombre },
+    });
+  };
+
+  const toggleCenter = (center) => {
+    const nextStatus = center.estado === "Activo" ? "Inactivo" : "Activo";
+    const next = centers.map((item) => item.id === center.id ? { ...item, estado: nextStatus } : item);
+    localStorage.setItem(CENTERS_KEY, JSON.stringify(next));
+    setCenters(next);
+    registrarAuditoria({
+      accion: "Cambio de estado",
+      modulo: "Centros de costo",
+      entidad: center.id,
+      detalle: center.nombre + ": " + center.estado + " → " + nextStatus + ".",
+      usuario: session?.name,
+    });
+  };
+
+  const exportRows = (rows, filename) => {
+    if (!rows.length) return;
+    const headers = Object.keys(rows[0]);
+    const csv = "\ufeff" + headers.join(";") + "\n" + rows.map((row) => headers.map((h) => JSON.stringify(row[h] ?? "")).join(";")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  useEffect(() => {
+    const refresh = () => {
+      setUsers(readList(USERS_KEY, []));
+      setCenters(readList(CENTERS_KEY, DEFAULT_CENTERS));
+      setAuditVersion((value) => value + 1);
+    };
+    window.addEventListener("aiden-user-change", refresh);
+    window.addEventListener("aiden-audit-change", refresh);
+    window.addEventListener("storage", refresh);
+    return () => {
+      window.removeEventListener("aiden-user-change", refresh);
+      window.removeEventListener("aiden-audit-change", refresh);
+      window.removeEventListener("storage", refresh);
+    };
+  }, []);
+
   return (
     <section className="space-y-6">
       <header className="flex flex-wrap items-start justify-between gap-4">
