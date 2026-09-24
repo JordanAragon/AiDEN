@@ -1,0 +1,86 @@
+/* El footer comparte el sistema visual principal de AiDEN. */
+.pie-sitio {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr);
+  gap: 48px;
+  width: 100%;
+  margin-top: 0;
+  padding: 34px max(20px, calc((100vw - 1160px) / 2)) 28px;
+  color: #f5faf7;
+  background: #103d2b;
+}
+
+.pie-sitio::before {
+  grid-column: 1 / -1;
+  content: "GESTIONA · CONECTA · DECIDE";
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(232, 245, 238, 0.14);
+  color: #83b79b;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.pie-sitio > section:first-child {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.pie-sitio > section:first-child .marca-aiden {
+  color: white;
+  font-size: 1.35rem;
+}
+
+.pie-sitio > section:first-child .marca-icono {
+  background: #dff1e6;
+  color: #103d2b;
+}
+
+.pie-sitio > section:first-child p {
+  max-width: 420px;
+  margin: 0;
+  color: #a8b8ae;
+  font-size: 0.87rem;
+  line-height: 1.7;
+}
+
+.pie-sitio nav {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 28px;
+  padding-top: 6px;
+}
+
+.pie-sitio nav a {
+  color: #e7f2eb;
+  font-size: 0.82rem;
+}
+
+.pie-sitio nav a:hover {
+  color: white;
+}
+
+.pie-sitio::after {
+  grid-column: 1 / -1;
+  content: "© 2026 AiDEN · Proyecto académico de gestión para viveros";
+  padding-top: 20px;
+  border-top: 1px solid rgba(232, 245, 238, 0.14);
+  color: #8ea498;
+  font-size: 0.72rem;
+}
+
+@media (max-width: 768px) {
+  .pie-sitio {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-inline: 20px;
+  }
+
+  .pie-sitio nav {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}

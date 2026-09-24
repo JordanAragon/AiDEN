@@ -1,0 +1,76 @@
+/* Micro-animaciones del panel (no de la landing): transición entre módulos,
+   entrada de modales y feedback táctil en botones. CSS puro a propósito —
+   sin depender de una librería nueva (framer-motion) que no está instalada
+   todavía, para no romper el build hasta que alguien corra npm install. */
+
+@keyframes aidenEntradaModulo {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes aidenEntradaModal {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes aidenEntradaFondo {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.aiden-transicion-modulo {
+  animation: aidenEntradaModulo 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.aiden-modal-fondo {
+  animation: aidenEntradaFondo 160ms ease-out both;
+}
+
+.aiden-modal-entrada {
+  animation: aidenEntradaModal 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Feedback táctil consistente en toda la app: los botones ya cambian de
+   color en :hover, pero lo hacían de golpe. Esto los suaviza y agrega una
+   ligera compresión al presionar, sin tocar cada componente uno por uno. */
+main button:not(:disabled) {
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 120ms ease;
+}
+main button:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-transicion-modulo,
+  .aiden-modal-fondo,
+  .aiden-modal-entrada {
+    animation: none;
+  }
+  main button:not(:disabled) {
+    transition: none;
+  }
+  main button:not(:disabled):active {
+    transform: none;
+  }
+}

@@ -1,0 +1,127 @@
+html.aiden-dark {
+  color-scheme: dark;
+}
+html.aiden-dark body {
+  background: #0b100e;
+  color: #e5e7eb;
+}
+html.aiden-dark .bg-white {
+  background-color: #121815 !important;
+}
+html.aiden-dark .bg-slate-50 {
+  background-color: #0e1411 !important;
+}
+html.aiden-dark .bg-slate-100 {
+  background-color: #18201c !important;
+}
+html.aiden-dark .border-slate-200,
+html.aiden-dark .border-slate-100 {
+  border-color: #26332d !important;
+}
+html.aiden-dark .border-\[\#E5EDE8\] {
+  border-color: #26332d !important;
+}
+html.aiden-dark .text-slate-950,
+html.aiden-dark .text-slate-900,
+html.aiden-dark .text-slate-800 {
+  color: #f1f5f3 !important;
+}
+html.aiden-dark .text-slate-700,
+html.aiden-dark .text-slate-600 {
+  color: #c5d0ca !important;
+}
+html.aiden-dark .text-slate-500,
+html.aiden-dark .text-slate-400 {
+  color: #91a098 !important;
+}
+html.aiden-dark input,
+html.aiden-dark select,
+html.aiden-dark textarea {
+  background-color: #121815 !important;
+  border-color: #314039 !important;
+  color: #e5e7eb !important;
+}
+html.aiden-dark input::placeholder,
+html.aiden-dark textarea::placeholder {
+  color: #718078 !important;
+}
+html.aiden-dark .hover\:bg-slate-50:hover,
+html.aiden-dark .hover\:bg-slate-100:hover {
+  background-color: #1a2420 !important;
+}
+html.aiden-dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #26332d !important;
+}
+html.aiden-dark .bg-emerald-50 {
+  background-color: #123a29 !important;
+}
+html.aiden-dark .text-emerald-700,
+html.aiden-dark .text-emerald-600 {
+  color: #68d391 !important;
+}
+html.aiden-dark .hover\:bg-emerald-50:hover {
+  background-color: #16452f !important;
+}
+html.aiden-dark .bg-amber-50 {
+  background-color: #3b2f16 !important;
+}
+html.aiden-dark .text-amber-700 {
+  color: #f4c96b !important;
+}
+html.aiden-dark .bg-red-50 {
+  background-color: #3b1d22 !important;
+}
+html.aiden-dark .text-red-600 {
+  color: #f28b96 !important;
+}
+html.aiden-dark .bg-emerald-700 {
+  background-color: #176b45 !important;
+}
+html.aiden-dark .hover\:bg-emerald-800:hover {
+  background-color: #1d8052 !important;
+}
+html.aiden-dark .shadow-sm,
+html.aiden-dark .shadow-xl,
+html.aiden-dark .shadow-2xl {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+html.aiden-dark kbd {
+  background-color: #18201c !important;
+  border-color: #314039 !important;
+  color: #91a098 !important;
+}
+html.aiden-dark .aiden-chart-grid line {
+  stroke: #26332d !important;
+}
+html.aiden-dark .aiden-chart-axis text {
+  fill: #91a098 !important;
+}
+html.aiden-dark .aiden-tooltip {
+  background: #121815 !important;
+  border-color: #314039 !important;
+  color: #e5e7eb !important;
+}
+html.aiden-dark ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+html.aiden-dark ::-webkit-scrollbar-track {
+  background: #0e1411;
+}
+html.aiden-dark ::-webkit-scrollbar-thumb {
+  background: #314039;
+  border-radius: 999px;
+}
+html.aiden-dark ::-webkit-scrollbar-thumb:hover {
+  background: #42554b;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.aiden-dark *,
+  html.aiden-dark *::before,
+  html.aiden-dark *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

@@ -1,0 +1,290 @@
+/* AiDEN premium landing layer: distinctive visual language, preserved bento geometry, robust navigation. */
+.landing-aiden {
+  --la-black: #08100c;
+  --la-forest-deep: #0b2117;
+  --la-forest: #123b28;
+  --la-moss: #6f8f52;
+  --la-lime: #d4e66f;
+  --la-cream: #f4f1e8;
+  --la-paper: #f9f8f3;
+  --la-sand: #e8e1d1;
+  --la-ink: #13281d;
+  --la-muted: #70796f;
+  --la-line: rgba(19, 40, 29, .12);
+}
+
+/* Navigation: fixed geometry, no grid-row tricks that can collapse links. */
+.landing-aiden .aiden-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 12px 0;
+  background: rgba(249, 248, 243, .76);
+  border: 0;
+  backdrop-filter: blur(22px) saturate(125%);
+}
+.landing-aiden .aiden-nav-inner {
+  position: relative;
+  width: min(1240px, calc(100% - 40px));
+  min-height: 54px;
+  height: 54px;
+  padding: 6px 7px 6px 10px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  border: 1px solid rgba(19,40,29,.10);
+  border-radius: 18px;
+  background: rgba(255,255,252,.82);
+  box-shadow: 0 12px 34px rgba(19,40,29,.07);
+}
+.landing-aiden .aiden-brand { z-index: 2; }
+.landing-aiden .aiden-nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin: 0;
+}
+.landing-aiden .aiden-nav-links a {
+  position: relative;
+  padding: 8px 2px;
+  color: #5f695f;
+  font-size: 12px;
+  font-weight: 700;
+}
+.landing-aiden .aiden-nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 1px;
+  transform: scaleX(0);
+  transform-origin: center;
+  background: var(--la-ink);
+  transition: transform 180ms ease;
+}
+.landing-aiden .aiden-nav-links a:hover::after,
+.landing-aiden .aiden-nav-links a:focus-visible::after { transform: scaleX(1); }
+.landing-aiden .aiden-nav-actions { display: flex; align-items: center; gap: 7px; }
+.landing-aiden .aiden-nav-actions .aiden-btn { min-height: 38px; padding-inline: 13px; font-size: 11px; }
+.landing-aiden .aiden-nav-actions .aiden-btn-primary { box-shadow: none; }
+.landing-aiden .aiden-menu-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #fff;
+}
+.landing-aiden .aiden-mobile-menu {
+  width: min(1240px, calc(100% - 40px));
+  margin: 8px auto 0;
+  padding: 0 16px;
+  border: 1px solid rgba(19,40,29,.10);
+  border-radius: 18px;
+  background: rgba(255,255,252,.98);
+  box-shadow: 0 18px 44px rgba(19,40,29,.10);
+}
+.landing-aiden .aiden-nav.is-open .aiden-mobile-menu { padding: 10px 16px 16px; }
+
+/* Hero: stronger signature layer around the real product preview. */
+.landing-aiden .aiden-hero {
+  min-height: 820px;
+  padding: 90px 0 110px;
+  background:
+    radial-gradient(circle at 84% 12%, rgba(212,230,111,.18), transparent 24%),
+    linear-gradient(180deg, #faf9f5 0%, #f3f0e6 100%);
+}
+.landing-aiden .aiden-hero::before {
+  opacity: .23;
+  background-size: 56px 56px;
+}
+.landing-aiden .aiden-hero-grid {
+  grid-template-columns: minmax(0,.72fr) minmax(0,1.28fr);
+  gap: 54px;
+}
+.landing-aiden .aiden-hero-copy { max-width: 560px; }
+.landing-aiden .aiden-hero h1 {
+  font-size: clamp(62px, 7vw, 104px);
+  letter-spacing: -.065em;
+  line-height: .86;
+}
+.landing-aiden .aiden-hero h1 em { color: var(--la-moss); }
+.landing-aiden .aiden-lead { max-width: 500px; font-size: 17px; }
+.landing-aiden .aiden-hero-trust { margin-top: 44px; }
+.landing-aiden .aiden-hero-product { transform: translateY(0); }
+.landing-aiden .aiden-product-shell {
+  border-radius: 30px;
+  box-shadow: 0 44px 110px rgba(10,33,22,.16), 0 12px 32px rgba(10,33,22,.08);
+}
+.landing-aiden .aiden-live-preview { position: relative; }
+.landing-aiden .aiden-live-preview::before {
+  content: '';
+  position: absolute;
+  inset: 14px 14px auto auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid rgba(212,230,111,.55);
+  box-shadow: 0 0 0 10px rgba(212,230,111,.05);
+  animation: aiden-pulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes aiden-pulse {
+  0%,100% { transform: scale(.92); opacity: .35; }
+  50% { transform: scale(1.08); opacity: .7; }
+}
+
+/* Signature data strip. */
+.landing-aiden .aiden-proof {
+  background: #102b1d;
+  color: #f4f1e8;
+  border-color: rgba(255,255,255,.08);
+}
+.landing-aiden .aiden-proof-grid strong { color: #f4f1e8; }
+.landing-aiden .aiden-proof-grid > * { border-color: rgba(255,255,255,.11); }
+.landing-aiden .aiden-proof-grid > *:first-child { color: #a9b4a8; }
+.landing-aiden .aiden-proof-grid a { color: var(--la-lime); }
+
+/* Restore the bento geometry from the stronger earlier composition. */
+.landing-aiden .aiden-module-grid {
+  grid-template-columns: repeat(12, 1fr);
+  gap: 10px;
+}
+.landing-aiden .module-1,
+.landing-aiden .module-2,
+.landing-aiden .module-3 { grid-column: span 4; min-height: 230px; }
+.landing-aiden .module-4,
+.landing-aiden .module-5,
+.landing-aiden .module-6,
+.landing-aiden .module-7 { grid-column: span 3; min-height: 205px; }
+.landing-aiden .module-8,
+.landing-aiden .module-9 { grid-column: span 6; min-height: 172px; }
+.landing-aiden .aiden-module-card {
+  border-radius: 18px;
+  background: rgba(255,255,252,.88);
+  box-shadow: inset 0 0 0 1px rgba(19,40,29,.018);
+}
+.landing-aiden .aiden-module-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 42px rgba(19,40,29,.09);
+}
+.landing-aiden .module-2 { background: #edf2e6; }
+.landing-aiden .module-5 { background: #f1eee6; }
+.landing-aiden .module-8 { background: #e9efdf; }
+.landing-aiden .module-9 { background: #f2efe7; }
+.landing-aiden .aiden-module-card h3 { font-size: 24px; }
+.landing-aiden .aiden-module-number { color: #7a887a; }
+
+/* More authored middle section. */
+.landing-aiden .aiden-story {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(212,230,111,.10), transparent 26%),
+    #0c2518;
+}
+.landing-aiden .aiden-story::after {
+  content: 'AIDEN / OPERATIONAL SYSTEM';
+  position: absolute;
+  right: 26px;
+  bottom: 24px;
+  color: rgba(212,230,111,.24);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  writing-mode: vertical-rl;
+  pointer-events: none;
+}
+.landing-aiden .aiden-orbit { border-color: rgba(212,230,111,.22); }
+.landing-aiden .aiden-process-feature {
+  background: rgba(255,255,255,.035);
+  backdrop-filter: blur(10px);
+}
+.landing-aiden .aiden-process-list article {
+  transition: transform 220ms cubic-bezier(.22,.8,.2,1), background 220ms ease, border-color 220ms ease;
+}
+
+/* CTA is an actual product ending, not a centered button graveyard. */
+.landing-aiden .aiden-final-cta {
+  padding: 120px 0 130px;
+  text-align: left;
+  background:
+    radial-gradient(circle at 78% 45%, rgba(212,230,111,.15), transparent 28%),
+    #0a2015;
+}
+.landing-aiden .aiden-final-inner {
+  max-width: 1240px;
+  display: grid;
+  grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr);
+  gap: 68px;
+  align-items: center;
+}
+.landing-aiden .aiden-final-inner .aiden-eyebrow { grid-column: 1 / -1; }
+.landing-aiden .aiden-final-inner h2 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(50px, 6vw, 86px);
+  letter-spacing: -.065em;
+}
+.landing-aiden .aiden-final-inner > p:not(.aiden-eyebrow) { max-width: 470px; margin: 0; }
+.landing-aiden .aiden-final-inner .aiden-btn { justify-self: start; margin-top: 28px; }
+.landing-aiden .aiden-final-inner::after {
+  content: '01\A OPERATION\A 09 MODULES\A 03 ROLES';
+  white-space: pre;
+  justify-self: end;
+  width: min(100%, 440px);
+  min-height: 250px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 28px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 26px;
+  background:
+    linear-gradient(130deg, rgba(255,255,255,.08), rgba(255,255,255,.015)),
+    repeating-linear-gradient(90deg, transparent 0 42px, rgba(255,255,255,.035) 42px 43px),
+    repeating-linear-gradient(0deg, transparent 0 42px, rgba(255,255,255,.035) 42px 43px);
+  color: rgba(244,241,232,.72);
+  font-size: 10px;
+  line-height: 1.9;
+  font-weight: 800;
+  letter-spacing: .16em;
+  box-shadow: inset 0 0 60px rgba(212,230,111,.04);
+}
+
+@media (max-width: 900px) {
+  .landing-aiden .aiden-nav-inner { grid-template-columns: auto 1fr auto; }
+  .landing-aiden .aiden-nav-links,
+  .landing-aiden .aiden-nav-actions { display: none; }
+  .landing-aiden .aiden-menu-btn { display: grid; justify-self: end; }
+  .landing-aiden .aiden-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .landing-aiden .aiden-hero-copy { max-width: none; }
+  .landing-aiden .aiden-final-inner { grid-template-columns: 1fr; gap: 34px; }
+  .landing-aiden .aiden-final-inner::after { justify-self: stretch; width: 100%; }
+}
+
+@media (max-width: 760px) {
+  .landing-aiden .aiden-nav { padding: 8px 0; }
+  .landing-aiden .aiden-nav-inner,
+  .landing-aiden .aiden-mobile-menu { width: min(100% - 24px, 680px); }
+  .landing-aiden .aiden-hero { padding: 68px 0 76px; }
+  .landing-aiden .aiden-hero h1 { font-size: clamp(52px, 15vw, 74px); }
+  .landing-aiden .aiden-module-grid { grid-template-columns: 1fr 1fr; }
+  .landing-aiden .module-1,
+  .landing-aiden .module-2,
+  .landing-aiden .module-3,
+  .landing-aiden .module-4,
+  .landing-aiden .module-5,
+  .landing-aiden .module-6,
+  .landing-aiden .module-7,
+  .landing-aiden .module-8,
+  .landing-aiden .module-9 { grid-column: span 1; min-height: 165px; }
+  .landing-aiden .module-1,
+  .landing-aiden .module-2 { grid-column: 1 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-aiden .aiden-live-preview::before { animation: none; }
+}

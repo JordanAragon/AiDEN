@@ -1,0 +1,125 @@
+/* Header-only normalization. Loaded after all landing styles. */
+.landing-aiden > header.aiden-nav {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0;
+  right: 0;
+  z-index: 100 !important;
+  width: 100%;
+}
+
+.landing-aiden > header.aiden-nav .aiden-nav-inner {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  width: min(1240px, calc(100% - 40px)) !important;
+  height: 54px !important;
+  min-height: 54px !important;
+  margin: 0 auto !important;
+  gap: 18px !important;
+}
+
+.landing-aiden > header.aiden-nav .aiden-brand {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+
+.landing-aiden > header.aiden-nav .aiden-nav-links {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 28px !important;
+  margin: 0 !important;
+}
+
+.landing-aiden > header.aiden-nav .aiden-nav-actions {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  margin: 0 !important;
+}
+
+.landing-aiden > header.aiden-nav .aiden-nav-links a,
+.landing-aiden > header.aiden-nav .aiden-nav-actions a {
+  white-space: nowrap !important;
+}
+
+.landing-aiden > header.aiden-nav .aiden-menu-btn {
+  display: none;
+  flex: 0 0 auto;
+  margin-left: auto !important;
+}
+
+.landing-aiden > header.aiden-nav .aiden-mobile-menu {
+  display: none !important;
+}
+
+@media (max-width: 1020px) {
+  .landing-aiden > header.aiden-nav .aiden-nav-links {
+    gap: 18px !important;
+  }
+
+  .landing-aiden > header.aiden-nav .aiden-nav-login {
+    display: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .landing-aiden > header.aiden-nav .aiden-nav-inner {
+    width: min(100% - 24px, 680px) !important;
+    height: 52px !important;
+    min-height: 52px !important;
+  }
+
+  .landing-aiden > header.aiden-nav .aiden-nav-links,
+  .landing-aiden > header.aiden-nav .aiden-nav-actions {
+    display: none !important;
+  }
+
+  .landing-aiden > header.aiden-nav .aiden-menu-btn {
+    display: grid !important;
+  }
+
+  .landing-aiden > header.aiden-nav.is-open .aiden-mobile-menu {
+    display: grid !important;
+    gap: 0 !important;
+    width: min(100% - 24px, 680px) !important;
+    margin: 8px auto 0 !important;
+    padding: 6px 16px 10px !important;
+    border: 1px solid rgba(19, 40, 29, .10) !important;
+    border-radius: 18px !important;
+    background: rgba(255, 255, 252, .98) !important;
+    box-shadow: 0 18px 44px rgba(19, 40, 29, .10) !important;
+  }
+
+  .landing-aiden > header.aiden-nav .aiden-mobile-menu > a {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 46px !important;
+    padding: 0 !important;
+    border-bottom: 1px solid rgba(19, 40, 29, .07) !important;
+    color: #13281d !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+  }
+
+  .landing-aiden > header.aiden-nav .aiden-mobile-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    padding-top: 12px !important;
+  }
+
+  .landing-aiden > header.aiden-nav .aiden-mobile-actions .aiden-btn {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .landing-aiden > header.aiden-nav .aiden-mobile-actions {
+    grid-template-columns: 1fr !important;
+  }
+}

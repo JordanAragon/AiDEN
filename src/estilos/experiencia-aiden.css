@@ -1,0 +1,156 @@
+/* Sistema visual transversal de la aplicación AiDEN. */
+
+.aiden-app-shell {
+  --app-bg: #f5f7f5;
+  --app-surface: #ffffff;
+  --app-line: #dfe8e2;
+  --app-line-strong: #cbd9d0;
+  --app-ink: #132019;
+  --app-green: #0b2f20;
+  --app-green-2: #176b45;
+  background: var(--app-bg);
+  color: var(--app-ink);
+}
+
+.aiden-app-shell main {
+  scrollbar-gutter: stable;
+}
+
+.aiden-app-shell main > * {
+  width: min(1440px, 100%);
+  margin-inline: auto;
+}
+
+.aiden-app-shell main article[class*="rounded-2xl"][class*="bg-white"],
+.aiden-app-shell main section[class*="rounded-2xl"][class*="bg-white"] {
+  border-color: rgba(203, 217, 208, 0.82);
+  box-shadow: 0 8px 30px rgba(11, 47, 32, 0.035);
+  transition: border-color 180ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.aiden-app-shell main article[class*="rounded-2xl"][class*="bg-white"]:hover,
+.aiden-app-shell main section[class*="rounded-2xl"][class*="bg-white"]:hover {
+  border-color: var(--app-line-strong);
+  box-shadow: 0 14px 38px rgba(11, 47, 32, 0.06);
+}
+
+.aiden-app-shell main h1 {
+  letter-spacing: -0.055em;
+}
+
+.aiden-app-shell main h2 {
+  letter-spacing: -0.035em;
+}
+
+.aiden-app-shell main input,
+.aiden-app-shell main select,
+.aiden-app-shell main textarea {
+  border-color: var(--app-line);
+  background: var(--app-surface);
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.aiden-app-shell main input:focus,
+.aiden-app-shell main select:focus,
+.aiden-app-shell main textarea:focus {
+  border-color: rgba(23, 107, 69, 0.72);
+  box-shadow: 0 0 0 3px rgba(23, 107, 69, 0.09);
+}
+
+.aiden-app-shell main button:not(:disabled) {
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
+}
+
+.aiden-app-shell main button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.aiden-app-shell main button:not(:disabled):active {
+  transform: translateY(0) scale(0.985);
+}
+
+.aiden-app-shell main [class*="bg-emerald-700"] {
+  box-shadow: 0 7px 18px rgba(11, 47, 32, 0.1);
+}
+
+.aiden-app-shell main [class*="bg-emerald-700"]:hover {
+  box-shadow: 0 10px 24px rgba(11, 47, 32, 0.14);
+}
+
+main[class*="bg-[#f5f7f5]"] {
+  background: radial-gradient(circle at 78% 18%, rgba(143, 181, 111, 0.12), transparent 28%), #f5f7f5;
+}
+
+main[class*="bg-[#f5f7f5]"] > aside {
+  box-shadow: inset -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+main[class*="bg-[#f5f7f5]"] form {
+  padding: 1.35rem;
+  border: 1px solid rgba(203, 217, 208, 0.82);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 24px 70px rgba(11, 47, 32, 0.07);
+  backdrop-filter: blur(12px);
+}
+
+main[class*="bg-[#f5f7f5]"] form input:not([type="checkbox"]),
+main[class*="bg-[#f5f7f5]"] form select {
+  min-height: 46px;
+  border-radius: 12px;
+  border-color: var(--app-line);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+main[class*="bg-[#f5f7f5]"] form input:not([type="checkbox"]):focus,
+main[class*="bg-[#f5f7f5]"] form select:focus {
+  border-color: rgba(23, 107, 69, 0.72);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(23, 107, 69, 0.09);
+}
+
+main[class*="bg-[#f5f7f5]"] form button[type="submit"] {
+  border-radius: 13px;
+  box-shadow: 0 12px 28px rgba(11, 47, 32, 0.13);
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 180ms ease, background-color 180ms ease;
+}
+
+main[class*="bg-[#f5f7f5]"] form button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px rgba(11, 47, 32, 0.17);
+}
+
+main[class*="bg-[#f5f7f5]"] form button[type="submit"]:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+@media (max-width: 1023px) {
+  .aiden-app-shell main {
+    padding-top: 4.75rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .aiden-app-shell main {
+    padding: 4.75rem 1rem 1rem !important;
+  }
+
+  .aiden-app-shell main article[class*="rounded-2xl"][class*="bg-white"],
+  .aiden-app-shell main section[class*="rounded-2xl"][class*="bg-white"] {
+    border-radius: 16px;
+  }
+
+  main[class*="bg-[#f5f7f5]"] form {
+    padding: 1rem;
+    border-radius: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-app-shell main article[class*="rounded-2xl"][class*="bg-white"],
+  .aiden-app-shell main section[class*="rounded-2xl"][class*="bg-white"],
+  .aiden-app-shell main button,
+  main[class*="bg-[#f5f7f5]"] form button[type="submit"] {
+    transition: none;
+  }
+}
