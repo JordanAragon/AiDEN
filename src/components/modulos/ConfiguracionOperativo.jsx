@@ -1,4 +1,6 @@
-import { useMemo, useState } from "react";\nimport { getSession, register, resetPassword } from "../../utilidades/autenticacion";\nimport { leerAuditoria, registrarAuditoria } from "../../utilidades/auditoria";
+import { useEffect, useMemo, useState } from "react";
+import { getSession, register, resetPassword } from "../../utilidades/autenticacion";
+import { leerAuditoria, registrarAuditoria } from "../../utilidades/auditoria";
 import {
   Bell,
   CheckCircle2,
@@ -6,6 +8,11 @@ import {
   Save,
   Settings,
   ShieldCheck,
+  KeyRound,
+  Pencil,
+  Plus,
+  UserPlus,
+  Users,
 } from "lucide-react";
 
 const KEY = "aiden-configuracion";
@@ -24,7 +31,17 @@ const read = () => {
     return defaults;
   }
 };
-const write = (data) => { localStorage.setItem(KEY, JSON.stringify(data)); window.dispatchEvent(new Event("aiden-config-change")); window.dispatchEvent(new Event("aiden-data-change")); };\nconst USERS_KEY = "aiden_users";\nconst CENTERS_KEY = "aiden-centros-costo";\nconst DEFAULT_CENTERS = [\n  { id: "CC-001", nombre: "Producción café", modulo: "Producción", responsable: "Supervisor", estado: "Activo" },\n  { id: "CC-002", nombre: "Producción tomate", modulo: "Producción", responsable: "Supervisor", estado: "Activo" },\n  { id: "CC-003", nombre: "Calidad fitosanitaria", modulo: "Calidad", responsable: "Supervisor", estado: "Activo" },\n  { id: "CC-004", nombre: "Inventario", modulo: "Inventario", responsable: "Administrador", estado: "Activo" },\n];\nconst readList = (key, fallback) => { try { const raw = localStorage.getItem(key); const value = raw ? JSON.parse(raw) : fallback; return Array.isArray(value) ? value : fallback; } catch { return fallback; } };\nconst roleLabel = (role) => ({ admin: "Administrador", supervisor: "Supervisor", operario: "Operario" }[role] || role);
+const write = (data) => { localStorage.setItem(KEY, JSON.stringify(data)); window.dispatchEvent(new Event("aiden-config-change")); window.dispatchEvent(new Event("aiden-data-change")); };
+const USERS_KEY = "aiden_users";
+const CENTERS_KEY = "aiden-centros-costo";
+const DEFAULT_CENTERS = [
+  { id: "CC-001", nombre: "Producción café", modulo: "Producción", responsable: "Supervisor", estado: "Activo" },
+  { id: "CC-002", nombre: "Producción tomate", modulo: "Producción", responsable: "Supervisor", estado: "Activo" },
+  { id: "CC-003", nombre: "Calidad fitosanitaria", modulo: "Calidad", responsable: "Supervisor", estado: "Activo" },
+  { id: "CC-004", nombre: "Inventario", modulo: "Inventario", responsable: "Administrador", estado: "Activo" },
+];
+const readList = (key, fallback) => { try { const raw = localStorage.getItem(key); const value = raw ? JSON.parse(raw) : fallback; return Array.isArray(value) ? value : fallback; } catch { return fallback; } };
+const roleLabel = (role) => ({ admin: "Administrador", supervisor: "Supervisor", operario: "Operario" }[role] || role);
 
 export default function ConfiguracionOperativo() {
   const [rules, setRules] = useState(read);
