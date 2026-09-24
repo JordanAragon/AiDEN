@@ -4,7 +4,6 @@ import {
   Download,
   FileText,
   Printer,
-  CalendarDays,
   Filter,
   Leaf,
   Package,
@@ -181,10 +180,15 @@ export default function ReportesOperativo() {
           <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-950">Reportes operativos</h1>
           <p className="mt-1 max-w-2xl text-sm text-slate-500">Consulta información consolidada de los módulos. Cada reporte se construye con los datos actuales de AiDEN.</p>
         </section>
-        {rows.length > 0 && (
-          <button type="button" onClick={() => exportar(selected, filteredRows)} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-600 hover:border-emerald-200 hover:text-emerald-700">
-            <Download size={15} /> Exportar CSV
-          </button>
+        {filteredRows.length > 0 && (
+          <section className="flex flex-wrap gap-2">
+            <button type="button" onClick={() => exportar(selected, filteredRows)} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-600 hover:border-emerald-200 hover:text-emerald-700">
+              <Download size={15} /> Exportar CSV
+            </button>
+            <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-600 hover:border-emerald-200 hover:text-emerald-700">
+              <Printer size={15} /> PDF / imprimir
+            </button>
+          </section>
         )}
       </header>
 
@@ -221,7 +225,7 @@ export default function ReportesOperativo() {
           </section>
         </header>
         <section className="overflow-x-auto">
-          {rows.length ? (
+          {filteredRows.length ? (
             <table className="w-full min-w-[760px]">
               <caption className="sr-only">{selectedMeta?.titulo}</caption>
               <thead>
