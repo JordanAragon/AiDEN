@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { ArrowRight, Eye, EyeOff, Leaf, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import loginImage from "../assets/imagenes/login.png";
-import { register } from "../utilidades/autenticacion";
+import loginImage from "../assets/imagenes/login.webp";
+import { registrarCuenta } from "../datos/acciones";
+import { useTitulo } from "../hooks/useTitulo";
 
 export default function Register() {
+  useTitulo("Crear cuenta");
   const navigate = useNavigate();
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -27,7 +29,7 @@ export default function Register() {
 
     setLoading(true);
     window.setTimeout(() => {
-      const result = register({ name, email, password });
+      const result = registrarCuenta({ name, email, password });
       setLoading(false);
       if (!result.ok) return setError(result.message);
       navigate("/login", { replace: true, state: { registered: true } });

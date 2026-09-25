@@ -20,7 +20,10 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { getDashboardPath, getSession } from "../../utilidades/autenticacion";
+import { getDashboardPath } from "../../utilidades/autenticacion";
+import { useSesion } from "../../hooks/useSesion";
+import { useDatos } from "../../datos/almacen";
+import { alertas as calcularAlertas } from "../../datos/selectores";
 
 const navItems = [
   { label: "Dashboard", path: "/dashboard-admin", icon: <LayoutDashboard size={18} />, roles: ["admin", "supervisor", "operario"] },
@@ -51,8 +54,14 @@ export default function BarraLateral() {
   );
   const [movilAbierto, setMovilAbierto] = useState(false);
   const location = useLocation();
-  const session = getSession();
+  const session = useSesion();
+  const datos = useDatos();
   const role = session?.role || "operario";
+  const conteos = useMemo(() => {
+    const lista = calcularAlertas(datos, session);
+    const cuenta = (tipo) => lista.filter((alerta) => alerta.tipo === tipo).length;
+    return { "/calidad": cuenta("Calidad"), "/ambiental": cuenta("Ambiental"), "/inventario": cuenta("Inventario") };
+  }, [datos, session]);
   const pathDashboard = getDashboardPath(role);
   const visible = useMemo(
     () => navItems.filter((item) => item.roles.includes(role)),
@@ -82,17 +91,28 @@ export default function BarraLateral() {
       <ul className="space-y-1">
         {visible.map((item) => {
           const targetPath = item.label === "Dashboard" ? pathDashboard : item.path;
-          const isActive = location.pathname === targetPath;
+          const isActive = location.pathname === targetPath || (item.label === "Dashboard" && location.pathname.startsWith("/dashboard-"));
           return (
             <li key={item.label}>
               <NavLink
                 to={targetPath}
                 title={!mobile && colapsado ? item.label : undefined}
                 onClick={() => mobile && setMovilAbierto(false)}
-                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${!mobile && colapsado ? "justify-center" : "justify-start"} ${isActive ? "bg-emerald-50 font-semibold text-emerald-800" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"}`}
+                className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${!mobile && colapsado ? "justify-center" : "justify-start"} ${isActive ? "bg-emerald-50 font-semibold text-emerald-800" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"}`}
               >
                 {item.icon}
-                {(mobile || !colapsado) && <span>{item.label}</span>}
+                {(mobile || !colapsado) && <span className="flex-1">{item.label}</span>}
+                {conteos[item.path] > 0 &&
+                  (!mobile && colapsado ? (
+                    <span className="absolute right-2 top-1.5 h-2 w-2 rounded-full bg-red-500">
+                      <span className="sr-only">{conteos[item.path]} alertas</span>
+                    </span>
+                  ) : (
+                    <span className="min-w-4 rounded-full bg-red-500 px-1.5 text-center text-[10px] font-bold leading-4 text-white">
+                      {conteos[item.path]}
+                      <span className="sr-only"> alertas</span>
+                    </span>
+                  ))}
               </NavLink>
             </li>
           );
@@ -105,7 +125,7 @@ export default function BarraLateral() {
     <>
       <button
         type="button"
-        className="fixed left-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-lg lg:hidden"
+        className="no-imprimir fixed left-3 top-3 z-50 flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-lg lg:hidden"
         aria-label="Abrir menú de navegación"
         aria-expanded={movilAbierto}
         onClick={() => setMovilAbierto(true)}
@@ -123,14 +143,15 @@ export default function BarraLateral() {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-[min(84vw,300px)] flex-col border-r border-[#dfe8e2] bg-white shadow-2xl transition-transform duration-200 ease-out lg:static lg:z-auto lg:shadow-none ${movilAbierto ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} ${colapsado ? "lg:w-16" : "lg:w-60"}`}
+        aria-label="Navegación de AiDEN"
+        className={`no-imprimir fixed inset-y-0 left-0 z-50 flex w-[min(84vw,300px)] flex-col border-r border-[#dfe8e2] bg-white shadow-2xl transition-transform duration-200 ease-out lg:static lg:z-auto lg:shadow-none ${movilAbierto ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} ${colapsado ? "lg:w-16" : "lg:w-60"}`}
       >
         <header className="flex h-16 min-h-[64px] items-center border-b border-[#dfe8e2] px-4">
           <section className="w-full">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-800 text-white">
-                  <Leaf size={16} />
+                  <Leaf size={16} aria-hidden="true" />
                 </span>
                 {(movilAbierto || !colapsado) && (
                   <span className="text-lg font-bold tracking-tight text-emerald-800">
@@ -148,7 +169,7 @@ export default function BarraLateral() {
               </button>
             </div>
             {(movilAbierto || !colapsado) && (
-              <p className="ml-10 mt-0.5 text-[10px] font-medium text-slate-400">
+              <p className="ml-10 mt-0.5 text-[10px] font-medium text-slate-500">
                 {roleLabel[role]}
               </p>
             )}

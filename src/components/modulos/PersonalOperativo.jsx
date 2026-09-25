@@ -1,310 +1,540 @@
-import { useMemo, useState } from "react";
-import {
-  CalendarDays,
-  CheckCircle2,
-  CircleAlert,
-  Clock3,
-  ListChecks,
-  Plus,
-  Search,
-  UserCheck,
-  Users,
-  X,
-} from "lucide-react";
+import { useId, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { AlertCircle, CheckCircle2, ClipboardList, ClipboardPlus, FilePenLine, ListTodo, Phone, Plus, Trash2, Users } from "lucide-react";
+import { Boton, BotonIcono } from "../ui/Boton";
+import { Entrada, Seleccion } from "../ui/Campo";
+import Avatar from "../ui/Avatar";
+import Cifras from "../ui/Cifras";
+import EncabezadoPagina from "../ui/EncabezadoPagina";
+import Insignia from "../ui/Insignia";
+import Modal from "../ui/Modal";
+import EstadoVacio from "../ui/EstadoVacio";
+import Pestanas from "../ui/Pestanas";
+import { FILA_ENCABEZADO, TH, TR } from "../ui/tabla";
+import AlertaFormulario from "../ui/AlertaFormulario";
+import { Buscador, Segmentos } from "../ui/Filtros";
+import { TONO_ESTADO_TAREA, TONO_PRIORIDAD } from "../ui/tonos";
+import EtiquetaLote from "../lote/EtiquetaLote";
+import ModalTarea from "../formularios/ModalTarea";
+import { useDatos } from "../../datos/almacen";
+import { CARGO_A_ROL, DEPARTAMENTOS, ROLES } from "../../datos/catalogos";
+import { cambiarEstadoPersona, cambiarEstadoTarea, cambiarRolUsuario, crearPersona, editarPersona, eliminarTarea, marcarCuentaRevisada } from "../../datos/acciones";
+import { lotesActivos, nombrePersona, ordenarTareas, tareaVencida } from "../../datos/selectores";
+import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
+import { useSesion, useUsuarios } from "../../hooks/useSesion";
+import { useTitulo } from "../../hooks/useTitulo";
+import { coincide, fechaCorta, hoyISO, plural, vencimiento } from "../../utilidades/formato";
 
-const KEY = "aiden-personal";
-const TASK_KEY = "aiden-tareas";
+const CARGOS = Object.keys(CARGO_A_ROL);
 
-const seedPeople = [
-  {
-    id: "PER-001",
-    nombre: "Laura M.",
-    cargo: "Supervisor",
-    contacto: "310 555 0142",
-    departamento: "Producción",
-    estado: "Activo",
-  },
-  {
-    id: "PER-002",
-    nombre: "Andrés R.",
-    cargo: "Operario",
-    contacto: "312 555 0188",
-    departamento: "Producción",
-    estado: "Activo",
-  },
-  {
-    id: "PER-003",
-    nombre: "Camila P.",
-    cargo: "Operario",
-    contacto: "314 555 0127",
-    departamento: "Calidad",
-    estado: "Activo",
-  },
-  {
-    id: "PER-004",
-    nombre: "Julián G.",
-    cargo: "Operario",
-    contacto: "316 555 0104",
-    departamento: "Ambiental",
-    estado: "Activo",
-  },
-];
-
-const seedTasks = [
-  {
-    id: "TSK-001",
-    titulo: "Revisar lote LT-2024-089",
-    responsable: "Laura M.",
-    prioridad: "Alta",
-    estado: "Pendiente",
-    fecha: "2026-09-15",
-    modulo: "Producción",
-    lote: "LT-2024-089",
-    descripcion: "Validar estado antes de cosecha.",
-  },
-  {
-    id: "TSK-002",
-    titulo: "Riego Invernadero 2",
-    responsable: "Andrés R.",
-    prioridad: "Media",
-    estado: "En curso",
-    fecha: "2026-09-14",
-    modulo: "Ambiental",
-    lote: "LT-2024-091",
-    descripcion: "Ejecutar riego y registrar lectura.",
-  },
-  {
-    id: "TSK-003",
-    titulo: "Reponer sustrato",
-    responsable: "Camila P.",
-    prioridad: "Alta",
-    estado: "Pendiente",
-    fecha: "2026-09-16",
-    modulo: "Inventario",
-    lote: "",
-    descripcion: "Solicitar compra de 25 unidades.",
-  },
-];
-
-const read = (key, fallback) => {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
-  } catch {
-    return fallback;
-  }
-};
-const write = (key, data) => localStorage.setItem(key, JSON.stringify(data));
-const uid = (prefix) => `${prefix}-${Date.now().toString(36).toUpperCase()}`;
-
-function Modal({ title, onClose, children }) {
+function FormularioPersona({ id, persona, onListo }) {
+  const sesion = useSesion();
+  const [f, setF] = useState(() => (persona ? { ...persona } : { nombre: "", cargo: "Operario", departamento: "Producción", contacto: "" }));
+  const { error, enviar } = useEnvio(onListo);
+  const cambiar = (campo) => (e) => setF((a) => ({ ...a, [campo]: e.target.value }));
   return (
-    <section className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 p-4 backdrop-blur-sm">
-      <article className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-2xl">
-        <header className="sticky top-0 flex items-center justify-between border-b border-slate-100 bg-white px-5 py-4">
-          <h2 className="font-semibold text-slate-900">{title}</h2>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg p-2 text-slate-400 hover:bg-slate-100"
-            aria-label="Cerrar"
-          >
-            <X size={16} />
-          </button>
-        </header>
-        <section className="p-5">{children}</section>
-      </article>
+    <form
+      id={id}
+      noValidate
+      className="space-y-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+        enviar(() => (persona ? editarPersona(persona.id, f, sesion) : crearPersona(f, sesion)), persona ? "Datos actualizados" : (n) => `${n.nombre} agregado al equipo`);
+      }}
+    >
+      <AlertaFormulario mensaje={error} />
+      <Entrada etiqueta="Nombre y apellido" value={f.nombre} onChange={cambiar("nombre")} data-autofocus autoComplete="off" />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Seleccion etiqueta="Cargo" value={f.cargo} onChange={cambiar("cargo")} ayuda={persona ? "Si tiene cuenta, el acceso se cambia en Accesos." : undefined}>
+          {CARGOS.map((c) => (
+            <option key={c}>{c}</option>
+          ))}
+        </Seleccion>
+        <Seleccion etiqueta="Área" value={f.departamento} onChange={cambiar("departamento")}>
+          {DEPARTAMENTOS.map((d) => (
+            <option key={d}>{d}</option>
+          ))}
+        </Seleccion>
+      </div>
+      <Entrada etiqueta="Teléfono" opcional type="tel" inputMode="tel" value={f.contacto} onChange={cambiar("contacto")} placeholder="310 555 0101" />
+    </form>
+  );
+}
+
+function PanelPersona({ persona, onCerrar, onEditar, onTarea }) {
+  const datos = useDatos();
+  const sesion = useSesion();
+  const usuarios = useUsuarios();
+  const ejecutar = useAccion();
+  const confirmar = useConfirmar();
+  const tareas = ordenarTareas(datos.tareas.filter((t) => t.responsableId === persona.id));
+  const abiertas = tareas.filter((t) => t.estado !== "Completada");
+  const lotes = lotesActivos(datos.lotes).filter((l) => l.responsableId === persona.id);
+  const cuenta = usuarios.find((u) => u.personaId === persona.id);
+  const inactivo = persona.estado === "Inactivo";
+
+  const alternarEstado = async () => {
+    if (!inactivo) {
+      const ok = await confirmar({
+        titulo: `Desactivar a ${persona.nombre}`,
+        mensaje: "Deja de aparecer para asignar tareas y lotes. Su historial se conserva y puedes reactivarlo cuando quieras.",
+        confirmar: "Desactivar",
+        peligro: true,
+      });
+      if (!ok) return;
+    }
+    ejecutar(() => cambiarEstadoPersona(persona.id, inactivo ? "Activo" : "Inactivo", sesion), inactivo ? `${persona.nombre} reactivado` : `${persona.nombre} desactivado`);
+  };
+
+  return (
+    <Modal
+      abierto
+      onCerrar={onCerrar}
+      variante="panel"
+      titulo={persona.nombre}
+      descripcion={`${persona.cargo} · ${persona.departamento}`}
+      pie={
+        <>
+          <Boton variante="fantasma" onClick={alternarEstado} className={`mr-auto ${inactivo ? "" : "!text-red-600"}`}>
+            {inactivo ? "Reactivar" : "Desactivar"}
+          </Boton>
+          <Boton variante="secundario" icono={FilePenLine} onClick={onEditar}>
+            Editar
+          </Boton>
+          {!inactivo && (
+            <Boton variante="primario" icono={ClipboardPlus} onClick={onTarea}>
+              Asignar tarea
+            </Boton>
+          )}
+        </>
+      }
+    >
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Avatar nombre={persona.nombre} tamano="lg" />
+          <div className="min-w-0 text-sm">
+            {inactivo && <Insignia className="mb-1">Inactivo</Insignia>}
+            <p className="flex items-center gap-1.5 text-slate-600">
+              <Phone size={14} aria-hidden="true" />
+              {persona.contacto || "Sin teléfono"}
+            </p>
+            <p className="mt-0.5 text-slate-500">{cuenta ? `Cuenta: ${cuenta.email} (${ROLES[cuenta.role]})` : "Sin cuenta en AiDEN"}</p>
+          </div>
+        </div>
+
+        <section>
+          <h3 className="mb-2 text-sm font-semibold text-slate-900">Lotes a cargo</h3>
+          {lotes.length ? (
+            <div className="flex flex-wrap gap-2">
+              {lotes.map((l) => (
+                <EtiquetaLote key={l.id} codigo={l.lote} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-slate-500">Ninguno.</p>
+          )}
+        </section>
+
+        <section>
+          <h3 className="mb-2 text-sm font-semibold text-slate-900">
+            Tareas abiertas <span className="tabular-nums font-normal text-slate-500">{abiertas.length}</span>
+          </h3>
+          {abiertas.length ? (
+            <ul className="divide-y divide-slate-100">
+              {abiertas.map((t) => {
+                const v = vencimiento(t.fecha);
+                return (
+                  <li key={t.id} className="flex items-start justify-between gap-3 py-2.5">
+                    <span className="min-w-0 text-sm">
+                      <span className="text-slate-900">{t.titulo}</span>
+                      <span className={`block text-xs ${v.tono === "critico" ? "font-semibold text-red-600" : "text-slate-500"}`}>
+                        {v.texto}
+                        {t.lote ? ` · ${t.lote}` : ""}
+                      </span>
+                    </span>
+                    <Insignia tono={TONO_ESTADO_TAREA[t.estado]}>{t.estado}</Insignia>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="text-sm text-slate-500">Sin tareas abiertas.</p>
+          )}
+          {tareas.length > abiertas.length && <p className="mt-2 text-xs text-slate-500">{plural(tareas.length - abiertas.length, "tarea completada", "tareas completadas")} en total.</p>}
+        </section>
+      </div>
+    </Modal>
+  );
+}
+
+function VistaTareas({ filtroInicial, onEditar }) {
+  const datos = useDatos();
+  const sesion = useSesion();
+  const ejecutar = useAccion();
+  const confirmar = useConfirmar();
+  const [estado, setEstado] = useState(filtroInicial === "vencidas" ? "Vencidas" : "Abiertas");
+  const [responsable, setResponsable] = useState("");
+  const [consulta, setConsulta] = useState("");
+  const hoy = hoyISO();
+  const pasa = {
+    Abiertas: (t) => t.estado !== "Completada",
+    Vencidas: (t) => tareaVencida(t, hoy),
+    Completadas: (t) => t.estado === "Completada",
+    Todas: () => true,
+  };
+  const tareas = ordenarTareas(
+    datos.tareas.filter(
+      (t) => pasa[estado](t) && (!responsable || t.responsableId === responsable) && coincide(`${t.titulo} ${t.descripcion} ${t.lote} ${t.modulo} ${nombrePersona(datos.personas, t.responsableId)}`, consulta),
+    ),
+  );
+  const cuenta = (e) => datos.tareas.filter(pasa[e]).length;
+
+  const borrar = async (t) => {
+    const ok = await confirmar({ titulo: "Eliminar tarea", mensaje: `“${t.titulo}” desaparece de la jornada de ${nombrePersona(datos.personas, t.responsableId)}. Esta acción no se puede deshacer.`, confirmar: "Eliminar", peligro: true });
+    if (ok) ejecutar(() => eliminarTarea(t.id, sesion), "Tarea eliminada");
+  };
+
+  return (
+    <>
+      <div className="flex flex-col gap-3 border-b border-slate-200 p-4 lg:flex-row lg:flex-wrap lg:items-center">
+        <Buscador valor={consulta} onCambio={setConsulta} etiqueta="Buscar tareas" placeholder="Tarea, lote, área o persona" className="lg:max-w-xs lg:flex-1" />
+        <Segmentos etiqueta="Estado" valor={estado} onCambio={setEstado} opciones={Object.keys(pasa).map((e) => ({ valor: e, etiqueta: e, cuenta: cuenta(e) }))} />
+        <select value={responsable} onChange={(e) => setResponsable(e.target.value)} aria-label="Filtrar por responsable" className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-emerald-500 lg:ml-auto lg:w-52">
+          <option value="">Todo el equipo</option>
+          {datos.personas.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.nombre}
+            </option>
+          ))}
+        </select>
+      </div>
+      {tareas.length ? (
+        <div className="overflow-x-auto" tabIndex={0}>
+          <table className="w-full min-w-[880px]">
+            <caption className="sr-only">Tareas del equipo</caption>
+            <thead>
+              <tr className={FILA_ENCABEZADO}>
+                <th className={TH}>Tarea</th>
+                <th className={TH}>Responsable</th>
+                <th className={TH}>Lote</th>
+                <th className={TH}>Fecha límite</th>
+                <th className={TH}>Prioridad</th>
+                <th className={TH}>Estado</th>
+                <th className={TH}>
+                  <span className="sr-only">Acciones</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {tareas.map((t) => {
+                const v = vencimiento(t.fecha);
+                const hecha = t.estado === "Completada";
+                return (
+                  <tr key={t.id} className={TR}>
+                    <td className="px-4 py-3 text-xs text-slate-600 max-w-[320px]">
+                      <span className={`font-medium ${hecha ? "text-slate-500 line-through" : "text-slate-900"}`}>{t.titulo}</span>
+                      <span className="block truncate text-xs text-slate-500">{hecha && t.nota ? `Nota: ${t.nota}` : `${t.modulo}${t.descripcion ? ` · ${t.descripcion}` : ""}`}</span>
+                    </td>
+                    <td className="px-4 py-3 text-xs text-slate-600 whitespace-nowrap">{nombrePersona(datos.personas, t.responsableId)}</td>
+                    <td className="px-4 py-3 text-xs text-slate-600">{t.lote ? <EtiquetaLote codigo={t.lote} /> : <span className="text-slate-500">—</span>}</td>
+                    <td className="px-4 py-3 text-xs text-slate-600 whitespace-nowrap">
+                      <span className="tabular-nums">{fechaCorta(t.fecha)}</span>
+                      {!hecha && <span className={`block text-xs ${v.tono === "critico" ? "font-semibold text-red-600" : v.tono === "alerta" ? "text-amber-700" : "text-slate-500"}`}>{v.texto}</span>}
+                    </td>
+                    <td className="px-4 py-3 text-xs text-slate-600">
+                      <Insignia tono={TONO_PRIORIDAD[t.prioridad]}>{t.prioridad}</Insignia>
+                    </td>
+                    <td className="px-4 py-3 text-xs text-slate-600">
+                      <select
+                        value={t.estado}
+                        onChange={(e) => ejecutar(() => cambiarEstadoTarea(t.id, e.target.value, sesion), `Tarea: ${e.target.value.toLowerCase()}`)}
+                        aria-label={`Estado de ${t.titulo}`}
+                        className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-700"
+                      >
+                        <option>Pendiente</option>
+                        <option>En curso</option>
+                        <option>Completada</option>
+                      </select>
+                    </td>
+                    <td className="px-4 py-3 text-xs text-slate-600">
+                      <div className="flex justify-end gap-1">
+                        {!hecha && <BotonIcono icono={CheckCircle2} etiqueta={`Completar ${t.titulo}`} tamano="sm" onClick={() => ejecutar(() => cambiarEstadoTarea(t.id, "Completada", sesion), "Tarea completada")} />}
+                        <BotonIcono icono={FilePenLine} etiqueta={`Editar ${t.titulo}`} tamano="sm" onClick={() => onEditar(t)} />
+                        <BotonIcono icono={Trash2} etiqueta={`Eliminar ${t.titulo}`} tamano="sm" onClick={() => borrar(t)} className="hover:!bg-red-50 hover:!text-red-600" />
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <EstadoVacio icono={ClipboardList} titulo={estado === "Vencidas" && !consulta && !responsable ? "No hay tareas vencidas" : "Ninguna tarea con estos filtros"} texto={estado === "Vencidas" ? "El equipo va al día." : "Cambia el estado, la persona o la búsqueda."} />
+      )}
+    </>
+  );
+}
+
+function VistaAccesos() {
+  const datos = useDatos();
+  const sesion = useSesion();
+  const usuarios = useUsuarios();
+  const ejecutar = useAccion();
+  const confirmar = useConfirmar();
+
+  const cambiarRol = async (u, rol) => {
+    const ok = await confirmar({
+      titulo: `Cambiar el rol de ${u.name}`,
+      mensaje: `Pasará de ${ROLES[u.role]} a ${ROLES[rol]}. Verá los módulos de ese rol la próxima vez que cargue una vista.`,
+      confirmar: "Cambiar rol",
+    });
+    if (ok) ejecutar(() => cambiarRolUsuario(u.id, rol, sesion), `${u.name} ahora es ${ROLES[rol].toLowerCase()}`);
+  };
+
+  return (
+    <>
+      <p className="border-b border-slate-200 px-5 py-3 text-sm text-slate-500">
+        Las cuentas se guardan en este navegador: es una demostración sin servidor. Las cuentas creadas desde el registro entran como operario hasta que administración confirme su rol.
+      </p>
+      <div className="overflow-x-auto" tabIndex={0}>
+        <table className="w-full min-w-[760px]">
+          <caption className="sr-only">Cuentas con acceso</caption>
+          <thead>
+              <tr className={FILA_ENCABEZADO}>
+              <th className={TH}>Persona</th>
+              <th className={TH}>Correo</th>
+              <th className={TH}>Rol</th>
+              <th className={TH}>Creada</th>
+              <th className={TH}>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {usuarios.map((u) => {
+              const propia = u.id === sesion.id;
+              return (
+                <tr key={u.id} className={TR}>
+                  <td className="px-4 py-3 text-xs text-slate-600">
+                    <span className="flex items-center gap-2.5">
+                      <Avatar nombre={u.name} tamano="sm" />
+                      <span>
+                        <span className="block font-medium text-slate-900">{u.name}</span>
+                        <span className="block text-xs text-slate-500">{datos.personas.some((p) => p.id === u.personaId) ? "Con ficha en Equipo" : "Sin ficha en Equipo"}</span>
+                      </span>
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-xs text-slate-600">{u.email}</td>
+                  <td className="px-4 py-3 text-xs text-slate-600">
+                    <select value={u.role} disabled={propia} onChange={(e) => cambiarRol(u, e.target.value)} aria-label={`Rol de ${u.name}`} className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-700" title={propia ? "No puedes cambiar tu propio rol" : undefined}>
+                      {Object.entries(ROLES).map(([valor, texto]) => (
+                        <option key={valor} value={valor}>
+                          {texto}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td className="px-4 py-3 text-xs text-slate-600 tabular-nums whitespace-nowrap">{u.creado ? fechaCorta(u.creado) : "Cuenta demo"}</td>
+                  <td className="px-4 py-3 text-xs text-slate-600">
+                    {u.revisado ? (
+                      <Insignia tono="exito">Confirmada</Insignia>
+                    ) : (
+                      <Boton tamano="sm" variante="suave" onClick={() => ejecutar(() => marcarCuentaRevisada(u.id, sesion), `Cuenta de ${u.name} confirmada como ${ROLES[u.role].toLowerCase()}`)}>
+                        Confirmar como {ROLES[u.role].toLowerCase()}
+                      </Boton>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+}
+
+function Equipo({ onPersona, onAsignar, onNueva }) {
+  const datos = useDatos();
+  const [consulta, setConsulta] = useState("");
+  const [filtro, setFiltro] = useState("Todos");
+  const [estado, setEstado] = useState("Activo");
+  const personas = datos.personas.filter(
+    (p) => (p.estado || "Activo") === estado && (filtro === "Todos" || p.cargo === filtro) && coincide(`${p.nombre} ${p.cargo} ${p.departamento} ${p.contacto}`, consulta),
+  );
+  const inactivos = datos.personas.filter((p) => p.estado === "Inactivo").length;
+  return (
+    <>
+      <header className="flex flex-wrap items-center gap-3 border-b border-slate-100 p-4">
+        <Buscador valor={consulta} onCambio={setConsulta} etiqueta="Buscar colaborador" placeholder="Buscar colaborador..." className="min-w-56 flex-1" />
+        <Segmentos etiqueta="Cargo" valor={filtro} onCambio={setFiltro} opciones={["Todos", "Supervisor", "Operario", "Administrador"].map((v) => ({ valor: v, etiqueta: v }))} />
+        {inactivos > 0 && (
+          <Segmentos
+            etiqueta="Estado"
+            valor={estado}
+            onCambio={setEstado}
+            opciones={[
+              { valor: "Activo", etiqueta: "Activos" },
+              { valor: "Inactivo", etiqueta: "Inactivos", cuenta: inactivos },
+            ]}
+          />
+        )}
+        <button type="button" onClick={onNueva} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:border-emerald-200">
+          <Plus size={14} aria-hidden="true" />
+          Nuevo colaborador
+        </button>
+      </header>
+      <section className="grid gap-4 p-4 sm:grid-cols-2 xl:grid-cols-3">
+        {personas.map((p) => {
+          const propias = datos.tareas.filter((t) => t.responsableId === p.id);
+          const abiertas = propias.filter((t) => t.estado !== "Completada");
+          const vencidas = abiertas.filter((t) => tareaVencida(t)).length;
+          const lotes = datos.lotes.filter((l) => l.responsableId === p.id && l.estado !== "Cerrado").length;
+          return (
+            <article key={p.id} className="rounded-2xl border border-slate-200 p-4">
+              <header className="flex items-start justify-between gap-3">
+                <section className="min-w-0">
+                  <p className="font-semibold text-slate-900">{p.nombre}</p>
+                  <p className="text-xs text-slate-500">
+                    {p.cargo} · {p.departamento}
+                  </p>
+                </section>
+                <span className={`rounded-full px-2 py-1 text-[10px] font-bold ${p.estado === "Inactivo" ? "bg-slate-100 text-slate-500" : "bg-emerald-50 text-emerald-700"}`}>{p.estado || "Activo"}</span>
+              </header>
+              <section className="mt-4 grid grid-cols-3 gap-2">
+                <Celda etiqueta="Tareas" valor={propias.length} />
+                <Celda etiqueta="Pendientes" valor={abiertas.length} alerta={vencidas > 0} detalle={vencidas ? `${vencidas} vencida${vencidas === 1 ? "" : "s"}` : undefined} />
+                <Celda etiqueta="Lotes" valor={lotes} />
+              </section>
+              <footer className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
+                <button type="button" onClick={() => onPersona(p.id)} className="text-xs font-semibold text-emerald-700 hover:underline">
+                  Ver perfil
+                </button>
+                {p.estado !== "Inactivo" && (
+                  <button type="button" onClick={() => onAsignar(p.id)} className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-emerald-700">
+                    <Plus size={13} aria-hidden="true" />
+                    Asignar
+                  </button>
+                )}
+              </footer>
+            </article>
+          );
+        })}
+        {!personas.length && <p className="p-10 text-center text-sm text-slate-500 sm:col-span-2 xl:col-span-3">No hay colaboradores que coincidan con el filtro.</p>}
+      </section>
+    </>
+  );
+}
+
+function Celda({ etiqueta, valor, alerta = false, detalle }) {
+  return (
+    <section className={`rounded-xl p-2.5 ${alerta ? "bg-red-50" : "bg-slate-50"}`}>
+      <p className="text-[10px] text-slate-500">{etiqueta}</p>
+      <p className={`mt-1 text-sm font-bold ${alerta ? "text-red-600" : "text-slate-800"}`}>{valor}</p>
+      {detalle && <p className="text-[10px] text-red-600">{detalle}</p>}
     </section>
-  );
-}
-function Input({ label, ...props }) {
-  return (
-    <label className="block text-sm font-medium text-slate-600">
-      {label}
-      <input
-        {...props}
-        className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-      />
-    </label>
-  );
-}
-function Select({ label, children, ...props }) {
-  return (
-    <label className="block text-sm font-medium text-slate-600">
-      {label}
-      <select
-        {...props}
-        className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-      >
-        {children}
-      </select>
-    </label>
   );
 }
 
 export default function PersonalOperativo() {
-  const [people, setPeople] = useState(() => read(KEY, seedPeople));
-  const [tasks, setTasks] = useState(() => read(TASK_KEY, seedTasks));
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("Todos");
-  const [selected, setSelected] = useState(null);
+  const datos = useDatos();
+  const sesion = useSesion();
+  const usuarios = useUsuarios();
+  const [parametros, setParametros] = useSearchParams();
   const [modal, setModal] = useState(null);
+  const idForm = useId();
+  useTitulo("Personal y tareas");
 
-  const activeTasks = tasks.filter((t) => t.estado !== "Completada");
-  const completed = tasks.filter((t) => t.estado === "Completada").length;
-  const high = activeTasks.filter((t) => t.prioridad === "Alta").length;
-  const filtered = useMemo(
-    () =>
-      people.filter(
-        (p) =>
-          (filter === "Todos" || p.cargo === filter) &&
-          `${p.nombre} ${p.departamento} ${p.contacto}`
-            .toLowerCase()
-            .includes(search.toLowerCase()),
-      ),
-    [people, filter, search],
-  );
+  const admin = sesion?.role === "admin";
+  const vistaParam = parametros.get("vista");
+  const vista = vistaParam === "tareas" ? "tareas" : vistaParam === "accesos" && admin ? "accesos" : "equipo";
+  const persona = datos.personas.find((p) => p.id === parametros.get("persona"));
+  const tareaParam = datos.tareas.find((t) => t.id === parametros.get("tarea"));
 
-  const savePeople = (data) => {
-    setPeople(data);
-    write(KEY, data);
-    window.dispatchEvent(new Event("aiden-data-change"));
+  const actualizar = (cambios) => {
+    const siguiente = new URLSearchParams(parametros);
+    for (const [k, v] of Object.entries(cambios)) {
+      if (v === null || v === undefined) siguiente.delete(k);
+      else siguiente.set(k, v);
+    }
+    setParametros(siguiente, { replace: true });
   };
-  const saveTasks = (data) => {
-    setTasks(data);
-    write(TASK_KEY, data);
-    window.dispatchEvent(new Event("aiden-data-change"));
-  };
-  const addPerson = (data) => {
-    savePeople([{ ...data, id: uid("PER"), estado: "Activo" }, ...people]);
-    setModal(null);
-  };
-  const addTask = (data) => {
-    saveTasks([{ ...data, id: uid("TSK"), estado: "Pendiente" }, ...tasks]);
-    setModal(null);
-  };
-  const updateTask = (task, estado) =>
-    saveTasks(tasks.map((t) => (t.id === task.id ? { ...t, estado } : t)));
+
+  const activos = datos.personas.filter((p) => p.estado !== "Inactivo");
+  const abiertas = datos.tareas.filter((t) => t.estado !== "Completada");
+  const altas = abiertas.filter((t) => t.prioridad === "Alta");
+  const completadas = datos.tareas.length - abiertas.length;
+  const porRevisar = usuarios.filter((u) => !u.revisado).length;
+  const conCarga = activos.filter((p) => p.cargo !== "Administrador");
 
   return (
     <section className="space-y-6">
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <section className="flex items-start gap-3">
-          <span className="mt-1 flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
-            <Users size={20} />
-          </span>
-          <section>
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">
-              AiDEN / sistema
-            </p>
-            <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-950">
-              Personal y tareas
-            </h1>
-            <p className="mt-1 text-sm text-slate-500">
-              Asigna trabajo, controla carga, fechas y avance por colaborador.
-            </p>
-          </section>
-        </section>
-        <button
-          type="button"
-          onClick={() => setModal("task")}
-          className="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-800"
-        >
-          <Plus size={16} />
-          Asignar tarea
-        </button>
-      </header>
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Kpi
-          label="Colaboradores"
-          value={people.length}
-          detail={`${people.filter((p) => p.estado === "Activo").length} activos`}
-          icon={Users}
-        />
-        <Kpi
-          label="Tareas pendientes"
-          value={activeTasks.length}
-          detail={`${tasks.filter((t) => t.estado === "En curso").length} en curso`}
-          icon={ListChecks}
-          tone="amber"
-        />
-        <Kpi
-          label="Alta prioridad"
-          value={high}
-          detail="Sin completar"
-          icon={CircleAlert}
-          tone="red"
-        />
-        <Kpi
-          label="Completadas"
-          value={completed}
-          detail="Histórico de tareas"
-          icon={CheckCircle2}
-        />
-      </section>
-      <section className="grid gap-4 lg:grid-cols-[1.15fr_.85fr]">
+      <EncabezadoPagina
+        icono={Users}
+        rotulo="AiDEN / sistema"
+        titulo="Personal y tareas"
+        descripcion="Asigna trabajo, controla carga, fechas y avance por colaborador."
+        acciones={
+          <Boton variante="primario" icono={Plus} onClick={() => setModal({ tipo: "tarea" })}>
+            Asignar tarea
+          </Boton>
+        }
+      />
+
+      <Cifras
+        items={[
+          { icono: Users, etiqueta: "Colaboradores", valor: datos.personas.length, detalle: `${activos.length} activos`, onClick: () => actualizar({ vista: null, filtro: null }), activo: vista === "equipo" },
+          { icono: ListTodo, etiqueta: "Tareas pendientes", valor: abiertas.length, detalle: `${abiertas.filter((t) => t.estado === "En curso").length} en curso · ${abiertas.filter((t) => tareaVencida(t)).length} vencidas`, tono: "alerta", onClick: () => actualizar({ vista: "tareas", filtro: null }), activo: vista === "tareas" },
+          { icono: AlertCircle, etiqueta: "Alta prioridad", valor: altas.length, detalle: "Sin completar", tono: "critico" },
+          admin
+            ? { icono: CheckCircle2, etiqueta: "Cuentas por revisar", valor: porRevisar, detalle: `${usuarios.length} cuentas · ${completadas} tareas completadas`, tono: porRevisar ? "alerta" : "exito", onClick: () => actualizar({ vista: "accesos" }), activo: vista === "accesos" }
+            : { icono: CheckCircle2, etiqueta: "Completadas", valor: completadas, detalle: "Histórico de tareas" },
+        ]}
+      />
+
+      <section className="grid gap-4 lg:grid-cols-[1.25fr_.75fr]">
         <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <header className="flex items-center justify-between">
             <section>
               <h2 className="font-semibold text-slate-900">Carga de trabajo</h2>
-              <p className="text-xs text-slate-400">
-                Avance de tareas por persona
-              </p>
+              <p className="text-xs text-slate-500">Avance de tareas por persona</p>
             </section>
-            <UserCheck size={18} className="text-emerald-700" />
+            <ClipboardList size={18} className="text-emerald-700" aria-hidden="true" />
           </header>
           <section className="mt-5 space-y-4">
-            {people.map((p) => {
-              const own = tasks.filter((t) => t.responsable === p.nombre);
-              const done = own.filter((t) => t.estado === "Completada").length;
-              const pct = own.length
-                ? Math.round((done / own.length) * 100)
-                : 0;
+            {conCarga.map((p) => {
+              const propias = datos.tareas.filter((t) => t.responsableId === p.id);
+              const hechas = propias.filter((t) => t.estado === "Completada").length;
+              const pct = propias.length ? Math.round((hechas / propias.length) * 100) : 0;
               return (
-                <article key={p.id}>
+                <button key={p.id} type="button" onClick={() => actualizar({ persona: p.id })} className="block w-full text-left">
                   <section className="flex items-center justify-between">
-                    <p className="text-sm font-semibold text-slate-800">
-                      {p.nombre}
-                    </p>
-                    <span className="text-[11px] text-slate-400">
-                      {done}/{own.length} completadas
+                    <p className="text-sm font-semibold text-slate-800 hover:text-emerald-700">{p.nombre}</p>
+                    <span className="text-[11px] text-slate-500">
+                      {hechas}/{propias.length} completadas
                     </span>
                   </section>
                   <section className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
-                    <span
-                      className="block h-full rounded-full bg-emerald-500"
-                      style={{ width: `${pct}%` }}
-                    />
+                    <span className="block h-full rounded-full bg-emerald-500" style={{ width: `${pct}%` }} />
                   </section>
-                </article>
+                </button>
               );
             })}
           </section>
         </article>
         <article className="rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white">
-          <p className="text-xs font-bold uppercase tracking-wider text-emerald-300">
-            Prioridades
-          </p>
-          <p className="mt-2 text-3xl font-bold">{high}</p>
-          <p className="text-sm text-white/60">
-            tareas de alta prioridad pendientes
-          </p>
+          <p className="text-xs font-bold uppercase tracking-wider text-emerald-300">Prioridades</p>
+          <p className="mt-2 text-3xl font-bold">{altas.length}</p>
+          <p className="text-sm text-white/70">tareas de alta prioridad pendientes</p>
           <section className="mt-5 space-y-2">
-            {activeTasks
-              .filter((t) => t.prioridad === "Alta")
+            {ordenarTareas(altas)
               .slice(0, 4)
               .map((t) => (
-                <button
-                  key={t.id}
-                  type="button"
-                  onClick={() => setSelected(t)}
-                  className="flex w-full items-start gap-3 rounded-xl bg-white/5 p-3 text-left hover:bg-white/10"
-                >
-                  <span className="mt-1.5 h-2 w-2 rounded-full bg-red-400" />
+                <button key={t.id} type="button" onClick={() => setModal({ tipo: "tarea", tarea: t })} className="flex w-full items-start gap-3 rounded-xl bg-white/5 p-3 text-left hover:bg-white/10">
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-red-400" />
                   <span>
                     <p className="text-sm font-medium">{t.titulo}</p>
-                    <p className="mt-1 text-[11px] text-white/45">
-                      {t.responsable} · vence {t.fecha}
+                    <p className="mt-1 text-[11px] text-white/60">
+                      {nombrePersona(datos.personas, t.responsableId)} · {vencimiento(t.fecha).texto.toLowerCase()}
                     </p>
                   </span>
                 </button>
@@ -312,354 +542,57 @@ export default function PersonalOperativo() {
           </section>
         </article>
       </section>
+
       <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <header className="flex flex-wrap items-center gap-3 border-b border-slate-100 p-4">
-          <section className="relative min-w-56 flex-1">
-            <Search
-              size={15}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-            />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar colaborador..."
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-3 text-sm outline-none focus:border-emerald-500"
-            />
-          </section>
-          {["Todos", "Supervisor", "Operario"].map((v) => (
-            <button
-              key={v}
-              type="button"
-              onClick={() => setFilter(v)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${filter === v ? "bg-emerald-700 text-white" : "bg-slate-100 text-slate-500"}`}
-            >
-              {v}
-            </button>
-          ))}
-          <button
-            type="button"
-            onClick={() => setModal("person")}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:border-emerald-200"
-          >
-            <Plus size={14} />
-            Nuevo colaborador
-          </button>
-        </header>
-        <section className="grid gap-4 p-4 sm:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((p) => {
-            const own = tasks.filter((t) => t.responsable === p.nombre);
-            const pending = own.filter((t) => t.estado !== "Completada");
-            return (
-              <article
-                key={p.id}
-                className="rounded-2xl border border-slate-200 p-4"
-              >
-                <header className="flex items-start justify-between gap-3">
-                  <section>
-                    <p className="font-semibold text-slate-900">{p.nombre}</p>
-                    <p className="text-xs text-slate-400">
-                      {p.cargo} · {p.departamento}
-                    </p>
-                  </section>
-                  <span className="rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-700">
-                    {p.estado}
-                  </span>
-                </header>
-                <section className="mt-4 grid grid-cols-3 gap-2">
-                  <Mini label="Tareas" value={own.length} />
-                  <Mini label="Pendientes" value={pending.length} />
-                  <Mini
-                    label="Alta"
-                    value={pending.filter((t) => t.prioridad === "Alta").length}
-                  />
-                </section>
-                <footer className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
-                  <button
-                    type="button"
-                    onClick={() => setSelected(p)}
-                    className="text-xs font-semibold text-emerald-700"
-                  >
-                    Ver perfil
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelected(p);
-                      setModal("task");
-                    }}
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-emerald-700"
-                  >
-                    <Plus size={12} />
-                    Asignar
-                  </button>
-                </footer>
-              </article>
-            );
-          })}
-        </section>
-      </section>
-      {selected && (
-        <Modal
-          title={selected.titulo ? "Detalle de tarea" : selected.nombre}
-          onClose={() => setSelected(null)}
-        >
-          {selected.titulo ? (
-            <section className="space-y-4">
-              <div>
-                <p className="text-lg font-semibold text-slate-900">
-                  {selected.titulo}
-                </p>
-                <p className="mt-1 text-sm text-slate-500">
-                  {selected.descripcion}
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <Info label="Responsable" value={selected.responsable} />
-                <Info label="Fecha límite" value={selected.fecha} />
-                <Info label="Módulo" value={selected.modulo} />
-                <Info label="Lote" value={selected.lote || "Sin lote"} />
-              </div>
-              <Select
-                label="Estado"
-                value={selected.estado}
-                onChange={(e) => {
-                  updateTask(selected, e.target.value);
-                  setSelected({ ...selected, estado: e.target.value });
-                }}
-              >
-                <option>Pendiente</option>
-                <option>En curso</option>
-                <option>Completada</option>
-              </Select>
-              <button
-                type="button"
-                onClick={() => {
-                  updateTask(selected, "Completada");
-                  setSelected(null);
-                }}
-                className="w-full rounded-xl bg-emerald-700 py-2.5 text-sm font-semibold text-white"
-              >
-                Marcar como completada
-              </button>
-            </section>
-          ) : (
-            <section className="space-y-4">
-              <p className="text-sm text-slate-500">
-                {selected.cargo} · {selected.departamento}
-              </p>
-              <div className="grid grid-cols-2 gap-3">
-                <Info label="Contacto" value={selected.contacto} />
-                <Info label="Estado" value={selected.estado} />
-              </div>
-              <h3 className="font-semibold text-slate-900">Tareas asignadas</h3>
-              <section className="space-y-2">
-                {tasks
-                  .filter((t) => t.responsable === selected.nombre)
-                  .map((t) => (
-                    <button
-                      key={t.id}
-                      type="button"
-                      onClick={() => setSelected(t)}
-                      className="w-full rounded-xl border border-slate-100 p-3 text-left hover:bg-slate-50"
-                    >
-                      <p className="text-sm font-medium text-slate-800">
-                        {t.titulo}
-                      </p>
-                      <p className="mt-1 text-[11px] text-slate-400">
-                        {t.estado} · vence {t.fecha}
-                      </p>
-                    </button>
-                  ))}
-              </section>
-            </section>
-          )}
-        </Modal>
-      )}
-      {modal === "task" && (
-        <Modal title="Asignar tarea" onClose={() => setModal(null)}>
-          <TaskForm
-            people={people}
-            initialPerson={selected?.nombre}
-            onSubmit={addTask}
+        <div className="border-b border-slate-100 px-4 pt-4">
+          <Pestanas
+            etiqueta="Vistas de personal"
+            activa={vista}
+            onCambio={(id) => actualizar({ vista: id === "equipo" ? null : id, filtro: null })}
+            pestanas={[
+              { id: "equipo", etiqueta: "Colaboradores", cuenta: activos.length },
+              { id: "tareas", etiqueta: "Tareas", cuenta: abiertas.length },
+              ...(admin ? [{ id: "accesos", etiqueta: "Accesos", cuenta: porRevisar || undefined }] : []),
+            ]}
           />
-        </Modal>
-      )}
-      {modal === "person" && (
-        <Modal title="Nuevo colaborador" onClose={() => setModal(null)}>
-          <PersonForm onSubmit={addPerson} />
-        </Modal>
-      )}
-    </section>
-  );
-}
-function Kpi({ label, value, detail, icon: Icon, tone = "green" }) {
-  const toneMap = {
-    green: "bg-emerald-50 text-emerald-700",
-    amber: "bg-amber-50 text-amber-700",
-    red: "bg-red-50 text-red-700",
-  };
-  return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-      <span
-        className={`flex h-9 w-9 items-center justify-center rounded-xl ${toneMap[tone]}`}
-      >
-        <Icon size={17} />
-      </span>
-      <p className="mt-4 text-2xl font-bold tracking-tight text-slate-950">
-        {value}
-      </p>
-      <p className="text-xs font-medium text-slate-600">{label}</p>
-      <p className="mt-1 text-[11px] text-slate-400">{detail}</p>
-    </article>
-  );
-}
-function Mini({ label, value }) {
-  return (
-    <section className="rounded-xl bg-slate-50 p-2.5">
-      <p className="text-[10px] text-slate-400">{label}</p>
-      <p className="mt-1 text-sm font-bold text-slate-800">{value}</p>
-    </section>
-  );
-}
-function Info({ label, value }) {
-  return (
-    <section className="rounded-xl bg-slate-50 p-3">
-      <p className="text-[10px] text-slate-400">{label}</p>
-      <p className="mt-1 text-xs font-semibold text-slate-800">{value}</p>
-    </section>
-  );
-}
-function TaskForm({ people, initialPerson, onSubmit }) {
-  const [f, setF] = useState({
-    titulo: "",
-    responsable: initialPerson || people[0]?.nombre || "",
-    prioridad: "Media",
-    fecha: new Date().toISOString().slice(0, 10),
-    modulo: "Producción",
-    lote: "",
-    descripcion: "",
-  });
-  return (
-    <form
-      className="space-y-4"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit(f);
-      }}
-    >
-      <Input
-        label="Título"
-        value={f.titulo}
-        onChange={(e) => setF({ ...f, titulo: e.target.value })}
-        required
-        placeholder="Ej. Revisar bandejas"
-      />
-      <section className="grid gap-3 sm:grid-cols-2">
-        <Select
-          label="Responsable"
-          value={f.responsable}
-          onChange={(e) => setF({ ...f, responsable: e.target.value })}
-        >
-          {people.map((p) => (
-            <option key={p.id}>{p.nombre}</option>
-          ))}
-        </Select>
-        <Select
-          label="Prioridad"
-          value={f.prioridad}
-          onChange={(e) => setF({ ...f, prioridad: e.target.value })}
-        >
-          <option>Baja</option>
-          <option>Media</option>
-          <option>Alta</option>
-        </Select>
+          <div className="h-4" />
+        </div>
+        <div role="tabpanel" id={`panel-${vista}`} aria-labelledby={`pestana-${vista}`}>
+          {vista === "equipo" && <Equipo onPersona={(id) => actualizar({ persona: id })} onAsignar={(id) => setModal({ tipo: "tarea", inicial: { responsableId: id } })} onNueva={() => setModal({ tipo: "persona" })} />}
+          {vista === "tareas" && <VistaTareas key={parametros.get("filtro") || "todas"} filtroInicial={parametros.get("filtro")} onEditar={(t) => setModal({ tipo: "tarea", tarea: t })} />}
+          {vista === "accesos" && <VistaAccesos />}
+        </div>
       </section>
-      <section className="grid gap-3 sm:grid-cols-2">
-        <Input
-          label="Fecha límite"
-          type="date"
-          value={f.fecha}
-          onChange={(e) => setF({ ...f, fecha: e.target.value })}
+
+      {persona && (
+        <PanelPersona
+          persona={persona}
+          onCerrar={() => actualizar({ persona: null })}
+          onEditar={() => setModal({ tipo: "persona", persona })}
+          onTarea={() => setModal({ tipo: "tarea", inicial: { responsableId: persona.id } })}
         />
-        <Select
-          label="Módulo"
-          value={f.modulo}
-          onChange={(e) => setF({ ...f, modulo: e.target.value })}
-        >
-          <option>Producción</option>
-          <option>Ambiental</option>
-          <option>Inventario</option>
-          <option>Calidad</option>
-          <option>Trazabilidad</option>
-        </Select>
-      </section>
-      <Input
-        label="Lote relacionado"
-        value={f.lote}
-        onChange={(e) => setF({ ...f, lote: e.target.value })}
-      />
-      <label className="block text-sm font-medium text-slate-600">
-        Descripción
-        <textarea
-          value={f.descripcion}
-          onChange={(e) => setF({ ...f, descripcion: e.target.value })}
-          className="mt-1 min-h-24 w-full rounded-xl border border-slate-200 p-3 text-sm outline-none focus:border-emerald-500"
-        />
-      </label>
-      <button className="w-full rounded-xl bg-emerald-700 py-2.5 text-sm font-semibold text-white">
-        Asignar tarea
-      </button>
-    </form>
-  );
-}
-function PersonForm({ onSubmit }) {
-  const [f, setF] = useState({
-    nombre: "",
-    cargo: "Operario",
-    departamento: "Producción",
-    contacto: "",
-  });
-  return (
-    <form
-      className="space-y-4"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit(f);
-      }}
-    >
-      <Input
-        label="Nombre completo"
-        value={f.nombre}
-        onChange={(e) => setF({ ...f, nombre: e.target.value })}
-        required
-      />
-      <Select
-        label="Cargo"
-        value={f.cargo}
-        onChange={(e) => setF({ ...f, cargo: e.target.value })}
+      )}
+
+      <Modal
+        abierto={modal?.tipo === "persona"}
+        onCerrar={() => setModal(null)}
+        titulo={modal?.persona ? `Editar a ${modal.persona.nombre}` : "Nuevo colaborador"}
+        descripcion={modal?.persona ? undefined : "Queda disponible para asignarle tareas y lotes. Para entrar a AiDEN debe crear su cuenta desde el registro."}
+        pie={
+          <>
+            <Boton variante="secundario" onClick={() => setModal(null)}>
+              Cancelar
+            </Boton>
+            <Boton variante="primario" type="submit" form={idForm}>
+              {modal?.persona ? "Guardar cambios" : "Agregar colaborador"}
+            </Boton>
+          </>
+        }
       >
-        <option>Operario</option>
-        <option>Supervisor</option>
-        <option>Administrador</option>
-      </Select>
-      <Select
-        label="Departamento"
-        value={f.departamento}
-        onChange={(e) => setF({ ...f, departamento: e.target.value })}
-      >
-        <option>Producción</option>
-        <option>Calidad</option>
-        <option>Ambiental</option>
-        <option>Inventario</option>
-      </Select>
-      <Input
-        label="Contacto"
-        value={f.contacto}
-        onChange={(e) => setF({ ...f, contacto: e.target.value })}
-      />
-      <button className="w-full rounded-xl bg-emerald-700 py-2.5 text-sm font-semibold text-white">
-        Crear colaborador
-      </button>
-    </form>
+        <FormularioPersona key={modal?.persona?.id || "nueva"} id={idForm} persona={modal?.persona} onListo={() => setModal(null)} />
+      </Modal>
+      <ModalTarea key={modal?.tarea?.id || "nueva-tarea"} abierto={modal?.tipo === "tarea"} onCerrar={() => setModal(null)} tarea={modal?.tarea} inicial={modal?.inicial} />
+      <ModalTarea abierto={Boolean(tareaParam) && !modal} onCerrar={() => actualizar({ tarea: null })} tarea={tareaParam} />
+    </section>
   );
 }

@@ -1,118 +1,322 @@
-import { useMemo, useState } from "react";
-import { BarChart3, CircleDollarSign, FileSpreadsheet, History, Pencil, Plus, Printer, TrendingDown, TrendingUp, X } from "lucide-react";
+import { useId, useState } from "react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { BarChart3, CircleDollarSign, Download, FilePenLine, Plus, Trash2, TrendingDown, TrendingUp, X } from "lucide-react";
+import { Boton, BotonIcono } from "../ui/Boton";
+import { Entrada, Seleccion } from "../ui/Campo";
+import Cifras from "../ui/Cifras";
+import EncabezadoPagina from "../ui/EncabezadoPagina";
+import Insignia from "../ui/Insignia";
+import { Selector } from "../ui/Campo";
+import { FILA_ENCABEZADO, TD, TH, TR } from "../ui/tabla";
+import Modal from "../ui/Modal";
+import AlertaFormulario from "../ui/AlertaFormulario";
+import { Buscador, Segmentos } from "../ui/Filtros";
+import EtiquetaLote from "../lote/EtiquetaLote";
+import { useDatos } from "../../datos/almacen";
+import { CATEGORIAS_GASTO, CATEGORIAS_INGRESO } from "../../datos/catalogos";
+import { crearCosto, editarCosto, eliminarCosto } from "../../datos/acciones";
+import { costosPorLote, lotesActivos, resumenLote } from "../../datos/selectores";
+import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
+import { useSesion } from "../../hooks/useSesion";
+import { useTitulo } from "../../hooks/useTitulo";
+import { useColoresGrafica } from "../../hooks/useColoresGrafica";
+import { coincide, dinero, dineroCorto, fechaCorta, hoyISO, plural, sumarDias } from "../../utilidades/formato";
+import { descargarCSV } from "../../utilidades/exportar";
 
-const KEY = "aiden-costos";
-const PROD_KEY = "aiden-produccion";
-const CENTER_KEY = "aiden-centros-costo";
-const CLOSE_KEY = "aiden-cierres-costos";
-const DEFAULT_CENTERS = ["Producción café", "Producción tomate", "Calidad fitosanitaria", "Inventario", "Ambiental"];
-const seed = [
-  { id: "CST-001", lote: "LT-2024-089", concepto: "Sustrato y fertilización", categoria: "Insumos", valor: 318000, fecha: "2026-09-03", tipo: "gasto" },
-  { id: "CST-002", lote: "LT-2024-091", concepto: "Material de siembra", categoria: "Insumos", valor: 241000, fecha: "2026-09-04", tipo: "gasto" },
-  { id: "CST-003", lote: "LT-2024-094", concepto: "Jornada de adecuación", categoria: "Mano de obra", valor: 184000, fecha: "2026-09-08", tipo: "gasto" },
-  { id: "CST-004", lote: "LT-2024-089", concepto: "Venta de plantas", categoria: "Ingresos", valor: 720000, fecha: "2026-09-10", tipo: "ingreso" },
+const PERIODOS = [
+  { valor: "mes", etiqueta: "Este mes" },
+  { valor: "90", etiqueta: "90 días" },
+  { valor: "todo", etiqueta: "Todo" },
 ];
-const read = (key, fallback) => { try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } catch { return fallback; } };
-const write = (key, data) => localStorage.setItem(key, JSON.stringify(data));
-const uid = () => `CST-${Date.now().toString(36).toUpperCase()}`;
-const money = (value) => new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 }).format(Number(value) || 0);
-function Modal({ onClose, children }) { return <section className="aiden-modal-fondo fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 p-4 backdrop-blur-sm"><article className="aiden-modal-entrada w-full max-w-lg rounded-2xl border border-slate-200 bg-white shadow-2xl"><header className="flex items-center justify-between border-b border-slate-100 px-5 py-4"><h2 className="font-semibold text-slate-900">Nuevo movimiento</h2><button type="button" onClick={onClose} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100" aria-label="Cerrar"><X size={16} /></button></header><section className="p-5">{children}</section></article></section>; }
-function Input({ label, ...props }) { return <label className="block text-sm font-medium text-slate-600">{label}<input {...props} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" /></label>; }
-function Select({ label, children, ...props }) { return <label className="block text-sm font-medium text-slate-600">{label}<select {...props} className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-emerald-500">{children}</select></label>; }
-function Kpi({ label, value, detail, icon: Icon, tone = "green" }) { const tones = { green: "bg-emerald-50 text-emerald-700", red: "bg-red-50 text-red-700", blue: "bg-sky-50 text-sky-700" }; return <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><span className={`flex h-9 w-9 items-center justify-center rounded-xl ${tones[tone]}`}><Icon size={17} /></span><p className="mt-4 text-2xl font-bold tracking-tight text-slate-950">{value}</p><p className="text-xs font-medium text-slate-600">{label}</p><p className="mt-1 text-[11px] text-slate-400">{detail}</p></article>; }
+
+function enPeriodo(fecha, periodo) {
+  if (periodo === "todo") return true;
+  if (periodo === "mes") return String(fecha).slice(0, 7) === hoyISO().slice(0, 7);
+  return fecha >= sumarDias(hoyISO(), -90);
+}
+
+function FormularioCosto({ id, costo, onListo }) {
+  const datos = useDatos();
+  const sesion = useSesion();
+  const [f, setF] = useState(() => (costo ? { ...costo, valor: String(costo.valor) } : { tipo: "gasto", concepto: "", categoria: CATEGORIAS_GASTO[0], valor: "", fecha: hoyISO(), lote: "" }));
+  const { error, enviar } = useEnvio(onListo);
+  const cambiar = (campo) => (e) => setF((a) => ({ ...a, [campo]: e.target.value }));
+  const categorias = f.tipo === "ingreso" ? CATEGORIAS_INGRESO : CATEGORIAS_GASTO;
+  return (
+    <form
+      id={id}
+      noValidate
+      className="space-y-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+        enviar(() => (costo ? editarCosto(costo.id, f, sesion) : crearCosto(f, sesion)), costo ? "Movimiento actualizado" : (n) => `${n.tipo === "ingreso" ? "Ingreso" : "Gasto"} de ${dinero(n.valor)} registrado`);
+      }}
+    >
+      <AlertaFormulario mensaje={error} />
+      {costo?.origen === "inventario" && <p className="rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-600">Este gasto se generó desde una salida de inventario. Editarlo no cambia el stock.</p>}
+      <Segmentos
+        etiqueta="Tipo"
+        valor={f.tipo}
+        onCambio={(tipo) => setF((a) => ({ ...a, tipo, categoria: (tipo === "ingreso" ? CATEGORIAS_INGRESO : CATEGORIAS_GASTO)[0] }))}
+        opciones={[
+          { valor: "gasto", etiqueta: "Gasto" },
+          { valor: "ingreso", etiqueta: "Ingreso" },
+        ]}
+      />
+      <Entrada etiqueta="Concepto" value={f.concepto} onChange={cambiar("concepto")} placeholder={f.tipo === "ingreso" ? "Ej. Venta de 400 plántulas a Finca La Esperanza" : "Ej. Jornales de trasplante"} data-autofocus />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Seleccion etiqueta="Categoría" value={categorias.includes(f.categoria) ? f.categoria : categorias[0]} onChange={cambiar("categoria")}>
+          {categorias.map((c) => (
+            <option key={c}>{c}</option>
+          ))}
+        </Seleccion>
+        <Entrada etiqueta="Valor (COP)" type="number" min="1" inputMode="numeric" value={f.valor} onChange={cambiar("valor")} ayuda={Number(f.valor) > 0 ? dinero(Number(f.valor)) : undefined} />
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Entrada etiqueta="Fecha" type="date" value={f.fecha} max={hoyISO()} onChange={cambiar("fecha")} />
+        <Seleccion etiqueta="Lote" opcional value={f.lote} onChange={cambiar("lote")} ayuda="Suma al costo por planta del lote.">
+          <option value="">Gasto general del vivero</option>
+          {datos.lotes.map((l) => (
+            <option key={l.id} value={l.lote}>
+              {l.lote} · {l.cultivo}
+              {l.estado === "Cerrado" ? " (cerrado)" : ""}
+            </option>
+          ))}
+        </Seleccion>
+      </div>
+    </form>
+  );
+}
 
 export default function CostosOperativo() {
-  const [rows, setRows] = useState(() => read(KEY, seed));
-  const [lotes] = useState(() => read(PROD_KEY, []));
-  const [filtro, setFiltro] = useState("Todos");
-  const [centroFiltro, setCentroFiltro] = useState("Todos");
-  const [estadoFiltro, setEstadoFiltro] = useState("Todos");
-  const [mes, setMes] = useState(() => new Date().toISOString().slice(0, 7));
-  const [modal, setModal] = useState(false);
-  const [editing, setEditing] = useState(null);
-  const [closures, setClosures] = useState(() => read(CLOSE_KEY, []));
-  const centros = useMemo(() => {
-    const stored = read(CENTER_KEY, DEFAULT_CENTERS);
-    return Array.isArray(stored) && stored.length ? stored : DEFAULT_CENTERS;
-  }, []);
-  const periodRows = rows.filter((r) => String(r.fecha || "").startsWith(mes));
-  const gastos = periodRows.filter((r) => r.tipo === "gasto");
-  const ingresos = periodRows.filter((r) => r.tipo === "ingreso");
-  const totalGastos = gastos.reduce((a, r) => a + Number(r.valor || 0), 0);
-  const totalIngresos = ingresos.reduce((a, r) => a + Number(r.valor || 0), 0);
-  const balance = totalIngresos - totalGastos;
-  const porLote = useMemo(() => lotes.map((l) => {
-    const gasto = rows.filter((r) => r.lote === l.lote && r.tipo === "gasto").reduce((a, r) => a + Number(r.valor || 0), 0);
-    const ingreso = rows.filter((r) => r.lote === l.lote && r.tipo === "ingreso").reduce((a, r) => a + Number(r.valor || 0), 0);
-    return { lote: l.lote, gasto, ingreso, plantas: Number(l.cantidad || 0), costoPlanta: l.cantidad ? gasto / Number(l.cantidad) : 0, resultado: ingreso - gasto };
-  }).filter((r) => r.gasto || r.ingreso), [lotes, rows]);
-  const gastosAsociados = porLote.reduce((sum, row) => sum + (row.gasto > 0 ? row.gasto : 0), 0);
-  const plantasConCostos = porLote.reduce((sum, row) => sum + (row.gasto > 0 ? row.plantas : 0), 0);
-  const costoPlantaPonderado = plantasConCostos ? gastosAsociados / plantasConCostos : 0;
-  const categorias = Object.entries(gastos.reduce((a, r) => { a[r.categoria] = (a[r.categoria] || 0) + Number(r.valor || 0); return a; }, {})).map(([categoria, total]) => ({ categoria, total }));
-  const filtered = periodRows.filter((r) =>
-    (filtro === "Todos" || r.tipo === filtro) &&
-    (centroFiltro === "Todos" || (r.centroCosto || "Sin centro") === centroFiltro) &&
-    (estadoFiltro === "Todos" || (r.estado || "Por validar") === estadoFiltro),
+  const datos = useDatos();
+  const sesion = useSesion();
+  const ejecutar = useAccion();
+  const confirmar = useConfirmar();
+  const colores = useColoresGrafica();
+  const idForm = useId();
+  const [periodo, setPeriodo] = useState("todo");
+  const [tipo, setTipo] = useState("todos");
+  const [lote, setLote] = useState("");
+  const [consulta, setConsulta] = useState("");
+  const [modal, setModal] = useState(null);
+  useTitulo("Costos");
+
+  const delPeriodo = datos.costos.filter((c) => enPeriodo(c.fecha, periodo));
+  const gastosLista = delPeriodo.filter((c) => c.tipo !== "ingreso");
+  const ingresosLista = delPeriodo.filter((c) => c.tipo === "ingreso");
+  const gastos = gastosLista.reduce((s, c) => s + Number(c.valor), 0);
+  const ingresos = ingresosLista.reduce((s, c) => s + Number(c.valor), 0);
+  const activos = lotesActivos(datos.lotes).map((l) => resumenLote(l, datos));
+  const plantas = activos.reduce((s, r) => s + r.plantas, 0);
+  const costoPlanta = plantas ? activos.reduce((s, r) => s + r.gasto, 0) / plantas : 0;
+  const categorias = Object.entries(gastosLista.reduce((m, c) => ({ ...m, [c.categoria]: (m[c.categoria] || 0) + Number(c.valor) }), {}))
+    .map(([categoria, total]) => ({ categoria, total }))
+    .sort((a, b) => b.total - a.total);
+  const porLote = [...costosPorLote(datos.costos)]
+    .map(([codigo, v]) => {
+      const l = datos.lotes.find((x) => x.lote === codigo);
+      return { codigo, ...v, costoPlanta: l && Number(l.cantidad) ? v.gasto / Number(l.cantidad) : 0, cerrado: l?.estado === "Cerrado" };
+    })
+    .sort((a, b) => b.gasto - a.gasto);
+  const movimientos = delPeriodo
+    .filter((c) => (tipo === "todos" || (tipo === "ingreso" ? c.tipo === "ingreso" : c.tipo !== "ingreso")) && (!lote || c.lote === lote) && coincide(`${c.concepto} ${c.categoria} ${c.lote}`, consulta))
+    .sort((a, b) => (a.fecha < b.fecha ? 1 : a.fecha > b.fecha ? -1 : 0));
+  const nombrePeriodo = PERIODOS.find((p) => p.valor === periodo).etiqueta.toLowerCase();
+
+  const borrar = async (c) => {
+    const ok = await confirmar({
+      titulo: "Eliminar movimiento",
+      mensaje: `Se elimina “${c.concepto}” por ${dinero(c.valor)}.${c.lote ? ` El costo de ${c.lote} se recalcula.` : ""}${c.origen === "inventario" ? " No devuelve el stock al inventario." : ""}`,
+      confirmar: "Eliminar",
+      peligro: true,
+    });
+    if (ok) ejecutar(() => eliminarCosto(c.id, sesion), "Movimiento eliminado");
+  };
+
+  const exportar = () =>
+    ejecutar(
+      () => descargarCSV(`aiden-costos-${periodo}`, movimientos.map((c) => ({ Fecha: c.fecha, Tipo: c.tipo, Concepto: c.concepto, Categoría: c.categoria, Lote: c.lote, Valor: c.valor, Origen: c.origen === "inventario" ? "Inventario" : "Manual" }))),
+      (n) => plural(n, "movimiento exportado", "movimientos exportados"),
+    );
+
+  return (
+    <section className="space-y-6">
+      <EncabezadoPagina
+        rotulo="AiDEN / seguimiento"
+        titulo="Costos"
+        descripcion="Registra movimientos y convierte cada gasto en información por lote y por planta."
+        acciones={
+          <>
+            <Boton variante="fantasma" icono={Download} onClick={exportar} disabled={!movimientos.length}>
+              Exportar
+            </Boton>
+            <Boton variante="primario" icono={Plus} onClick={() => setModal({})}>
+              Nuevo movimiento
+            </Boton>
+          </>
+        }
+      />
+
+      <section className="flex flex-wrap items-center gap-2">
+        <span className="text-xs font-semibold text-slate-500">Periodo</span>
+        <Segmentos etiqueta="Periodo" valor={periodo} onCambio={setPeriodo} opciones={PERIODOS} />
+      </section>
+
+      <Cifras
+        items={[
+          { icono: TrendingDown, etiqueta: "Gastos", valor: dinero(gastos), detalle: `${plural(gastosLista.length, "movimiento")} · ${nombrePeriodo}`, tono: "critico" },
+          { icono: TrendingUp, etiqueta: "Ingresos", valor: dinero(ingresos), detalle: `${plural(ingresosLista.length, "movimiento")} · ${nombrePeriodo}` },
+          { icono: CircleDollarSign, etiqueta: "Balance", valor: dinero(ingresos - gastos), detalle: ingresos - gastos < 0 ? "Gastos superiores a ingresos" : "Ingresos cubren los gastos", tono: ingresos - gastos < 0 ? "critico" : "exito" },
+          { icono: BarChart3, etiqueta: "Costo/planta ponderado", valor: dinero(costoPlanta), detalle: `${plantas.toLocaleString("es-CO")} plantas con gastos asociados`, tono: "info" },
+        ]}
+      />
+
+      <section className="grid gap-4 lg:grid-cols-[1.4fr_.9fr]">
+        <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <header>
+            <h2 className="font-semibold text-slate-900">Gasto por categoría</h2>
+            <p className="text-xs text-slate-500">Solo se incluyen gastos registrados · {nombrePeriodo}</p>
+          </header>
+          {categorias.length ? (
+            <div className="mt-4 h-56" role="img" aria-label={`Gasto por categoría: ${categorias.map((c) => `${c.categoria} ${dinero(c.total)}`).join(", ")}`}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={categorias}>
+                  <CartesianGrid vertical={false} stroke={colores.rejilla} className="aiden-chart-grid" />
+                  <XAxis dataKey="categoria" tick={{ fontSize: 10, fill: colores.eje }} axisLine={false} tickLine={false} className="aiden-chart-axis" />
+                  <YAxis tick={{ fontSize: 10, fill: colores.eje }} axisLine={false} tickLine={false} width={64} tickFormatter={(v) => dineroCorto(v)} className="aiden-chart-axis" />
+                  <Tooltip wrapperClassName="aiden-tooltip" cursor={{ fill: colores.rejilla, opacity: 0.5 }} contentStyle={{ background: colores.superficie, border: `1px solid ${colores.rejilla}`, borderRadius: 12, fontSize: 12, color: colores.tinta }} itemStyle={{ color: colores.tinta }} labelStyle={{ color: colores.tinta, fontWeight: 600 }} formatter={(v) => [dinero(v), "Gasto"]} />
+                  <Bar dataKey="total" fill={colores.verde} radius={[6, 6, 0, 0]} maxBarSize={56} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <p className="py-10 text-center text-sm text-slate-500">Sin gastos en este periodo.</p>
+          )}
+        </section>
+        <section className="rounded-2xl bg-slate-950 p-5 text-white">
+          <p className="text-xs font-bold uppercase tracking-wider text-emerald-300">Resultado por lote</p>
+          <p className="mt-1 text-xs text-white/60">Acumulado desde la siembra. Toca un lote para ver sus movimientos.</p>
+          <ul className="mt-4 space-y-2">
+            {porLote.map((r) => (
+              <li key={r.codigo}>
+                <button type="button" onClick={() => setLote(lote === r.codigo ? "" : r.codigo)} aria-pressed={lote === r.codigo} className={`w-full rounded-xl border p-3 text-left hover:bg-white/10 ${lote === r.codigo ? "border-emerald-300/60 bg-white/10" : "border-white/10 bg-white/5"}`}>
+                  <span className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-[11px] font-bold text-emerald-300">{r.codigo}</span>
+                    <span className={`text-sm font-bold ${r.resultado < 0 ? "text-red-300" : "text-emerald-300"}`}>{dinero(r.resultado)}</span>
+                  </span>
+                  <span className="mt-1 block text-xs text-white/70">
+                    Gastos {dinero(r.gasto)}
+                    {r.ingreso ? ` · ingresos ${dinero(r.ingreso)}` : ""}
+                    {!r.cerrado && r.costoPlanta ? ` · ${dinero(r.costoPlanta)} por planta` : ""}
+                  </span>
+                </button>
+              </li>
+            ))}
+            {!porLote.length && <li className="text-sm text-white/60">Asocia movimientos a lotes para calcular resultado.</li>}
+          </ul>
+        </section>
+      </section>
+
+      <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 p-4">
+          <section>
+            <h2 className="font-semibold text-slate-900">Movimientos</h2>
+            <p className="text-xs text-slate-500">Fuente de todos los cálculos anteriores</p>
+          </section>
+          <section className="flex flex-wrap items-center gap-2">
+            <Buscador valor={consulta} onCambio={setConsulta} etiqueta="Buscar movimientos" placeholder="Concepto, categoría o lote" />
+            <Selector value={lote} onChange={(e) => setLote(e.target.value)} aria-label="Filtrar por lote" className="!py-2">
+              <option value="">Todos los lotes</option>
+              {datos.lotes.map((l) => (
+                <option key={l.id} value={l.lote}>
+                  {l.lote}
+                </option>
+              ))}
+            </Selector>
+            <Segmentos
+              etiqueta="Tipo"
+              valor={tipo}
+              onCambio={setTipo}
+              opciones={[
+                { valor: "todos", etiqueta: "Todos" },
+                { valor: "gasto", etiqueta: "gasto" },
+                { valor: "ingreso", etiqueta: "ingreso" },
+              ]}
+            />
+            {lote && (
+              <button type="button" onClick={() => setLote("")} className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+                {lote} <X size={12} aria-hidden="true" />
+                <span className="sr-only">Quitar filtro de lote</span>
+              </button>
+            )}
+          </section>
+        </header>
+        <section className="overflow-x-auto" tabIndex={0}>
+          <table className="w-full min-w-[820px]">
+            <thead>
+              <tr className={FILA_ENCABEZADO}>
+                {["Fecha", "Concepto", "Categoría", "Lote", "Tipo", "Valor", "Acciones"].map((h) => (
+                  <th key={h} className={TH}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {movimientos.map((c) => (
+                <tr key={c.id} className={TR}>
+                  <td className={`${TD} whitespace-nowrap`}>{fechaCorta(c.fecha)}</td>
+                  <td className="px-4 py-3 text-sm text-slate-800">
+                    {c.concepto}
+                    {c.origen === "inventario" && <Insignia className="ml-2">inventario</Insignia>}
+                  </td>
+                  <td className={TD}>{c.categoria}</td>
+                  <td className="px-4 py-3">{c.lote ? <EtiquetaLote codigo={c.lote} /> : <span className="text-xs text-slate-500">General</span>}</td>
+                  <td className="px-4 py-3">
+                    <Insignia tono={c.tipo === "ingreso" ? "exito" : "critico"}>{c.tipo === "ingreso" ? "ingreso" : "gasto"}</Insignia>
+                  </td>
+                  <td className={`px-4 py-3 text-sm font-bold ${c.tipo === "ingreso" ? "text-emerald-700" : "text-red-600"}`}>
+                    {c.tipo === "ingreso" ? "+" : "-"}
+                    {dinero(c.valor)}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="flex gap-1">
+                      <BotonIcono icono={FilePenLine} etiqueta={`Editar ${c.concepto}`} tamano="sm" onClick={() => setModal({ costo: c })} />
+                      <BotonIcono icono={Trash2} etiqueta={`Eliminar ${c.concepto}`} tamano="sm" onClick={() => borrar(c)} className="hover:!bg-red-50 hover:!text-red-600" />
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              {!movimientos.length && (
+                <tr>
+                  <td colSpan={7} className="px-4 py-10 text-center text-sm text-slate-500">
+                    {datos.costos.length ? "Ningún movimiento con estos filtros." : "Sin movimientos. Registra el primer gasto o ingreso."}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <Modal
+        abierto={Boolean(modal)}
+        onCerrar={() => setModal(null)}
+        titulo={modal?.costo ? "Editar movimiento" : "Nuevo movimiento"}
+        pie={
+          <>
+            <Boton variante="secundario" onClick={() => setModal(null)}>
+              Cancelar
+            </Boton>
+            <Boton variante="primario" type="submit" form={idForm}>
+              {modal?.costo ? "Guardar cambios" : "Registrar"}
+            </Boton>
+          </>
+        }
+      >
+        <FormularioCosto key={modal?.costo?.id || "nuevo"} id={idForm} costo={modal?.costo} onListo={() => setModal(null)} />
+      </Modal>
+    </section>
   );
-  const save = (data) => { setRows(data); write(KEY, data); window.dispatchEvent(new Event("aiden-data-change")); };
-  const add = (f) => {
-    const valor = Number(f.valor);
-    if (!f.concepto.trim() || !Number.isFinite(valor) || valor <= 0) return;
-    const record = {
-      ...f,
-      id: editing?.id || uid(),
-      valor,
-      estado: f.estado || "Por validar",
-      centroCosto: f.centroCosto || "Sin centro",
-      origen: f.origen || (f.tipo === "ingreso" ? "Ingreso" : "Operación"),
-      documento: f.documento || "",
-      responsable: f.responsable || "",
-    };
-    const next = editing ? rows.map((row) => row.id === editing.id ? record : row) : [record, ...rows];
-    save(next);
-    setModal(false);
-    setEditing(null);
-  };
-
-  const cerrarMes = () => {
-    const existe = closures.some((item) => item.mes === mes);
-    if (existe) return;
-    const periodRows = rows.filter((row) => String(row.fecha || "").startsWith(mes));
-    const total = periodRows.reduce((sum, row) => sum + (row.tipo === "gasto" ? Number(row.valor || 0) : 0), 0);
-    const ingreso = periodRows.reduce((sum, row) => sum + (row.tipo === "ingreso" ? Number(row.valor || 0) : 0), 0);
-    const next = [{ mes, fechaCierre: new Date().toISOString(), gastos: total, ingresos: ingreso, movimientos: periodRows.length }, ...closures];
-    write(CLOSE_KEY, next);
-    setClosures(next);
-    window.dispatchEvent(new Event("aiden-data-change"));
-  };
-
-  const exportarCSV = () => {
-    if (!filtered.length) return;
-    const headers = ["Fecha", "Origen", "Documento", "Centro de costo", "Lote", "Concepto", "Categoría", "Tipo", "Estado", "Responsable", "Valor"];
-    const csv = "\ufeff" + headers.join(";") + "\n" + filtered.map((row) => [
-      row.fecha, row.origen, row.documento, row.centroCosto, row.lote, row.concepto, row.categoria, row.tipo, row.estado || "Por validar", row.responsable, row.valor,
-    ].map((value) => JSON.stringify(value ?? "")).join(";")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = "aiden-costos-" + mes + ".csv";
-    anchor.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const imprimir = () => window.print();
-  return <section className="space-y-6">
-    <header className="flex flex-wrap items-start justify-between gap-4"><section><p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">AiDEN / seguimiento</p><h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-950">Costos</h1><p className="mt-1 text-sm text-slate-500">Libro operativo por lote, centro de costo, periodo y responsable.</p></section><section className="flex flex-wrap gap-2"><label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-500">Periodo<input type="month" value={mes} onChange={(e) => setMes(e.target.value)} className="border-0 p-0 text-xs outline-none" /></label><button type="button" onClick={exportarCSV} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-600 hover:border-emerald-200"><FileSpreadsheet size={15} />Exportar Excel</button><button type="button" onClick={imprimir} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-600"><Printer size={15} />PDF / imprimir</button><button type="button" onClick={cerrarMes} disabled={closures.some((item) => item.mes === mes)} className="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm font-semibold text-emerald-700 disabled:opacity-50"><History size={15} />Cierre mensual</button><button type="button" onClick={() => { setEditing(null); setModal(true); }} className="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-800"><Plus size={16} />Nuevo movimiento</button></section></header>
-    <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><Kpi label="Gastos" value={money(totalGastos)} detail={`${gastos.length} movimientos`} icon={TrendingDown} tone="red" /><Kpi label="Ingresos" value={money(totalIngresos)} detail={`${ingresos.length} movimientos`} icon={TrendingUp} /><Kpi label="Balance" value={money(balance)} detail={balance >= 0 ? "Ingresos - gastos" : "Gastos superiores a ingresos"} icon={CircleDollarSign} tone={balance >= 0 ? "green" : "red"} /><Kpi label="Costo/planta ponderado" value={money(costoPlantaPonderado)} detail={`${plantasConCostos.toLocaleString("es-CO")} plantas con gastos asociados`} icon={BarChart3} tone="blue" /></section>
-    <section className="grid gap-4 lg:grid-cols-[1.35fr_.65fr]"><article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><header><h2 className="font-semibold text-slate-900">Gasto por categoría</h2><p className="text-xs text-slate-400">Solo se incluyen gastos registrados</p></header><section className="mt-4 h-56"><ResponsiveContainer width="100%" height="100%"><BarChart data={categorias}><CartesianGrid vertical={false} stroke="#eef2ef" /><XAxis dataKey="categoria" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} /><YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${Math.round(v / 1000)}k`} /><Tooltip formatter={(v) => [money(v), "Gasto"]} /><Bar dataKey="total" fill="#176b45" radius={[6, 6, 0, 0]} /></BarChart></ResponsiveContainer></section></article><article className="rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white"><p className="text-xs font-bold uppercase tracking-wider text-emerald-300">Resultado por lote</p><section className="mt-4 space-y-3">{porLote.slice(0, 5).map((r) => <section key={r.lote} className="rounded-xl bg-white/5 p-3"><div className="flex justify-between gap-3"><span className="font-mono text-[11px] text-emerald-300">{r.lote}</span><span className={r.resultado >= 0 ? "text-emerald-300" : "text-red-300"}>{money(r.resultado)}</span></div><p className="mt-1 text-[11px] text-white/45">Costo/planta: {money(r.costoPlanta)}</p></section>)}{porLote.length === 0 && <p className="text-sm text-white/45">Asocia movimientos a lotes para calcular resultado.</p>}</section></article></section>
-    <section className="rounded-2xl border border-slate-200 bg-white shadow-sm"><header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 p-4"><section><h2 className="font-semibold text-slate-900">Libro operativo</h2><p className="text-xs text-slate-400">{filtered.length} movimientos visibles · {closures.some((item) => item.mes === mes) ? "Mes cerrado" : "Periodo abierto"}</p></section><section className="flex flex-wrap gap-1"><select value={filtro} onChange={(e) => setFiltro(e.target.value)} className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs"><option>Todos</option><option value="gasto">gasto</option><option value="ingreso">ingreso</option></select><select value={centroFiltro} onChange={(e) => setCentroFiltro(e.target.value)} className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs"><option>Todos</option>{centros.map((center) => <option key={center}>{typeof center === "string" ? center : center.nombre}</option>)}</select><select value={estadoFiltro} onChange={(e) => setEstadoFiltro(e.target.value)} className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs"><option>Todos</option><option>Imputado</option><option>Por validar</option></select></section></header><section className="overflow-x-auto"><table className="w-full min-w-[1080px]"><thead><tr className="bg-slate-50">{["Fecha", "Origen", "Documento", "Centro", "Lote", "Concepto", "Tipo", "Estado", "Valor", "Acciones"].map((h) => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wider text-slate-400">{h}</th>)}</tr></thead><tbody>{filtered.map((r) => <tr key={r.id} className="border-t border-slate-100"><td className="px-4 py-3 text-xs text-slate-500">{r.fecha}</td><td className="px-4 py-3 text-xs text-slate-500">{r.origen || "Operación"}</td><td className="px-4 py-3 font-mono text-[11px] text-slate-500">{r.documento || "—"}</td><td className="px-4 py-3 text-xs text-slate-500">{r.centroCosto || "Sin centro"}</td><td className="px-4 py-3 font-mono text-xs text-emerald-700">{r.lote || "—"}</td><td className="px-4 py-3 text-sm font-medium text-slate-800">{r.concepto}</td><td className="px-4 py-3"><span className={"rounded-full px-2 py-1 text-[10px] font-bold " + (r.tipo === "ingreso" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700")}>{r.tipo}</span></td><td className="px-4 py-3"><span className={"rounded-full px-2 py-1 text-[10px] font-bold " + ((r.estado || "Por validar") === "Imputado" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700")}>{r.estado || "Por validar"}</span></td><td className={"px-4 py-3 text-sm font-bold " + (r.tipo === "ingreso" ? "text-emerald-700" : "text-red-600")}>{r.tipo === "ingreso" ? "+" : "-"}{money(r.valor)}</td><td className="px-4 py-3"><button type="button" onClick={() => { setEditing(r); setModal(true); }} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100" title="Editar"><Pencil size={14} /></button></td></tr>)}</tbody></table></section></section>
-    {modal && <Modal onClose={() => { setModal(false); setEditing(null); }}><CostForm lotes={lotes} centros={centros} initial={editing} onSubmit={add} /></Modal>}
-  </section>;
-}
-function CostForm({ lotes, centros, initial, onSubmit }) {
-  const [f, setF] = useState(() => initial || ({ tipo: "gasto", concepto: "", categoria: "Insumos", valor: "", fecha: new Date().toISOString().slice(0, 10), lote: "", centroCosto: centros?.[0] || "Sin centro", origen: "Operación", documento: "", responsable: "", estado: "Por validar" }));
-  return <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); onSubmit(f); }}><section className="grid gap-3 sm:grid-cols-2"><Select label="Tipo" value={f.tipo} onChange={(e) => setF({ ...f, tipo: e.target.value })}><option value="gasto">Gasto</option><option value="ingreso">Ingreso</option></Select><Select label="Categoría" value={f.categoria} onChange={(e) => setF({ ...f, categoria: e.target.value })}><option>Insumos</option><option>Mano de obra</option><option>Transporte</option><option>Tratamientos</option><option>Servicios</option><option>Otros</option></Select></section><Input label="Concepto" value={f.concepto} onChange={(e) => setF({ ...f, concepto: e.target.value })} required /><section className="grid gap-3 sm:grid-cols-2"><Input label="Valor COP" type="number" min="1" value={f.valor} onChange={(e) => setF({ ...f, valor: e.target.value })} required /><Input label="Fecha" type="date" value={f.fecha} onChange={(e) => setF({ ...f, fecha: e.target.value })} /></section><section className="grid gap-3 sm:grid-cols-2"><Select label="Centro de costo" value={f.centroCosto} onChange={(e) => setF({ ...f, centroCosto: e.target.value })}>{(centros || []).map((center) => <option key={typeof center === "string" ? center : center.id}>{typeof center === "string" ? center : center.nombre}</option>)}<option>Sin centro</option></Select><Select label="Estado contable" value={f.estado || "Por validar"} onChange={(e) => setF({ ...f, estado: e.target.value })}><option>Imputado</option><option>Por validar</option></Select></section><section className="grid gap-3 sm:grid-cols-2"><Input label="Origen" value={f.origen || "Operación"} onChange={(e) => setF({ ...f, origen: e.target.value })} /><Input label="Documento" value={f.documento || ""} onChange={(e) => setF({ ...f, documento: e.target.value })} /></section><Select label="Lote asociado" value={f.lote} onChange={(e) => setF({ ...f, lote: e.target.value })}><option value="">Sin lote</option>{lotes.map((l) => <option key={l.id}>{l.lote}</option>)}</Select><button className="w-full rounded-xl bg-emerald-700 py-2.5 text-sm font-semibold text-white">{initial ? "Guardar cambios" : "Guardar movimiento"}</button></form>;
 }

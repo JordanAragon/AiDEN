@@ -1,75 +1,25 @@
-import { useEffect, useState } from "react";
-import {
-  leerConfiguracion,
-  leerDato,
-  obtenerAlertasAmbientales,
-  suscribirseADatos,
-} from "../utilidades/datosOperativos";
+import { useDatos } from "../datos/almacen";
+import { alertas as calcularAlertas, lotesActivos, tareaVencida } from "../datos/selectores";
+
+const VISTA_GENERAL = { role: "admin" };
 
 export function useDashboardOperacion() {
-  const [, forceUpdate] = useState(0);
-
-  useEffect(() => suscribirseADatos(() => forceUpdate((value) => value + 1)), []);
-
-  const lotes = leerDato("aiden-produccion", []);
-  const inventario = leerDato("aiden-inventario", []);
-  const calidad = leerDato("aiden-calidad", []);
-  const tareas = leerDato("aiden-tareas", []);
-  const ambiental = leerDato("aiden-ambiental", []);
-  const cfg = leerConfiguracion();
-  const hoy = new Date().toISOString().slice(0, 10);
-
-  const pendientes = tareas.filter((task) => task.estado !== "Completada");
-  const atrasadas = pendientes.filter((task) => task.fecha && task.fecha < hoy);
-  const bajoMinimo = inventario.filter(
-    (row) => Number(row.stock) <= Number(row.minimo),
-  );
-
-  const alertas = [
-    ...calidad
-      .filter(
-        (row) =>
-          (row.estado ?? row.estadoManual) !== "Cerrada" &&
-          row.prioridad === "Alta",
-      )
-      .map((row) => ({
-        id: `cal-${row.id || row.codigo}`,
-        text: `Calidad: ${row.codigo || row.id} · ${row.descripcion || "Requiere revisión"}`,
-        ruta: "/calidad",
-        tipo: "Calidad",
-      })),
-    ...bajoMinimo.map((row) => ({
-      id: `inv-${row.id}`,
-      text: `Inventario: ${row.nombre} bajo mínimo`,
-      ruta: "/inventario",
-      tipo: "Inventario",
-    })),
-    ...obtenerAlertasAmbientales(ambiental, cfg),
-  ];
-
-  const carga = [...new Set(tareas.map((task) => task.responsable).filter(Boolean))].map(
-    (nombre) => ({
-      nombre,
-      total: tareas.filter(
-        (task) =>
-          task.responsable === nombre && task.estado !== "Completada",
-      ).length,
-    }),
-  );
-
+  const datos = useDatos();
+  const activos = lotesActivos(datos.lotes).map((lote) => ({ ...lote, codigo: lote.lote, nombre: lote.cultivo }));
+  const pendientes = datos.tareas.filter((task) => task.estado !== "Completada");
+  const alertas = calcularAlertas(datos, VISTA_GENERAL).map((a) => ({ id: a.id, text: `${a.tipo}: ${a.titulo}`, ruta: a.ruta, tipo: a.tipo }));
   return {
-    lotes,
-    inventario,
-    calidad,
-    tareas,
-    ambiental,
-    cfg,
+    lotes: datos.lotes,
+    inventario: datos.inventario,
+    calidad: datos.calidad,
+    tareas: datos.tareas,
+    ambiental: datos.ambiental,
+    cfg: datos.configuracion,
     pendientes,
-    atrasadas,
+    atrasadas: pendientes.filter((task) => tareaVencida(task)),
     alertas,
-    carga,
-    bajoMinimo,
-    lotesActivos: lotes.filter((lot) => lot.estado !== "Inactivo"),
-    lotesCosecha: lotes.filter((lot) => lot.etapa === "Cosecha"),
+    bajoMinimo: datos.inventario.filter((row) => Number(row.stock) <= Number(row.minimo)),
+    lotesActivos: activos,
+    lotesCosecha: activos.filter((lot) => lot.etapa === "Cosecha"),
   };
 }

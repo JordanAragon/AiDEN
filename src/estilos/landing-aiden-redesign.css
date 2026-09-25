@@ -1336,3 +1336,18 @@
     transition-duration: .001ms !important;
   }
 }
+
+/* Correcciones de legibilidad (sin cambio de diseño):
+   1. `.aiden-redesign a { color: inherit }` pesaba más que el color de los botones
+      y dejaba el texto oscuro sobre el fondo verde bosque.
+   2. El párrafo de Roles heredaba el gris claro pensado para secciones oscuras;
+      Módulos ya tenía esta misma corrección. */
+.aiden-redesign .aiden-button-dark {
+  color: var(--white);
+}
+.aiden-redesign .aiden-button-light {
+  color: var(--ink);
+}
+.aiden-roles .aiden-section-header > p {
+  color: #68736b;
+}

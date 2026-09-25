@@ -1,425 +1,250 @@
-import { useEffect, useMemo, useState } from "react";
-import { getSession, register, resetPassword } from "../../utilidades/autenticacion";
-import { leerAuditoria, registrarAuditoria } from "../../utilidades/auditoria";
-import {
-  Bell,
-  CheckCircle2,
-  Gauge,
-  Save,
-  Settings,
-  ShieldCheck,
-  KeyRound,
-  Pencil,
-  Plus,
-  UserPlus,
-  Users,
-} from "lucide-react";
+import { useRef, useState } from "react";
+import { Bell, Database, Download, Gauge, MapPin, RotateCcw, Save, ShieldCheck, Trash2, Upload } from "lucide-react";
+import { Boton, BotonIcono } from "../ui/Boton";
+import { Entrada } from "../ui/Campo";
+import EncabezadoPagina from "../ui/EncabezadoPagina";
+import Insignia from "../ui/Insignia";
+import Panel from "../ui/Panel";
+import AlertaFormulario from "../ui/AlertaFormulario";
+import { exportarRespaldo, importarRespaldo, useDatos } from "../../datos/almacen";
+import { CONFIG_INICIAL } from "../../datos/catalogos";
+import { crearZona, eliminarZona, guardarConfiguracion, restablecerDemo } from "../../datos/acciones";
+import { evaluarLectura, ultimasLecturas } from "../../datos/selectores";
+import { useAccion, useAviso, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
+import { useSesion } from "../../hooks/useSesion";
+import { useTitulo } from "../../hooks/useTitulo";
+import { descargarTexto } from "../../utilidades/exportar";
+import { hoyISO, numero, plural } from "../../utilidades/formato";
 
-const KEY = "aiden-configuracion";
-const defaults = {
-  tempMin: 18,
-  tempMax: 27,
-  humMin: 55,
-  humMax: 80,
-  notificaciones: "Activadas",
-};
-const read = () => {
-  try {
-    const raw = localStorage.getItem(KEY);
-    return raw ? { ...defaults, ...JSON.parse(raw) } : defaults;
-  } catch {
-    return defaults;
-  }
-};
-const write = (data) => { localStorage.setItem(KEY, JSON.stringify(data)); window.dispatchEvent(new Event("aiden-config-change")); window.dispatchEvent(new Event("aiden-data-change")); };
-const USERS_KEY = "aiden_users";
-const CENTERS_KEY = "aiden-centros-costo";
-const DEFAULT_CENTERS = [
-  { id: "CC-001", nombre: "Producción café", modulo: "Producción", responsable: "Supervisor", estado: "Activo" },
-  { id: "CC-002", nombre: "Producción tomate", modulo: "Producción", responsable: "Supervisor", estado: "Activo" },
-  { id: "CC-003", nombre: "Calidad fitosanitaria", modulo: "Calidad", responsable: "Supervisor", estado: "Activo" },
-  { id: "CC-004", nombre: "Inventario", modulo: "Inventario", responsable: "Administrador", estado: "Activo" },
+const CAMPOS = [
+  ["tempMin", "Temperatura mínima (°C)"],
+  ["tempMax", "Temperatura máxima (°C)"],
+  ["humMin", "Humedad mínima (%)"],
+  ["humMax", "Humedad máxima (%)"],
 ];
-const readList = (key, fallback) => { try { const raw = localStorage.getItem(key); const value = raw ? JSON.parse(raw) : fallback; return Array.isArray(value) ? value : fallback; } catch { return fallback; } };
-const roleLabel = (role) => ({ admin: "Administrador", supervisor: "Supervisor", operario: "Operario" }[role] || role);
 
-export default function ConfiguracionOperativo() {
-  const [rules, setRules] = useState(read);
-  const [saved, setSaved] = useState(false);
-  const [users, setUsers] = useState(() => readList(USERS_KEY, []));
-  const [centers, setCenters] = useState(() => readList(CENTERS_KEY, DEFAULT_CENTERS));
-  const [auditVersion, setAuditVersion] = useState(0);
-  const update = (key, value) => {
-    setSaved(false);
-    setRules((prev) => ({ ...prev, [key]: value }));
-  };
-  const save = () => {
-    const normalized = {
-      ...rules,
-      tempMin: Number(rules.tempMin),
-      tempMax: Number(rules.tempMax),
-      humMin: Number(rules.humMin),
-      humMax: Number(rules.humMax),
-    };
-    write(normalized);
-    setRules(normalized);
-    window.dispatchEvent(new Event("aiden-config-change"));
-    window.dispatchEvent(new Event("aiden-data-change"));
-    setSaved(true);
-  };
-  const valid = rules.tempMin < rules.tempMax && rules.humMin < rules.humMax;
-  const session = getSession();
-  const activeUsers = users.filter((user) => (user.status ?? "Activo") === "Activo").length;
-  const activeCenters = centers.filter((center) => center.estado === "Activo").length;
-  const audit = useMemo(() => leerAuditoria(20), [auditVersion]);
-  const summary = useMemo(
-    () => [
-      {
-        label: "Temperatura",
-        value: `${rules.tempMin}–${rules.tempMax} °C`,
-        icon: Gauge,
-      },
-      {
-        label: "Humedad",
-        value: `${rules.humMin}–${rules.humMax}%`,
-        icon: Gauge,
-      },
-      { label: "Alertas", value: rules.notificaciones, icon: Bell },
-    ],
-    [rules],
-  );
-  const refreshAdminData = () => {
-    setUsers(readList(USERS_KEY, []));
-    setCenters(readList(CENTERS_KEY, DEFAULT_CENTERS));
-    setAuditVersion((value) => value + 1);
-  };
+const desde = (cfg) => ({ tempMin: String(cfg.tempMin), tempMax: String(cfg.tempMax), humMin: String(cfg.humMin), humMax: String(cfg.humMax), notificaciones: cfg.notificaciones || "Activadas" });
 
-  const createUser = () => {
-    const name = window.prompt("Nombre completo del nuevo usuario:");
-    const email = window.prompt("Correo electrónico:");
-    const password = window.prompt("Contraseña temporal (mínimo 8 caracteres):");
-    if (!name || !email || !password || password.length < 8) return;
-    const role = window.prompt("Rol: admin, supervisor u operario", "operario") || "operario";
-    if (!["admin", "supervisor", "operario"].includes(role)) return;
-    const result = register({ name, email, password });
-    if (!result.ok) {
-      window.alert(result.message);
-      return;
-    }
-    const current = readList(USERS_KEY, []);
-    const cleanEmail = String(email).trim().toLowerCase();
-    const next = current.map((user) => user.email === cleanEmail ? { ...user, role, status: "Activo" } : user);
-    localStorage.setItem(USERS_KEY, JSON.stringify(next));
-    registrarAuditoria({
-      accion: "Creación",
-      modulo: "Usuarios y roles",
-      entidad: cleanEmail,
-      detalle: name + " creado como " + roleLabel(role) + ".",
-      usuario: session?.name,
-      despues: { name, email: cleanEmail, role, status: "Activo" },
-    });
-    refreshAdminData();
-    window.dispatchEvent(new Event("aiden-user-change"));
-  };
+function Zonas() {
+  const datos = useDatos();
+  const sesion = useSesion();
+  const ejecutar = useAccion();
+  const confirmar = useConfirmar();
+  const [nombre, setNombre] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const { error, enviar } = useEnvio(() => {
+    setNombre("");
+    setDescripcion("");
+  });
 
-  const editUser = (user) => {
-    const name = window.prompt("Nombre completo:", user.name);
-    const role = window.prompt("Rol (admin, supervisor u operario):", user.role);
-    if (!name || !["admin", "supervisor", "operario"].includes(role)) return;
-    const next = users.map((item) => item.id === user.id ? { ...item, name, role } : item);
-    localStorage.setItem(USERS_KEY, JSON.stringify(next));
-    registrarAuditoria({
-      accion: "Edición",
-      modulo: "Usuarios y roles",
-      entidad: user.email,
-      detalle: name + " actualizado.",
-      usuario: session?.name,
-      antes: { name: user.name, role: user.role },
-      despues: { name, role },
-    });
-    refreshAdminData();
-    window.dispatchEvent(new Event("aiden-user-change"));
+  const borrar = async (zona) => {
+    const ok = await confirmar({ titulo: `Eliminar ${zona.nombre}`, mensaje: "Sus lecturas pasadas se conservan en el historial, pero la zona deja de aparecer para nuevos lotes y lecturas.", confirmar: "Eliminar zona", peligro: true });
+    if (ok) ejecutar(() => eliminarZona(zona.id, sesion), `${zona.nombre} eliminada`);
   };
-
-  const toggleUser = (user) => {
-    const currentStatus = user.status ?? "Activo";
-    const nextStatus = currentStatus === "Activo" ? "Inactivo" : "Activo";
-    const next = users.map((item) => item.id === user.id ? { ...item, status: nextStatus } : item);
-    localStorage.setItem(USERS_KEY, JSON.stringify(next));
-    registrarAuditoria({
-      accion: "Cambio de estado",
-      modulo: "Usuarios y roles",
-      entidad: user.email,
-      detalle: user.name + ": " + currentStatus + " → " + nextStatus + ".",
-      usuario: session?.name,
-      antes: { status: currentStatus },
-      despues: { status: nextStatus },
-    });
-    refreshAdminData();
-    window.dispatchEvent(new Event("aiden-user-change"));
-  };
-
-  const resetUser = (user) => {
-    const password = window.prompt("Nueva contraseña para " + user.name + ":");
-    if (!password || password.length < 8) return;
-    const result = resetPassword(user.email, password);
-    if (!result.ok) {
-      window.alert(result.message);
-      return;
-    }
-    registrarAuditoria({
-      accion: "Restablecimiento",
-      modulo: "Usuarios y roles",
-      entidad: user.email,
-      detalle: "Se restableció el acceso.",
-      usuario: session?.name,
-    });
-    setAuditVersion((value) => value + 1);
-  };
-
-  const addCenter = () => {
-    const nombre = window.prompt("Nombre del centro de costo:");
-    if (!nombre) return;
-    const modulo = window.prompt("Módulo principal:", "Producción") || "Producción";
-    const responsable = window.prompt("Responsable:", "Supervisor") || "Supervisor";
-    const newCenter = {
-      id: "CC-" + String(centers.length + 1).padStart(3, "0"),
-      nombre,
-      modulo,
-      responsable,
-      estado: "Activo",
-    };
-    const next = [newCenter, ...centers];
-    localStorage.setItem(CENTERS_KEY, JSON.stringify(next));
-    setCenters(next);
-    registrarAuditoria({
-      accion: "Creación",
-      modulo: "Centros de costo",
-      entidad: newCenter.id,
-      detalle: nombre + " creado.",
-      usuario: session?.name,
-      despues: newCenter,
-    });
-  };
-
-  const editCenter = (center) => {
-    const nombre = window.prompt("Nombre:", center.nombre);
-    if (!nombre) return;
-    const next = centers.map((item) => item.id === center.id ? { ...item, nombre } : item);
-    localStorage.setItem(CENTERS_KEY, JSON.stringify(next));
-    setCenters(next);
-    registrarAuditoria({
-      accion: "Edición",
-      modulo: "Centros de costo",
-      entidad: center.id,
-      detalle: nombre + " actualizado.",
-      usuario: session?.name,
-      antes: { nombre: center.nombre },
-      despues: { nombre },
-    });
-  };
-
-  const toggleCenter = (center) => {
-    const nextStatus = center.estado === "Activo" ? "Inactivo" : "Activo";
-    const next = centers.map((item) => item.id === center.id ? { ...item, estado: nextStatus } : item);
-    localStorage.setItem(CENTERS_KEY, JSON.stringify(next));
-    setCenters(next);
-    registrarAuditoria({
-      accion: "Cambio de estado",
-      modulo: "Centros de costo",
-      entidad: center.id,
-      detalle: center.nombre + ": " + center.estado + " → " + nextStatus + ".",
-      usuario: session?.name,
-    });
-  };
-
-  const exportRows = (rows, filename) => {
-    if (!rows.length) return;
-    const headers = Object.keys(rows[0]);
-    const csv = "\ufeff" + headers.join(";") + "\n" + rows.map((row) => headers.map((h) => JSON.stringify(row[h] ?? "")).join(";")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
-
-  useEffect(() => {
-    const refresh = () => {
-      setUsers(readList(USERS_KEY, []));
-      setCenters(readList(CENTERS_KEY, DEFAULT_CENTERS));
-      setAuditVersion((value) => value + 1);
-    };
-    window.addEventListener("aiden-user-change", refresh);
-    window.addEventListener("aiden-audit-change", refresh);
-    window.addEventListener("storage", refresh);
-    return () => {
-      window.removeEventListener("aiden-user-change", refresh);
-      window.removeEventListener("aiden-audit-change", refresh);
-      window.removeEventListener("storage", refresh);
-    };
-  }, []);
 
   return (
-    <section className="space-y-6">
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <section>
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">
-            AiDEN / sistema
-          </p>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-950">
-            Configuración
-          </h1>
-          <p className="mt-1 max-w-2xl text-sm text-slate-500">
-            Define reglas que sí afectan la operación. Los umbrales ambientales
-            se usan para calcular las alertas del módulo Ambiental.
-          </p>
-        </section>
-        <button
-          type="button"
-          onClick={save}
-          disabled={!valid}
-          className="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          <Save size={16} />
-          Guardar cambios
-        </button>
-      </header>
+    <Panel icono={MapPin} titulo="Zonas del vivero" descripcion="Donde se ubican los lotes y se toman las lecturas." cuerpo="">
+      <ul className="divide-y divide-slate-100">
+        {datos.zonas.map((zona) => {
+          const lotes = datos.lotes.filter((l) => l.ubicacion === zona.nombre && l.estado !== "Cerrado").length;
+          return (
+            <li key={zona.id} className="flex items-center gap-3 px-5 py-3">
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-medium text-slate-900">{zona.nombre}</span>
+                {zona.descripcion && <span className="block truncate text-xs text-slate-500">{zona.descripcion}</span>}
+              </span>
+              <Insignia tono={lotes ? "exito" : "neutral"}>{plural(lotes, "lote activo", "lotes activos")}</Insignia>
+              <BotonIcono icono={Trash2} etiqueta={`Eliminar ${zona.nombre}`} tamano="sm" onClick={() => borrar(zona)} className="hover:!bg-red-50 hover:!text-red-600" />
+            </li>
+          );
+        })}
+      </ul>
+      <form
+        noValidate
+        className="border-t border-slate-200 p-5"
+        onSubmit={(e) => {
+          e.preventDefault();
+          enviar(() => crearZona({ nombre, descripcion }, sesion), (z) => `${z.nombre} agregada`);
+        }}
+      >
+        <AlertaFormulario mensaje={error} />
+        <div className="grid gap-3 sm:grid-cols-[1fr_1.4fr_auto] sm:items-end">
+          <Entrada etiqueta="Nueva zona" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Ej. Invernadero 3" />
+          <Entrada etiqueta="Descripción" opcional value={descripcion} onChange={(e) => setDescripcion(e.target.value)} placeholder="Tipo de cubierta, uso o capacidad" />
+          <Boton variante="secundario" type="submit">
+            Agregar
+          </Boton>
+        </div>
+      </form>
+    </Panel>
+  );
+}
+
+function Formulario({ cfg }) {
+  const datos = useDatos();
+  const sesion = useSesion();
+  const [f, setF] = useState(() => desde(cfg));
+  const { error, enviar } = useEnvio();
+  const numericos = { tempMin: Number(f.tempMin), tempMax: Number(f.tempMax), humMin: Number(f.humMin), humMax: Number(f.humMax) };
+  const validos = CAMPOS.every(([k]) => f[k] !== "" && Number.isFinite(Number(f[k])));
+  const cambios = CAMPOS.some(([k]) => Number(f[k]) !== Number(cfg[k])) || f.notificaciones !== (cfg.notificaciones || "Activadas");
+  const ultimas = ultimasLecturas(datos.ambiental);
+  const enAlerta = validos ? datos.zonas.filter((z) => evaluarLectura(ultimas.get(z.nombre), numericos).fuera).map((z) => z.nombre) : [];
+  const guardar = () => enviar(() => guardarConfiguracion(f, sesion), "Cambios guardados");
+
+  return (
+    <>
+      <EncabezadoPagina
+        rotulo="AiDEN / sistema"
+        titulo="Configuración"
+        descripcion="Define reglas que sí afectan la operación. Los umbrales ambientales se usan para calcular las alertas del módulo Ambiental, las notificaciones y los tableros."
+        acciones={
+          <Boton variante="primario" icono={Save} onClick={guardar} disabled={!cambios}>
+            Guardar cambios
+          </Boton>
+        }
+      />
+
       <section className="grid gap-4 sm:grid-cols-3">
-        {summary.map(({ label, value, icon: Icon }) => (
-          <article
-            key={label}
-            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
-          >
+        {[
+          [Gauge, `${cfg.tempMin}–${cfg.tempMax} °C`, "Temperatura"],
+          [Gauge, `${cfg.humMin}–${cfg.humMax}%`, "Humedad"],
+          [Bell, cfg.notificaciones === "Desactivadas" ? "Desactivadas" : "Activadas", "Alertas"],
+        ].map(([Icono, valor, etiqueta]) => (
+          <article key={etiqueta} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-              <Icon size={17} />
+              <Icono size={17} aria-hidden="true" />
             </span>
-            <p className="mt-4 text-lg font-bold text-slate-950">{value}</p>
-            <p className="mt-1 text-xs font-semibold text-slate-500">{label}</p>
+            <p className="mt-4 text-lg font-bold text-slate-950">{valor}</p>
+            <p className="mt-1 text-xs font-semibold text-slate-500">{etiqueta}</p>
           </article>
         ))}
       </section>
+
       <section className="grid gap-4 lg:grid-cols-[1.1fr_.9fr]">
-        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <form
+          noValidate
+          onSubmit={(e) => {
+            e.preventDefault();
+            guardar();
+          }}
+          className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+        >
           <header className="flex items-center gap-2">
-            <Gauge size={18} className="text-emerald-700" />
+            <Gauge size={18} className="text-emerald-700" aria-hidden="true" />
             <section>
-              <h2 className="font-semibold text-slate-900">
-                Umbrales ambientales
-              </h2>
-              <p className="text-xs text-slate-400">
-                Estos valores determinan cuándo una zona aparece en alerta.
-              </p>
+              <h2 className="font-semibold text-slate-900">Umbrales ambientales</h2>
+              <p className="text-xs text-slate-500">Estos valores determinan cuándo una zona aparece en alerta.</p>
             </section>
           </header>
-          <section className="mt-5 grid gap-4 sm:grid-cols-2">
-            <Field
-              label="Temperatura mínima (°C)"
-              value={rules.tempMin}
-              onChange={(v) => update("tempMin", v)}
-            />
-            <Field
-              label="Temperatura máxima (°C)"
-              value={rules.tempMax}
-              onChange={(v) => update("tempMax", v)}
-            />
-            <Field
-              label="Humedad mínima (%)"
-              value={rules.humMin}
-              onChange={(v) => update("humMin", v)}
-            />
-            <Field
-              label="Humedad máxima (%)"
-              value={rules.humMax}
-              onChange={(v) => update("humMax", v)}
-            />
+          <div className="mt-5">
+            <AlertaFormulario mensaje={error} />
+          </div>
+          <section className="grid gap-4 sm:grid-cols-2">
+            {CAMPOS.map(([campo, etiqueta]) => (
+              <Entrada key={campo} etiqueta={etiqueta} type="number" step="0.5" inputMode="decimal" value={f[campo]} onChange={(e) => setF((a) => ({ ...a, [campo]: e.target.value }))} />
+            ))}
           </section>
-          {!valid && (
-            <p className="mt-4 rounded-xl bg-red-50 p-3 text-xs font-medium text-red-700">
-              Cada mínimo debe ser menor que su máximo.
-            </p>
-          )}
-        </article>
+          <p className={`mt-4 rounded-xl p-3 text-xs font-medium ${!validos || Number(f.tempMin) >= Number(f.tempMax) || Number(f.humMin) >= Number(f.humMax) ? "bg-red-50 text-red-600" : enAlerta.length ? "bg-amber-50 text-amber-700" : "bg-emerald-50 text-emerald-700"}`} role="status">
+            {!validos
+              ? "Completa los cuatro valores para ver el efecto."
+              : Number(f.tempMin) >= Number(f.tempMax) || Number(f.humMin) >= Number(f.humMax)
+                ? "Cada mínimo debe ser menor que su máximo."
+                : enAlerta.length
+                  ? `Con este rango, ${plural(enAlerta.length, "zona quedaría", "zonas quedarían")} en alerta según su última lectura: ${enAlerta.join(", ")}.`
+                  : "Con este rango, todas las zonas quedarían dentro según su última lectura."}
+          </p>
+          <div className="mt-4 flex flex-wrap justify-end gap-2">
+            <Boton variante="fantasma" tamano="sm" onClick={() => setF((a) => ({ ...a, ...desde(CONFIG_INICIAL), notificaciones: a.notificaciones }))}>
+              Usar valores recomendados
+            </Boton>
+          </div>
+        </form>
         <article className="rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white">
           <header className="flex items-center gap-2">
-            <ShieldCheck size={18} className="text-emerald-300" />
+            <ShieldCheck size={18} className="text-emerald-300" aria-hidden="true" />
             <h2 className="font-semibold">Comportamiento del sistema</h2>
           </header>
-          <section className="mt-5 space-y-3 text-sm text-white/65">
-            <p>Ambiental usa los umbrales guardados aquí.</p>
-            <p>
-              El centro de notificaciones puede mostrar alertas cuando una
-              lectura los supera.
-            </p>
-            <p>
-              La configuración queda almacenada en este navegador para la V1 y
-              se comparte entre módulos mediante eventos.
-            </p>
+          <section className="mt-5 space-y-3 text-sm text-white/70">
+            <p>Ambiental, las notificaciones y los tableros usan los umbrales guardados aquí.</p>
+            <p>El centro de notificaciones muestra alertas de calidad, ambiente, inventario y tareas vencidas mientras esté activado.</p>
+            <p>La configuración queda almacenada en este navegador y se comparte entre módulos al instante.</p>
           </section>
-          <label className="mt-5 block text-sm font-medium text-white/75">
+          <label className="mt-5 block text-sm font-medium text-white/80">
             Notificaciones
-            <select
-              value={rules.notificaciones}
-              onChange={(e) => update("notificaciones", e.target.value)}
-              className="mt-1 w-full rounded-xl border border-white/10 bg-white/10 px-3 py-2.5 text-sm text-white outline-none"
-            >
-              <option className="text-slate-900">Activadas</option>
-              <option className="text-slate-900">Desactivadas</option>
+            <select value={f.notificaciones} onChange={(e) => setF((a) => ({ ...a, notificaciones: e.target.value }))} className="mt-1 w-full rounded-xl border border-white/10 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none">
+              <option>Activadas</option>
+              <option>Desactivadas</option>
             </select>
           </label>
+          {cambios && <p className="mt-3 text-xs text-emerald-300">Hay cambios sin guardar. Usa “Guardar cambios”.</p>}
         </article>
       </section>
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><Users size={17} /></span><p className="mt-4 text-2xl font-bold text-slate-950">{activeUsers}</p><p className="text-xs font-semibold text-slate-600">Usuarios activos</p><p className="mt-1 text-[11px] text-slate-400">{users.length} cuentas registradas</p></article>
-        <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><ShieldCheck size={17} /></span><p className="mt-4 text-2xl font-bold text-slate-950">3</p><p className="text-xs font-semibold text-slate-600">Roles oficiales</p><p className="mt-1 text-[11px] text-slate-400">Administrador · Supervisor · Operario</p></article>
-        <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><Settings size={17} /></span><p className="mt-4 text-2xl font-bold text-slate-950">{activeCenters}</p><p className="text-xs font-semibold text-slate-600">Centros de costo</p><p className="mt-1 text-[11px] text-slate-400">{centers.length} definidos</p></article>
-        <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><Bell size={17} /></span><p className="mt-4 text-lg font-bold text-slate-950">{rules.notificaciones}</p><p className="text-xs font-semibold text-slate-600">Notificaciones</p><p className="mt-1 text-[11px] text-slate-400">Umbral activo</p></article>
-      </section>
-
-      <section className="grid gap-4 lg:grid-cols-2">
-        <article className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 p-5"><section><h2 className="font-semibold text-slate-900">Usuarios y roles</h2><p className="text-xs text-slate-400">Alta, edición, permisos y recuperación.</p></section><button type="button" onClick={createUser} className="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-3 py-2 text-xs font-semibold text-white"><UserPlus size={14} />Nuevo usuario</button></header>
-          <section className="overflow-x-auto"><table className="w-full min-w-[650px]"><thead><tr className="bg-slate-50">{["Usuario","Rol","Estado","Acciones"].map((h) => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wider text-slate-400">{h}</th>)}</tr></thead><tbody>{users.map((user) => <tr key={user.id} className="border-t border-slate-100"><td className="px-4 py-3"><p className="text-sm font-semibold text-slate-800">{user.name}</p><p className="text-[11px] text-slate-400">{user.email}</p></td><td className="px-4 py-3"><span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-bold text-slate-600">{roleLabel(user.role)}</span></td><td className="px-4 py-3"><button type="button" onClick={() => toggleUser(user)} className={"rounded-full px-2 py-1 text-[10px] font-bold " + ((user.status ?? "Activo") === "Activo" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500")}>{user.status ?? "Activo"}</button></td><td className="px-4 py-3"><section className="flex gap-1"><button type="button" title="Editar" onClick={() => editUser(user)} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"><Pencil size={14} /></button><button type="button" title="Restablecer contraseña" onClick={() => resetUser(user)} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"><KeyRound size={14} /></button></section></td></tr>)}</tbody></table></section>
-        </article>
-
-        <article className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 p-5"><section><h2 className="font-semibold text-slate-900">Centros de costo</h2><p className="text-xs text-slate-400">Estructura compartida con Costos y Reportes.</p></section><button type="button" onClick={addCenter} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:border-emerald-200"><Plus size={14} />Nuevo centro</button></header>
-          <section className="divide-y divide-slate-100">{centers.map((center) => <article key={center.id} className="flex items-center justify-between gap-3 p-4"><section><p className="font-mono text-[10px] text-emerald-700">{center.id}</p><h3 className="text-sm font-semibold text-slate-800">{center.nombre}</h3><p className="text-[11px] text-slate-400">{center.modulo} · {center.responsable}</p></section><section className="flex items-center gap-1"><button type="button" onClick={() => editCenter(center)} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100" title="Editar"><Pencil size={14} /></button><button type="button" onClick={() => toggleCenter(center)} className={"rounded-full px-2 py-1 text-[10px] font-bold " + (center.estado === "Activo" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500")}>{center.estado}</button></section></article>)}</section>
-        </article>
-      </section>
-
-      <article className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <header className="flex items-center justify-between gap-3 border-b border-slate-100 p-5"><section><h2 className="font-semibold text-slate-900">Parámetros y permisos</h2><p className="text-xs text-slate-400">Catálogos base y responsabilidades por rol.</p></section><button type="button" onClick={() => exportRows(users.map(({password, clave, ...u}) => ({Usuario:u.name, Correo:u.email, Rol:roleLabel(u.role), Estado:u.status ?? "Activo"})), "aiden-usuarios.csv")} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600"><Download size={14} />Exportar usuarios</button></header>
-        <section className="grid gap-3 p-4 md:grid-cols-3"><article className="rounded-xl bg-slate-50 p-4"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Administrador</p><p className="mt-2 text-xs leading-5 text-slate-600">Usuarios, configuración, costos, reportes y todos los módulos.</p></article><article className="rounded-xl bg-slate-50 p-4"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Supervisor</p><p className="mt-2 text-xs leading-5 text-slate-600">Producción, inventario, ambiente, calidad, trazabilidad, personal y costos.</p></article><article className="rounded-xl bg-slate-50 p-4"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Operario</p><p className="mt-2 text-xs leading-5 text-slate-600">Producción, ambiente, calidad, trazabilidad y tareas asignadas.</p></article></section>
-      </article>
-
-      <article className="rounded-2xl border border-slate-200 bg-white shadow-sm" id="auditoria">
-        <header className="flex items-center justify-between border-b border-slate-100 p-5"><section><h2 className="font-semibold text-slate-900">Bitácora de auditoría</h2><p className="text-xs text-slate-400">Cambios realizados desde los módulos administrativos.</p></section><span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-bold text-slate-500">{audit.length} registros</span></header>
-        <section className="divide-y divide-slate-100">{audit.slice(0, 10).map((item) => <article key={item.id} className="grid gap-2 p-4 md:grid-cols-[150px_1fr_180px]"><p className="text-xs text-slate-400">{new Date(item.fecha).toLocaleString("es-CO")}</p><section><p className="text-sm font-semibold text-slate-800">{item.accion} · {item.entidad || "Sistema"}</p><p className="mt-1 text-xs text-slate-500">{item.detalle}</p></section><p className="text-xs text-slate-500">{item.usuario || "Sistema"} · {item.modulo}</p></article>)}{!audit.length && <section className="px-5 py-10 text-center text-sm text-slate-400">Aún no hay acciones auditadas.</section>}</section>
-      </article>
-
-      {saved && (
-        <section className="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white shadow-2xl">
-          <CheckCircle2 size={16} className="text-emerald-400" />
-          Configuración guardada
-        </section>
-      )}
-    </section>
+    </>
   );
 }
-function Field({ label, value, onChange }) {
+
+export default function ConfiguracionOperativo() {
+  const datos = useDatos();
+  const aviso = useAviso();
+  const ejecutar = useAccion();
+  const confirmar = useConfirmar();
+  const archivo = useRef(null);
+  const [version, setVersion] = useState(0);
+  useTitulo("Configuración");
+  const registros = ["lotes", "tareas", "trazabilidad", "inventario", "movimientos", "costos", "calidad", "ambiental", "personas"].reduce((s, k) => s + (datos[k]?.length || 0), 0);
+  const cfg = datos.configuracion;
+
+  const importar = async (evento) => {
+    const file = evento.target.files?.[0];
+    evento.target.value = "";
+    if (!file) return;
+    const ok = await confirmar({ titulo: "Importar respaldo", mensaje: `Los datos actuales de este navegador se reemplazan por los de “${file.name}”. Las cuentas de acceso no cambian.`, confirmar: "Reemplazar datos", peligro: true });
+    if (!ok) return;
+    try {
+      importarRespaldo(await file.text());
+      setVersion((v) => v + 1);
+      aviso({ tipo: "exito", titulo: "Respaldo importado", detalle: file.name });
+    } catch (error) {
+      aviso({ tipo: "error", titulo: "No se pudo importar", detalle: error.message });
+    }
+  };
+
+  const restablecer = async () => {
+    const ok = await confirmar({ titulo: "Restablecer datos de demostración", mensaje: "Se borran los lotes, tareas, movimientos y registros de este navegador y se cargan los datos de ejemplo con fechas de hoy. Las cuentas de acceso se conservan.", confirmar: "Restablecer", peligro: true });
+    if (ok && ejecutar(() => restablecerDemo(), "Datos de demostración restablecidos")) setVersion((v) => v + 1);
+  };
+
   return (
-    <label className="block text-sm font-medium text-slate-600">
-      {label}
-      <input
-        type="number"
-        step="0.1"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-800 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-      />
-    </label>
+    <section className="space-y-6">
+      <Formulario key={`cfg-${version}-${cfg.tempMin}-${cfg.tempMax}-${cfg.humMin}-${cfg.humMax}-${cfg.notificaciones}`} cfg={cfg} />
+
+      <section className="grid gap-4 xl:grid-cols-2">
+        <Zonas />
+        <Panel icono={Database} titulo="Datos de este navegador" descripcion={`AiDEN funciona sin servidor: ${numero(registros)} registros guardados localmente. Si borras los datos del navegador, se pierden.`}>
+          <section className="space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
+              <p className="text-sm text-slate-600">Descarga una copia para guardarla o llevarla a otro equipo.</p>
+              <Boton variante="secundario" tamano="sm" icono={Download} onClick={() => ejecutar(() => descargarTexto(`aiden-respaldo-${hoyISO()}.json`, exportarRespaldo()), "Respaldo descargado")}>
+                Exportar respaldo
+              </Boton>
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
+              <p className="text-sm text-slate-600">Carga un respaldo exportado desde AiDEN.</p>
+              <input ref={archivo} type="file" accept="application/json,.json" onChange={importar} className="hidden" aria-label="Archivo de respaldo" tabIndex={-1} />
+              <Boton variante="secundario" tamano="sm" icono={Upload} onClick={() => archivo.current?.click()}>
+                Importar respaldo
+              </Boton>
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-red-50 p-3">
+              <p className="text-sm text-red-600">Vuelve a los datos de ejemplo, con fechas relativas a hoy.</p>
+              <Boton variante="secundario" tamano="sm" icono={RotateCcw} onClick={restablecer}>
+                Restablecer demo
+              </Boton>
+            </div>
+          </section>
+        </Panel>
+      </section>
+    </section>
   );
 }

@@ -1,5 +1,10 @@
 import Rutas from "./routes/Rutas";
+import ProveedorRetroalimentacion from "./components/ui/Proveedores";
 
 export default function App() {
-  return <Rutas />;
+  return (
+    <ProveedorRetroalimentacion>
+      <Rutas />
+    </ProveedorRetroalimentacion>
+  );
 }

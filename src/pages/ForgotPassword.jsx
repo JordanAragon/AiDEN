@@ -2,8 +2,10 @@ import { useState } from "react";
 import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, Leaf, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { resetPassword } from "../utilidades/autenticacion";
+import { useTitulo } from "../hooks/useTitulo";
 
 export default function ForgotPassword() {
+  useTitulo("Recuperar contraseña");
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

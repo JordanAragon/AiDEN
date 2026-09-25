@@ -18,6 +18,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardHeroPreview from "../components/dashboard/DashboardHeroPreview";
+import { useTitulo } from "../hooks/useTitulo";
 import "../estilos/landing-aiden-redesign.css";
 
 const modulos = [
@@ -33,9 +34,9 @@ const modulos = [
 ];
 
 const roles = [
-  ["01", "Administrador", "Visión global", "Usuarios, configuración y control integral del sistema."],
-  ["02", "Supervisor", "Seguimiento", "Coordinación, incidencias y lectura de la operación."],
-  ["03", "Operario", "Ejecución", "Tareas y registros que forman parte del trabajo diario."],
+  ["01", "Administrador", "Visión global", "Usuarios, configuración y control integral del sistema.", "admin"],
+  ["02", "Supervisor", "Seguimiento", "Coordinación, incidencias y lectura de la operación.", "supervisor"],
+  ["03", "Operario", "Ejecución", "Tareas y registros que forman parte del trabajo diario.", "operario"],
 ];
 
 const connections = [
@@ -48,6 +49,7 @@ const connections = [
 ];
 
 export default function Inicio() {
+  useTitulo(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const cerrarMenu = () => setMenuAbierto(false);
 
@@ -110,7 +112,7 @@ export default function Inicio() {
 
         <section className="aiden-modules" id="modulos"><div className="aiden-shell"><header className="aiden-section-header"><div><p className="aiden-index">05 / MÓDULOS</p><h2>Todo el sistema.<br /><em>Cada pieza tiene trabajo.</em></h2></div><p>Las nueve áreas forman una misma operación. El objetivo no es llenar la interfaz de funciones, sino poner cada una donde aporta contexto.</p></header><div className="aiden-bento">{modulos.map(([Icon, nombre, subtitulo, descripcion, ruta, number], index) => <Link to={ruta} key={nombre} className={`aiden-bento-card bento-${index + 1}`}><span className="aiden-bento-number">{number}</span><span className="aiden-bento-icon"><Icon size={18} /></span><span className="aiden-bento-kind">{subtitulo}</span><h3>{nombre}</h3><p>{descripcion}</p><ArrowUpRight size={16} className="aiden-bento-arrow" /></Link>)}</div></div></section>
 
-        <section className="aiden-roles" id="roles"><div className="aiden-shell"><header className="aiden-section-header aiden-section-header-compact"><div><p className="aiden-index">06 / ROLES</p><h2>La misma operación.<br /><em>La vista que corresponde.</em></h2></div><p>La experiencia cambia según la responsabilidad dentro del vivero, evitando cargar a cada perfil con el mismo nivel de información.</p></header><div className="aiden-role-table">{roles.map(([number, role, focus, description]) => <article key={role} className="aiden-role-row"><span className="aiden-role-number">{number}</span><h3>{role}</h3><strong>{focus}</strong><p>{description}</p><Check size={15} aria-hidden="true" /></article>)}</div></div></section>
+        <section className="aiden-roles" id="roles"><div className="aiden-shell"><header className="aiden-section-header aiden-section-header-compact"><div><p className="aiden-index">06 / ROLES</p><h2>La misma operación.<br /><em>La vista que corresponde.</em></h2></div><p>La experiencia cambia según la responsabilidad dentro del vivero, evitando cargar a cada perfil con el mismo nivel de información.</p></header><div className="aiden-role-table">{roles.map(([number, role, focus, description, cuenta]) => <Link key={role} to={`/login?cuenta=${cuenta}`} className="aiden-role-row" aria-label={`${role}: ${description} Entrar con la cuenta de demostración.`}><span className="aiden-role-number">{number}</span><h3>{role}</h3><strong>{focus}</strong><p>{description}</p><Check size={15} aria-hidden="true" /></Link>)}</div></div></section>
 
         <section className="aiden-clarity"><div className="aiden-shell aiden-clarity-grid"><p className="aiden-index">07 / ANTES DE ENTRAR</p><header><h2>Las preguntas importantes deberían responderse <em>antes del botón.</em></h2></header><div className="aiden-clarity-list"><article><span>¿Qué es AiDEN?</span><p>Una plataforma de gestión operativa para organizar y seguir la actividad de un vivero.</p></article><article><span>¿Para quién está pensada?</span><p>Para equipos que participan en la operación y necesitan distintas vistas según su responsabilidad.</p></article><article><span>¿Qué conecta?</span><p>Producción, inventario, trazabilidad, ambiente, calidad, costos, personal, reportes y configuración.</p></article><article><span>¿Qué se ve primero?</span><p>El estado de la operación y las señales que requieren seguimiento, usando los registros existentes del sistema.</p></article></div></div></section>
 

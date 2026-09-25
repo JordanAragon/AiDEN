@@ -125,3 +125,89 @@ html.aiden-dark ::-webkit-scrollbar-thumb:hover {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Complementos: colores que el propio AiDEN ya usaba (KPI azules, bordes
+   de alerta, barras) y que el modo oscuro no cubría. */
+html.aiden-dark .bg-sky-50 {
+  background-color: #12303d !important;
+}
+html.aiden-dark .text-sky-700 {
+  color: #7cc4e4 !important;
+}
+html.aiden-dark .border-amber-200 {
+  border-color: #5a4a22 !important;
+}
+html.aiden-dark .text-amber-900,
+html.aiden-dark .text-amber-800 {
+  color: #f4d58d !important;
+}
+html.aiden-dark .border-red-100 {
+  border-color: #4a2329 !important;
+}
+html.aiden-dark .border-emerald-200,
+html.aiden-dark .border-emerald-300 {
+  border-color: #1f5a3d !important;
+}
+html.aiden-dark .hover\:border-emerald-200:hover {
+  border-color: #2a7050 !important;
+}
+html.aiden-dark .ring-emerald-100 {
+  --tw-ring-color: #16452f !important;
+}
+html.aiden-dark .bg-emerald-100 {
+  background-color: #16452f !important;
+}
+html.aiden-dark .text-emerald-800,
+html.aiden-dark .text-emerald-900 {
+  color: #8ee0ae !important;
+}
+html.aiden-dark .hover\:text-emerald-700:hover,
+html.aiden-dark .hover\:text-emerald-800:hover {
+  color: #68d391 !important;
+}
+html.aiden-dark .bg-emerald-900 {
+  background-color: #176b45 !important;
+}
+html.aiden-dark .text-red-700 {
+  color: #f28b96 !important;
+}
+html.aiden-dark .hover\:bg-red-50:hover {
+  background-color: #3b1d22 !important;
+}
+html.aiden-dark .border-white {
+  border-color: #121815 !important;
+}
+
+/* El body ya se oscurecía (#0b100e), pero el contenedor de la aplicación
+   conservaba #f5f7f5: tarjetas oscuras sobre fondo claro y rótulos verdes
+   ilegibles. Se extiende el mismo fondo oscuro al contenedor. */
+html.aiden-dark .aiden-app-shell {
+  --app-bg: #0b100e;
+  background-color: #0b100e !important;
+}
+html.aiden-dark .bg-\[\#f5f7f5\] {
+  background-color: #0b100e !important;
+}
+html.aiden-dark .text-amber-900\/80 {
+  color: #f4d58d !important;
+}
+html.aiden-dark .bg-white\/70,
+html.aiden-dark .hover\:bg-white:hover {
+  background-color: rgba(18, 24, 21, 0.85) !important;
+}
+html.aiden-dark .hover\:bg-emerald-50\/40:hover,
+html.aiden-dark .hover\:bg-emerald-50\/30:hover {
+  background-color: rgba(22, 69, 47, 0.45) !important;
+}
+/* Formularios de acceso: el vidrio claro quedaba con texto claro encima. */
+html.aiden-dark main[class*="bg-[#f5f7f5]"] {
+  background: #0b100e;
+}
+html.aiden-dark main[class*="bg-[#f5f7f5]"] form {
+  border-color: #26332d;
+  background: rgba(18, 24, 21, 0.9);
+}
+html.aiden-dark main[class*="bg-[#f5f7f5]"] p a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
