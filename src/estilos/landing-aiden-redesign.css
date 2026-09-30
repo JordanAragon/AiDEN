@@ -8,7 +8,7 @@
   --paper: #f7f6f0;
   --cream: #ebe7db;
   --white: #fffdf8;
-  --muted: #667168;
+  --muted: #526057;
   --line: rgba(18, 37, 27, .13);
   --dark-line: rgba(255, 253, 248, .14);
   color: var(--ink);
@@ -228,7 +228,7 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  color: #59675e;
+  color: #445249;
 }
 .aiden-live-dot  {
   width: 7px;
@@ -309,7 +309,7 @@
   align-items: center;
   gap: 11px;
   margin-top: 58px;
-  color: #7a847d;
+  color: #5f6b63;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: .12em;
@@ -359,7 +359,7 @@
   justify-content: space-between;
   gap: 20px;
   padding: 10px 3px 0;
-  color: #7b847d;
+  color: #5f6b63;
   font-size: 8px;
   font-weight: 800;
   text-transform: uppercase;
@@ -375,7 +375,7 @@
   margin: 72px auto 0;
   padding-top: 14px;
   border-top: 1px solid var(--line);
-  color: #818a83;
+  color: #5f6b63;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: .17em;
@@ -395,7 +395,7 @@
   gap: 90px;
 }
 .aiden-index  {
-  color: #818a83;
+  color: #5f6b63;
 }
 .aiden-problem h2  {
   max-width: 790px;
@@ -407,12 +407,12 @@
   padding-top: 9px;
 }
 .aiden-kicker  {
-  color: #7c867e;
+  color: #5c6860;
 }
 .aiden-problem-copy > p:not(.aiden-kicker)  {
   max-width: 430px;
   margin-top: 18px;
-  color: #667168;
+  color: #526057;
   font-size: 15px;
   line-height: 1.8;
 }
@@ -441,7 +441,7 @@
   border-right: 0;
 }
 .aiden-problem-strip span  {
-  color: #98a097;
+  color: #5f6b63;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: .12em;
@@ -455,7 +455,7 @@
 .aiden-problem-strip p  {
   margin-top: 3px;
   max-width: 190px;
-  color: #778178;
+  color: #526057;
   font-size: 9px;
   line-height: 1.6;
 }
@@ -477,12 +477,12 @@
   line-height: .86;
 }
 .aiden-section-header > p  {
-  color: rgba(255,253,248,.64);
+  color: rgba(255,253,248,.78);
   font-size: 14px;
   line-height: 1.8;
 }
 .aiden-section-header-dark .aiden-index  {
-  color: rgba(255,253,248,.45);
+  color: rgba(255,253,248,.78);
 }
 .aiden-section-header-dark h2 em  {
   color: var(--lime);
@@ -616,7 +616,7 @@
   min-width: 0;
 }
 .aiden-kicker-light  {
-  color: rgba(255,253,248,.44);
+  color: rgba(255,253,248,.65);
 }
 .aiden-connection-list  {
   margin-top: 21px;
@@ -631,7 +631,7 @@
   border-bottom: 1px solid var(--dark-line);
 }
 .aiden-connection-list article > span  {
-  color: rgba(255,253,248,.34);
+  color: rgba(255,253,248,.52);
   font-size: 8px;
   font-weight: 800;
 }
@@ -699,7 +699,7 @@
   box-shadow: 0 18px 36px rgba(18,37,27,.07);
 }
 .aiden-evidence-cards span  {
-  color: #899389;
+  color: #5f6b63;
   font-size: 8px;
   font-weight: 800;
 }
@@ -719,7 +719,7 @@
   background: var(--cream);
 }
 .aiden-modules .aiden-section-header > p  {
-  color: #68736b;
+  color: #5f6b63;
 }
 .aiden-bento  {
   display: grid;
@@ -769,7 +769,7 @@
   background: #f2eee5;
 }
 .aiden-bento-number  {
-  color: #8a948b;
+  color: #5f6b63;
   font-size: 8px;
   font-weight: 800;
 }
@@ -792,7 +792,7 @@
 }
 .aiden-bento-kind  {
   margin-top: auto;
-  color: #7f8a81;
+  color: #5f6b63;
 }
 .aiden-bento-card h3  {
   margin-top: 7px;
@@ -802,7 +802,7 @@
 .aiden-bento-card p  {
   max-width: 310px;
   margin-top: 8px;
-  color: #67736a;
+  color: #5f6b63;
   font-size: 10px;
   line-height: 1.6;
 }
@@ -841,7 +841,7 @@
   background: rgba(235,231,219,.48);
 }
 .aiden-role-number  {
-  color: #899289;
+  color: #5f6b63;
   font-size: 8px;
   font-weight: 800;
 }
@@ -849,13 +849,13 @@
   font-size: 24px;
 }
 .aiden-role-row > strong  {
-  color: var(--moss);
+  color: #5f6b63;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: .11em;
 }
 .aiden-role-row p  {
-  color: #6b766d;
+  color: #5f6b63;
   font-size: 10px;
   line-height: 1.6;
 }
@@ -902,7 +902,7 @@
 }
 .aiden-clarity-list p  {
   max-width: 600px;
-  color: #68736b;
+  color: #5f6b63;
   font-size: 12px;
   line-height: 1.7;
 }
@@ -918,7 +918,7 @@
   align-items: center;
 }
 .aiden-index-light  {
-  color: rgba(255,253,248,.44);
+  color: rgba(255,253,248,.52);
 }
 .aiden-final h2  {
   max-width: 850px;
@@ -955,7 +955,7 @@
   position: absolute;
   top: 21px;
   right: 22px;
-  color: rgba(255,253,248,.39);
+  color: rgba(255,253,248,.52);
   font-size: 8px;
   font-weight: 800;
   letter-spacing: .15em;
@@ -973,7 +973,7 @@
 }
 .aiden-final-stamp small  {
   margin-top: 5px;
-  color: rgba(255,253,248,.44);
+  color: rgba(255,253,248,.52);
   font-size: 8px;
   font-weight: 800;
   text-transform: uppercase;
@@ -995,7 +995,7 @@
   grid-template-columns: auto 1fr auto auto;
   align-items: center;
   gap: 20px;
-  color: #768178;
+  color: #5f6b63;
   font-size: 9px;
 }
 .aiden-footer-inner .aiden-brand  {

@@ -1,5 +1,6 @@
 import os
-import http.server, os, socketserver, threading
+import sys
+import http.server, socketserver, threading
 RAIZ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dist")
 BASE = "http://127.0.0.1:4173"
 
@@ -31,6 +32,8 @@ class Registro:
         for f in self.fallos: print("  - " + f)
         print("Consola:", "sin errores ni advertencias" if not self.errores else "")
         for e in self.errores: print("  " + e)
+        if self.fallos or self.errores:
+            raise SystemExit(1)
 
 def entrar(pg, rol):
     nombres = {"admin": "Administrador", "supervisor": "Supervisor", "operario": "Operario"}

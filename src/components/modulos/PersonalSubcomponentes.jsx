@@ -1,29 +1,21 @@
-import { useId, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { AlertCircle, CheckCircle2, ClipboardList, ClipboardPlus, FilePenLine, ListTodo, Phone, Plus, Trash2, Users } from "lucide-react";
-import { Boton, BotonIcono } from "../ui/Boton";
+import { useState } from "react";
+
+import { ClipboardPlus, FilePenLine, Phone } from "lucide-react";
+import { Boton } from "../ui/Boton";
 import { Entrada, Seleccion } from "../ui/Campo";
 import Avatar from "../ui/Avatar";
-import Cifras from "../ui/Cifras";
-import EncabezadoPagina from "../ui/EncabezadoPagina";
 import Insignia from "../ui/Insignia";
 import Modal from "../ui/Modal";
-import EstadoVacio from "../ui/EstadoVacio";
-import Pestanas from "../ui/Pestanas";
-import { FILA_ENCABEZADO, TH, TR } from "../ui/tabla";
 import AlertaFormulario from "../ui/AlertaFormulario";
-import { Buscador, Segmentos } from "../ui/Filtros";
-import { TONO_ESTADO_TAREA, TONO_PRIORIDAD } from "../ui/tonos";
+import { TONO_ESTADO_TAREA } from "../ui/tonos";
 import EtiquetaLote from "../lote/EtiquetaLote";
-import ModalTarea from "../formularios/ModalTarea";
 import { useDatos } from "../../datos/almacen";
 import { CARGO_A_ROL, DEPARTAMENTOS, ROLES } from "../../datos/catalogos";
-import { cambiarEstadoPersona, cambiarEstadoTarea, cambiarRolUsuario, crearPersona, editarPersona, eliminarTarea, marcarCuentaRevisada } from "../../datos/acciones";
-import { lotesActivos, nombrePersona, ordenarTareas, tareaVencida } from "../../datos/selectores";
+import { cambiarEstadoPersona, crearPersona, editarPersona } from "../../datos/acciones";
+import { lotesActivos, ordenarTareas } from "../../datos/selectores";
 import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion, useUsuarios } from "../../hooks/useSesion";
-import { useTitulo } from "../../hooks/useTitulo";
-import { coincide, fechaCorta, hoyISO, plural, vencimiento } from "../../utilidades/formato";
+import { plural, vencimiento } from "../../utilidades/formato";
 
 const CARGOS = Object.keys(CARGO_A_ROL);
 
@@ -45,7 +37,7 @@ export function FormularioPersona({ id, persona, onListo }) {
       <AlertaFormulario mensaje={error} />
       <Entrada etiqueta="Nombre y apellido" value={f.nombre} onChange={cambiar("nombre")} data-autofocus autoComplete="off" />
       <div className="grid gap-4 sm:grid-cols-2">
-        <Seleccion etiqueta="Cargo" value={f.cargo} onChange={cambiar("cargo")} ayuda={persona ? "Si tiene cuenta, el acceso se cambia en Accesos." : undefined}>
+        <Seleccion etiqueta="Cargo" value={f.cargo} onChange={cambiar("cargo")} ayuda={persona ? "Si tiene cuenta, el acceso se cambia en Configuración > Usuarios." : undefined}>
           {CARGOS.map((c) => (
             <option key={c}>{c}</option>
           ))}

@@ -2,6 +2,7 @@ const TODOS = ["admin", "supervisor", "operario"];
 const GESTION = ["admin", "supervisor"];
 
 export const PERMISOS = {
+  "/perfil": TODOS,
   "/dashboard-admin": ["admin"],
   "/dashboard-supervisor": GESTION,
   "/dashboard-operario": TODOS,

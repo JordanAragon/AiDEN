@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, Command, LogOut, Search, User, X } from "lucide-react";
+import { Bell, ChevronDown, Command, LogOut, Search, User, UserCircle2, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDashboardPath, logout } from "../../utilidades/autenticacion";
@@ -336,6 +336,10 @@ export default function BarraSuperior() {
                 <p className="text-sm font-medium text-slate-800">{nombre}</p>
                 <p className="mt-1 text-xs text-slate-500">{session?.email}</p>
               </section>
+              <button type="button" onClick={() => { setShowProfile(false); navigate("/perfil"); }} className="flex w-full items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                <UserCircle2 size={14} aria-hidden="true" />
+                Mi perfil
+              </button>
               <button type="button" onClick={handleLogout} className="flex w-full items-center gap-2 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50">
                 <LogOut size={14} aria-hidden="true" />
                 Cerrar sesión

@@ -32,10 +32,10 @@ export function Segmentos({ opciones, valor, onCambio, etiqueta }) {
             type="button"
             aria-pressed={activo}
             onClick={() => onCambio(opcion.valor)}
-            className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${activo ? "bg-emerald-700 text-white" : "bg-slate-100 text-slate-500 hover:text-slate-700"}`}
+            className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${activo ? "bg-emerald-700 text-white" : "bg-slate-100 text-slate-600 hover:text-slate-700"}`}
           >
             {opcion.etiqueta}
-            {opcion.cuenta !== undefined && <span className={`ml-1.5 ${activo ? "text-emerald-100" : "text-slate-500"}`}>{opcion.cuenta}</span>}
+            {opcion.cuenta !== undefined && <span className={`ml-1.5 ${activo ? "text-emerald-100" : "text-slate-600"}`}>{opcion.cuenta}</span>}
           </button>
         );
       })}

@@ -74,6 +74,9 @@ html.aiden-dark .bg-red-50 {
 html.aiden-dark .text-red-600 {
   color: #f28b96 !important;
 }
+html.aiden-dark .text-red-700 {
+  color: #f28b96 !important;
+}
 html.aiden-dark .bg-emerald-700 {
   background-color: #176b45 !important;
 }
@@ -167,9 +170,6 @@ html.aiden-dark .hover\:text-emerald-800:hover {
 }
 html.aiden-dark .bg-emerald-900 {
   background-color: #176b45 !important;
-}
-html.aiden-dark .text-red-700 {
-  color: #f28b96 !important;
 }
 html.aiden-dark .hover\:bg-red-50:hover {
   background-color: #3b1d22 !important;

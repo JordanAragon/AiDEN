@@ -43,13 +43,16 @@ body  {
   background: var(--fondo);
   color: var(--texto);
 }
-a  {
-  color: inherit;
-  text-decoration: none;
-}
-button,
-a  {
-  font: inherit;
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  a {
+    font: inherit;
+  }
 }
 button  {
   border: 0;

@@ -8,6 +8,7 @@ def auditar(pg, nombre, oscuro=False):
     res = pg.evaluate("async () => (await axe.run(document, {resultTypes:['violations'], runOnly:{type:'tag', values:['wcag2a','wcag2aa','wcag21aa']}})).violations.map(v => [v.id, v.impact, v.nodes.length, v.nodes[0].target.join(' '), (v.nodes[0].failureSummary||'').slice(0,160)])")
     print(f"  {nombre}: {len(res)} tipos de violación")
     for v in res: print("     ", v)
+    r.check(not res, f"{nombre}: sin violaciones WCAG AA")
     return res
 with sync_playwright() as p:
     b = p.chromium.launch()
@@ -20,7 +21,7 @@ with sync_playwright() as p:
         for pub in ["/signup", "/forgot-password", "/terminos", "/no-existe"]:
             pg.goto(BASE + pub); pg.wait_for_timeout(400); auditar(pg, pub)
         pg.goto(BASE + "/login"); pg.wait_for_timeout(300); auditar(pg, "login")
-        for rol, rutas in {"admin": ["/dashboard-admin","/produccion","/inventario","/costos","/personal?vista=accesos","/reportes","/ia","/configuracion","/calidad?incidencia=INC-031", "/calidad", "/trazabilidad?lote=LT-2026-011", "/ambiental?zona=Invernadero%202"], "supervisor": ["/dashboard-supervisor","/ambiental","/trazabilidad"], "operario": ["/dashboard-operario"]}.items():
+        for rol, rutas in {"admin": ["/dashboard-admin","/perfil","/produccion","/inventario","/costos","/personal","/reportes","/ia","/configuracion","/configuracion?vista=usuarios","/calidad?incidencia=INC-031", "/calidad", "/trazabilidad?lote=LT-2026-011", "/ambiental?zona=Invernadero%202"], "supervisor": ["/dashboard-supervisor","/perfil","/ambiental","/trazabilidad"], "operario": ["/dashboard-operario","/perfil"]}.items():
             try:
                 entrar(pg, rol)
             except Exception as e:

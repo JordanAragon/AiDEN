@@ -22,8 +22,8 @@ import { aFecha, fechaHora, haceTiempo, hora, hoyISO, numero, plural } from "../
 function Metric({ label, value, danger = false }) {
   return (
     <section className={`rounded-xl p-3 ${danger ? "bg-red-50" : "bg-slate-50"}`}>
-      <p className="text-[10px] text-slate-500">{label}</p>
-      <p className={`mt-1 text-sm font-bold ${danger ? "text-red-600" : "text-slate-800"}`}>{value}</p>
+      <p className="text-[10px] text-slate-600">{label}</p>
+      <p className={`mt-1 text-sm font-bold ${danger ? "text-red-700" : "text-slate-800"}`}>{value}</p>
     </section>
   );
 }
@@ -147,7 +147,7 @@ export default function AmbientalOperativo() {
                   <p className="text-[11px] uppercase tracking-wider text-slate-500">Zona</p>
                   <h2 className="mt-1 font-semibold text-slate-900">{nombre}</h2>
                 </section>
-                <span className={`rounded-full px-2 py-1 text-[10px] font-bold ${!row ? "bg-slate-100 text-slate-500" : e.fuera ? "bg-red-50 text-red-600" : "bg-emerald-50 text-emerald-700"}`}>{!row ? "Sin datos" : e.fuera ? "Atención" : "Estable"}</span>
+                <span className={`rounded-full px-2 py-1 text-[10px] font-bold ${!row ? "bg-slate-100 text-slate-500" : e.fuera ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-700"}`}>{!row ? "Sin datos" : e.fuera ? "Atención" : "Estable"}</span>
               </header>
               {row ? (
                 <>
