@@ -3,7 +3,6 @@ import { FormularioPersona, PanelPersona } from "./PersonalSubcomponentes";
 import { useSearchParams } from "react-router-dom";
 import { AlertCircle, CheckCircle2, ClipboardList, FilePenLine, ListTodo, Plus, Trash2, Users } from "lucide-react";
 import { Boton, BotonIcono } from "../ui/Boton";
-import Avatar from "../ui/Avatar";
 import Cifras from "../ui/Cifras";
 import EncabezadoPagina from "../ui/EncabezadoPagina";
 import Insignia from "../ui/Insignia";
@@ -11,27 +10,21 @@ import Modal from "../ui/Modal";
 import EstadoVacio from "../ui/EstadoVacio";
 import Pestanas from "../ui/Pestanas";
 import { FILA_ENCABEZADO, TH, TR } from "../ui/tabla";
-import AlertaFormulario from "../ui/AlertaFormulario";
 import { Buscador, Segmentos } from "../ui/Filtros";
 import { TONO_PRIORIDAD } from "../ui/tonos";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import ModalTarea from "../formularios/ModalTarea";
 import { useDatos } from "../../datos/almacen";
-import { CARGO_A_ROL } from "../../datos/catalogos";
 import { cambiarEstadoTarea, eliminarTarea } from "../../datos/acciones";
 import { nombrePersona, ordenarTareas, tareaVencida } from "../../datos/selectores";
 import { useAccion, useConfirmar } from "../../contexto/retroalimentacion";
-import { useSesion } from "../../hooks/useSesion";
+
 import { useTitulo } from "../../hooks/useTitulo";
 import { coincide, fechaCorta, hoyISO, vencimiento } from "../../utilidades/formato";
-
-const CARGOS = Object.keys(CARGO_A_ROL);
-
 
 
 function VistaTareas({ filtroInicial, onEditar }) {
   const datos = useDatos();
-  const sesion = useSesion();
   const ejecutar = useAccion();
   const confirmar = useConfirmar();
   const [estado, setEstado] = useState(filtroInicial === "vencidas" ? "Vencidas" : "Abiertas");
