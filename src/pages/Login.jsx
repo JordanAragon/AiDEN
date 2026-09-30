@@ -245,15 +245,15 @@ export default function Login() {
           </p>
           <section className="aiden-auth-demo" aria-labelledby="titulo-demo">
             <p id="titulo-demo" className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">
-              Cuentas de demostración
+              Accesos por rol
             </p>
-            <p className="mt-1 text-xs text-slate-500">Cada rol ve una aplicación distinta. Contraseña de las tres: aiden123</p>
+            <p className="mt-1 text-xs text-slate-500">Explora el sistema desde la perspectiva de cada rol.</p>
             <ul className="aiden-auth-demo-list">{CUENTAS_DEMO.map((cuenta) => (
               <li key={cuenta.id}>
                 <button
                   type="button"
                   onClick={() => entrar(cuenta.email, cuenta.password)}
-                  className={`aiden-auth-demo-row group w-full text-left ${sugerida?.id === cuenta.id ? "is-suggested" : ""}`}
+                  className="aiden-auth-demo-row group w-full text-left"
                 >
                   <span className="aiden-auth-demo-icon"><User size={13} aria-hidden="true" /></span>
                   <span className="aiden-auth-demo-content">
@@ -268,10 +268,6 @@ export default function Login() {
           </section>
             </>
           )}
-          <p className="mt-8 text-center text-[11px] leading-5 text-slate-400">
-            V1 frontend local · Las credenciales se almacenan únicamente en este
-            navegador durante el desarrollo.
-          </p>
         </section>
       </section>
     </main>
