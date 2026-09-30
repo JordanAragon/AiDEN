@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Mail, Save, ShieldCheck, UserCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { getDashboardPath } from "../utilidades/autenticacion";
 import { Boton } from "../components/ui/Boton";
 import { Entrada } from "../components/ui/Campo";
 import Avatar from "../components/ui/Avatar";
@@ -32,7 +33,7 @@ export default function Perfil() {
         rotulo="AiDEN / cuenta"
         titulo="Mi perfil"
         descripcion="Actualiza tus datos básicos. El rol y los permisos los administra el sistema."
-        acciones={<Boton variante="secundario" onClick={() => navigate(-1)}>Volver</Boton>}
+        acciones={<Boton variante="secundario" onClick={() => navigate(getDashboardPath(sesion?.role))}>Volver al inicio</Boton>}
       />
 
       <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px]">
