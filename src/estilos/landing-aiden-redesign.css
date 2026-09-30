@@ -208,8 +208,8 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0,.86fr) minmax(0,1.14fr);
-  gap: 70px;
+  grid-template-columns: minmax(0,.76fr) minmax(0,1.24fr);
+  gap: 56px;
   align-items: center;
 }
 .aiden-hero-copy  {
@@ -249,9 +249,9 @@
   }
 }
 .aiden-hero h1  {
-  max-width: 720px;
+  max-width: 650px;
   margin-top: 22px;
-  font-size: clamp(56px, 6.6vw, 94px);
+  font-size: clamp(54px, 6.2vw, 88px);
   line-height: .86;
   font-weight: 600;
 }
@@ -308,8 +308,10 @@
   display: flex;
   align-items: center;
   gap: 11px;
-  margin-top: 58px;
-  color: #5f6b63;
+  margin-top: 44px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: #4f5d54;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: .12em;
@@ -325,11 +327,11 @@
 }
 .aiden-product-frame  {
   position: relative;
-  padding: 13px;
-  border: 1px solid rgba(18,37,27,.10);
-  border-radius: 28px;
-  background: rgba(255,253,248,.52);
-  box-shadow: 0 35px 90px rgba(11,43,27,.13), 0 8px 24px rgba(11,43,27,.06);
+  padding: 16px;
+  border: 1px solid rgba(18,37,27,.13);
+  border-radius: 30px;
+  background: rgba(255,253,248,.68);
+  box-shadow: 0 42px 100px rgba(11,43,27,.15), 0 10px 28px rgba(11,43,27,.08);
   transform: perspective(1400px) rotateY(-2.5deg) rotateX(.5deg);
   transition: transform 600ms cubic-bezier(.16,1,.3,1);
 }
@@ -372,7 +374,7 @@
   align-items: center;
   gap: 12px;
   width: min(1240px, calc(100% - 64px));
-  margin: 72px auto 0;
+  margin: 48px auto 0;
   padding-top: 14px;
   border-top: 1px solid var(--line);
   color: #5f6b63;
@@ -386,7 +388,7 @@
   background: var(--line);
 }
 .aiden-problem  {
-  padding: 120px 0 108px;
+  padding: 116px 0 104px;
   background: var(--cream);
 }
 .aiden-problem-grid  {
@@ -687,7 +689,7 @@
   margin-top: 65px;
 }
 .aiden-evidence-cards article  {
-  min-height: 185px;
+  min-height: 210px;
   padding: 18px;
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -704,8 +706,8 @@
   font-weight: 800;
 }
 .aiden-evidence-cards h3  {
-  margin-top: 50px;
-  font-size: 21px;
+  margin-top: 42px;
+  font-size: 23px;
 }
 .aiden-evidence-cards p  {
   max-width: 250px;
@@ -715,7 +717,7 @@
   line-height: 1.6;
 }
 .aiden-modules  {
-  padding: 122px 0 132px;
+  padding: 116px 0 126px;
   background: var(--cream);
 }
 .aiden-modules .aiden-section-header > p  {
@@ -729,7 +731,7 @@
 .aiden-bento-card  {
   position: relative;
   min-width: 0;
-  min-height: 225px;
+  min-height: 242px;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -750,11 +752,11 @@
 }
 .bento-4,.bento-5,.bento-6,.bento-7  {
   grid-column: span 3;
-  min-height: 198px;
+  min-height: 214px;
 }
 .bento-8,.bento-9  {
   grid-column: span 6;
-  min-height: 178px;
+  min-height: 192px;
 }
 .bento-2  {
   background: #edf2e7;
@@ -795,8 +797,8 @@
   color: #5f6b63;
 }
 .aiden-bento-card h3  {
-  margin-top: 7px;
-  font-size: 25px;
+  margin-top: 8px;
+  font-size: 28px;
   line-height: .98;
 }
 .aiden-bento-card p  {
@@ -818,7 +820,7 @@
   color: var(--ink);
 }
 .aiden-roles  {
-  padding: 120px 0 128px;
+  padding: 112px 0 122px;
   background: var(--paper);
 }
 .aiden-section-header-compact  {
@@ -832,7 +834,7 @@
   grid-template-columns: 70px minmax(150px,.55fr) minmax(130px,.45fr) minmax(260px,1fr) 22px;
   gap: 18px;
   align-items: center;
-  min-height: 105px;
+  min-height: 118px;
   border-bottom: 1px solid var(--line);
   transition: padding 260ms cubic-bezier(.22,.8,.2,1), background-color 220ms ease;
 }
@@ -846,7 +848,7 @@
   font-weight: 800;
 }
 .aiden-role-row h3  {
-  font-size: 24px;
+  font-size: 27px;
 }
 .aiden-role-row > strong  {
   color: #5f6b63;
@@ -863,7 +865,7 @@
   color: var(--moss);
 }
 .aiden-clarity  {
-  padding: 114px 0 126px;
+  padding: 104px 0 116px;
   background: var(--cream);
 }
 .aiden-clarity-grid  {
@@ -907,7 +909,7 @@
   line-height: 1.7;
 }
 .aiden-final  {
-  padding: 125px 0 135px;
+  padding: 118px 0 126px;
   color: var(--white);
   background: var(--forest-2);
 }
@@ -923,7 +925,7 @@
 .aiden-final h2  {
   max-width: 850px;
   margin-top: 18px;
-  font-size: clamp(52px, 6.4vw, 88px);
+  font-size: clamp(50px, 6.1vw, 84px);
   line-height: .87;
 }
 .aiden-final h2 em  {
