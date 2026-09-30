@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
-import { Plus, ShieldCheck, Trash2, UserPlus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ArrowUpRight, ShieldCheck, UserPlus, Users } from "lucide-react";
 import { Boton, BotonIcono } from "../ui/Boton";
 import { Entrada, Seleccion } from "../ui/Campo";
 import Avatar from "../ui/Avatar";
@@ -7,7 +8,7 @@ import EstadoVacio from "../ui/EstadoVacio";
 import Insignia from "../ui/Insignia";
 import Modal from "../ui/Modal";
 import { ROLES } from "../../datos/catalogos";
-import { crearCuentaAdministrativa, cambiarRolUsuario, eliminarCuenta, marcarCuentaRevisada } from "../../datos/acciones";
+import { crearCuentaAdministrativa, cambiarRolUsuario, marcarCuentaRevisada } from "../../datos/acciones";
 import { useDatos } from "../../datos/almacen";
 import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion, useUsuarios } from "../../hooks/useSesion";
@@ -75,6 +76,7 @@ export default function UsuariosConfiguracion() {
   const usuarios = useUsuarios();
   const ejecutar = useAccion();
   const confirmar = useConfirmar();
+  const navigate = useNavigate();
   const [modal, setModal] = useState(null);
   const idForm = useId();
   const pendientes = usuarios.filter((u) => !u.revisado).length;
@@ -89,16 +91,7 @@ export default function UsuariosConfiguracion() {
     if (ok) ejecutar(() => cambiarRolUsuario(u.id, rol, sesion), `${u.name} ahora es ${ROLES[rol].toLowerCase()}`);
   };
 
-  const borrar = async (u) => {
-    if (u.id === sesion.id) return;
-    const ok = await confirmar({
-      titulo: `Eliminar cuenta de ${u.name}`,
-      mensaje: "Se elimina el acceso a AiDEN, pero se conserva su ficha de colaborador y su historial operativo.",
-      confirmar: "Eliminar cuenta",
-      peligro: true,
-    });
-    if (ok) ejecutar(() => eliminarCuenta(u.id, sesion), `Cuenta de ${u.name} eliminada`);
-  };
+
 
   return (
     <section className="space-y-5">
@@ -177,9 +170,8 @@ export default function UsuariosConfiguracion() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex justify-end gap-1">
-                          <BotonIcono icono={Plus} etiqueta={`Ver ficha de ${u.name}`} tamano="sm" onClick={() => window.location.assign(`/personal?persona=${u.personaId || ""}`)} className="hover:!bg-emerald-50 hover:!text-emerald-700" />
-                          {!propia && !["usr-admin", "usr-supervisor", "usr-operario"].includes(u.id) && (
-                            <BotonIcono icono={Trash2} etiqueta={`Eliminar cuenta de ${u.name}`} tamano="sm" onClick={() => borrar(u)} className="hover:!bg-red-50 hover:!text-red-600" />
+                          {u.personaId && (
+                            <BotonIcono icono={ArrowUpRight} etiqueta={`Ver ficha de ${u.name}`} tamano="sm" onClick={() => navigate(`/personal?persona=${u.personaId}`)} className="hover:!bg-emerald-50 hover:!text-emerald-700" />
                           )}
                         </div>
                       </td>
