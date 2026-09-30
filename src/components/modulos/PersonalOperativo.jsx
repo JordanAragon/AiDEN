@@ -18,11 +18,11 @@ import { TONO_ESTADO_TAREA, TONO_PRIORIDAD } from "../ui/tonos";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import ModalTarea from "../formularios/ModalTarea";
 import { useDatos } from "../../datos/almacen";
-import { CARGO_A_ROL, DEPARTAMENTOS, ROLES } from "../../datos/catalogos";
-import { cambiarEstadoPersona, cambiarEstadoTarea, cambiarRolUsuario, crearPersona, editarPersona, eliminarTarea, marcarCuentaRevisada } from "../../datos/acciones";
+import { CARGO_A_ROL, DEPARTAMENTOS } from "../../datos/catalogos";
+import { cambiarEstadoPersona, cambiarEstadoTarea, crearPersona, editarPersona, eliminarTarea } from "../../datos/acciones";
 import { lotesActivos, nombrePersona, ordenarTareas, tareaVencida } from "../../datos/selectores";
 import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
-import { useSesion, useUsuarios } from "../../hooks/useSesion";
+import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
 import { coincide, fechaCorta, hoyISO, plural, vencimiento } from "../../utilidades/formato";
 
@@ -139,83 +139,6 @@ function VistaTareas({ filtroInicial, onEditar }) {
   );
 }
 
-function VistaAccesos() {
-  const datos = useDatos();
-  const sesion = useSesion();
-  const usuarios = useUsuarios();
-  const ejecutar = useAccion();
-  const confirmar = useConfirmar();
-
-  const cambiarRol = async (u, rol) => {
-    const ok = await confirmar({
-      titulo: `Cambiar el rol de ${u.name}`,
-      mensaje: `Pasará de ${ROLES[u.role]} a ${ROLES[rol]}. Verá los módulos de ese rol la próxima vez que cargue una vista.`,
-      confirmar: "Cambiar rol",
-    });
-    if (ok) ejecutar(() => cambiarRolUsuario(u.id, rol, sesion), `${u.name} ahora es ${ROLES[rol].toLowerCase()}`);
-  };
-
-  return (
-    <>
-      <p className="border-b border-slate-200 px-5 py-3 text-sm text-slate-500">
-        Las cuentas se guardan en este navegador: es una demostración sin servidor. Las cuentas creadas desde el registro entran como operario hasta que administración confirme su rol.
-      </p>
-      <div className="overflow-x-auto" tabIndex={0}>
-        <table className="w-full min-w-[760px]">
-          <caption className="sr-only">Cuentas con acceso</caption>
-          <thead>
-              <tr className={FILA_ENCABEZADO}>
-              <th className={TH}>Persona</th>
-              <th className={TH}>Correo</th>
-              <th className={TH}>Rol</th>
-              <th className={TH}>Creada</th>
-              <th className={TH}>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {usuarios.map((u) => {
-              const propia = u.id === sesion.id;
-              return (
-                <tr key={u.id} className={TR}>
-                  <td className="px-4 py-3 text-xs text-slate-600">
-                    <span className="flex items-center gap-2.5">
-                      <Avatar nombre={u.name} tamano="sm" />
-                      <span>
-                        <span className="block font-medium text-slate-900">{u.name}</span>
-                        <span className="block text-xs text-slate-500">{datos.personas.some((p) => p.id === u.personaId) ? "Con ficha en Equipo" : "Sin ficha en Equipo"}</span>
-                      </span>
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-xs text-slate-600">{u.email}</td>
-                  <td className="px-4 py-3 text-xs text-slate-600">
-                    <select value={u.role} disabled={propia} onChange={(e) => cambiarRol(u, e.target.value)} aria-label={`Rol de ${u.name}`} className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-700" title={propia ? "No puedes cambiar tu propio rol" : undefined}>
-                      {Object.entries(ROLES).map(([valor, texto]) => (
-                        <option key={valor} value={valor}>
-                          {texto}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="px-4 py-3 text-xs text-slate-600 tabular-nums whitespace-nowrap">{u.creado ? fechaCorta(u.creado) : "Cuenta demo"}</td>
-                  <td className="px-4 py-3 text-xs text-slate-600">
-                    {u.revisado ? (
-                      <Insignia tono="exito">Confirmada</Insignia>
-                    ) : (
-                      <Boton tamano="sm" variante="suave" onClick={() => ejecutar(() => marcarCuentaRevisada(u.id, sesion), `Cuenta de ${u.name} confirmada como ${ROLES[u.role].toLowerCase()}`)}>
-                        Confirmar como {ROLES[u.role].toLowerCase()}
-                      </Boton>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </>
-  );
-}
-
 function Equipo({ onPersona, onAsignar, onNueva }) {
   const datos = useDatos();
   const [consulta, setConsulta] = useState("");
@@ -301,7 +224,6 @@ function Celda({ etiqueta, valor, alerta = false, detalle }) {
 export default function PersonalOperativo() {
   const datos = useDatos();
   const sesion = useSesion();
-  const usuarios = useUsuarios();
   const [parametros, setParametros] = useSearchParams();
   const [modal, setModal] = useState(null);
   const idForm = useId();
@@ -326,7 +248,6 @@ export default function PersonalOperativo() {
   const abiertas = datos.tareas.filter((t) => t.estado !== "Completada");
   const altas = abiertas.filter((t) => t.prioridad === "Alta");
   const completadas = datos.tareas.length - abiertas.length;
-  const porRevisar = usuarios.filter((u) => !u.revisado).length;
   const conCarga = activos.filter((p) => p.cargo !== "Administrador");
 
   return (
@@ -348,9 +269,7 @@ export default function PersonalOperativo() {
           { icono: Users, etiqueta: "Colaboradores", valor: datos.personas.length, detalle: `${activos.length} activos`, onClick: () => actualizar({ vista: null, filtro: null }), activo: vista === "equipo" },
           { icono: ListTodo, etiqueta: "Tareas pendientes", valor: abiertas.length, detalle: `${abiertas.filter((t) => t.estado === "En curso").length} en curso · ${abiertas.filter((t) => tareaVencida(t)).length} vencidas`, tono: "alerta", onClick: () => actualizar({ vista: "tareas", filtro: null }), activo: vista === "tareas" },
           { icono: AlertCircle, etiqueta: "Alta prioridad", valor: altas.length, detalle: "Sin completar", tono: "critico" },
-          admin
-            ? { icono: CheckCircle2, etiqueta: "Cuentas por revisar", valor: porRevisar, detalle: `${usuarios.length} cuentas · ${completadas} tareas completadas`, tono: porRevisar ? "alerta" : "exito", onClick: () => actualizar({ vista: "accesos" }), activo: vista === "accesos" }
-            : { icono: CheckCircle2, etiqueta: "Completadas", valor: completadas, detalle: "Histórico de tareas" },
+          { icono: CheckCircle2, etiqueta: "Completadas", valor: completadas, detalle: "Histórico de tareas" },
         ]}
       />
 
@@ -415,7 +334,6 @@ export default function PersonalOperativo() {
             pestanas={[
               { id: "equipo", etiqueta: "Colaboradores", cuenta: activos.length },
               { id: "tareas", etiqueta: "Tareas", cuenta: abiertas.length },
-              ...(admin ? [{ id: "accesos", etiqueta: "Accesos", cuenta: porRevisar || undefined }] : []),
             ]}
           />
           <div className="h-4" />
@@ -423,7 +341,6 @@ export default function PersonalOperativo() {
         <div role="tabpanel" id={`panel-${vista}`} aria-labelledby={`pestana-${vista}`}>
           {vista === "equipo" && <Equipo onPersona={(id) => actualizar({ persona: id })} onAsignar={(id) => setModal({ tipo: "tarea", inicial: { responsableId: id } })} onNueva={() => setModal({ tipo: "persona" })} />}
           {vista === "tareas" && <VistaTareas key={parametros.get("filtro") || "todas"} filtroInicial={parametros.get("filtro")} onEditar={(t) => setModal({ tipo: "tarea", tarea: t })} />}
-          {vista === "accesos" && <VistaAccesos />}
         </div>
       </section>
 
