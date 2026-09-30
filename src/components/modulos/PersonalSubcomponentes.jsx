@@ -13,7 +13,7 @@ import { useDatos } from "../../datos/almacen";
 import { CARGO_A_ROL, DEPARTAMENTOS, ROLES } from "../../datos/catalogos";
 import { cambiarEstadoPersona, crearPersona, editarPersona } from "../../datos/acciones";
 import { lotesActivos, ordenarTareas } from "../../datos/selectores";
-import { useConfirmar } from "../../contexto/retroalimentacion";
+import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion, useUsuarios } from "../../hooks/useSesion";
 import { plural, vencimiento } from "../../utilidades/formato";
 
