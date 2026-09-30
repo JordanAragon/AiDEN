@@ -31,7 +31,7 @@ export default function Pestanas({ pestanas, activa, onCambio, etiqueta }) {
             className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${seleccionada ? "bg-emerald-700 text-white" : "bg-slate-100 text-slate-600 hover:text-slate-700"}`}
           >
             {pestana.etiqueta}
-            {pestana.cuenta !== undefined && <span className={`ml-1.5 ${seleccionada ? "text-emerald-100" : "text-slate-500"}`}>{pestana.cuenta}</span>}
+            {pestana.cuenta !== undefined && <span className={`ml-1.5 ${seleccionada ? "text-emerald-100" : "text-slate-600"}`}>{pestana.cuenta}</span>}
           </button>
         );
       })}
