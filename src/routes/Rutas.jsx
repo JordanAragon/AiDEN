@@ -11,6 +11,7 @@ const Signup = lazy(() => import("../pages/Signup"));
 const ForgotPassword = lazy(() => import("../pages/ForgotPassword"));
 const InformacionLegal = lazy(() => import("../pages/InformacionLegal"));
 const NoEncontrada = lazy(() => import("../pages/NoEncontrada"));
+const Perfil = lazy(() => import("../pages/Perfil"));
 const DashboardAdmin = lazy(() => import("../pages/DashboardAdmin"));
 const DashboardSupervisor = lazy(() => import("../pages/DashboardSupervisor"));
 const DashboardOperario = lazy(() => import("../pages/DashboardOperario"));
@@ -26,6 +27,7 @@ const ConfiguracionOperativo = lazy(() => import("../components/modulos/Configur
 const ReportesOperativo = lazy(() => import("../components/reportes/ReportesOperativo"));
 
 const VISTAS = {
+  "/perfil": Perfil,
   "/dashboard-admin": DashboardAdmin,
   "/dashboard-supervisor": DashboardSupervisor,
   "/dashboard-operario": DashboardOperario,
