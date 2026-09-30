@@ -37,7 +37,7 @@ export function FormularioPersona({ id, persona, onListo }) {
       <AlertaFormulario mensaje={error} />
       <Entrada etiqueta="Nombre y apellido" value={f.nombre} onChange={cambiar("nombre")} data-autofocus autoComplete="off" />
       <div className="grid gap-4 sm:grid-cols-2">
-        <Seleccion etiqueta="Cargo" value={f.cargo} onChange={cambiar("cargo")} ayuda={persona ? "Si tiene cuenta, el acceso se cambia en Accesos." : undefined}>
+        <Seleccion etiqueta="Cargo" value={f.cargo} onChange={cambiar("cargo")} ayuda={persona ? "Si tiene cuenta, el acceso se cambia en Configuración > Usuarios." : undefined}>
           {CARGOS.map((c) => (
             <option key={c}>{c}</option>
           ))}
