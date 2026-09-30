@@ -3150,3 +3150,498 @@
     min-height: 290px;
   }
 }
+
+
+/* Densidad editorial v3: más información útil, mejor escala de lectura y menos espacio muerto. */
+
+.aiden-hero {
+  padding-bottom: 48px;
+}
+
+.aiden-system {
+  padding: 124px 0 128px;
+}
+
+.aiden-system .aiden-section-header {
+  gap: 86px;
+  margin-bottom: 64px;
+}
+
+.aiden-system .aiden-section-header h2 {
+  max-width: 760px;
+  font-size: clamp(58px, 6.15vw, 86px);
+}
+
+.aiden-system .aiden-section-header > p {
+  max-width: 400px;
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.aiden-operation-map {
+  grid-template-columns: minmax(0,1.24fr) minmax(330px,.7fr);
+  gap: 72px;
+  align-items: stretch;
+}
+
+.aiden-map-visual {
+  min-height: 520px;
+  border-radius: 18px;
+}
+
+.aiden-map-node {
+  padding: 9px 12px;
+  font-size: 8px;
+}
+
+.aiden-map-copy {
+  padding-top: 2px;
+}
+
+.aiden-connection-list {
+  margin-top: 20px;
+}
+
+.aiden-connection-list article {
+  min-height: 78px;
+  padding: 15px 0;
+}
+
+.aiden-connection-list strong {
+  font-size: 15px;
+}
+
+.aiden-connection-list p {
+  margin-top: 4px;
+  color: rgba(255,253,248,.70);
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+.aiden-connection-list small {
+  display: block;
+  margin-top: 5px;
+  max-width: 360px;
+  color: rgba(255,253,248,.42);
+  font-size: 9.5px;
+  line-height: 1.55;
+}
+
+.aiden-connection-list article > svg {
+  flex: 0 0 auto;
+  margin-top: 5px;
+}
+
+.aiden-system-readout {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  margin-top: 18px;
+  border-top: 1px solid rgba(217,234,115,.14);
+  border-bottom: 1px solid rgba(217,234,115,.14);
+}
+
+.aiden-system-readout > div {
+  min-height: 112px;
+  padding: 18px 22px 17px 0;
+}
+
+.aiden-system-readout > div + div {
+  padding-left: 22px;
+  border-left: 1px solid rgba(217,234,115,.11);
+}
+
+.aiden-system-readout span {
+  display: block;
+  color: rgba(255,253,248,.45);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.aiden-system-readout strong {
+  display: block;
+  margin-top: 19px;
+  color: var(--white);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.035em;
+}
+
+.aiden-system-readout small {
+  display: block;
+  margin-top: 4px;
+  color: rgba(255,253,248,.40);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.aiden-evidence {
+  padding: 118px 0 126px;
+}
+
+.aiden-evidence-grid {
+  gap: 70px;
+}
+
+.aiden-evidence h2 {
+  max-width: 1000px;
+  font-size: clamp(54px, 6vw, 82px);
+}
+
+.aiden-evidence header > p {
+  max-width: 620px;
+  margin-top: 25px;
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.aiden-evidence-cards {
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  margin-top: 62px;
+}
+
+.aiden-evidence-cards article,
+.aiden-evidence-cards article + article {
+  min-height: 286px;
+  padding: 23px 24px;
+}
+
+.aiden-evidence-cards article + article {
+  border-left: 1px solid var(--premium-border);
+}
+
+.aiden-evidence-cards h3 {
+  margin-top: 42px;
+  font-size: 30px;
+}
+
+.aiden-evidence-cards p {
+  max-width: 235px;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.72;
+}
+
+.aiden-evidence-detail {
+  display: grid;
+  gap: 5px;
+  margin-top: 24px;
+  padding-top: 13px;
+  border-top: 1px solid var(--premium-border);
+}
+
+.aiden-evidence-detail b {
+  color: #657169;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.aiden-evidence-detail span {
+  color: #38463d;
+  font-size: 10.5px;
+  line-height: 1.55;
+}
+
+.aiden-modules {
+  padding: 118px 0 128px;
+}
+
+.aiden-modules .aiden-section-header {
+  margin-bottom: 64px;
+}
+
+.aiden-modules .aiden-section-header > p {
+  max-width: 400px;
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.aiden-bento-card,
+.bento-1,
+.bento-2,
+.bento-3 {
+  min-height: 242px;
+}
+
+.bento-1,
+.bento-2,
+.bento-3 {
+  min-height: 268px;
+}
+
+.aiden-bento-card {
+  padding: 22px 22px 24px;
+}
+
+.aiden-bento-card h3 {
+  margin-top: 13px;
+  font-size: 31px;
+}
+
+.aiden-bento-card p {
+  max-width: 340px;
+  margin-top: 9px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.aiden-roles {
+  padding: 118px 0 128px;
+}
+
+.aiden-roles .aiden-section-header > p {
+  max-width: 410px;
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.aiden-role-row {
+  min-height: 136px;
+}
+
+.aiden-role-row h3 {
+  font-size: 32px;
+}
+
+.aiden-role-row > strong {
+  font-size: 9px;
+}
+
+.aiden-role-row p {
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.aiden-clarity {
+  padding: 112px 0 122px;
+}
+
+.aiden-clarity-grid {
+  gap: 72px;
+}
+
+.aiden-clarity h2 {
+  max-width: 980px;
+  font-size: clamp(54px, 6vw, 82px);
+}
+
+.aiden-clarity-list {
+  margin-top: 58px;
+}
+
+.aiden-clarity-list article {
+  min-height: 74px;
+  padding: 22px 0;
+  display: grid;
+  grid-template-columns: minmax(220px,.55fr) minmax(0,1fr);
+  gap: 42px;
+  align-items: start;
+}
+
+.aiden-clarity-list span {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.aiden-clarity-list p {
+  max-width: 590px;
+  font-size: 13px;
+  line-height: 1.72;
+}
+
+@media (max-width: 900px) {
+  .aiden-system,
+  .aiden-evidence,
+  .aiden-modules,
+  .aiden-roles,
+  .aiden-clarity {
+    padding-block: 96px 104px;
+  }
+
+  .aiden-system .aiden-section-header {
+    gap: 34px;
+    margin-bottom: 52px;
+  }
+
+  .aiden-operation-map {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+
+  .aiden-map-visual {
+    min-height: 490px;
+  }
+
+  .aiden-connection-list article {
+    min-height: 72px;
+  }
+
+  .aiden-system-readout {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+
+  .aiden-system-readout > div:nth-child(3) {
+    border-left: 0;
+    padding-left: 0;
+    border-top: 1px solid rgba(217,234,115,.11);
+  }
+
+  .aiden-system-readout > div:nth-child(4) {
+    border-top: 1px solid rgba(217,234,115,.11);
+  }
+
+  .aiden-evidence-cards {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+
+  .aiden-evidence-cards article,
+  .aiden-evidence-cards article + article {
+    min-height: 250px;
+  }
+
+  .aiden-evidence-cards article:nth-child(3) {
+    border-left: 0;
+  }
+
+  .aiden-evidence-cards article:nth-child(n + 3) {
+    border-top: 1px solid var(--premium-border);
+  }
+
+  .aiden-bento-card,
+  .bento-1,
+  .bento-2,
+  .bento-3 {
+    min-height: 220px;
+  }
+
+  .aiden-role-row {
+    min-height: 128px;
+  }
+
+  .aiden-clarity-list article {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .aiden-hero {
+    padding-bottom: 42px;
+  }
+
+  .aiden-system,
+  .aiden-evidence,
+  .aiden-modules,
+  .aiden-roles,
+  .aiden-clarity {
+    padding-block: 78px 86px;
+  }
+
+  .aiden-system .aiden-section-header h2,
+  .aiden-evidence h2,
+  .aiden-modules .aiden-section-header h2,
+  .aiden-roles .aiden-section-header h2,
+  .aiden-clarity h2 {
+    font-size: clamp(43px, 12.5vw, 61px);
+  }
+
+  .aiden-system .aiden-section-header > p,
+  .aiden-evidence header > p,
+  .aiden-modules .aiden-section-header > p,
+  .aiden-roles .aiden-section-header > p {
+    font-size: 13px;
+  }
+
+  .aiden-map-visual {
+    min-height: 410px;
+  }
+
+  .aiden-connection-list article {
+    min-height: 82px;
+  }
+
+  .aiden-connection-list strong {
+    font-size: 14px;
+  }
+
+  .aiden-connection-list p {
+    font-size: 11px;
+  }
+
+  .aiden-connection-list small {
+    font-size: 9px;
+  }
+
+  .aiden-system-readout > div {
+    min-height: 98px;
+    padding-right: 16px;
+  }
+
+  .aiden-system-readout > div + div {
+    padding-left: 16px;
+  }
+
+  .aiden-system-readout strong {
+    font-size: 16px;
+  }
+
+  .aiden-evidence-cards {
+    grid-template-columns: 1fr;
+    margin-top: 48px;
+  }
+
+  .aiden-evidence-cards article,
+  .aiden-evidence-cards article + article {
+    min-height: 205px;
+    padding: 19px 0;
+    border-left: 0;
+  }
+
+  .aiden-evidence-cards article:nth-child(n + 3) {
+    border-top: 1px solid var(--premium-border);
+  }
+
+  .aiden-evidence-cards h3 {
+    margin-top: 28px;
+    font-size: 27px;
+  }
+
+  .aiden-evidence-cards p {
+    font-size: 11.5px;
+  }
+
+  .aiden-evidence-detail {
+    margin-top: 18px;
+  }
+
+  .aiden-bento-card p {
+    font-size: 11.5px;
+  }
+
+  .aiden-role-row {
+    min-height: 116px;
+  }
+
+  .aiden-role-row h3 {
+    font-size: 25px;
+  }
+
+  .aiden-role-row p {
+    font-size: 11px;
+  }
+
+  .aiden-clarity-list {
+    margin-top: 45px;
+  }
+
+  .aiden-clarity-list article {
+    padding: 19px 0;
+  }
+
+  .aiden-clarity-list p {
+    font-size: 12px;
+  }
+}
