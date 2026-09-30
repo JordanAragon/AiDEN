@@ -231,7 +231,7 @@ export default function FichaLote({ codigo, onCerrar }) {
         {lote ? (
           <Contenido lote={lote} datos={datos} sesion={sesion} onAccion={setModal} />
         ) : (
-          <p className="py-10 text-center text-sm text-slate-500">No encontramos el lote {codigo}. Puede que se haya restablecido la demo.</p>
+          <p className="py-10 text-center text-sm text-slate-500">No encontramos el lote {codigo}. Puede que el registro ya no esté disponible.</p>
         )}
       </Modal>
       {lote && (
