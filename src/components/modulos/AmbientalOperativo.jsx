@@ -22,7 +22,7 @@ import { aFecha, fechaHora, haceTiempo, hora, hoyISO, numero, plural } from "../
 function Metric({ label, value, danger = false }) {
   return (
     <section className={`rounded-xl p-3 ${danger ? "bg-red-50" : "bg-slate-50"}`}>
-      <p className="text-[10px] text-slate-500">{label}</p>
+      <p className="text-[10px] text-slate-600">{label}</p>
       <p className={`mt-1 text-sm font-bold ${danger ? "text-red-600" : "text-slate-800"}`}>{value}</p>
     </section>
   );
