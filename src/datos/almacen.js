@@ -111,7 +111,7 @@ export function guardar(cambios) {
     instantanea = construirInstantanea();
     emitir();
     if (error?.name === "QuotaExceededError") {
-      throw new Error("El navegador no tiene espacio para guardar más datos. Exporta un respaldo y restablece la demo.", { cause: error });
+      throw new Error("No hay espacio disponible para guardar más datos. Exporta un respaldo y restaura los datos base.", { cause: error });
     }
     throw error;
   }
