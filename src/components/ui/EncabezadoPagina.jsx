@@ -10,7 +10,7 @@ export default function EncabezadoPagina({ rotulo, titulo, descripcion, acciones
         <div className="min-w-0">
           {rotulo && <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">{rotulo}</p>}
           <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-950">{titulo}</h1>
-          {descripcion && <p className="mt-1 max-w-2xl text-sm text-slate-500">{descripcion}</p>}
+          {descripcion && <p className="mt-1 max-w-2xl text-sm text-slate-600">{descripcion}</p>}
           {children}
         </div>
       </section>
