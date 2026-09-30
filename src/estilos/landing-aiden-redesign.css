@@ -2404,3 +2404,749 @@
     filter: none !important;
   }
 }
+
+
+/* Pulido premium v2: dirección de arte más limpia y menos decorativa. */
+
+.aiden-hero-copy::after,
+.aiden-product-frame::after {
+  content: none !important;
+  display: none !important;
+}
+
+.aiden-header {
+  padding: 14px 0;
+  background: rgba(247,246,240,.56);
+  backdrop-filter: blur(22px) saturate(125%);
+}
+
+.aiden-header-inner {
+  min-height: 56px;
+  padding: 6px 7px 6px 13px;
+  border-radius: 15px;
+  background: rgba(255,253,248,.72);
+  box-shadow:
+    0 10px 36px rgba(18,37,27,.045),
+    inset 0 1px 0 rgba(255,255,255,.74);
+}
+
+.aiden-brand-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+}
+
+.aiden-header-links {
+  gap: 27px;
+}
+
+.aiden-header-links a,
+.aiden-header-login {
+  color: #536057;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.aiden-button {
+  min-height: 43px;
+  padding-inline: 18px;
+  border-radius: 999px;
+}
+
+.aiden-button-dark {
+  box-shadow: 0 12px 26px rgba(11,43,27,.11);
+}
+
+.aiden-hero {
+  min-height: min(820px, calc(100vh - 86px));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 92px 0 58px;
+}
+
+.aiden-hero::before {
+  background-image:
+    linear-gradient(rgba(18,37,27,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18,37,27,.025) 1px, transparent 1px);
+  background-size: 96px 96px;
+  mask-image: linear-gradient(to bottom, #000 0, rgba(0,0,0,.35) 48%, transparent 88%);
+}
+
+.aiden-hero::after {
+  top: -330px;
+  right: -240px;
+  width: 760px;
+  height: 760px;
+  background: radial-gradient(circle, rgba(217,234,115,.14), transparent 66%);
+}
+
+.aiden-hero-grid {
+  grid-template-columns: minmax(0,.72fr) minmax(0,1.28fr);
+  gap: 68px;
+}
+
+.aiden-hero h1 {
+  max-width: 610px;
+  margin-top: 27px;
+  font-size: clamp(62px, 7.4vw, 102px);
+  line-height: .80;
+  letter-spacing: -.078em;
+}
+
+.aiden-hero h1 em {
+  color: var(--moss);
+  font-size: 1.01em;
+}
+
+.aiden-hero-lead {
+  max-width: 500px;
+  margin-top: 36px;
+  color: #516057;
+  font-size: 14px;
+  line-height: 1.92;
+}
+
+.aiden-hero-actions {
+  margin-top: 41px;
+  gap: 25px;
+}
+
+.aiden-text-link span {
+  transition: background 220ms ease, color 220ms ease, transform 220ms ease;
+}
+
+.aiden-text-link:hover span,
+.aiden-text-link:focus-visible span {
+  transform: rotate(-8deg);
+}
+
+.aiden-hero-meta {
+  max-width: 530px;
+  margin-top: 52px;
+  padding-top: 16px;
+  color: #5a665e;
+  font-size: 7px;
+}
+
+.aiden-hero-product {
+  position: relative;
+  transform: translate(1.5vw, 8px);
+}
+
+.aiden-hero-product::before {
+  content: "";
+  position: absolute;
+  left: -38px;
+  top: 9%;
+  bottom: 9%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(113,139,88,.35), transparent);
+  pointer-events: none;
+}
+
+.aiden-product-frame {
+  padding: 11px;
+  border-radius: 22px;
+  background: rgba(255,253,248,.56);
+  box-shadow:
+    0 56px 125px rgba(11,43,27,.17),
+    0 18px 38px rgba(11,43,27,.07),
+    inset 0 1px 0 rgba(255,255,255,.88);
+}
+
+.aiden-product-frame:hover {
+  transform: perspective(1400px) rotateY(0) rotateX(0) translateY(-8px) scale(1.007);
+}
+
+.aiden-product-frame .aiden-live-preview {
+  border-radius: 16px !important;
+}
+
+.aiden-hero-product figcaption {
+  padding: 12px 4px 0;
+  color: #667168;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.aiden-hero-rule {
+  max-width: 1240px;
+  margin-top: 62px;
+  padding-top: 15px;
+  color: #6a756d;
+  font-size: 7px;
+}
+
+.aiden-problem {
+  padding: 148px 0 128px;
+  background: var(--cream);
+}
+
+.aiden-problem::before {
+  content: "02";
+  top: 70px;
+  right: max(26px, calc((100vw - 1240px) / 2));
+  color: rgba(18,37,27,.06);
+  font-size: clamp(88px, 13vw, 176px);
+}
+
+.aiden-problem-grid {
+  grid-template-columns: minmax(0,1.28fr) minmax(300px,.52fr);
+  gap: 120px;
+}
+
+.aiden-problem h2 {
+  max-width: 850px;
+  font-size: clamp(53px, 6.4vw, 88px);
+  letter-spacing: -.075em;
+  line-height: .86;
+}
+
+.aiden-problem-copy {
+  max-width: 410px;
+  justify-self: end;
+  padding-top: 11px;
+}
+
+.aiden-problem-copy > p:not(.aiden-kicker) {
+  font-size: 13.5px;
+  line-height: 1.95;
+}
+
+.aiden-problem-strip {
+  margin-top: 104px;
+}
+
+.aiden-problem-strip article {
+  min-height: 154px;
+  padding: 22px 21px 22px 0;
+}
+
+.aiden-problem-strip article + article {
+  padding-left: 22px;
+}
+
+.aiden-problem-strip strong {
+  margin-top: 31px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.aiden-problem-strip p {
+  max-width: 205px;
+  font-size: 10px;
+  line-height: 1.75;
+}
+
+.aiden-system {
+  padding: 162px 0 175px;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(217,234,115,.08), transparent 24rem),
+    linear-gradient(145deg, #0b2b1b, #071b11);
+}
+
+.aiden-system .aiden-section-header {
+  grid-template-columns: minmax(0,1fr) minmax(300px,360px);
+  gap: 120px;
+  margin-bottom: 84px;
+}
+
+.aiden-section-header h2 {
+  font-size: clamp(58px, 6.7vw, 94px);
+  line-height: .82;
+  letter-spacing: -.078em;
+}
+
+.aiden-section-header > p {
+  font-size: 12.5px;
+  line-height: 1.95;
+}
+
+.aiden-operation-map {
+  grid-template-columns: minmax(0,1.22fr) minmax(310px,.56fr);
+  gap: 78px;
+}
+
+.aiden-map-visual {
+  min-height: 585px;
+  border-radius: 18px;
+  background:
+    linear-gradient(rgba(217,234,115,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(217,234,115,.028) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(217,234,115,.11), transparent 34%),
+    linear-gradient(145deg, rgba(255,255,255,.05), rgba(255,255,255,.008));
+  background-size: 78px 78px, 78px 78px, auto, auto;
+}
+
+.aiden-map-core {
+  width: 162px;
+  height: 162px;
+  background: #0e311f;
+}
+
+.aiden-map-node {
+  padding: 8px 11px;
+  border-radius: 999px;
+  font-size: 7px;
+}
+
+.aiden-connection-list article {
+  min-height: 67px;
+  padding: 18px 0;
+}
+
+.aiden-connection-list article:hover {
+  padding-left: 14px;
+  background: linear-gradient(90deg, rgba(217,234,115,.045), transparent);
+}
+
+.aiden-evidence {
+  padding: 142px 0 148px;
+}
+
+.aiden-evidence::after {
+  top: 96px;
+  right: max(26px, calc((100vw - 1240px) / 2));
+  font-size: clamp(88px, 12vw, 170px);
+}
+
+.aiden-evidence-grid {
+  gap: 82px;
+}
+
+.aiden-evidence h2 {
+  max-width: 960px;
+  font-size: clamp(52px, 6vw, 82px);
+  letter-spacing: -.073em;
+}
+
+.aiden-evidence header > p {
+  max-width: 520px;
+  font-size: 13.5px;
+  line-height: 1.9;
+}
+
+.aiden-evidence-cards {
+  grid-template-columns: repeat(3,1fr);
+  margin-top: 84px;
+}
+
+.aiden-evidence-cards article {
+  min-height: 238px;
+  padding: 25px 32px 25px 0;
+}
+
+.aiden-evidence-cards article + article {
+  padding-left: 32px;
+}
+
+.aiden-evidence-cards h3 {
+  margin-top: 70px;
+  font-size: 32px;
+}
+
+.aiden-evidence-cards p {
+  font-size: 10.5px;
+  line-height: 1.75;
+}
+
+.aiden-modules {
+  padding: 146px 0 156px;
+  background: #ede9de;
+}
+
+.aiden-modules .aiden-section-header {
+  margin-bottom: 82px;
+}
+
+.aiden-bento {
+  gap: 12px;
+}
+
+.aiden-bento-card {
+  min-height: 260px;
+  padding: 22px;
+  border-radius: 14px;
+  background: rgba(255,253,248,.60);
+  transition:
+    transform 420ms cubic-bezier(.16,1,.3,1),
+    box-shadow 420ms cubic-bezier(.16,1,.3,1),
+    border-color 220ms ease;
+}
+
+.aiden-bento-card:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 30px 56px rgba(18,37,27,.10),
+    inset 0 1px 0 rgba(255,255,255,.65);
+}
+
+.bento-1 {
+  grid-column: span 5;
+  min-height: 290px;
+}
+
+.bento-2 {
+  grid-column: span 4;
+  min-height: 290px;
+}
+
+.bento-3 {
+  grid-column: span 3;
+  min-height: 290px;
+}
+
+.bento-4,
+.bento-5,
+.bento-6 {
+  grid-column: span 4;
+  min-height: 225px;
+}
+
+.bento-7 {
+  grid-column: span 3;
+  min-height: 205px;
+}
+
+.bento-8 {
+  grid-column: span 5;
+  min-height: 205px;
+}
+
+.bento-9 {
+  grid-column: span 4;
+  min-height: 205px;
+}
+
+.aiden-bento-card h3 {
+  font-size: 31px;
+  letter-spacing: -.065em;
+}
+
+.aiden-bento-card p {
+  font-size: 10px;
+  line-height: 1.75;
+}
+
+.aiden-bento-card:nth-child(3n + 1) {
+  box-shadow: none;
+}
+
+.aiden-bento-card:nth-child(3n + 1)::before,
+.aiden-bento-card:nth-child(3n + 2)::before,
+.aiden-bento-card:nth-child(3n)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  opacity: .42;
+  background: var(--moss);
+}
+
+.aiden-bento-card:nth-child(3n + 2)::before {
+  background: #7f9271;
+  opacity: .28;
+}
+
+.aiden-bento-card:nth-child(3n)::before {
+  background: #a8aa8a;
+  opacity: .28;
+}
+
+.aiden-roles {
+  padding: 136px 0 146px;
+}
+
+.aiden-role-table {
+  border-top-color: rgba(18,37,27,.18);
+}
+
+.aiden-role-row {
+  min-height: 132px;
+  grid-template-columns: 60px minmax(170px,.58fr) minmax(130px,.36fr) minmax(280px,1fr) 22px;
+  padding-right: 8px;
+}
+
+.aiden-role-row:hover {
+  padding-left: 21px;
+  background:
+    linear-gradient(90deg, rgba(113,139,88,.075), transparent 45%),
+    rgba(235,231,219,.28);
+}
+
+.aiden-role-row h3 {
+  font-size: 31px;
+  letter-spacing: -.065em;
+}
+
+.aiden-role-row > strong {
+  font-size: 8.5px;
+  letter-spacing: .13em;
+}
+
+.aiden-role-row p {
+  font-size: 10px;
+  line-height: 1.75;
+}
+
+.aiden-clarity {
+  padding: 140px 0 148px;
+  background: #e9e4d8;
+}
+
+.aiden-clarity-grid {
+  gap: 90px;
+}
+
+.aiden-clarity::before {
+  top: 86px;
+  font-size: clamp(88px, 12vw, 170px);
+}
+
+.aiden-clarity h2 {
+  font-size: clamp(52px, 6vw, 82px);
+  letter-spacing: -.075em;
+}
+
+.aiden-clarity-list {
+  margin-top: 82px;
+}
+
+.aiden-clarity-list article {
+  padding: 27px 0;
+}
+
+.aiden-clarity-list p {
+  font-size: 11px;
+  line-height: 1.85;
+}
+
+.aiden-final {
+  padding: 154px 0 164px;
+  background:
+    radial-gradient(circle at 78% 30%, rgba(217,234,115,.13), transparent 28rem),
+    linear-gradient(135deg, #061a10, #0b2b1b 58%, #123621);
+}
+
+.aiden-final::before {
+  content: "AiDEN";
+  left: -18px;
+  bottom: -36px;
+  color: rgba(217,234,115,.045);
+  font-size: clamp(130px, 20vw, 280px);
+  letter-spacing: -.11em;
+}
+
+.aiden-final h2 {
+  max-width: 920px;
+  font-size: clamp(58px, 7vw, 98px);
+  line-height: .82;
+}
+
+.aiden-final-stamp {
+  min-height: 385px;
+  border-radius: 20px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.012)),
+    radial-gradient(circle at 32% 22%, rgba(217,234,115,.10), transparent 40%);
+}
+
+.aiden-footer {
+  padding: 24px 0;
+}
+
+@media (max-width: 1100px) {
+  .aiden-hero-product {
+    transform: none;
+  }
+
+  .aiden-hero-product::before {
+    display: none;
+  }
+
+  .aiden-product-frame {
+    box-shadow:
+      0 42px 100px rgba(11,43,27,.15),
+      0 12px 30px rgba(11,43,27,.07);
+  }
+
+  .bento-1,
+  .bento-2,
+  .bento-3,
+  .bento-4,
+  .bento-5,
+  .bento-6,
+  .bento-7,
+  .bento-8,
+  .bento-9 {
+    grid-column: span 4;
+  }
+}
+
+@media (max-width: 900px) {
+  .aiden-hero {
+    min-height: auto;
+    padding-top: 76px;
+  }
+
+  .aiden-hero h1 {
+    font-size: clamp(54px, 10vw, 84px);
+    max-width: 760px;
+  }
+
+  .aiden-problem {
+    padding-block: 112px 104px;
+  }
+
+  .aiden-problem-grid {
+    gap: 54px;
+  }
+
+  .aiden-system {
+    padding-block: 118px 128px;
+  }
+
+  .aiden-evidence,
+  .aiden-modules,
+  .aiden-roles,
+  .aiden-clarity {
+    padding-block: 112px 122px;
+  }
+
+  .aiden-bento-card,
+  .bento-1,
+  .bento-2,
+  .bento-3,
+  .bento-4,
+  .bento-5,
+  .bento-6,
+  .bento-7,
+  .bento-8,
+  .bento-9 {
+    min-height: 210px;
+  }
+
+  .aiden-role-row {
+    min-height: 124px;
+  }
+
+  .aiden-final {
+    padding-block: 120px 130px;
+  }
+}
+
+@media (max-width: 600px) {
+  .aiden-hero {
+    padding: 64px 0 46px;
+  }
+
+  .aiden-hero h1 {
+    font-size: clamp(48px, 14vw, 65px);
+    line-height: .85;
+  }
+
+  .aiden-hero-lead {
+    font-size: 13.5px;
+    line-height: 1.85;
+  }
+
+  .aiden-hero-meta {
+    margin-top: 36px;
+  }
+
+  .aiden-product-frame {
+    padding: 8px;
+    border-radius: 17px;
+  }
+
+  .aiden-hero-product figcaption {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .aiden-problem,
+  .aiden-evidence,
+  .aiden-modules,
+  .aiden-roles,
+  .aiden-clarity {
+    padding-block: 90px 96px;
+  }
+
+  .aiden-problem::before,
+  .aiden-evidence::after,
+  .aiden-clarity::before {
+    right: 12px;
+    top: 44px;
+    font-size: 68px;
+  }
+
+  .aiden-problem h2,
+  .aiden-evidence h2,
+  .aiden-clarity h2 {
+    font-size: clamp(41px, 12vw, 57px);
+  }
+
+  .aiden-system {
+    padding-block: 88px 98px;
+  }
+
+  .aiden-section-header h2 {
+    font-size: clamp(43px, 13vw, 60px);
+  }
+
+  .aiden-map-visual {
+    min-height: 378px;
+  }
+
+  .aiden-evidence-cards {
+    margin-top: 54px;
+  }
+
+  .aiden-evidence-cards article,
+  .aiden-evidence-cards article + article {
+    min-height: 158px;
+  }
+
+  .aiden-evidence-cards h3 {
+    margin-top: 31px;
+    font-size: 26px;
+  }
+
+  .aiden-bento-card,
+  .bento-1,
+  .bento-2,
+  .bento-3,
+  .bento-4,
+  .bento-5,
+  .bento-6,
+  .bento-7,
+  .bento-8,
+  .bento-9 {
+    min-height: 182px;
+  }
+
+  .aiden-bento-card h3 {
+    font-size: 23px;
+  }
+
+  .aiden-role-row {
+    min-height: 120px;
+  }
+
+  .aiden-final {
+    padding-block: 98px 108px;
+  }
+
+  .aiden-final h2 {
+    font-size: clamp(47px, 13.6vw, 68px);
+  }
+
+  .aiden-final-stamp {
+    min-height: 290px;
+  }
+}
