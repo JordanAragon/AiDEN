@@ -1353,3 +1353,58 @@
 .aiden-roles .aiden-section-header > p {
   color: #68736b;
 }
+
+/* Refinamiento editorial: cambios visibles manteniendo la composición existente. */
+.aiden-hero-copy {
+  position: relative;
+}
+.aiden-hero-copy::after {
+  content: "OPERACIÓN";
+  position: absolute;
+  left: -18px;
+  bottom: -54px;
+  z-index: -1;
+  color: rgba(113,139,88,.10);
+  font-size: clamp(70px, 10vw, 150px);
+  font-weight: 700;
+  letter-spacing: -.08em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.aiden-product-frame::after {
+  content: "PRODUCT / 01";
+  position: absolute;
+  left: 24px;
+  top: 20px;
+  z-index: 2;
+  color: rgba(18,37,27,.56);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+.aiden-problem-strip article {
+  position: relative;
+}
+.aiden-problem-strip article:first-child::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 2px;
+  background: var(--moss);
+  opacity: .55;
+}
+.aiden-evidence-cards article:first-child {
+  border-top: 3px solid var(--moss);
+}
+.aiden-bento-card:nth-child(3n + 1) {
+  box-shadow: inset 0 2px 0 rgba(113,139,88,.42), inset 0 0 0 1px rgba(255,255,255,.27);
+}
+.aiden-role-row:hover {
+  padding-left: 18px;
+  border-left: 2px solid var(--moss);
+}
+.aiden-final-stamp {
+  border-radius: 28px;
+}
