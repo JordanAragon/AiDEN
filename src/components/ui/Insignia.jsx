@@ -1,5 +1,5 @@
 const TONOS = {
-  neutral: "bg-slate-100 text-slate-500",
+  neutral: "bg-slate-100 text-slate-600",
   exito: "bg-emerald-50 text-emerald-700",
   alerta: "bg-amber-50 text-amber-700",
   critico: "bg-red-50 text-red-700",
