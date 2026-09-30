@@ -1,29 +1,21 @@
-import { useId, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { AlertCircle, CheckCircle2, ClipboardList, ClipboardPlus, FilePenLine, ListTodo, Phone, Plus, Trash2, Users } from "lucide-react";
-import { Boton, BotonIcono } from "../ui/Boton";
+import { useState } from "react";
+import { ClipboardPlus, FilePenLine, Phone } from "lucide-react";
+import { Boton } from "../ui/Boton";
 import { Entrada, Seleccion } from "../ui/Campo";
 import Avatar from "../ui/Avatar";
-import Cifras from "../ui/Cifras";
-import EncabezadoPagina from "../ui/EncabezadoPagina";
 import Insignia from "../ui/Insignia";
 import Modal from "../ui/Modal";
-import EstadoVacio from "../ui/EstadoVacio";
-import Pestanas from "../ui/Pestanas";
-import { FILA_ENCABEZADO, TH, TR } from "../ui/tabla";
 import AlertaFormulario from "../ui/AlertaFormulario";
-import { Buscador, Segmentos } from "../ui/Filtros";
 import { TONO_ESTADO_TAREA, TONO_PRIORIDAD } from "../ui/tonos";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import ModalTarea from "../formularios/ModalTarea";
 import { useDatos } from "../../datos/almacen";
 import { CARGO_A_ROL, DEPARTAMENTOS, ROLES } from "../../datos/catalogos";
 import { cambiarEstadoPersona, cambiarEstadoTarea, cambiarRolUsuario, crearPersona, editarPersona, eliminarTarea, marcarCuentaRevisada } from "../../datos/acciones";
-import { lotesActivos, nombrePersona, ordenarTareas, tareaVencida } from "../../datos/selectores";
+import { lotesActivos, ordenarTareas } from "../../datos/selectores";
 import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion, useUsuarios } from "../../hooks/useSesion";
-import { useTitulo } from "../../hooks/useTitulo";
-import { coincide, fechaCorta, hoyISO, plural, vencimiento } from "../../utilidades/formato";
+import { plural, vencimiento } from "../../utilidades/formato";
 
 const CARGOS = Object.keys(CARGO_A_ROL);
 
