@@ -20,7 +20,7 @@ with sync_playwright() as p:
         for pub in ["/signup", "/forgot-password", "/terminos", "/no-existe"]:
             pg.goto(BASE + pub); pg.wait_for_timeout(400); auditar(pg, pub)
         pg.goto(BASE + "/login"); pg.wait_for_timeout(300); auditar(pg, "login")
-        for rol, rutas in {"admin": ["/dashboard-admin","/produccion","/inventario","/costos","/personal?vista=accesos","/reportes","/ia","/configuracion","/calidad?incidencia=INC-031", "/calidad", "/trazabilidad?lote=LT-2026-011", "/ambiental?zona=Invernadero%202"], "supervisor": ["/dashboard-supervisor","/ambiental","/trazabilidad"], "operario": ["/dashboard-operario"]}.items():
+        for rol, rutas in {"admin": ["/dashboard-admin","/perfil","/produccion","/inventario","/costos","/personal","/reportes","/ia","/configuracion","/configuracion?vista=usuarios","/calidad?incidencia=INC-031", "/calidad", "/trazabilidad?lote=LT-2026-011", "/ambiental?zona=Invernadero%202"], "supervisor": ["/dashboard-supervisor","/perfil","/ambiental","/trazabilidad"], "operario": ["/dashboard-operario","/perfil"]}.items():
             try:
                 entrar(pg, rol)
             except Exception as e:
