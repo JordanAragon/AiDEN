@@ -13,7 +13,7 @@ export default function LineaTiempo({ eventos, mostrarLote = false, limite }) {
           <section className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
             <header className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-[11px] font-bold text-emerald-700">{evento.evento}</p>
-              <time className="text-[11px] text-slate-500">{fechaHora(evento.fecha)}</time>
+              <time className="text-[11px] text-slate-600">{fechaHora(evento.fecha)}</time>
             </header>
             <p className="mt-2 text-sm font-medium text-slate-800">{evento.detalle}</p>
             <footer className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-500">
