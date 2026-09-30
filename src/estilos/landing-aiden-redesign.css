@@ -452,7 +452,7 @@
   font-size: 18px;
   letter-spacing: -.04em;
 }
- .aiden-problem-strip p  {
+.aiden-problem-strip p  {
   margin-top: 3px;
   max-width: 210px;
   color: #526057;
@@ -648,7 +648,7 @@
 .aiden-connection-list svg  {
   color: rgba(217,234,115,.65);
 }
- .aiden-evidence  {
+.aiden-evidence  {
   padding: 116px 0 122px;
   background: var(--paper);
 }
@@ -714,7 +714,7 @@
   font-size: 11px;
   line-height: 1.6;
 }
- .aiden-modules  {
+.aiden-modules  {
   padding: 122px 0 132px;
   background: var(--cream);
 }
@@ -799,7 +799,7 @@
   font-size: 25px;
   line-height: .98;
 }
- .aiden-bento-card p  {
+.aiden-bento-card p  {
   max-width: 310px;
   margin-top: 8px;
   color: #5f6b63;
@@ -817,7 +817,7 @@
   transform: translate(2px,-2px);
   color: var(--ink);
 }
- .aiden-roles  {
+.aiden-roles  {
   padding: 120px 0 128px;
   background: var(--paper);
 }
@@ -854,7 +854,7 @@
   text-transform: uppercase;
   letter-spacing: .11em;
 }
- .aiden-role-row p  {
+.aiden-role-row p  {
   color: #5f6b63;
   font-size: 11px;
   line-height: 1.6;
@@ -862,7 +862,7 @@
 .aiden-role-row > svg  {
   color: var(--moss);
 }
- .aiden-clarity  {
+.aiden-clarity  {
   padding: 114px 0 126px;
   background: var(--cream);
 }
@@ -990,7 +990,7 @@
   border-top: 1px solid rgba(18,37,27,.09);
   background: #f1eee5;
 }
- .aiden-footer-inner  {
+.aiden-footer-inner  {
   display: grid;
   grid-template-columns: auto 1fr auto auto;
   align-items: center;
@@ -1008,7 +1008,7 @@
 .aiden-footer-inner a:hover  {
   color: var(--ink);
 }
- .aiden-footer-inner small  {
+.aiden-footer-inner small  {
   font-size: 9px;
 }
 @media (max-width: 1020px)  {
