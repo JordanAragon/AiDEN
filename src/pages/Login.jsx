@@ -248,30 +248,23 @@ export default function Login() {
               Cuentas de demostración
             </p>
             <p className="mt-1 text-xs text-slate-500">Cada rol ve una aplicación distinta. Contraseña de las tres: aiden123</p>
-            <ul className="mt-3 space-y-2">
-              {CUENTAS_DEMO.map((cuenta) => (
-                <li key={cuenta.id}>
-                  <button
-                    type="button"
-                    onClick={() => entrar(cuenta.email, cuenta.password)}
-                    className={`group flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors hover:border-emerald-200 hover:bg-emerald-50 ${sugerida?.id === cuenta.id ? "border-emerald-300 bg-emerald-50" : "border-slate-200"}`}
-                  >
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white">
-                      <User size={13} aria-hidden="true" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-semibold text-slate-800">
-                        {ROL[cuenta.role]} · {cuenta.name}
-                      </span>
-                      <span className="block truncate text-xs text-slate-500">{QUE_VE[cuenta.role]}</span>
-                    </span>
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">
-                      Entrar <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <ul className="aiden-auth-demo-list">{CUENTAS_DEMO.map((cuenta) => (
+              <li key={cuenta.id}>
+                <button
+                  type="button"
+                  onClick={() => entrar(cuenta.email, cuenta.password)}
+                  className={`aiden-auth-demo-row group w-full text-left ${sugerida?.id === cuenta.id ? "is-suggested" : ""}`}
+                >
+                  <span className="aiden-auth-demo-icon"><User size={13} aria-hidden="true" /></span>
+                  <span className="aiden-auth-demo-content">
+                    <span className="aiden-auth-demo-role">{ROL[cuenta.role]}</span>
+                    <strong>{cuenta.name}</strong>
+                    <span>{QUE_VE[cuenta.role]}</span>
+                  </span>
+                  <span className="aiden-auth-demo-action">Entrar <ArrowRight size={13} aria-hidden="true" /></span>
+                </button>
+              </li>
+            ))}</ul>
           </section>
             </>
           )}
