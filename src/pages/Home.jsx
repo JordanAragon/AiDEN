@@ -68,7 +68,7 @@ export default function Inicio() {
         <div className={`aiden-mobile-panel ${menuAbierto ? "is-visible" : ""}`} aria-hidden={!menuAbierto}>
           <a href="#operacion" onClick={cerrarMenu}>La operación</a><a href="#sistema" onClick={cerrarMenu}>El sistema</a><a href="#modulos" onClick={cerrarMenu}>Módulos</a><a href="#roles" onClick={cerrarMenu}>Roles</a>
           <Link to="/login" className="aiden-button aiden-button-ghost" onClick={cerrarMenu}>Iniciar sesión</Link>
-          <Link to="/signup" className="aiden-button aiden-button-dark" onClick={cerrarMenu}>Entrar a AiDEN <ArrowRight size={14} /></Link>
+          <Link to="/signup" className="aiden-button aiden-button-dark" onClick={cerrarMenu}>Crear cuenta <ArrowRight size={14} /></Link>
         </div>
       </header>
 
