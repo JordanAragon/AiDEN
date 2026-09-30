@@ -40,12 +40,12 @@ const roles = [
 ];
 
 const connections = [
-  ["Producción", "El lote define el contexto"],
-  ["Inventario", "Los insumos acompañan el proceso"],
-  ["Ambiental", "El entorno queda registrado"],
-  ["Calidad", "Las incidencias tienen seguimiento"],
-  ["Trazabilidad", "Los eventos conservan su historia"],
-  ["Costos", "Los gastos dejan de estar aislados"],
+  ["Producción", "El lote define el contexto", "Etapa, actividad y avance se leen desde el mismo lote."],
+  ["Inventario", "Los insumos acompañan el proceso", "Entradas, consumos y existencias quedan vinculados al trabajo."],
+  ["Ambiental", "El entorno queda registrado", "Las condiciones de cultivo aportan contexto al seguimiento."],
+  ["Calidad", "Las incidencias tienen seguimiento", "Cada hallazgo mantiene estado, responsable y relación con la operación."],
+  ["Trazabilidad", "Los eventos conservan su historia", "Los cambios forman una secuencia que puede revisarse después."],
+  ["Costos", "Los gastos dejan de estar aislados", "Los registros de costo se leen junto al trabajo que los originó."],
 ];
 
 export default function Inicio() {
@@ -80,14 +80,12 @@ export default function Inicio() {
               <h1>El vivero no es una colección de datos. <em>Es una operación.</em></h1>
               <p className="aiden-hero-lead">AiDEN reúne producción, inventario, trazabilidad, ambiente, calidad, costos y personal en una sola experiencia para entender qué está pasando y actuar con contexto.</p>
               <div className="aiden-hero-actions"><Link to="/signup" className="aiden-button aiden-button-dark aiden-button-large">Crear cuenta <ArrowRight size={15} /></Link><a href="#operacion" className="aiden-text-link"><span>01</span> Ver la operación</a></div>
-              <div className="aiden-hero-meta" aria-label="Características de la plataforma"><span>03 roles</span><i /><span>09 módulos</span><i /><span>01 contexto operativo</span></div>
-            </article>
+                </article>
             <figure className="aiden-hero-product" aria-label="Vista real del dashboard de AiDEN">
               <div className="aiden-product-frame"><DashboardHeroPreview /><span className="aiden-product-corner">LIVE / PRODUCT VIEW</span></div>
               <figcaption><span>Interfaz real del sistema</span><span>El contenido depende de los datos registrados</span></figcaption>
             </figure>
           </div>
-          <div className="aiden-hero-rule" aria-hidden="true"><span>PRODUCCIÓN</span><i /><span>CONTEXTO</span><i /><span>CONTROL</span><i /><span>ACCIÓN</span></div>
         </section>
 
         <section className="aiden-problem" id="operacion">
@@ -103,12 +101,24 @@ export default function Inicio() {
             <header className="aiden-section-header aiden-section-header-dark"><div><p className="aiden-index">EL SISTEMA</p><h2>Una operación.<br /><em>Un contexto.</em></h2></div><p>El lote funciona como punto de lectura para conectar eventos que, de otra forma, aparecen como registros aislados.</p></header>
             <article className="aiden-operation-map">
               <div className="aiden-map-visual"><span className="aiden-map-ring aiden-map-ring-one" /><span className="aiden-map-ring aiden-map-ring-two" />{connections.map(([name], index) => <span className={`aiden-map-node aiden-map-node-${index + 1}`} key={name}>{name}</span>)}<span className="aiden-map-core"><Sprout size={22} /><small>CONTEXTO</small><strong>Lote</strong><b>024</b></span></div>
-              <div className="aiden-map-copy"><p className="aiden-kicker aiden-kicker-light">Cómo se relaciona la información</p><div className="aiden-connection-list">{connections.map(([name, text], index) => <article key={name}><span>0{index + 1}</span><div><strong>{name}</strong><p>{text}</p></div><ArrowUpRight size={14} /></article>)}</div></div>
+              <div className="aiden-map-copy"><p className="aiden-kicker aiden-kicker-light">Cómo se relaciona la información</p><div className="aiden-connection-list">{connections.map(([name, text, detail], index) => <article key={name}><span>0{index + 1}</span><div><strong>{name}</strong><p>{text}</p><small>{detail}</small></div><ArrowUpRight size={14} /></article>)}</div></div>
+            </article>
+              <div className="aiden-system-readout" aria-label="Ejemplo de lectura operativa">
+                <div><span>Lote</span><strong>024</strong><small>Contexto principal</small></div>
+                <div><span>Etapa</span><strong>Crecimiento</strong><small>Proceso actual</small></div>
+                <div><span>Estado</span><strong>En seguimiento</strong><small>Requiere lectura</small></div>
+                <div><span>Último registro</span><strong>Hoy</strong><small>Actividad registrada</small></div>
+              </div>
             </article>
           </div>
         </section>
 
-        <section className="aiden-evidence"><div className="aiden-shell aiden-evidence-grid"><p className="aiden-index">DE LA INFORMACIÓN A LA ACCIÓN</p><header><h2>No se trata de mostrar más. <em>Se trata de entender mejor.</em></h2><p>En un vivero, lo importante no es mostrar más: es hacer visible lo que importa, reducir la búsqueda manual y dejar claro dónde mirar después.</p></header><div className="aiden-evidence-cards"><article><span>01</span><h3>Estado</h3><p>Qué está activo, qué está pendiente y qué necesita atención.</p></article><article><span>02</span><h3>Relación</h3><p>Qué registro pertenece a qué lote, etapa, responsable o evento.</p></article><article><span>03</span><h3>Seguimiento</h3><p>Qué información puede revisarse para continuar el trabajo.</p></article></div></div></section>
+        <section className="aiden-evidence"><div className="aiden-shell aiden-evidence-grid"><p className="aiden-index">DE LA INFORMACIÓN A LA ACCIÓN</p><header><h2>No se trata de mostrar más. <em>Se trata de entender mejor.</em></h2><p>En un vivero, lo importante no es mostrar más: es hacer visible lo que importa, reducir la búsqueda manual y dejar claro dónde mirar después.</p></header><div className="aiden-evidence-cards">
+          <article><span>01</span><h3>Estado</h3><p>Qué está activo, qué está pendiente y qué necesita atención.</p><div className="aiden-evidence-detail"><b>Lectura inmediata</b><span>Activos · pendientes · alertas</span></div></article>
+          <article><span>02</span><h3>Relación</h3><p>Qué registro pertenece a qué lote, etapa, responsable o evento.</p><div className="aiden-evidence-detail"><b>Contexto conectado</b><span>Lote · etapa · actividad · responsable</span></div></article>
+          <article><span>03</span><h3>Seguimiento</h3><p>Qué cambió, qué sigue y qué información necesita revisión.</p><div className="aiden-evidence-detail"><b>Continuidad operativa</b><span>Último registro · próxima actividad · incidencia</span></div></article>
+          <article><span>04</span><h3>Acción</h3><p>Dónde intervenir y qué parte de la operación necesita atención.</p><div className="aiden-evidence-detail"><b>Siguiente paso</b><span>Qué revisar · quién responde · qué continúa</span></div></article>
+        </div></div></section>
 
         <section className="aiden-modules" id="modulos"><div className="aiden-shell"><header className="aiden-section-header"><div><p className="aiden-index">MÓDULOS</p><h2>Todo el sistema.<br /><em>Cada pieza tiene trabajo.</em></h2></div><p>Las nueve áreas forman una misma operación. El objetivo no es llenar la interfaz de funciones, sino poner cada una donde aporta contexto.</p></header><div className="aiden-bento">{modulos.map(([Icon, nombre, subtitulo, descripcion, ruta, number], index) => <Link to={ruta} key={nombre} className={`aiden-bento-card bento-${index + 1}`}><span className="aiden-bento-number">{number}</span><span className="aiden-bento-icon"><Icon size={18} /></span><span className="aiden-bento-kind">{subtitulo}</span><h3>{nombre}</h3><p>{descripcion}</p><ArrowUpRight size={16} className="aiden-bento-arrow" /></Link>)}</div></div></section>
 
