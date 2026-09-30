@@ -8,6 +8,7 @@ def auditar(pg, nombre, oscuro=False):
     res = pg.evaluate("async () => (await axe.run(document, {resultTypes:['violations'], runOnly:{type:'tag', values:['wcag2a','wcag2aa','wcag21aa']}})).violations.map(v => [v.id, v.impact, v.nodes.length, v.nodes[0].target.join(' '), (v.nodes[0].failureSummary||'').slice(0,160)])")
     print(f"  {nombre}: {len(res)} tipos de violación")
     for v in res: print("     ", v)
+    r.check(not res, f"{nombre}: sin violaciones WCAG AA")
     return res
 with sync_playwright() as p:
     b = p.chromium.launch()
