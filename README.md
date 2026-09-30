@@ -9,7 +9,8 @@ Esta versión integra las funcionalidades de **AiDEN Premium** sobre la **identi
 ```bash
 npm install
 npm run dev          # desarrollo
-npm run build        # lint + compilación de producción en dist/
+npm run lint         # calidad de código
+npm run build        # compilación de producción en dist/
 npm run preview      # sirve dist/
 ```
 
@@ -30,11 +31,12 @@ Cuentas de demostración (contraseña `aiden123`), también disponibles con un c
 - **Ambiental:** tarjetas por zona con minigráfica, historial con la franja del rango configurado, tabla de lecturas, registro de lecturas con aviso previo si quedará en alerta, tarea de revisión desde la alerta.
 - **Calidad:** acción correctiva editable en la tarjeta; una incidencia solo se cierra con acción documentada; detalle con tareas relacionadas; tiempo medio de cierre.
 - **Costos:** periodo, gasto por categoría, resultado por lote, movimientos con edición, eliminación, filtros y CSV.
-- **Personal:** colaboradores, tareas del equipo (filtros, estado, edición) y, para administración, accesos (roles y cuentas nuevas por revisar). Desactivar exige reasignar primero.
+- **Personal:** colaboradores y tareas del equipo (filtros, estado, edición). Desactivar exige reasignar primero.
+- **Configuración:** usuarios y accesos (roles, revisión de cuentas nuevas y alta administrativa), además de umbrales, notificaciones, zonas y respaldos.
 - **Reportes:** ocho reportes con periodo o lote, vista previa, CSV (se abre en Excel con tildes correctas) e impresión.
 - **Configuración:** umbrales con vista previa de qué zonas quedarían en alerta, notificaciones, zonas del vivero, respaldo JSON (exportar/importar) y restablecer la demo.
 - **Inteligencia:** asistente basado en reglas sobre los datos locales; cada respuesta indica de qué módulo sale. No usa modelos de lenguaje ni servicios externos.
-- **Transversal:** buscador ⌘K / Ctrl K de módulos y registros navegable con teclado, notificaciones calculadas con estado de leídas, conteo de alertas en el menú, avisos y confirmaciones, permisos por rol, modo oscuro.
+- **Transversal:** buscador ⌘K / Ctrl K de módulos y registros navegable con teclado, notificaciones calculadas con estado de leídas, avisos y confirmaciones, permisos por rol, modo oscuro y perfil propio.
 
 ## Cómo está organizada
 
@@ -70,6 +72,7 @@ Regla principal: **los componentes no escriben en el almacenamiento**. Todo camb
 ## Limitaciones de esta versión
 
 - **Sin backend:** los datos existen solo en el navegador donde se crearon; no hay sincronización entre usuarios ni equipos.
+- **Perfil:** cada usuario puede actualizar nombre y correo desde “Mi perfil”.
 - **Autenticación no segura:** contraseñas sin cifrar en `localStorage` y roles verificados solo en el cliente.
 - **Recuperación de contraseña sin correo:** la contraseña se cambia directamente en el navegador.
 - **Lecturas ambientales manuales:** no hay integración con sensores; las de ejemplo son simuladas.
