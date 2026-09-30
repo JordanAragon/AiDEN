@@ -70,7 +70,7 @@ with sync_playwright() as p:
     r.check(buscador["x"] >= menu["x"] + menu["width"], "la hamburguesa ya no tapa el buscador")
     pg.get_by_role("button", name="Abrir menú de navegación").click(); pg.wait_for_timeout(300)
     r.check(pg.get_by_role("link", name="Costos").count() == 0, "menú del operario sin módulos de gestión")
-    pg.get_by_role("button", name="Abrir menú de navegación").click(); pg.wait_for_timeout(200)
+    pg.get_by_role("button", name="Cerrar menú").first.click(); pg.wait_for_timeout(200)
     pg.get_by_role("button", name="Cuenta").click()
     pg.get_by_role("button", name="Mi perfil").click()
     r.check(visible(pg.get_by_role("heading", name="Mi perfil")), "operario puede abrir su perfil")
