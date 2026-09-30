@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import loginImage from "../assets/imagenes/login.webp";
 import { registrarCuenta } from "../datos/acciones";
 import { useTitulo } from "../hooks/useTitulo";
+import "../estilos/autenticacion-aiden.css";
 
 export default function Register() {
   useTitulo("Crear cuenta");
@@ -37,11 +38,11 @@ export default function Register() {
   };
 
   return (
-    <main className="flex min-h-screen bg-[#f5f7f5] text-slate-900">
-      <aside className="relative hidden min-h-screen overflow-hidden bg-[#0b2f20] lg:flex lg:w-[53%]">
+    <main className="aiden-auth">
+      <aside className="aiden-auth-side">
         <img src={loginImage} alt="Invernadero agrícola" className="absolute inset-0 h-full w-full object-cover opacity-70" />
         <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(11,47,32,.97),rgba(11,47,32,.72),rgba(11,47,32,.88))]" aria-hidden="true" />
-        <section className="relative z-10 flex w-full flex-col p-10 xl:p-14">
+        <section className="aiden-auth-side-content">
           <Link to="/" className="flex items-center gap-2 text-white"><span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/15 bg-white/10"><Leaf size={17} /></span><span className="text-xl font-bold tracking-tight">AiDEN</span></Link>
           <div className="mt-auto max-w-xl pb-6">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-200">Una vista, una operación</p>
@@ -51,12 +52,12 @@ export default function Register() {
         </section>
       </aside>
 
-      <section className="flex w-full items-center justify-center px-5 py-10 sm:px-8 lg:w-[47%] lg:px-12">
-        <div className="w-full max-w-md">
-          <header className="mb-8 lg:hidden"><Link to="/" className="inline-flex items-center gap-2 text-emerald-900"><span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-900 text-white"><Leaf size={15} /></span><span className="font-bold tracking-tight">AiDEN</span></Link></header>
-          <div className="mb-7"><p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">Nuevo acceso</p><h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Crear cuenta.</h2><p className="mt-2 text-sm leading-6 text-slate-500">Registra tus datos para entrar al entorno de trabajo de AiDEN.</p></div>
+      <section className="aiden-auth-panel">
+        <div className="aiden-auth-form-wrap">
+          <header className="aiden-auth-mobile-brand"><Link to="/" className="inline-flex items-center gap-2 text-emerald-900"><span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-900 text-white"><Leaf size={15} /></span><span className="font-bold tracking-tight">AiDEN</span></Link></header>
+          <div className="aiden-auth-heading"><p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">Nuevo acceso</p><h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Crear cuenta.</h2><p className="mt-2 text-sm leading-6 text-slate-500">Registra tus datos para entrar al entorno de trabajo de AiDEN.</p></div>
           {error && <p role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
-          <form onSubmit={handleRegister} className="space-y-5">
+          <form onSubmit={handleRegister} className="aiden-auth-form">
             <Field label="Nombre completo"><input id="name" type="text" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} placeholder="María González Torres" /></Field>
             <Field label="Correo electrónico"><input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="maria@vivero.com" /></Field>
             <Field label="Contraseña"><div className="relative"><input id="password" type={showPass ? "text" : "password"} autoComplete="new-password" minLength={8} required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mínimo 8 caracteres" className="pr-11" /><button type="button" onClick={() => setShowPass((v) => !v)} aria-label={showPass ? "Ocultar contraseña" : "Mostrar contraseña"} className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700">{showPass ? <EyeOff size={16} /> : <Eye size={16} />}</button></div></Field>
