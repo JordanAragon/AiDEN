@@ -230,7 +230,7 @@ export default function PersonalOperativo() {
   useTitulo("Personal y tareas");
 
   const vistaParam = parametros.get("vista");
-  const vista = vistaParam === "tareas" ? "tareas" : vistaParam === "accesos" && admin ? "accesos" : "equipo";
+  const vista = vistaParam === "tareas" ? "tareas" : "equipo";
   const persona = datos.personas.find((p) => p.id === parametros.get("persona"));
   const tareaParam = datos.tareas.find((t) => t.id === parametros.get("tarea"));
 
