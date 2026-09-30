@@ -650,11 +650,16 @@
   transition: padding 200ms ease, background-color 200ms ease;
 }
 
-.aiden-auth-demo-row:hover,
-.aiden-auth-demo-row.is-suggested {
+.aiden-auth-demo-row:hover {
   padding-left: 9px !important;
   padding-right: 9px !important;
   background: rgba(217,234,115,.08) !important;
+}
+
+.aiden-auth-demo-row::before,
+.aiden-auth-demo-row::after {
+  content: none !important;
+  display: none !important;
 }
 
 .aiden-auth-demo-icon {
