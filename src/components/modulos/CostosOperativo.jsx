@@ -159,7 +159,7 @@ export default function CostosOperativo() {
       />
 
       <section className="flex flex-wrap items-center gap-2">
-        <span className="text-xs font-semibold text-slate-500">Periodo</span>
+        <span className="text-xs font-semibold text-slate-600">Periodo</span>
         <Segmentos etiqueta="Periodo" valor={periodo} onCambio={setPeriodo} opciones={PERIODOS} />
       </section>
 
