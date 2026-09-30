@@ -109,7 +109,6 @@ export default function Inicio() {
                 <div><span>Estado</span><strong>En seguimiento</strong><small>Requiere lectura</small></div>
                 <div><span>Último registro</span><strong>Hoy</strong><small>Actividad registrada</small></div>
               </div>
-            </article>
           </div>
         </section>
 
