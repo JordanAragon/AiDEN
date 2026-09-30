@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { FormularioMovimiento, FormularioInsumo } from "./InventarioFormularios";
 import { useSearchParams } from "react-router-dom";
-import { AlertTriangle, ArrowDownToLine, ArrowLeftRight, ArrowUpFromLine, CircleDollarSign, Download, FilePenLine, History, Package, Plus, Trash2, X } from "lucide-react";
+import { AlertTriangle, ArrowDownToLine, ArrowUpFromLine, CircleDollarSign, Download, FilePenLine, History, Package, Plus, Trash2, X } from "lucide-react";
 import { Boton, BotonIcono } from "../ui/Boton";
 import Cifras from "../ui/Cifras";
 import EncabezadoPagina from "../ui/EncabezadoPagina";
@@ -21,6 +21,31 @@ import { coincide, dinero, fechaCorta, hoyISO, numero, plural } from "../../util
 import { descargarCSV } from "../../utilidades/exportar";
 
 const bajo = (i) => Number(i.stock) <= Number(i.minimo);
+
+function ModalFormulario({ abierto, onCerrar, titulo, descripcion, boton, children }) {
+  const id = useId();
+  return (
+    <Modal
+      abierto={abierto}
+      onCerrar={onCerrar}
+      titulo={titulo}
+      descripcion={descripcion}
+      pie={
+        <>
+          <Boton variante="secundario" onClick={onCerrar}>
+            Cancelar
+          </Boton>
+          <Boton variante="primario" type="submit" form={id}>
+            {boton}
+          </Boton>
+        </>
+      }
+    >
+      {children(id)}
+    </Modal>
+  );
+}
+
 
 function BarraStock({ insumo }) {
   const tope = Math.max(Number(insumo.minimo) * 3, Number(insumo.stock), 1);
