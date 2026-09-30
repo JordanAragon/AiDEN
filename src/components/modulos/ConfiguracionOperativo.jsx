@@ -1,10 +1,12 @@
 import { useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Bell, Database, Download, Gauge, MapPin, RotateCcw, Save, ShieldCheck, Trash2, Upload } from "lucide-react";
 import { Boton, BotonIcono } from "../ui/Boton";
 import { Entrada } from "../ui/Campo";
 import EncabezadoPagina from "../ui/EncabezadoPagina";
 import Insignia from "../ui/Insignia";
 import Panel from "../ui/Panel";
+import Pestanas from "../ui/Pestanas";
 import AlertaFormulario from "../ui/AlertaFormulario";
 import { exportarRespaldo, importarRespaldo, useDatos } from "../../datos/almacen";
 import { CONFIG_INICIAL } from "../../datos/catalogos";
@@ -15,6 +17,7 @@ import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
 import { descargarTexto } from "../../utilidades/exportar";
 import { hoyISO, numero, plural } from "../../utilidades/formato";
+import UsuariosConfiguracion from "../configuracion/UsuariosConfiguracion";
 
 const CAMPOS = [
   ["tempMin", "Temperatura mínima (°C)"],
@@ -191,6 +194,8 @@ export default function ConfiguracionOperativo() {
   const confirmar = useConfirmar();
   const archivo = useRef(null);
   const [version, setVersion] = useState(0);
+  const [parametros, setParametros] = useSearchParams();
+  const vista = parametros.get("vista") === "usuarios" ? "usuarios" : "general";
   useTitulo("Configuración");
   const registros = ["lotes", "tareas", "trazabilidad", "inventario", "movimientos", "costos", "calidad", "ambiental", "personas"].reduce((s, k) => s + (datos[k]?.length || 0), 0);
   const cfg = datos.configuracion;
@@ -217,34 +222,56 @@ export default function ConfiguracionOperativo() {
 
   return (
     <section className="space-y-6">
-      <Formulario key={`cfg-${version}-${cfg.tempMin}-${cfg.tempMax}-${cfg.humMin}-${cfg.humMax}-${cfg.notificaciones}`} cfg={cfg} />
-
-      <section className="grid gap-4 xl:grid-cols-2">
-        <Zonas />
-        <Panel icono={Database} titulo="Datos de este navegador" descripcion={`AiDEN funciona sin servidor: ${numero(registros)} registros guardados localmente. Si borras los datos del navegador, se pierden.`}>
-          <section className="space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
-              <p className="text-sm text-slate-600">Descarga una copia para guardarla o llevarla a otro equipo.</p>
-              <Boton variante="secundario" tamano="sm" icono={Download} onClick={() => ejecutar(() => descargarTexto(`aiden-respaldo-${hoyISO()}.json`, exportarRespaldo()), "Respaldo descargado")}>
-                Exportar respaldo
-              </Boton>
+      <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="border-b border-slate-100 px-4 pt-4">
+          <Pestanas
+            etiqueta="Secciones de configuración"
+            activa={vista}
+            onCambio={(id) => setParametros(id === "general" ? {} : { vista: id }, { replace: true })}
+            pestanas={[
+              { id: "general", etiqueta: "General" },
+              { id: "usuarios", etiqueta: "Usuarios" },
+            ]}
+          />
+          <div className="h-4" />
+        </div>
+        <div className="p-0">
+          {vista === "general" ? (
+            <div className="space-y-6">
+              <Formulario key={`cfg-${version}-${cfg.tempMin}-${cfg.tempMax}-${cfg.humMin}-${cfg.humMax}-${cfg.notificaciones}`} cfg={cfg} />
+              <section className="grid gap-4 px-0 xl:grid-cols-2">
+                <Zonas />
+                <Panel icono={Database} titulo="Datos de este navegador" descripcion={`AiDEN funciona sin servidor: ${numero(registros)} registros guardados localmente. Si borras los datos del navegador, se pierden.`}>
+                  <section className="space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
+                      <p className="text-sm text-slate-600">Descarga una copia para guardarla o llevarla a otro equipo.</p>
+                      <Boton variante="secundario" tamano="sm" icono={Download} onClick={() => ejecutar(() => descargarTexto(`aiden-respaldo-${hoyISO()}.json`, exportarRespaldo()), "Respaldo descargado")}>
+                        Exportar respaldo
+                      </Boton>
+                    </div>
+                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
+                      <p className="text-sm text-slate-600">Carga un respaldo exportado desde AiDEN.</p>
+                      <input ref={archivo} type="file" accept="application/json,.json" onChange={importar} className="hidden" aria-label="Archivo de respaldo" tabIndex={-1} />
+                      <Boton variante="secundario" tamano="sm" icono={Upload} onClick={() => archivo.current?.click()}>
+                        Importar respaldo
+                      </Boton>
+                    </div>
+                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-red-50 p-3">
+                      <p className="text-sm text-red-600">Vuelve a los datos de ejemplo, con fechas relativas a hoy.</p>
+                      <Boton variante="secundario" tamano="sm" icono={RotateCcw} onClick={restablecer}>
+                        Restablecer demo
+                      </Boton>
+                    </div>
+                  </section>
+                </Panel>
+              </section>
             </div>
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
-              <p className="text-sm text-slate-600">Carga un respaldo exportado desde AiDEN.</p>
-              <input ref={archivo} type="file" accept="application/json,.json" onChange={importar} className="hidden" aria-label="Archivo de respaldo" tabIndex={-1} />
-              <Boton variante="secundario" tamano="sm" icono={Upload} onClick={() => archivo.current?.click()}>
-                Importar respaldo
-              </Boton>
-            </div>
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-red-50 p-3">
-              <p className="text-sm text-red-600">Vuelve a los datos de ejemplo, con fechas relativas a hoy.</p>
-              <Boton variante="secundario" tamano="sm" icono={RotateCcw} onClick={restablecer}>
-                Restablecer demo
-              </Boton>
-            </div>
-          </section>
-        </Panel>
+          ) : (
+            <UsuariosConfiguracion />
+          )}
+        </div>
       </section>
+
     </section>
   );
 }
