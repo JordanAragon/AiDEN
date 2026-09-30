@@ -56,9 +56,6 @@ Funciona sobrescribiendo clases concretas bajo `html.aiden-dark` (`modo-oscuro.c
 
 ## Accesibilidad
 
-Auditoría con axe-core (WCAG 2.1 AA) en 44 vistas (22 en tema claro y 22 en oscuro): 26 sin avisos. Los avisos restantes son decisiones de identidad, documentadas:
+La accesibilidad se valida con axe-core (WCAG 2.1 AA), navegación por teclado y pruebas específicas de contraste en gráficas. La suite actual incluye las vistas públicas, los tres roles, Mi perfil y las secciones de Configuración.
 
-- Rótulos de 8 px de la landing (contrastes entre 2,6 y 4,4 según el fondo): forman parte del carácter editorial de la landing.
-- Descripción bajo el título de cada módulo en `slate-500` sobre `#f5f7f5` (4,42, el mínimo es 4,5).
-
-Si se prioriza la conformidad AA completa, basta con oscurecer esos grises un tono; el cambio es pequeño pero visible en la landing.
+Los contrastes editoriales heredados de la landing y de los encabezados de módulos fueron ajustados para evitar depender de excepciones de identidad visual. Las pruebas de accesibilidad deben ejecutarse en CI y cualquier violación debe bloquear la validación.
