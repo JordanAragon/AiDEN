@@ -39,7 +39,7 @@ export default function DashboardAdminContenido() {
 
   const decisiones = [
     ...criticas.map((a) => ({ id: a.id, tipo: a.tipo, texto: a.titulo, detalle: a.detalle, to: a.ruta })),
-    ...porRevisar.map((u) => ({ id: u.id, tipo: "Accesos", texto: `Cuenta nueva: ${u.name}`, detalle: `Registrada el ${fechaCorta(u.creado)} como operario. Confirma su rol.`, to: "/personal?vista=accesos" })),
+    ...porRevisar.map((u) => ({ id: u.id, tipo: "Accesos", texto: `Cuenta nueva: ${u.name}`, detalle: `Registrada el ${fechaCorta(u.creado)} como operario. Confirma su rol.`, to: "/configuracion?vista=usuarios" })),
     ...atrasados.map(({ lote, r }) => ({ id: `atr-${lote.id}`, tipo: "Producción", texto: `${lote.lote} superó la salida estimada`, detalle: `Debía salir hace ${-r.diasParaSalida} días; sigue en ${lote.etapa}.`, to: "/produccion" })),
   ];
 
@@ -63,7 +63,7 @@ export default function DashboardAdminContenido() {
 
       <Cifras
         items={[
-          { icono: Users, etiqueta: "Usuarios", valor: usuarios.length, detalle: `${roles.supervisor} supervisores · ${roles.operario} operarios${porRevisar.length ? ` · ${porRevisar.length} por revisar` : ""}`, tono: porRevisar.length ? "alerta" : "exito", to: "/personal?vista=accesos" },
+          { icono: Users, etiqueta: "Usuarios", valor: usuarios.length, detalle: `${roles.supervisor} supervisores · ${roles.operario} operarios${porRevisar.length ? ` · ${porRevisar.length} por revisar` : ""}`, tono: porRevisar.length ? "alerta" : "exito", to: "/configuracion?vista=usuarios" },
           { icono: Sprout, etiqueta: "Lotes activos", valor: resumenes.length, detalle: `${numero(plantas)} plantas · ${dinero(costoPromedio)} por planta`, to: "/produccion" },
           { icono: CircleDollarSign, etiqueta: `Balance de ${mes.mes}`, valor: dinero(mes.balance), detalle: `${dinero(mes.ingresos)} ingresos · ${dinero(mes.gastos)} gastos`, tono: "info", to: "/costos" },
           { icono: ShieldCheck, etiqueta: "Alertas operativas", valor: lista.length, detalle: criticas.length ? `${plural(criticas.length, "crítica", "críticas")} · requieren seguimiento` : "Sin alertas críticas", tono: criticas.length ? "critico" : "exito", to: "/dashboard-supervisor" },
@@ -179,7 +179,7 @@ export default function DashboardAdminContenido() {
           </header>
           <section className="mt-4 grid gap-2">
             <AccionRapida to="/reportes">Abrir reportes</AccionRapida>
-            <AccionRapida to="/personal?vista=accesos">Administrar accesos</AccionRapida>
+            <AccionRapida to="/configuracion?vista=usuarios">Administrar accesos</AccionRapida>
             <AccionRapida to="/costos">Revisar costos</AccionRapida>
             <AccionRapida to="/configuracion">Revisar reglas</AccionRapida>
           </section>
