@@ -103,7 +103,7 @@ export default function Inicio() {
               <div className="aiden-map-visual"><span className="aiden-map-ring aiden-map-ring-one" /><span className="aiden-map-ring aiden-map-ring-two" />{connections.map(([name], index) => <span className={`aiden-map-node aiden-map-node-${index + 1}`} key={name}>{name}</span>)}<span className="aiden-map-core"><Sprout size={22} /><small>CONTEXTO</small><strong>Lote</strong><b>024</b></span></div>
               <div className="aiden-map-copy"><p className="aiden-kicker aiden-kicker-light">Cómo se relaciona la información</p><div className="aiden-connection-list">{connections.map(([name, text, detail], index) => <article key={name}><span>0{index + 1}</span><div><strong>{name}</strong><p>{text}</p><small>{detail}</small></div><ArrowUpRight size={14} /></article>)}</div></div>
             </article>
-              <div className="aiden-system-readout" aria-label="Ejemplo de lectura operativa">
+              <div className="aiden-system-readout" aria-label="Lectura operativa">
                 <div><span>Lote</span><strong>024</strong><small>Contexto principal</small></div>
                 <div><span>Etapa</span><strong>Crecimiento</strong><small>Proceso actual</small></div>
                 <div><span>Estado</span><strong>En seguimiento</strong><small>Requiere lectura</small></div>
