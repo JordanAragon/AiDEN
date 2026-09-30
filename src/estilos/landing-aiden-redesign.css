@@ -1409,3 +1409,958 @@
 .aiden-final-stamp {
   border-radius: 28px;
 }
+
+
+/* Tratamiento premium inspirado en patrones editoriales de Awwwards:
+   más contraste de escala, más aire, menos sensación de dashboard y microinteracciones sobrias.
+   Se añade sobre la composición existente para no alterar la arquitectura funcional. */
+
+.aiden-redesign {
+  --premium-ink: #102018;
+  --premium-soft: #657169;
+  --premium-border: rgba(16, 32, 24, .105);
+  --premium-glow: rgba(217, 234, 115, .16);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(circle at 85% 7%, rgba(217,234,115,.08), transparent 22rem),
+    var(--paper);
+}
+
+.aiden-redesign section,
+.aiden-redesign article,
+.aiden-redesign figure {
+  scroll-margin-top: 110px;
+}
+
+.aiden-header {
+  padding: 16px 0;
+  background: rgba(247,246,240,.70);
+  border-bottom-color: rgba(16,32,24,.06);
+}
+
+.aiden-header-inner {
+  min-height: 60px;
+  border-color: rgba(16,32,24,.10);
+  border-radius: 16px;
+  background: rgba(255,253,248,.82);
+  box-shadow:
+    0 18px 44px rgba(11,43,27,.055),
+    inset 0 1px 0 rgba(255,255,255,.78);
+}
+
+.aiden-header-links {
+  gap: 24px;
+}
+
+.aiden-header-links a,
+.aiden-header-login {
+  font-size: 10px;
+  letter-spacing: .01em;
+}
+
+.aiden-button {
+  min-height: 44px;
+  padding-inline: 17px;
+}
+
+.aiden-button-large {
+  min-height: 56px;
+  padding-inline: 23px;
+}
+
+.aiden-hero {
+  padding: 104px 0 72px;
+  background:
+    radial-gradient(circle at 76% 35%, rgba(217,234,115,.12), transparent 28rem),
+    var(--paper);
+}
+
+.aiden-hero::before {
+  background-image:
+    linear-gradient(rgba(18,37,27,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18,37,27,.035) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: linear-gradient(to bottom, #000 0, rgba(0,0,0,.45) 58%, transparent 94%);
+}
+
+.aiden-hero::after {
+  top: -330px;
+  right: -110px;
+  width: 720px;
+  height: 720px;
+  background: radial-gradient(circle, rgba(217,234,115,.18), transparent 68%);
+}
+
+.aiden-hero-grid {
+  grid-template-columns: minmax(0,.68fr) minmax(0,1.32fr);
+  gap: 74px;
+}
+
+.aiden-hero-copy {
+  max-width: 610px;
+}
+
+.aiden-label {
+  color: #39483f;
+  letter-spacing: .18em;
+}
+
+.aiden-hero h1 {
+  max-width: 620px;
+  margin-top: 25px;
+  font-size: clamp(60px, 7vw, 98px);
+  line-height: .82;
+  letter-spacing: -.07em;
+}
+
+.aiden-hero h1 em {
+  position: relative;
+  display: inline;
+  color: var(--ink);
+}
+
+.aiden-hero h1 em::after {
+  content: "";
+  display: inline-block;
+  width: .32em;
+  height: .07em;
+  margin: 0 0 .10em .10em;
+  border-radius: 999px;
+  background: var(--moss);
+  vertical-align: middle;
+}
+
+.aiden-hero-lead {
+  max-width: 520px;
+  margin-top: 34px;
+  color: #4c5a51;
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.aiden-hero-actions {
+  margin-top: 39px;
+  gap: 28px;
+}
+
+.aiden-text-link {
+  position: relative;
+  gap: 10px;
+}
+
+.aiden-text-link::after {
+  content: "↗";
+  display: inline-block;
+  margin-left: 2px;
+  font-size: 12px;
+  transform: translate(0,0);
+  transition: transform 220ms ease;
+}
+
+.aiden-text-link:hover::after,
+.aiden-text-link:focus-visible::after {
+  transform: translate(3px,-3px);
+}
+
+.aiden-hero-meta {
+  margin-top: 47px;
+  padding-top: 17px;
+  gap: 13px;
+  color: #536057;
+}
+
+.aiden-hero-product {
+  transform: translateY(5px);
+}
+
+.aiden-product-frame {
+  padding: 13px;
+  border-radius: 26px;
+  border-color: rgba(18,37,27,.14);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.72), rgba(247,246,240,.44)),
+    rgba(255,253,248,.68);
+  box-shadow:
+    0 50px 120px rgba(11,43,27,.16),
+    0 14px 36px rgba(11,43,27,.08);
+}
+
+.aiden-product-frame::before {
+  content: "";
+  position: absolute;
+  left: 22px;
+  right: 145px;
+  top: 7px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(113,139,88,.42), transparent);
+  pointer-events: none;
+}
+
+.aiden-product-frame:hover {
+  transform: perspective(1400px) rotateY(0) rotateX(0) translateY(-7px) scale(1.005);
+}
+
+.aiden-product-frame .aiden-live-preview {
+  border-radius: 18px !important;
+}
+
+.aiden-product-corner {
+  top: 17px;
+  right: 18px;
+  border-color: rgba(18,37,27,.08);
+  background: rgba(255,253,248,.68);
+  backdrop-filter: blur(12px);
+}
+
+.aiden-hero-product figcaption {
+  padding-top: 13px;
+  color: #59665d;
+}
+
+.aiden-hero-rule {
+  margin-top: 56px;
+  padding-top: 16px;
+  border-top-color: rgba(18,37,27,.11);
+}
+
+.aiden-problem {
+  position: relative;
+  padding: 134px 0 116px;
+  background:
+    linear-gradient(90deg, rgba(113,139,88,.045) 1px, transparent 1px),
+    var(--cream);
+  background-size: 124px 124px;
+}
+
+.aiden-problem::before {
+  content: "02";
+  position: absolute;
+  top: 67px;
+  right: max(32px, calc((100vw - 1240px) / 2));
+  color: rgba(113,139,88,.12);
+  font-size: clamp(70px, 10vw, 140px);
+  font-weight: 700;
+  letter-spacing: -.10em;
+  line-height: .8;
+  pointer-events: none;
+}
+
+.aiden-problem-grid {
+  grid-template-columns: minmax(0,1.22fr) minmax(300px,.58fr);
+  gap: 104px;
+}
+
+.aiden-problem h2 {
+  max-width: 820px;
+  font-size: clamp(50px, 6.2vw, 84px);
+  line-height: .88;
+}
+
+.aiden-problem-copy {
+  padding-top: 14px;
+}
+
+.aiden-problem-copy > p:not(.aiden-kicker) {
+  max-width: 400px;
+  color: #4f5d54;
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.aiden-problem-strip {
+  margin-top: 88px;
+}
+
+.aiden-problem-strip article {
+  min-height: 146px;
+  padding-top: 20px;
+}
+
+.aiden-problem-strip strong {
+  margin-top: 27px;
+  font-size: 20px;
+}
+
+.aiden-problem-strip p {
+  max-width: 220px;
+  color: #4f5d54;
+  font-size: 10.5px;
+  line-height: 1.7;
+}
+
+.aiden-system {
+  padding: 150px 0 158px;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(217,234,115,.08), transparent 28rem),
+    linear-gradient(145deg, #0b2b1b, #071b11);
+}
+
+.aiden-system .aiden-section-header {
+  grid-template-columns: minmax(0,1fr) minmax(300px,390px);
+  gap: 96px;
+  margin-bottom: 72px;
+}
+
+.aiden-section-header h2 {
+  font-size: clamp(56px, 6.4vw, 88px);
+  letter-spacing: -.07em;
+}
+
+.aiden-section-header > p {
+  max-width: 360px;
+  justify-self: end;
+  color: rgba(255,253,248,.72);
+  font-size: 13px;
+  line-height: 1.95;
+}
+
+.aiden-operation-map {
+  grid-template-columns: minmax(0,1.18fr) minmax(320px,.58fr);
+  gap: 66px;
+}
+
+.aiden-map-visual {
+  min-height: 560px;
+  border-radius: 22px;
+  border-color: rgba(217,234,115,.13);
+  background:
+    linear-gradient(rgba(217,234,115,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(217,234,115,.035) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(217,234,115,.12), transparent 32%),
+    linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.012));
+  background-size: 72px 72px, 72px 72px, auto, auto;
+}
+
+.aiden-map-visual::before,
+.aiden-map-visual::after {
+  border-color: rgba(217,234,115,.075);
+}
+
+.aiden-map-core {
+  width: 154px;
+  height: 154px;
+  border-color: rgba(217,234,115,.48);
+  background: #103420;
+  box-shadow:
+    0 0 0 1px rgba(217,234,115,.08),
+    0 0 0 22px rgba(217,234,115,.028),
+    0 28px 70px rgba(0,0,0,.28);
+}
+
+.aiden-map-node {
+  padding: 8px 10px;
+  border-color: rgba(217,234,115,.17);
+  background: rgba(7,27,17,.80);
+  font-size: 7.5px;
+  backdrop-filter: blur(12px);
+}
+
+.aiden-map-copy {
+  padding-top: 8px;
+}
+
+.aiden-connection-list {
+  margin-top: 25px;
+}
+
+.aiden-connection-list article {
+  min-height: 64px;
+  padding: 17px 0;
+  transition:
+    padding 220ms ease,
+    background-color 220ms ease,
+    border-color 220ms ease;
+}
+
+.aiden-connection-list article:hover {
+  padding-left: 12px;
+  padding-right: 10px;
+  background: rgba(255,253,248,.035);
+  border-bottom-color: rgba(217,234,115,.25);
+}
+
+.aiden-connection-list strong {
+  font-size: 14px;
+}
+
+.aiden-connection-list p {
+  color: rgba(255,253,248,.52);
+  font-size: 8.5px;
+}
+
+.aiden-evidence {
+  position: relative;
+  padding: 132px 0 138px;
+}
+
+.aiden-evidence::after {
+  content: "03";
+  position: absolute;
+  top: 88px;
+  right: max(32px, calc((100vw - 1240px) / 2));
+  color: rgba(113,139,88,.08);
+  font-size: clamp(72px, 9vw, 136px);
+  font-weight: 700;
+  line-height: .8;
+  letter-spacing: -.10em;
+  pointer-events: none;
+}
+
+.aiden-evidence h2 {
+  max-width: 980px;
+  font-size: clamp(50px, 5.8vw, 78px);
+  letter-spacing: -.065em;
+}
+
+.aiden-evidence header > p {
+  max-width: 530px;
+  margin-top: 27px;
+  color: #526057;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.aiden-evidence-cards {
+  gap: 0;
+  margin-top: 76px;
+  border-top: 1px solid var(--premium-border);
+}
+
+.aiden-evidence-cards article {
+  min-height: 222px;
+  padding: 22px 30px 22px 0;
+  border: 0;
+  border-bottom: 1px solid var(--premium-border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.aiden-evidence-cards article + article {
+  padding-left: 30px;
+  border-left: 1px solid var(--premium-border);
+}
+
+.aiden-evidence-cards article:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.aiden-evidence-cards article:hover h3 {
+  transform: translateY(-3px);
+}
+
+.aiden-evidence-cards article:first-child {
+  border-top: 0;
+}
+
+.aiden-evidence-cards span {
+  color: #617067;
+}
+
+.aiden-evidence-cards h3 {
+  margin-top: 60px;
+  font-size: 30px;
+  transition: transform 220ms ease;
+}
+
+.aiden-evidence-cards p {
+  max-width: 250px;
+  margin-top: 8px;
+  color: #5b675f;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.aiden-modules {
+  position: relative;
+  padding: 132px 0 140px;
+}
+
+.aiden-modules .aiden-section-header {
+  margin-bottom: 72px;
+}
+
+.aiden-modules .aiden-section-header > p {
+  max-width: 340px;
+}
+
+.aiden-bento {
+  gap: 12px;
+}
+
+.aiden-bento-card {
+  min-height: 252px;
+  padding: 21px;
+  border-radius: 16px;
+  border-color: rgba(18,37,27,.09);
+  background: rgba(255,253,248,.72);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+}
+
+.aiden-bento-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(18,37,27,.17);
+  box-shadow: 0 24px 50px rgba(18,37,27,.10);
+}
+
+.aiden-bento-number {
+  color: #637068;
+}
+
+.aiden-bento-kind {
+  color: #657169;
+  letter-spacing: .13em;
+}
+
+.aiden-bento-card h3 {
+  margin-top: 9px;
+  font-size: 30px;
+}
+
+.aiden-bento-card p {
+  max-width: 300px;
+  color: #58645c;
+  font-size: 10.5px;
+  line-height: 1.72;
+}
+
+.aiden-role-table {
+  position: relative;
+  border-top-color: rgba(18,37,27,.16);
+}
+
+.aiden-role-row {
+  min-height: 126px;
+  grid-template-columns: 62px minmax(160px,.55fr) minmax(130px,.42fr) minmax(280px,1fr) 22px;
+  transition:
+    padding 260ms cubic-bezier(.22,.8,.2,1),
+    background-color 220ms ease,
+    border-color 220ms ease;
+}
+
+.aiden-role-row h3 {
+  font-size: 30px;
+}
+
+.aiden-role-row > strong {
+  color: #657169;
+  font-size: 9px;
+}
+
+.aiden-role-row p {
+  color: #5c6860;
+  font-size: 10.5px;
+  line-height: 1.7;
+}
+
+.aiden-role-row:hover {
+  padding-left: 18px;
+  background:
+    linear-gradient(90deg, rgba(113,139,88,.07), transparent 36%),
+    rgba(235,231,219,.33);
+}
+
+.aiden-role-row:hover > svg {
+  transform: translate(2px,-2px);
+  transition: transform 220ms ease;
+}
+
+.aiden-clarity {
+  position: relative;
+  padding: 124px 0 134px;
+}
+
+.aiden-clarity::before {
+  content: "04";
+  position: absolute;
+  top: 78px;
+  right: max(32px, calc((100vw - 1240px) / 2));
+  color: rgba(113,139,88,.09);
+  font-size: clamp(72px, 9vw, 136px);
+  font-weight: 700;
+  line-height: .8;
+  letter-spacing: -.10em;
+  pointer-events: none;
+}
+
+.aiden-clarity h2 {
+  max-width: 910px;
+  font-size: clamp(50px, 5.7vw, 78px);
+}
+
+.aiden-clarity-list {
+  margin-top: 72px;
+}
+
+.aiden-clarity-list article {
+  padding: 25px 0;
+  transition: padding 220ms ease, border-color 220ms ease;
+}
+
+.aiden-clarity-list article:hover {
+  padding-left: 10px;
+  border-bottom-color: rgba(113,139,88,.34);
+}
+
+.aiden-clarity-list span {
+  font-size: 13px;
+}
+
+.aiden-clarity-list p {
+  color: #5b675f;
+  font-size: 11.5px;
+  line-height: 1.8;
+}
+
+.aiden-final {
+  position: relative;
+  overflow: hidden;
+  padding: 140px 0 150px;
+  background:
+    radial-gradient(circle at 78% 30%, rgba(217,234,115,.12), transparent 24rem),
+    linear-gradient(135deg, #071b11, #0b2b1b 62%, #102f20);
+}
+
+.aiden-final::before {
+  content: "AI / DEN";
+  position: absolute;
+  left: -10px;
+  bottom: -54px;
+  color: rgba(217,234,115,.055);
+  font-size: clamp(100px, 16vw, 220px);
+  font-weight: 700;
+  letter-spacing: -.10em;
+  line-height: .8;
+  pointer-events: none;
+}
+
+.aiden-final-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.aiden-final h2 {
+  max-width: 890px;
+  font-size: clamp(54px, 6.6vw, 92px);
+  letter-spacing: -.07em;
+}
+
+.aiden-final-copy > p:not(.aiden-index) {
+  max-width: 500px;
+  color: rgba(255,253,248,.62);
+}
+
+.aiden-final-stamp {
+  min-height: 360px;
+  border-radius: 22px;
+  border-color: rgba(255,253,248,.13);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.015)),
+    radial-gradient(circle at 35% 22%, rgba(217,234,115,.11), transparent 40%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 30px 70px rgba(0,0,0,.15);
+}
+
+.aiden-footer {
+  background: #efece2;
+}
+
+@supports (animation-timeline: view()) {
+  .aiden-hero-copy,
+  .aiden-hero-product,
+  .aiden-problem-grid,
+  .aiden-problem-strip,
+  .aiden-operation-map,
+  .aiden-evidence-grid,
+  .aiden-bento-card,
+  .aiden-role-row,
+  .aiden-clarity-grid,
+  .aiden-final-inner {
+    animation-name: aiden-premium-reveal;
+    animation-duration: 1ms;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: view();
+    animation-range: entry 8% cover 28%;
+  }
+}
+
+@keyframes aiden-premium-reveal {
+  from {
+    opacity: .08;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .aiden-header {
+    padding: 10px 0;
+  }
+
+  .aiden-hero {
+    padding-top: 78px;
+  }
+
+  .aiden-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 54px;
+  }
+
+  .aiden-hero-copy {
+    max-width: none;
+  }
+
+  .aiden-hero h1 {
+    max-width: 720px;
+  }
+
+  .aiden-hero-product {
+    transform: none;
+  }
+
+  .aiden-product-frame {
+    transform: none;
+  }
+
+  .aiden-product-frame:hover {
+    transform: translateY(-4px) scale(1.002);
+  }
+
+  .aiden-problem {
+    padding-block: 112px 102px;
+  }
+
+  .aiden-problem-grid,
+  .aiden-system .aiden-section-header,
+  .aiden-operation-map {
+    gap: 40px;
+  }
+
+  .aiden-problem::before,
+  .aiden-evidence::after,
+  .aiden-clarity::before {
+    right: 16px;
+    top: 52px;
+  }
+
+  .aiden-system {
+    padding-block: 112px 124px;
+  }
+
+  .aiden-system .aiden-section-header {
+    grid-template-columns: 1fr;
+  }
+
+  .aiden-section-header > p {
+    justify-self: start;
+    max-width: 560px;
+  }
+
+  .aiden-evidence,
+  .aiden-modules,
+  .aiden-roles,
+  .aiden-clarity {
+    padding-block: 110px 118px;
+  }
+
+  .aiden-modules .aiden-section-header {
+    margin-bottom: 52px;
+  }
+
+  .aiden-bento-card {
+    min-height: 215px;
+  }
+
+  .aiden-role-row {
+    grid-template-columns: 44px 1fr 1fr 22px;
+  }
+
+  .aiden-final {
+    padding-block: 114px 126px;
+  }
+
+  .aiden-final-stamp {
+    min-height: 320px;
+  }
+
+  .aiden-footer-inner {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .aiden-header {
+    padding: 8px 0;
+  }
+
+  .aiden-header-inner {
+    min-height: 52px;
+  }
+
+  .aiden-hero {
+    padding: 68px 0 48px;
+  }
+
+  .aiden-hero h1 {
+    font-size: clamp(49px, 14.2vw, 66px);
+    line-height: .86;
+  }
+
+  .aiden-hero-lead {
+    margin-top: 27px;
+    font-size: 14px;
+  }
+
+  .aiden-hero-actions {
+    margin-top: 32px;
+    gap: 16px;
+  }
+
+  .aiden-hero-meta {
+    margin-top: 36px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .aiden-hero-rule {
+    margin-top: 44px;
+  }
+
+  .aiden-product-frame {
+    padding: 9px;
+    border-radius: 20px;
+  }
+
+  .aiden-product-frame::before,
+  .aiden-product-corner {
+    display: none;
+  }
+
+  .aiden-hero-product figcaption {
+    padding-top: 10px;
+    font-size: 7px;
+  }
+
+  .aiden-problem {
+    padding-block: 88px 90px;
+  }
+
+  .aiden-problem::before,
+  .aiden-evidence::after,
+  .aiden-clarity::before {
+    right: 12px;
+    top: 46px;
+    font-size: 72px;
+  }
+
+  .aiden-problem-grid {
+    gap: 36px;
+  }
+
+  .aiden-problem h2,
+  .aiden-evidence h2,
+  .aiden-clarity h2 {
+    font-size: clamp(41px, 12.1vw, 58px);
+  }
+
+  .aiden-problem-strip {
+    margin-top: 54px;
+  }
+
+  .aiden-system {
+    padding-block: 82px 92px;
+  }
+
+  .aiden-section-header {
+    margin-bottom: 42px;
+  }
+
+  .aiden-section-header h2 {
+    font-size: clamp(43px, 13vw, 60px);
+  }
+
+  .aiden-map-visual {
+    min-height: 392px;
+    border-radius: 18px;
+    background-size: 58px 58px, 58px 58px, auto, auto;
+  }
+
+  .aiden-map-core {
+    width: 120px;
+    height: 120px;
+  }
+
+  .aiden-evidence,
+  .aiden-modules,
+  .aiden-roles,
+  .aiden-clarity {
+    padding-block: 88px 94px;
+  }
+
+  .aiden-evidence-cards {
+    grid-template-columns: 1fr;
+    margin-top: 50px;
+  }
+
+  .aiden-evidence-cards article,
+  .aiden-evidence-cards article + article {
+    min-height: 160px;
+    padding: 19px 0;
+    border-left: 0;
+  }
+
+  .aiden-evidence-cards h3 {
+    margin-top: 32px;
+    font-size: 26px;
+  }
+
+  .aiden-bento-card {
+    min-height: 190px;
+  }
+
+  .aiden-bento-card h3 {
+    font-size: 23px;
+  }
+
+  .aiden-bento-card p {
+    font-size: 10px;
+  }
+
+  .aiden-role-row {
+    min-height: 120px;
+  }
+
+  .aiden-final {
+    padding-block: 94px 106px;
+  }
+
+  .aiden-final::before {
+    font-size: 96px;
+    bottom: -18px;
+  }
+
+  .aiden-final h2 {
+    font-size: clamp(47px, 13.6vw, 69px);
+  }
+
+  .aiden-final-stamp {
+    min-height: 288px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-redesign *,
+  .aiden-redesign *::before,
+  .aiden-redesign *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition-duration: .001ms !important;
+  }
+}
