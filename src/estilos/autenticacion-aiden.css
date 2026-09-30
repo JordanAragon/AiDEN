@@ -1,0 +1,524 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
+.aiden-auth {
+  --ink: #12251b;
+  --forest: #0b2b1b;
+  --forest-2: #071b11;
+  --moss: #718b58;
+  --lime: #d9ea73;
+  --paper: #f7f6f0;
+  --cream: #ebe7db;
+  --white: #fffdf8;
+  --muted: #526057;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(500px, .96fr);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: clip;
+}
+
+.aiden-auth *, .aiden-auth *::before, .aiden-auth *::after {
+  box-sizing: border-box;
+}
+
+.aiden-auth a { color: inherit; text-decoration: none; }
+
+.aiden-auth-side {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--forest);
+  isolation: isolate;
+}
+
+.aiden-auth-side > img,
+.aiden-auth-image {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .68;
+  filter: saturate(.78) contrast(1.02);
+}
+
+.aiden-auth-side::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(7,27,17,.30), rgba(7,27,17,.88) 74%),
+    linear-gradient(90deg, rgba(7,27,17,.84), rgba(7,27,17,.25) 70%);
+}
+
+.aiden-auth-side::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .36;
+  background-image:
+    linear-gradient(rgba(217,234,115,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(217,234,115,.08) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, #000, transparent 88%);
+  pointer-events: none;
+}
+
+.aiden-auth-side-content {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 34px 44px 42px;
+}
+
+.aiden-auth-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  color: var(--white) !important;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -.045em;
+}
+
+.aiden-auth-brand-mark {
+  width: 33px;
+  height: 33px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,253,248,.18);
+  border-radius: 10px;
+  background: rgba(255,253,248,.08);
+}
+
+.aiden-auth-side-content > a {
+  display: inline-flex;
+}
+
+.aiden-auth-side-copy {
+  max-width: 590px;
+  padding-bottom: 8px;
+}
+
+.aiden-auth-side-copy > p {
+  margin: 0 0 16px;
+  color: rgba(217,234,115,.88);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.aiden-auth-side-copy h1,
+.aiden-auth-side-copy h2 {
+  margin: 0;
+  max-width: 610px;
+  color: var(--white);
+  font-size: clamp(52px, 5vw, 78px);
+  font-weight: 500;
+  line-height: .86;
+  letter-spacing: -.078em;
+}
+
+.aiden-auth-side-copy h1 em,
+.aiden-auth-side-copy h2 em {
+  color: var(--lime);
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.aiden-auth-side-copy > p + h1 + p,
+.aiden-auth-side-copy > h2 + span,
+.aiden-auth-side-copy > h1 + p {
+  display: block;
+  max-width: 520px;
+  margin-top: 26px;
+  color: rgba(255,253,248,.66);
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.aiden-auth-panel {
+  min-width: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 54px clamp(34px, 5vw, 84px);
+  background:
+    radial-gradient(circle at 88% 10%, rgba(217,234,115,.09), transparent 20rem),
+    var(--paper);
+}
+
+.aiden-auth-panel-centered {
+  display: block;
+  padding: 0;
+  background: var(--paper);
+}
+
+.aiden-auth-side-inline {
+  display: none;
+}
+
+.aiden-auth-form-wrap {
+  width: min(100%, 510px);
+}
+
+.aiden-auth-mobile-brand {
+  display: none;
+}
+
+.aiden-auth-heading {
+  margin-bottom: 32px;
+}
+
+.aiden-auth-heading > p,
+.aiden-auth-heading p {
+  color: var(--moss);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.aiden-auth-heading h2,
+.aiden-auth-heading h1 {
+  margin-top: 13px;
+  color: var(--ink);
+  font-size: clamp(40px, 4vw, 57px);
+  font-weight: 600;
+  line-height: .9;
+  letter-spacing: -.068em;
+}
+
+.aiden-auth-heading > p + h2::first-letter,
+.aiden-auth-heading > p + h1::first-letter {
+  color: var(--forest);
+}
+
+.aiden-auth-heading > p:last-child,
+.aiden-auth-heading h2 + p,
+.aiden-auth-heading h1 + p {
+  max-width: 480px;
+  margin-top: 16px;
+  color: #59655d;
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+
+.aiden-auth-form {
+  display: grid;
+  gap: 18px;
+}
+
+.aiden-auth-form > label {
+  display: block;
+  color: #435047;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.aiden-auth-form > label > span {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.aiden-auth-form input[type="email"],
+.aiden-auth-form input[type="text"],
+.aiden-auth-form input[type="password"] {
+  width: 100%;
+  height: 56px;
+  border: 1px solid rgba(18,37,27,.16) !important;
+  border-radius: 12px !important;
+  outline: none;
+  background: rgba(255,253,248,.65) !important;
+  color: var(--ink) !important;
+  padding: 0 16px !important;
+  font: 500 13px/1.2 'DM Sans', sans-serif !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.aiden-auth-form input::placeholder {
+  color: #89928c !important;
+}
+
+.aiden-auth-form input:focus {
+  border-color: rgba(113,139,88,.72) !important;
+  background: var(--white) !important;
+  box-shadow: 0 0 0 4px rgba(217,234,115,.16) !important;
+}
+
+.aiden-auth-form .relative input {
+  padding-right: 48px !important;
+}
+
+.aiden-auth-form button[type="button"] {
+  color: #718078 !important;
+}
+
+.aiden-auth-form button[type="submit"] {
+  min-height: 54px;
+  margin-top: 4px;
+  border-radius: 11px;
+  background: var(--forest) !important;
+  color: var(--white) !important;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  box-shadow: 0 16px 34px rgba(11,43,27,.12);
+  transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.aiden-auth-form button[type="submit"]:hover {
+  transform: translateY(-2px);
+  background: #082317 !important;
+  box-shadow: 0 20px 38px rgba(11,43,27,.16);
+}
+
+.aiden-auth-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 2px 0 3px;
+  font-size: 12px !important;
+}
+
+.aiden-auth-options label {
+  color: #68746c;
+}
+
+.aiden-auth-options a,
+.aiden-auth-form-wrap > p a {
+  color: var(--forest) !important;
+  font-weight: 700;
+}
+
+.aiden-auth-demo {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(18,37,27,.13);
+}
+
+.aiden-auth-demo > p:first-child {
+  color: #435047 !important;
+  font-size: 9px !important;
+}
+
+.aiden-auth-demo > p:nth-child(2) {
+  color: #758078 !important;
+  font-size: 11px !important;
+  line-height: 1.6;
+}
+
+.aiden-auth-demo ul {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.aiden-auth-demo li button {
+  min-height: 58px;
+  border: 1px solid rgba(18,37,27,.12) !important;
+  border-radius: 12px !important;
+  background: rgba(255,253,248,.54) !important;
+  color: var(--ink) !important;
+}
+
+.aiden-auth-demo li button:hover {
+  border-color: rgba(113,139,88,.40) !important;
+  background: rgba(217,234,115,.08) !important;
+}
+
+.aiden-auth-demo li button span:nth-child(1) {
+  background: var(--forest) !important;
+}
+
+.aiden-auth-demo li button span:nth-child(2) span:first-child {
+  color: var(--ink) !important;
+}
+
+.aiden-auth-demo li button span:nth-child(2) span:last-child {
+  color: #6a766e !important;
+}
+
+.aiden-auth-demo li button > span:last-child {
+  color: var(--forest) !important;
+}
+
+.aiden-auth-form-wrap > p {
+  color: #758078 !important;
+  font-size: 12px !important;
+}
+
+.aiden-auth-session {
+  border: 1px solid rgba(18,37,27,.13);
+  border-radius: 16px;
+  background: rgba(255,253,248,.62);
+  padding: 22px;
+}
+
+.aiden-auth-card {
+  width: min(100%, 510px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.aiden-auth-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 26px auto 0;
+  border: 0;
+  background: transparent;
+  color: #67736b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.aiden-auth-back:hover { color: var(--forest); }
+
+.aiden-auth-panel-centered > .aiden-auth-form-wrap > .aiden-auth-heading {
+  margin-top: 16px;
+}
+
+.aiden-auth-panel-centered .aiden-auth-form-wrap {
+  margin-inline: auto;
+}
+
+.aiden-auth-panel-centered .aiden-auth-heading > p {
+  color: var(--moss);
+}
+
+.aiden-auth-panel-centered .aiden-auth-card {
+  margin-inline: auto;
+}
+
+@media (max-width: 1023px) {
+  .aiden-auth {
+    display: block;
+    min-height: 100vh;
+  }
+
+  .aiden-auth-side {
+    display: none;
+  }
+
+  .aiden-auth-panel {
+    min-height: 100vh;
+    padding: 34px 24px 42px;
+  }
+
+  .aiden-auth-form-wrap {
+    width: min(100%, 520px);
+  }
+
+  .aiden-auth-mobile-brand {
+    display: block;
+    margin-bottom: 52px;
+  }
+
+  .aiden-auth-mobile-brand a {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--forest);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -.04em;
+  }
+
+  .aiden-auth-mobile-brand a span:first-child {
+    width: 31px;
+    height: 31px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: var(--forest);
+    color: var(--lime);
+  }
+
+  .aiden-auth-panel-centered {
+    padding: 44px 24px;
+  }
+
+  .aiden-auth-side-inline { display: none; }
+}
+
+@media (max-width: 600px) {
+  .aiden-auth-panel {
+    padding: 26px 18px 34px;
+  }
+
+  .aiden-auth-mobile-brand {
+    margin-bottom: 42px;
+  }
+
+  .aiden-auth-heading {
+    margin-bottom: 28px;
+  }
+
+  .aiden-auth-heading h2,
+  .aiden-auth-heading h1 {
+    font-size: 43px;
+  }
+
+  .aiden-auth-heading > p:last-child,
+  .aiden-auth-heading h2 + p,
+  .aiden-auth-heading h1 + p {
+    font-size: 12.5px;
+  }
+
+  .aiden-auth-form {
+    gap: 16px;
+  }
+
+  .aiden-auth-form input[type="email"],
+  .aiden-auth-form input[type="text"],
+  .aiden-auth-form input[type="password"] {
+    height: 54px;
+  }
+
+  .aiden-auth-options {
+    align-items: flex-start;
+    font-size: 11px !important;
+  }
+
+  .aiden-auth-demo {
+    margin-top: 26px;
+  }
+
+  .aiden-auth-demo li button {
+    min-height: 56px;
+  }
+
+  .aiden-auth-panel-centered {
+    padding: 30px 18px 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-auth *,
+  .aiden-auth *::before,
+  .aiden-auth *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition-duration: .001ms !important;
+  }
+}
