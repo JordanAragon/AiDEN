@@ -12,7 +12,6 @@ import { crearCuentaAdministrativa, cambiarRolUsuario, marcarCuentaRevisada } fr
 import { useDatos } from "../../datos/almacen";
 import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion, useUsuarios } from "../../hooks/useSesion";
-import { fechaCorta } from "../../utilidades/formato";
 
 const CAMPOS = [
   ["name", "Nombre completo", "Ej. María González"],
