@@ -37,6 +37,7 @@ export default function ForgotPassword() {
     <main className="aiden-auth">
       <aside className="aiden-auth-side">
         <img src={loginImage} alt="Invernadero agrícola" className="aiden-auth-image" />
+        <div className="aiden-auth-image-overlay" aria-hidden="true" />
         <section className="aiden-auth-side-content">
           <Link to="/" className="aiden-auth-brand">
             <span className="aiden-auth-brand-mark"><Leaf size={17} /></span>
