@@ -1,26 +1,15 @@
-import { useId, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { AlertTriangle, ArrowDownToLine, ArrowLeftRight, ArrowUpFromLine, CircleDollarSign, Download, FilePenLine, History, Package, Plus, Trash2, X } from "lucide-react";
-import { Boton, BotonIcono } from "../ui/Boton";
+import { useState } from "react";
+import { ArrowDownToLine, ArrowUpFromLine } from "lucide-react";
 import { Casilla, Entrada, Seleccion } from "../ui/Campo";
-import Cifras from "../ui/Cifras";
-import EncabezadoPagina from "../ui/EncabezadoPagina";
-import Insignia from "../ui/Insignia";
-import Modal from "../ui/Modal";
-import Pestanas from "../ui/Pestanas";
 import AlertaFormulario from "../ui/AlertaFormulario";
-import { Buscador, Segmentos } from "../ui/Filtros";
-import { FILA_ENCABEZADO, TD, TH, TR } from "../ui/tabla";
-import EtiquetaLote from "../lote/EtiquetaLote";
 import { useDatos } from "../../datos/almacen";
 import { CATEGORIAS_INSUMO, UNIDADES } from "../../datos/catalogos";
 import { crearInsumo, editarInsumo, eliminarInsumo, registrarMovimiento } from "../../datos/acciones";
 import { lotesActivos, nombrePersona } from "../../datos/selectores";
-import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
+import { useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
-import { coincide, dinero, fechaCorta, hoyISO, numero, plural } from "../../utilidades/formato";
-import { descargarCSV } from "../../utilidades/exportar";
+import { dinero, hoyISO, numero } from "../../utilidades/formato";
 
 export function FormularioMovimiento({ id, inicial, onListo }) {
   const datos = useDatos();
@@ -161,29 +150,5 @@ export function FormularioInsumo({ id, insumo, onListo }) {
         )}
       </div>
     </form>
-  );
-}
-
-function ModalFormulario({ abierto, onCerrar, titulo, descripcion, boton, children }) {
-  const id = useId();
-  return (
-    <Modal
-      abierto={abierto}
-      onCerrar={onCerrar}
-      titulo={titulo}
-      descripcion={descripcion}
-      pie={
-        <>
-          <Boton variante="secundario" onClick={onCerrar}>
-            Cancelar
-          </Boton>
-          <Boton variante="primario" type="submit" form={id}>
-            {boton}
-          </Boton>
-        </>
-      }
-    >
-      {children(id)}
-    </Modal>
   );
 }
