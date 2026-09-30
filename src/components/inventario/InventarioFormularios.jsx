@@ -4,11 +4,10 @@ import { Casilla, Entrada, Seleccion } from "../ui/Campo";
 import AlertaFormulario from "../ui/AlertaFormulario";
 import { useDatos } from "../../datos/almacen";
 import { CATEGORIAS_INSUMO, UNIDADES } from "../../datos/catalogos";
-import { crearInsumo, editarInsumo, eliminarInsumo, registrarMovimiento } from "../../datos/acciones";
-import { lotesActivos, nombrePersona } from "../../datos/selectores";
+import { crearInsumo, editarInsumo, registrarMovimiento } from "../../datos/acciones";
+import { lotesActivos } from "../../datos/selectores";
 import { useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion } from "../../hooks/useSesion";
-import { useTitulo } from "../../hooks/useTitulo";
 import { dinero, hoyISO, numero } from "../../utilidades/formato";
 
 export function FormularioMovimiento({ id, inicial, onListo }) {
