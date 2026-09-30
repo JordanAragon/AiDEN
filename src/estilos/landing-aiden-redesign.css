@@ -251,7 +251,7 @@
 .aiden-hero h1  {
   max-width: 720px;
   margin-top: 22px;
-  font-size: clamp(58px, 7.1vw, 102px);
+  font-size: clamp(56px, 6.6vw, 94px);
   line-height: .86;
   font-weight: 600;
 }
@@ -386,7 +386,7 @@
   background: var(--line);
 }
 .aiden-problem  {
-  padding: 135px 0 120px;
+  padding: 120px 0 108px;
   background: var(--cream);
 }
 .aiden-problem-grid  {
@@ -452,15 +452,15 @@
   font-size: 18px;
   letter-spacing: -.04em;
 }
-.aiden-problem-strip p  {
+ .aiden-problem-strip p  {
   margin-top: 3px;
-  max-width: 190px;
+  max-width: 210px;
   color: #526057;
-  font-size: 9px;
-  line-height: 1.6;
+  font-size: 11px;
+  line-height: 1.55;
 }
 .aiden-system  {
-  padding: 142px 0 155px;
+  padding: 130px 0 140px;
   color: var(--white);
   background: var(--forest);
 }
@@ -517,14 +517,14 @@
   position: absolute;
   border: 1px dashed rgba(217,234,115,.18);
   border-radius: 50%;
-  animation: aiden-spin 28s linear infinite;
+  animation: aiden-spin 52s linear infinite;
 }
 .aiden-map-ring-one  {
   inset: 18%;
 }
 .aiden-map-ring-two  {
   inset: 30%;
-  animation-duration: 21s;
+  animation-duration: 42s;
   animation-direction: reverse;
 }
 @keyframes aiden-spin  {
@@ -648,8 +648,8 @@
 .aiden-connection-list svg  {
   color: rgba(217,234,115,.65);
 }
-.aiden-evidence  {
-  padding: 130px 0 136px;
+ .aiden-evidence  {
+  padding: 116px 0 122px;
   background: var(--paper);
 }
 .aiden-evidence-grid  {
@@ -708,14 +708,14 @@
   font-size: 21px;
 }
 .aiden-evidence-cards p  {
-  max-width: 230px;
+  max-width: 250px;
   margin-top: 5px;
   color: var(--muted);
-  font-size: 10px;
-  line-height: 1.65;
+  font-size: 11px;
+  line-height: 1.6;
 }
-.aiden-modules  {
-  padding: 140px 0 150px;
+ .aiden-modules  {
+  padding: 122px 0 132px;
   background: var(--cream);
 }
 .aiden-modules .aiden-section-header > p  {
@@ -799,11 +799,11 @@
   font-size: 25px;
   line-height: .98;
 }
-.aiden-bento-card p  {
+ .aiden-bento-card p  {
   max-width: 310px;
   margin-top: 8px;
   color: #5f6b63;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.6;
 }
 .aiden-bento-arrow  {
@@ -817,8 +817,8 @@
   transform: translate(2px,-2px);
   color: var(--ink);
 }
-.aiden-roles  {
-  padding: 140px 0 145px;
+ .aiden-roles  {
+  padding: 120px 0 128px;
   background: var(--paper);
 }
 .aiden-section-header-compact  {
@@ -854,16 +854,16 @@
   text-transform: uppercase;
   letter-spacing: .11em;
 }
-.aiden-role-row p  {
+ .aiden-role-row p  {
   color: #5f6b63;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.6;
 }
 .aiden-role-row > svg  {
   color: var(--moss);
 }
-.aiden-clarity  {
-  padding: 132px 0 145px;
+ .aiden-clarity  {
+  padding: 114px 0 126px;
   background: var(--cream);
 }
 .aiden-clarity-grid  {
@@ -990,13 +990,13 @@
   border-top: 1px solid rgba(18,37,27,.09);
   background: #f1eee5;
 }
-.aiden-footer-inner  {
+ .aiden-footer-inner  {
   display: grid;
   grid-template-columns: auto 1fr auto auto;
   align-items: center;
   gap: 20px;
   color: #5f6b63;
-  font-size: 9px;
+  font-size: 10px;
 }
 .aiden-footer-inner .aiden-brand  {
   color: var(--ink);
@@ -1008,8 +1008,8 @@
 .aiden-footer-inner a:hover  {
   color: var(--ink);
 }
-.aiden-footer-inner small  {
-  font-size: 8px;
+ .aiden-footer-inner small  {
+  font-size: 9px;
 }
 @media (max-width: 1020px)  {
   .aiden-header-links  {
@@ -1166,7 +1166,7 @@
     padding: 58px 0 46px;
   }
   .aiden-hero h1  {
-    font-size: clamp(49px, 15vw, 68px);
+    font-size: clamp(47px, 14vw, 64px);
   }
   .aiden-hero-lead  {
     font-size: 14px;
@@ -1198,7 +1198,7 @@
   .aiden-modules,
   .aiden-roles,
   .aiden-clarity  {
-    padding-block: 95px 100px;
+    padding-block: 82px 88px;
   }
   .aiden-problem-grid  {
     gap: 38px;
@@ -1223,7 +1223,7 @@
     border-top: 1px solid var(--line);
   }
   .aiden-system  {
-    padding-block: 84px 95px;
+    padding-block: 74px 82px;
   }
   .aiden-section-header  {
     margin-bottom: 42px;
@@ -1289,7 +1289,7 @@
     font-size: 21px;
   }
   .aiden-bento-card p  {
-    font-size: 9px;
+    font-size: 10.5px;
   }
   .aiden-role-row  {
     grid-template-columns: 35px 1fr 22px;
