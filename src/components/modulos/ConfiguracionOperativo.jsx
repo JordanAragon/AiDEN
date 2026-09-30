@@ -171,7 +171,7 @@ function Formulario({ cfg }) {
           <section className="mt-5 space-y-3 text-sm text-white/70">
             <p>Ambiental, las notificaciones y los tableros usan los umbrales guardados aquí.</p>
             <p>El centro de notificaciones muestra alertas de calidad, ambiente, inventario y tareas vencidas mientras esté activado.</p>
-            <p>La configuración queda almacenada en este navegador y se comparte entre módulos al instante.</p>
+            <p>Los ajustes se aplican entre módulos al instante.</p>
           </section>
           <label className="mt-5 block text-sm font-medium text-white/80">
             Notificaciones
@@ -204,7 +204,7 @@ export default function ConfiguracionOperativo() {
     const file = evento.target.files?.[0];
     evento.target.value = "";
     if (!file) return;
-    const ok = await confirmar({ titulo: "Importar respaldo", mensaje: `Los datos actuales de este navegador se reemplazan por los de “${file.name}”. Las cuentas de acceso no cambian.`, confirmar: "Reemplazar datos", peligro: true });
+    const ok = await confirmar({ titulo: "Importar respaldo", mensaje: `Los datos actuales se reemplazarán por los de “${file.name}”. Las cuentas de acceso no cambian.`, confirmar: "Reemplazar datos", peligro: true });
     if (!ok) return;
     try {
       importarRespaldo(await file.text());
