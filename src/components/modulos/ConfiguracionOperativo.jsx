@@ -216,8 +216,8 @@ export default function ConfiguracionOperativo() {
   };
 
   const restablecer = async () => {
-    const ok = await confirmar({ titulo: "Restablecer datos de demostración", mensaje: "Se borran los lotes, tareas, movimientos y registros de este navegador y se cargan los datos de ejemplo con fechas de hoy. Las cuentas de acceso se conservan.", confirmar: "Restablecer", peligro: true });
-    if (ok && ejecutar(() => restablecerDemo(), "Datos de demostración restablecidos")) setVersion((v) => v + 1);
+    const ok = await confirmar({ titulo: "Restaurar datos base", mensaje: "Se reemplazarán los lotes, tareas, movimientos y registros actuales por los datos base del sistema. Las cuentas de acceso se conservarán.", confirmar: "Restablecer", peligro: true });
+    if (ok && ejecutar(() => restablecerDemo(), "Datos base restaurados")) setVersion((v) => v + 1);
   };
 
   return (
@@ -241,7 +241,7 @@ export default function ConfiguracionOperativo() {
               <Formulario key={`cfg-${version}-${cfg.tempMin}-${cfg.tempMax}-${cfg.humMin}-${cfg.humMax}-${cfg.notificaciones}`} cfg={cfg} />
               <section className="grid gap-4 px-0 xl:grid-cols-2">
                 <Zonas />
-                <Panel icono={Database} titulo="Datos de este navegador" descripcion={`AiDEN funciona sin servidor: ${numero(registros)} registros guardados localmente. Si borras los datos del navegador, se pierden.`}>
+                <Panel icono={Database} titulo="Respaldo de datos" descripcion="Protege la información registrada con copias de respaldo que puedes exportar o importar cuando sea necesario.">
                   <section className="space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
                       <p className="text-sm text-slate-600">Descarga una copia para guardarla o llevarla a otro equipo.</p>
@@ -257,9 +257,9 @@ export default function ConfiguracionOperativo() {
                       </Boton>
                     </div>
                     <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-red-50 p-3">
-                      <p className="text-sm text-red-600">Vuelve a los datos de ejemplo, con fechas relativas a hoy.</p>
+                      <p className="text-sm text-red-600">Restaura los datos base del sistema para comenzar nuevamente la operación.</p>
                       <Boton variante="secundario" tamano="sm" icono={RotateCcw} onClick={restablecer}>
-                        Restablecer demo
+                        Restaurar datos
                       </Boton>
                     </div>
                   </section>
