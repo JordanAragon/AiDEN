@@ -228,7 +228,7 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  color: #59675e;
+  color: #445249;
 }
 .aiden-live-dot  {
   width: 7px;
@@ -309,7 +309,7 @@
   align-items: center;
   gap: 11px;
   margin-top: 58px;
-  color: #7a847d;
+  color: #5f6b63;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: .12em;
@@ -395,7 +395,7 @@
   gap: 90px;
 }
 .aiden-index  {
-  color: #818a83;
+  color: #5f6b63;
 }
 .aiden-problem h2  {
   max-width: 790px;
@@ -407,7 +407,7 @@
   padding-top: 9px;
 }
 .aiden-kicker  {
-  color: #7c867e;
+  color: #5c6860;
 }
 .aiden-problem-copy > p:not(.aiden-kicker)  {
   max-width: 430px;
@@ -477,12 +477,12 @@
   line-height: .86;
 }
 .aiden-section-header > p  {
-  color: rgba(255,253,248,.64);
+  color: rgba(255,253,248,.78);
   font-size: 14px;
   line-height: 1.8;
 }
 .aiden-section-header-dark .aiden-index  {
-  color: rgba(255,253,248,.45);
+  color: rgba(255,253,248,.78);
 }
 .aiden-section-header-dark h2 em  {
   color: var(--lime);
