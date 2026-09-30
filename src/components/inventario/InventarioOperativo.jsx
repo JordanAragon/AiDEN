@@ -13,7 +13,7 @@ import { FILA_ENCABEZADO, TD, TH, TR } from "../ui/tabla";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import { useDatos } from "../../datos/almacen";
 import { eliminarInsumo } from "../../datos/acciones";
-import { lotesActivos, nombrePersona } from "../../datos/selectores";
+import { nombrePersona } from "../../datos/selectores";
 import { useAccion, useConfirmar } from "../../contexto/retroalimentacion";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
