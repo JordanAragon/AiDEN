@@ -719,7 +719,7 @@
   background: var(--cream);
 }
 .aiden-modules .aiden-section-header > p  {
-  color: #68736b;
+  color: #5f6b63;
 }
 .aiden-bento  {
   display: grid;
@@ -902,7 +902,7 @@
 }
 .aiden-clarity-list p  {
   max-width: 600px;
-  color: #68736b;
+  color: #5f6b63;
   font-size: 12px;
   line-height: 1.7;
 }
