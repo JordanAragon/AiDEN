@@ -631,7 +631,7 @@
   border-bottom: 1px solid var(--dark-line);
 }
 .aiden-connection-list article > span  {
-  color: rgba(255,253,248,.34);
+  color: rgba(255,253,248,.52);
   font-size: 8px;
   font-weight: 800;
 }
@@ -918,7 +918,7 @@
   align-items: center;
 }
 .aiden-index-light  {
-  color: rgba(255,253,248,.44);
+  color: rgba(255,253,248,.52);
 }
 .aiden-final h2  {
   max-width: 850px;
@@ -955,7 +955,7 @@
   position: absolute;
   top: 21px;
   right: 22px;
-  color: rgba(255,253,248,.39);
+  color: rgba(255,253,248,.52);
   font-size: 8px;
   font-weight: 800;
   letter-spacing: .15em;
@@ -973,7 +973,7 @@
 }
 .aiden-final-stamp small  {
   margin-top: 5px;
-  color: rgba(255,253,248,.44);
+  color: rgba(255,253,248,.52);
   font-size: 8px;
   font-weight: 800;
   text-transform: uppercase;
