@@ -1,7 +1,7 @@
 import { useId, useState } from "react";
 import { FormularioMovimiento, FormularioInsumo } from "./InventarioFormularios";
 import { useSearchParams } from "react-router-dom";
-import { AlertTriangle, ArrowDownToLine, ArrowUpFromLine, CircleDollarSign, Download, FilePenLine, History, Package, Plus, Trash2, X } from "lucide-react";
+import { AlertTriangle, ArrowDownToLine, ArrowLeftRight, ArrowUpFromLine, CircleDollarSign, Download, FilePenLine, History, Package, Plus, Trash2, X } from "lucide-react";
 import { Boton, BotonIcono } from "../ui/Boton";
 import Cifras from "../ui/Cifras";
 import EncabezadoPagina from "../ui/EncabezadoPagina";
