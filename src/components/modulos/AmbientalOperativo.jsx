@@ -147,7 +147,7 @@ export default function AmbientalOperativo() {
                   <p className="text-[11px] uppercase tracking-wider text-slate-500">Zona</p>
                   <h2 className="mt-1 font-semibold text-slate-900">{nombre}</h2>
                 </section>
-                <span className={`rounded-full px-2 py-1 text-[10px] font-bold ${!row ? "bg-slate-100 text-slate-500" : e.fuera ? "bg-red-50 text-red-600" : "bg-emerald-50 text-emerald-700"}`}>{!row ? "Sin datos" : e.fuera ? "Atención" : "Estable"}</span>
+                <span className={`rounded-full px-2 py-1 text-[10px] font-bold ${!row ? "bg-slate-100 text-slate-500" : e.fuera ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-700"}`}>{!row ? "Sin datos" : e.fuera ? "Atención" : "Estable"}</span>
               </header>
               {row ? (
                 <>
