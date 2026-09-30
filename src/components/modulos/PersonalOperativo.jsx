@@ -19,7 +19,7 @@ import ModalTarea from "../formularios/ModalTarea";
 import { useDatos } from "../../datos/almacen";
 import { CARGO_A_ROL } from "../../datos/catalogos";
 import { cambiarEstadoTarea, eliminarTarea } from "../../datos/acciones";
-import { lotesActivos, nombrePersona, ordenarTareas, tareaVencida } from "../../datos/selectores";
+import { nombrePersona, ordenarTareas, tareaVencida } from "../../datos/selectores";
 import { useAccion, useConfirmar } from "../../contexto/retroalimentacion";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
