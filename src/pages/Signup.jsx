@@ -47,7 +47,7 @@ export default function Register() {
           <div className="mt-auto max-w-xl pb-6">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-200">Una vista, una operación</p>
             <h1 className="mt-4 text-5xl font-semibold leading-[.98] tracking-[-.05em] text-white xl:text-6xl">Empieza con una operación más clara.</h1>
-            <p className="mt-6 max-w-lg text-base leading-7 text-white/65">Tu cuenta te da acceso al entorno de AiDEN. El rol operativo se define en esta V1 para mantener cada responsabilidad en su lugar.</p>
+            <p className="mt-6 max-w-lg text-base leading-7 text-white/65">Tu cuenta te da acceso al entorno de AiDEN. Cada rol cuenta con una experiencia adaptada a sus responsabilidades.</p>
           </div>
         </section>
       </aside>
@@ -66,7 +66,7 @@ export default function Register() {
             <button type="submit" disabled={loading} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-emerald-900 px-4 text-sm font-semibold text-white transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60">{loading ? <><Loader2 size={17} className="animate-spin" /> Creando cuenta...</> : <>Crear cuenta <ArrowRight size={16} /></>}</button>
           </form>
           <p className="mt-6 text-center text-sm text-slate-500">¿Ya tienes cuenta? <Link to="/login" className="font-semibold text-emerald-800">Iniciar sesión</Link></p>
-          <p className="mt-8 text-center text-[11px] leading-5 text-slate-400">Las cuentas creadas en esta V1 son perfiles locales de desarrollo y se registran como operario.</p>
+          
         </div>
       </section>
     </main>
