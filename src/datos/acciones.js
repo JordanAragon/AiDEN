@@ -414,6 +414,38 @@ export function registrarCuenta(formulario) {
   return resultado;
 }
 
+export function actualizarMiPerfil(formulario, sesion) {
+  if (!sesion?.id) fallo("No hay una sesión activa.");
+  const nombre = texto(formulario.nombre);
+  const email = texto(formulario.email).toLowerCase();
+  if (nombre.length < 3) fallo("Escribe nombre y apellido.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fallo("Escribe un correo válido.");
+  if (listarUsuarios().some((u) => u.id !== sesion.id && u.email.toLowerCase() === email)) {
+    fallo("Ya existe una cuenta con ese correo.");
+  }
+
+  const usuario = actualizarUsuario(sesion.id, { name: nombre, email });
+  if (usuario.personaId) {
+    const actual = persona(usuario.personaId);
+    if (actual && actual.nombre !== nombre) {
+      guardar({ personas: obtener("personas").map((p) => (p.id === usuario.personaId ? { ...p, nombre } : p)) });
+    }
+  }
+  return usuario;
+}
+
+export function crearCuentaAdministrativa(formulario, sesion) {
+  if (sesion?.role !== "admin") fallo("Solo administración puede crear cuentas.");
+  if (!ROLES[formulario.role]) fallo("Elige un rol válido.");
+  const resultado = register(formulario);
+  if (!resultado.ok) return resultado;
+  asegurarPersonasDeUsuarios();
+  const usuario = listarUsuarios().find((u) => u.id === resultado.user.id);
+  if (!usuario) fallo("La cuenta se creó, pero no se pudo recuperar.");
+  cambiarRolUsuario(usuario.id, formulario.role, sesion);
+  return listarUsuarios().find((u) => u.id === usuario.id) || usuario;
+}
+
 /* ---------- Inventario ---------- */
 
 function validarInsumo(formulario, idActual) {
