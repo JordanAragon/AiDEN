@@ -19,12 +19,14 @@ import { cambiarEstadoTarea, eliminarTarea } from "../../datos/acciones";
 import { nombrePersona, ordenarTareas, tareaVencida } from "../../datos/selectores";
 import { useAccion, useConfirmar } from "../../contexto/retroalimentacion";
 
+import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
 import { coincide, fechaCorta, hoyISO, vencimiento } from "../../utilidades/formato";
 
 
 function VistaTareas({ filtroInicial, onEditar }) {
   const datos = useDatos();
+  const sesion = useSesion();
   const ejecutar = useAccion();
   const confirmar = useConfirmar();
   const [estado, setEstado] = useState(filtroInicial === "vencidas" ? "Vencidas" : "Abiertas");
@@ -215,7 +217,6 @@ function Celda({ etiqueta, valor, alerta = false, detalle }) {
 
 export default function PersonalOperativo() {
   const datos = useDatos();
-  const sesion = useSesion();
   const [parametros, setParametros] = useSearchParams();
   const [modal, setModal] = useState(null);
   const idForm = useId();
