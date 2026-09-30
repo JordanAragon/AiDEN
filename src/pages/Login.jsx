@@ -6,6 +6,7 @@ import { CUENTAS_DEMO, ensureInitialUser, getDashboardPath, login, logout } from
 import { destinoTrasLogin } from "../routes/permisos";
 import { useSesion } from "../hooks/useSesion";
 import { useTitulo } from "../hooks/useTitulo";
+import "../estilos/autenticacion-aiden.css";
 
 const ROL = { admin: "Administrador", supervisor: "Supervisor", operario: "Operario" };
 const QUE_VE = { admin: "Dinero, decisiones y accesos", supervisor: "Alertas, equipo y producción del día", operario: "Su jornada: tareas y lotes a cargo" };
@@ -54,8 +55,8 @@ export default function Login() {
     entrar(email, password);
   };
   return (
-    <main className="flex min-h-screen bg-[#f5f7f5] text-slate-900">
-      <aside className="relative hidden min-h-screen overflow-hidden bg-[#0b2f20] lg:flex lg:w-[53%]">
+    <main className="aiden-auth">
+      <aside className="aiden-auth-side">
         <img
           src={loginImage}
           alt="Vivero agrícola"
@@ -65,7 +66,7 @@ export default function Login() {
           className="absolute inset-0 bg-[linear-gradient(135deg,rgba(11,47,32,.97),rgba(11,47,32,.72),rgba(11,47,32,.84))]"
           aria-hidden="true"
         />
-        <section className="relative z-10 flex w-full flex-col p-10 xl:p-14">
+        <section className="aiden-auth-side-content">
           <Link to="/" className="flex items-center gap-2 text-white">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/15 bg-white/10">
               <Leaf size={17} />
@@ -102,9 +103,9 @@ export default function Login() {
         </section>
       </aside>
 
-      <section className="flex w-full items-center justify-center px-5 py-10 sm:px-8 lg:w-[47%] lg:px-12">
-        <section className="w-full max-w-md">
-          <header className="mb-8 lg:hidden">
+      <section className="aiden-auth-panel">
+        <section className="aiden-auth-form-wrap">
+          <header className="aiden-auth-mobile-brand">
             <Link to="/" className="inline-flex items-center gap-2 text-emerald-900">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-900 text-white">
                 <Leaf size={15} />
@@ -113,7 +114,7 @@ export default function Login() {
             </Link>
           </header>
 
-          <section className="mb-7">
+          <section className="aiden-auth-heading">
             <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">
               Acceso
             </p>
@@ -126,7 +127,7 @@ export default function Login() {
           </section>
 
           {sesion ? (
-            <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <section className="aiden-auth-session">
               <p className="text-sm text-slate-600">
                 Tienes una sesión abierta como <span className="font-semibold text-slate-900">{sesion.name}</span> ({ROL[sesion.role]}).
               </p>
@@ -158,7 +159,7 @@ export default function Login() {
             </p>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="aiden-auth-form">
             <Field label="Correo electrónico">
               <input
                 id="email"
@@ -196,7 +197,7 @@ export default function Login() {
               </div>
             </Field>
 
-            <section className="flex items-center justify-between gap-4">
+            <section className="aiden-auth-options">
               <label className="inline-flex items-center gap-2 text-sm text-slate-500">
                 <input
                   type="checkbox"
@@ -242,7 +243,7 @@ export default function Login() {
               Crear cuenta
             </Link>
           </p>
-          <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" aria-labelledby="titulo-demo">
+          <section className="aiden-auth-demo" aria-labelledby="titulo-demo">
             <p id="titulo-demo" className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">
               Cuentas de demostración
             </p>
