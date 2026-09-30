@@ -2364,3 +2364,43 @@
     transition-duration: .001ms !important;
   }
 }
+
+
+/* Ajustes finales del tratamiento premium: preservan los hovers existentes. */
+.aiden-hero h1 em {
+  color: var(--moss);
+}
+
+@supports (animation-timeline: view()) {
+  .aiden-hero-copy,
+  .aiden-hero-product,
+  .aiden-problem-grid,
+  .aiden-problem-strip,
+  .aiden-operation-map,
+  .aiden-evidence-grid,
+  .aiden-bento-card,
+  .aiden-role-row,
+  .aiden-clarity-grid,
+  .aiden-final-inner {
+    animation-name: aiden-premium-reveal-safe;
+  }
+}
+
+@keyframes aiden-premium-reveal-safe {
+  from {
+    opacity: .08;
+    filter: blur(7px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-redesign *,
+  .aiden-redesign *::before,
+  .aiden-redesign *::after {
+    filter: none !important;
+  }
+}
