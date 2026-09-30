@@ -66,7 +66,7 @@ export default function ForgotPassword() {
                 <header className="aiden-auth-heading">
                   <p>Recuperación</p>
                   <h1>Restablecer acceso.</h1>
-                  <p>En esta V1 el cambio de contraseña es local. No se envía un correo ni se simula una recuperación externa.</p>
+                  <p>Actualiza tu contraseña para recuperar el acceso a la operación.</p>
                 </header>
                 {error && <p role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
                 <form onSubmit={handleSubmit} className="aiden-auth-form">
@@ -82,14 +82,14 @@ export default function ForgotPassword() {
               <section className="py-4 text-center">
                 <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700"><CheckCircle2 size={23} /></span>
                 <h2 className="mt-5 text-2xl font-semibold tracking-tight text-slate-950">Acceso actualizado.</h2>
-                <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">La contraseña de la cuenta local fue actualizada. Ya puedes iniciar sesión.</p>
+                <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">La contraseña fue actualizada. Ya puedes iniciar sesión.</p>
                 <button type="button" onClick={() => navigate("/login", { replace: true })} className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-emerald-900 px-4 text-sm font-semibold text-white">Ir a iniciar sesión <ArrowRight size={16} /></button>
               </section>
             )}
           </article>
 
           <button type="button" onClick={() => navigate("/login")} className="aiden-auth-back"><ArrowLeft size={15} /> Volver a iniciar sesión</button>
-          <p className="mt-8 text-center text-[11px] leading-5 text-slate-400">V1 frontend local · El cambio de contraseña se aplica únicamente a la cuenta almacenada en este navegador.</p>
+          
         </div>
       </section>
     </main>
