@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { ClipboardPlus, FilePenLine, Phone } from "lucide-react";
 import { Boton } from "../ui/Boton";
 import { Entrada, Seleccion } from "../ui/Campo";
@@ -6,14 +6,13 @@ import Avatar from "../ui/Avatar";
 import Insignia from "../ui/Insignia";
 import Modal from "../ui/Modal";
 import AlertaFormulario from "../ui/AlertaFormulario";
-import { TONO_ESTADO_TAREA, TONO_PRIORIDAD } from "../ui/tonos";
+import { TONO_ESTADO_TAREA } from "../ui/tonos";
 import EtiquetaLote from "../lote/EtiquetaLote";
-import ModalTarea from "../formularios/ModalTarea";
 import { useDatos } from "../../datos/almacen";
 import { CARGO_A_ROL, DEPARTAMENTOS, ROLES } from "../../datos/catalogos";
-import { cambiarEstadoPersona, cambiarEstadoTarea, cambiarRolUsuario, crearPersona, editarPersona, eliminarTarea, marcarCuentaRevisada } from "../../datos/acciones";
+import { cambiarEstadoPersona, crearPersona, editarPersona } from "../../datos/acciones";
 import { lotesActivos, ordenarTareas } from "../../datos/selectores";
-import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
+import { useConfirmar } from "../../contexto/retroalimentacion";
 import { useSesion, useUsuarios } from "../../hooks/useSesion";
 import { plural, vencimiento } from "../../utilidades/formato";
 
