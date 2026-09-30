@@ -1357,6 +1357,7 @@
 /* Refinamiento editorial: cambios visibles manteniendo la composición existente. */
 .aiden-hero-copy {
   position: relative;
+  isolation: isolate;
 }
 .aiden-hero-copy::after {
   content: "OPERACIÓN";
