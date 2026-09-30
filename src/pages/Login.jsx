@@ -63,7 +63,7 @@ export default function Login() {
           className="absolute inset-0 h-full w-full object-cover opacity-70"
         />
         <div
-          className="absolute inset-0 bg-[linear-gradient(135deg,rgba(11,47,32,.97),rgba(11,47,32,.72),rgba(11,47,32,.84))]"
+          className="aiden-auth-image-overlay"
           aria-hidden="true"
         />
         <section className="aiden-auth-side-content">
