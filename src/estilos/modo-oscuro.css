@@ -211,3 +211,24 @@ html.aiden-dark main[class*="bg-[#f5f7f5]"] p a {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+
+/* Ajustes para el lenguaje transversal de la interfaz refinada. */
+html.aiden-dark .aiden-app-shell main thead th {
+  background: #101613 !important;
+  color: #a4b0a9 !important;
+}
+html.aiden-dark .aiden-app-shell main tbody tr:hover {
+  background-color: rgba(24, 32, 28, 0.75) !important;
+}
+html.aiden-dark .aiden-app-shell .aiden-modal-entrada > header,
+html.aiden-dark .aiden-app-shell .aiden-modal-entrada > footer {
+  background: rgba(18, 24, 21, 0.96) !important;
+  border-color: #26332d !important;
+}
+html.aiden-dark .aiden-app-shell .aiden-modal-entrada > header h2 {
+  color: #f1f5f3 !important;
+}
+html.aiden-dark .aiden-app-shell .aiden-modal-entrada > header p {
+  color: #91a098 !important;
+}

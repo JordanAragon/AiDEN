@@ -27,9 +27,9 @@ const COLUMNAS = { 2: "xl:grid-cols-2", 3: "xl:grid-cols-3", 4: "xl:grid-cols-4"
 
 export default function Cifras({ items, className = "" }) {
   return (
-    <section className={`grid gap-4 sm:grid-cols-2 ${COLUMNAS[items.length] || "xl:grid-cols-4"} ${className}`}>
+    <section className={`aiden-stat-grid grid gap-4 sm:grid-cols-2 ${COLUMNAS[items.length] || "xl:grid-cols-4"} ${className}`}>
       {items.map((item) => {
-        const base = `block rounded-2xl border bg-white p-4 text-left shadow-sm ${item.activo ? "border-emerald-300 ring-2 ring-emerald-100" : "border-slate-200"}`;
+        const base = `block rounded-2xl border bg-white p-4 text-left transition-colors ${item.activo ? "border-emerald-300 ring-1 ring-emerald-100" : "border-slate-200"}`;
         if (item.to) {
           return (
             <Link key={item.etiqueta} to={item.to} className={`${base} transition-colors hover:border-emerald-200`}>

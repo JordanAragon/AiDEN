@@ -21,9 +21,9 @@ import { aFecha, fechaHora, haceTiempo, hora, hoyISO, numero, plural } from "../
 
 function Metric({ label, value, danger = false }) {
   return (
-    <section className={`rounded-xl p-3 ${danger ? "bg-red-50" : "bg-slate-50"}`}>
-      <p className="text-[10px] text-slate-600">{label}</p>
-      <p className={`mt-1 text-sm font-bold ${danger ? "text-red-700" : "text-slate-800"}`}>{value}</p>
+    <section className={`rounded-xl border p-3 ${danger ? "border-red-100 bg-red-50" : "border-slate-100 bg-slate-50"}`}>
+      <p className="text-[10px] font-medium text-slate-500">{label}</p>
+      <p className={`mt-1 text-lg font-bold tracking-tight ${danger ? "text-red-700" : "text-slate-900"}`}>{value}</p>
     </section>
   );
 }
@@ -87,7 +87,7 @@ export default function AmbientalOperativo() {
   const estiloTooltip = { background: colores.superficie, border: `1px solid ${colores.rejilla}`, borderRadius: 12, fontSize: 12, color: colores.tinta };
 
   return (
-    <section className="space-y-6">
+    <section className="aiden-modulo-vista aiden-operario-vista aiden-modulo-ambiental space-y-7">
       <EncabezadoPagina
         rotulo="AiDEN / seguimiento"
         titulo="Ambiental"
@@ -111,7 +111,7 @@ export default function AmbientalOperativo() {
       <Segmentos etiqueta="Filtrar zonas" valor={zone} onCambio={elegir} opciones={["Todas", ...zonas].map((z) => ({ valor: z, etiqueta: z }))} />
 
       {enAlerta.length > 0 && (
-        <section className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+        <section className="rounded-[22px] border border-amber-200 bg-amber-50 p-4 sm:p-5">
           <header className="flex items-center gap-2">
             <AlertTriangle size={16} className="text-amber-700" aria-hidden="true" />
             <h2 className="font-semibold text-amber-900">Atención ambiental</h2>
@@ -141,11 +141,14 @@ export default function AmbientalOperativo() {
           const history = lecturasOrdenadas(datos.ambiental.filter((item) => item.zona === nombre)).slice(-10);
           const lotesZona = activos.filter((l) => l.ubicacion === nombre);
           return (
-            <article key={nombre} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <article key={nombre} className={`aiden-operario-superficie rounded-[22px] border bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(11,47,32,0.07)] ${zone === nombre ? "border-emerald-300 ring-1 ring-emerald-100" : "border-slate-200"}`}>
               <header className="flex items-start justify-between gap-3">
                 <section>
                   <p className="text-[11px] uppercase tracking-wider text-slate-500">Zona</p>
-                  <h2 className="mt-1 font-semibold text-slate-900">{nombre}</h2>
+                  <div className="flex items-center gap-2">
+                    <h2 className="mt-1 font-semibold text-slate-900">{nombre}</h2>
+                    {zone === nombre && <span className="text-[10px] font-semibold text-emerald-700">Seleccionada</span>}
+                  </div>
                 </section>
                 <span className={`rounded-full px-2 py-1 text-[10px] font-bold ${!row ? "bg-slate-100 text-slate-500" : e.fuera ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-700"}`}>{!row ? "Sin datos" : e.fuera ? "Atención" : "Estable"}</span>
               </header>
@@ -156,7 +159,7 @@ export default function AmbientalOperativo() {
                     <Metric label="Humedad" value={`${numero(row.humedad)}%`} danger={Boolean(e.humedad)} />
                     <Metric label="Luz" value={row.iluminacion ? `${numero(row.iluminacion)} lux` : "—"} />
                   </section>
-                  <section className="mt-5 h-20" role="img" aria-label={`Últimas ${history.length} lecturas de ${nombre}`}>
+                  <section className="mt-4 h-24 rounded-xl bg-slate-50/80 px-2 py-1" role="img" aria-label={`Últimas ${history.length} lecturas de ${nombre}`}>
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={history}>
                         <XAxis dataKey="fecha" hide />
@@ -178,7 +181,7 @@ export default function AmbientalOperativo() {
                   ))}
                 </section>
               )}
-              <footer className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 text-[11px] text-slate-500">
+              <footer className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 text-[11px] text-slate-500">
                 <span>{row ? `Última lectura: ${fechaHora(row.fecha)} · ${row.registradoPor}` : "—"}</span>
                 <span className="flex gap-3 font-semibold">
                   {zone === "Todas" && (

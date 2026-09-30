@@ -10,6 +10,8 @@
   --app-green-2: #176b45;
   background: var(--app-bg);
   color: var(--app-ink);
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
 }
 
 .aiden-app-shell main {
@@ -21,25 +23,10 @@
   margin-inline: auto;
 }
 
-.aiden-app-shell main article[class*="rounded-2xl"][class*="bg-white"],
-.aiden-app-shell main section[class*="rounded-2xl"][class*="bg-white"] {
-  border-color: rgba(203, 217, 208, 0.82);
-  box-shadow: 0 8px 30px rgba(11, 47, 32, 0.035);
-  transition: border-color 180ms ease, box-shadow 220ms ease, transform 220ms ease;
-}
-
-.aiden-app-shell main article[class*="rounded-2xl"][class*="bg-white"]:hover,
-.aiden-app-shell main section[class*="rounded-2xl"][class*="bg-white"]:hover {
-  border-color: var(--app-line-strong);
-  box-shadow: 0 14px 38px rgba(11, 47, 32, 0.06);
-}
-
-.aiden-app-shell main h1 {
-  letter-spacing: -0.055em;
-}
-
-.aiden-app-shell main h2 {
-  letter-spacing: -0.035em;
+@media (min-width: 1024px) {
+  .aiden-app-shell main {
+    scrollbar-gutter: stable;
+  }
 }
 
 .aiden-app-shell main input,
@@ -77,53 +64,6 @@
   box-shadow: 0 10px 24px rgba(11, 47, 32, 0.14);
 }
 
-main[class*="bg-[#f5f7f5]"] {
-  background: radial-gradient(circle at 78% 18%, rgba(143, 181, 111, 0.12), transparent 28%), #f5f7f5;
-}
-
-main[class*="bg-[#f5f7f5]"] > aside {
-  box-shadow: inset -1px 0 rgba(255, 255, 255, 0.08);
-}
-
-main[class*="bg-[#f5f7f5]"] form {
-  padding: 1.35rem;
-  border: 1px solid rgba(203, 217, 208, 0.82);
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 24px 70px rgba(11, 47, 32, 0.07);
-  backdrop-filter: blur(12px);
-}
-
-main[class*="bg-[#f5f7f5]"] form input:not([type="checkbox"]),
-main[class*="bg-[#f5f7f5]"] form select {
-  min-height: 46px;
-  border-radius: 12px;
-  border-color: var(--app-line);
-  background: rgba(255, 255, 255, 0.82);
-}
-
-main[class*="bg-[#f5f7f5]"] form input:not([type="checkbox"]):focus,
-main[class*="bg-[#f5f7f5]"] form select:focus {
-  border-color: rgba(23, 107, 69, 0.72);
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(23, 107, 69, 0.09);
-}
-
-main[class*="bg-[#f5f7f5]"] form button[type="submit"] {
-  border-radius: 13px;
-  box-shadow: 0 12px 28px rgba(11, 47, 32, 0.13);
-  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 180ms ease, background-color 180ms ease;
-}
-
-main[class*="bg-[#f5f7f5]"] form button[type="submit"]:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 16px 34px rgba(11, 47, 32, 0.17);
-}
-
-main[class*="bg-[#f5f7f5]"] form button[type="submit"]:active:not(:disabled) {
-  transform: scale(0.985);
-}
-
 @media (max-width: 1023px) {
   .aiden-app-shell main {
     padding-top: 4.75rem !important;
@@ -140,10 +80,6 @@ main[class*="bg-[#f5f7f5]"] form button[type="submit"]:active:not(:disabled) {
     border-radius: 16px;
   }
 
-  main[class*="bg-[#f5f7f5]"] form {
-    padding: 1rem;
-    border-radius: 18px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -152,5 +88,246 @@ main[class*="bg-[#f5f7f5]"] form button[type="submit"]:active:not(:disabled) {
   .aiden-app-shell main button,
   main[class*="bg-[#f5f7f5]"] form button[type="submit"] {
     transition: none;
+  }
+}
+
+
+/* Pulido transversal posterior al refinamiento editorial. El objetivo es que
+   las vistas internas compartan el mismo lenguaje sin convertir cada bloque
+   en una tarjeta flotante. */
+.aiden-app-shell main {
+  background:
+    radial-gradient(circle at 82% 0%, rgba(143, 181, 111, 0.08), transparent 26rem),
+    var(--app-bg);
+}
+
+.aiden-app-shell main h1,
+.aiden-app-shell main h2,
+.aiden-app-shell main h3 {
+  text-wrap: balance;
+}
+
+.aiden-app-shell main h1 {
+  font-size: clamp(1.65rem, 1.9vw, 2.15rem);
+  font-weight: 650;
+}
+
+.aiden-app-shell main h2 {
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-weight: 650;
+}
+
+.aiden-app-shell main table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.aiden-app-shell main thead th {
+  background: rgba(247, 250, 248, 0.9);
+  color: #627168;
+  letter-spacing: 0.12em;
+}
+
+.aiden-app-shell main tbody tr {
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.aiden-app-shell main tbody tr:hover {
+  background-color: rgba(247, 250, 248, 0.75);
+}
+
+.aiden-app-shell main input:not([type="checkbox"]):not([type="radio"]),
+.aiden-app-shell main select,
+.aiden-app-shell main textarea {
+  border-radius: 12px;
+}
+
+.aiden-app-shell main input::placeholder,
+.aiden-app-shell main textarea::placeholder {
+  color: #89938d;
+}
+
+.aiden-app-shell .aiden-modal-fondo {
+  background: rgba(7, 27, 17, 0.36);
+}
+
+.aiden-app-shell .aiden-modal-entrada {
+  border-color: rgba(203, 217, 208, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 26px 70px rgba(7, 27, 17, 0.18);
+}
+
+.aiden-app-shell .aiden-modal-entrada > header,
+.aiden-app-shell .aiden-modal-entrada > footer {
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.aiden-app-shell .aiden-modal-entrada > header h2 {
+  color: var(--app-ink);
+}
+
+.aiden-app-shell .aiden-modal-entrada > header p {
+  color: #66736b;
+}
+
+.aiden-app-shell [role="dialog"]:not(.aiden-modal-entrada) {
+  border-color: rgba(203, 217, 208, 0.9);
+  box-shadow: 0 22px 56px rgba(7, 27, 17, 0.14);
+}
+
+@media (max-width: 640px) {
+  .aiden-app-shell main h1 {
+    font-size: 1.5rem;
+  }
+
+  .aiden-app-shell main h2 {
+    font-size: 1rem;
+  }
+
+  .aiden-app-shell .aiden-modal-entrada {
+    border-radius: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-app-shell main tbody tr,
+  .aiden-app-shell main [role="dialog"] {
+    transition: none !important;
+  }
+}
+
+/* Sistema interno: menos “tarjetas flotantes”, más superficie editorial. */
+.aiden-app-shell {
+  --app-bg: #f7f6f0;
+  --app-surface: #fffdf8;
+  --app-line: #dfe5de;
+  --app-line-strong: #cbd6cc;
+  --app-ink: #12251b;
+  --app-green: #0b2b1b;
+  --app-green-2: #176b45;
+}
+
+.aiden-app-shell > section > main {
+  background:
+    linear-gradient(90deg, rgba(11, 43, 27, 0.018) 1px, transparent 1px),
+    linear-gradient(rgba(11, 43, 27, 0.018) 1px, transparent 1px),
+    radial-gradient(circle at 88% 0%, rgba(217, 234, 115, 0.1), transparent 22rem),
+    var(--app-bg);
+  background-size: 40px 40px, 40px 40px, auto, auto;
+}
+
+.aiden-page-header {
+  position: relative;
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid rgba(203, 214, 204, 0.72);
+}
+
+.aiden-page-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 3.2rem;
+  height: 2px;
+  background: var(--app-green);
+}
+
+.aiden-page-header h1 {
+  font-size: clamp(1.7rem, 2.2vw, 2.45rem) !important;
+  line-height: 1.02;
+  font-weight: 680;
+  letter-spacing: -0.055em !important;
+}
+
+.aiden-page-header p {
+  max-width: 48rem;
+}
+
+.aiden-panel {
+  border-color: rgba(203, 214, 204, 0.84) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 253, 248, 0.92) !important;
+  box-shadow: 0 8px 28px rgba(11, 43, 27, 0.045) !important;
+}
+
+.aiden-panel > header {
+  border-color: rgba(223, 229, 222, 0.82) !important;
+}
+
+.aiden-stat-grid > * {
+  min-height: 8.6rem;
+  border-radius: 18px !important;
+  border-color: rgba(203, 214, 204, 0.82) !important;
+  background: rgba(255, 253, 248, 0.94) !important;
+  box-shadow: none !important;
+}
+
+.aiden-stat-grid > *:hover {
+  border-color: rgba(113, 139, 88, 0.58) !important;
+  background: #fffdf8 !important;
+}
+
+.aiden-rol-admin > section:first-of-type,
+.aiden-operario-vista > section[aria-label="Acciones rápidas"] {
+  position: relative;
+}
+
+.aiden-rol-admin > section:first-of-type::before,
+.aiden-operario-vista > section[aria-label="Acciones rápidas"]::before {
+  content: "";
+  position: absolute;
+  inset: -0.5rem -0.7rem;
+  z-index: -1;
+  border-radius: 24px;
+  background: rgba(255, 253, 248, 0.4);
+  border: 1px solid rgba(203, 214, 204, 0.48);
+}
+
+.aiden-supervisor-pulso {
+  border-radius: 22px !important;
+  box-shadow: 0 20px 56px rgba(11, 43, 27, 0.12) !important;
+}
+
+.aiden-supervisor-superficie,
+.aiden-operario-superficie {
+  border-color: rgba(203, 214, 204, 0.82) !important;
+  box-shadow: 0 8px 28px rgba(11, 43, 27, 0.045) !important;
+}
+
+.aiden-operario-vista > section[aria-label="Acciones rápidas"] > button {
+  border-radius: 12px !important;
+  min-height: 46px !important;
+}
+
+.aiden-app-shell table {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.aiden-app-shell thead th {
+  font-size: 10px !important;
+  font-weight: 750 !important;
+  text-transform: uppercase;
+}
+
+.aiden-app-shell [role="dialog"] {
+  border-radius: 18px;
+}
+
+@media (max-width: 640px) {
+  .aiden-app-shell > section > main {
+    background-size: 28px 28px, 28px 28px, auto, auto;
+  }
+
+  .aiden-page-header {
+    padding-bottom: 0.9rem;
+  }
+
+  .aiden-page-header h1 {
+    font-size: 1.55rem !important;
+  }
+
+  .aiden-stat-grid > * {
+    min-height: 7.8rem;
   }
 }

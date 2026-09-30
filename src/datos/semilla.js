@@ -2,8 +2,8 @@ import { CONFIG_INICIAL } from "./catalogos";
 import { aISOLocal, hoyISO, sumarDias } from "../utilidades/formato";
 
 /*
-  Datos de demostración de un vivero en el Cauca. Todo se genera relativo a la
-  fecha actual para que la demo siempre tenga tareas de hoy, vencidas y lecturas
+  Datos base de un vivero en el Cauca. Todo se genera relativo a la
+  fecha actual para que el sistema siempre tenga tareas de hoy, vencidas y lecturas
   recientes. Los valores están relacionados entre sí: cada consumo de inventario
   tiene su costo, cada incidencia su lote y cada lote su historia.
 */

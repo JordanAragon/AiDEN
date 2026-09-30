@@ -11,7 +11,7 @@ const EVENTO_SESION = "aiden-session-change";
 const EVENTO_USUARIOS = "aiden-user-change";
 const SALIDA_VOLUNTARIA = "aiden_salida";
 
-export const CUENTAS_DEMO = [
+export const CUENTAS_INICIALES = [
   {
     id: "usr-admin",
     name: "Jordan Aragon",
@@ -77,13 +77,13 @@ export function ensureInitialUser() {
   const byId = new Map(current.map((user) => [user.id, user]));
   let changed = current.length === 0;
 
-  for (const demo of CUENTAS_DEMO) {
-    const existente = byId.get(demo.id);
+  for (const cuenta of CUENTAS_INICIALES) {
+    const existente = byId.get(cuenta.id);
     if (!existente) {
-      byId.set(demo.id, demo);
+      byId.set(cuenta.id, cuenta);
       changed = true;
     } else if (!existente.personaId) {
-      byId.set(demo.id, { ...existente, name: demo.name, personaId: demo.personaId });
+      byId.set(cuenta.id, { ...existente, name: cuenta.name, personaId: cuenta.personaId });
       changed = true;
     }
   }

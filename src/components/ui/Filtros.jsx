@@ -10,7 +10,7 @@ export function Buscador({ valor, onCambio, etiqueta, placeholder, className = "
         onChange={(evento) => onCambio(evento.target.value)}
         placeholder={placeholder}
         aria-label={etiqueta}
-        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-9 text-sm outline-none focus:border-emerald-500 [&::-webkit-search-cancel-button]:hidden"
+        className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-9 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-lime-100 [&::-webkit-search-cancel-button]:hidden"
       />
       {valor && (
         <button type="button" onClick={() => onCambio("")} aria-label="Limpiar búsqueda" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 hover:bg-slate-100">
@@ -32,10 +32,10 @@ export function Segmentos({ opciones, valor, onCambio, etiqueta }) {
             type="button"
             aria-pressed={activo}
             onClick={() => onCambio(opcion.valor)}
-            className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${activo ? "bg-emerald-700 text-white" : "bg-slate-100 text-slate-600 hover:text-slate-700"}`}
+            className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${activo ? "border-emerald-700 bg-emerald-700 text-white" : "border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:text-slate-800"}`}
           >
             {opcion.etiqueta}
-            {opcion.cuenta !== undefined && <span className={`ml-1.5 ${activo ? "text-emerald-100" : "text-slate-600"}`}>{opcion.cuenta}</span>}
+            {opcion.cuenta !== undefined && <span className={`ml-1.5 ${activo ? "text-emerald-100" : "text-slate-400"}`}>{opcion.cuenta}</span>}
           </button>
         );
       })}

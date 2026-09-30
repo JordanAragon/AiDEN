@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { AlertTriangle, ClipboardList, Clock3, Package, Plus, Sprout, Users } from "lucide-react";
+import { ClipboardList, Clock3, Plus, Sprout, Thermometer } from "lucide-react";
 import { Boton } from "../ui/Boton";
-import Cifras from "../ui/Cifras";
 import EncabezadoPagina from "../ui/EncabezadoPagina";
 import Insignia from "../ui/Insignia";
-import Panel from "../ui/Panel";
-import { EnlaceModulo, TarjetaAccion } from "../ui/Piezas";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import LineaTiempo from "../lote/LineaTiempo";
 import ModalTarea from "../formularios/ModalTarea";
@@ -35,6 +32,9 @@ export default function DashboardSupervisorContenido() {
   const sesion = useSesion();
   const [tareaInicial, setTareaInicial] = useState(null);
   const [nuevoLote, setNuevoLote] = useState(false);
+  const [vistaOperativa, setVistaOperativa] = useState("lotes");
+  const [mostrarTodasAtenciones, setMostrarTodasAtenciones] = useState(false);
+  const [mostrarTodaCarga, setMostrarTodaCarga] = useState(false);
   useTitulo("Centro de supervisión");
 
   const hoy = hoyISO();
@@ -51,7 +51,7 @@ export default function DashboardSupervisorContenido() {
   const recientes = [...datos.trazabilidad].sort((a, b) => aFecha(b.fecha) - aFecha(a.fecha)).slice(0, 5);
 
   return (
-    <article className="space-y-6">
+    <article className="aiden-rol-supervisor aiden-supervisor-vista space-y-7">
       <EncabezadoPagina
         rotulo="AiDEN / coordinación"
         titulo="Centro de supervisión"
@@ -68,73 +68,140 @@ export default function DashboardSupervisorContenido() {
         }
       />
 
-      <Cifras
-        items={[
-          { icono: Sprout, etiqueta: "Lotes activos", valor: activos.length, detalle: `${activos.filter((l) => l.etapa === "Cosecha").length} en cosecha · ${numero(activos.reduce((s, l) => s + Number(l.cantidad || 0), 0))} plantas`, to: "/produccion" },
-          { icono: ClipboardList, etiqueta: "Trabajo pendiente", valor: abiertas.length, detalle: vencidas ? `${plural(vencidas, "vencida", "vencidas")} · ${completadasHoy} completadas hoy` : `Sin tareas vencidas · ${completadasHoy} completadas hoy`, tono: vencidas ? "critico" : "info", to: vencidas ? "/personal?vista=tareas&filtro=vencidas" : "/personal?vista=tareas" },
-          { icono: AlertTriangle, etiqueta: "Alertas", valor: lista.length, detalle: `Operación, ambiente y calidad · ${cfg.tempMin}–${cfg.tempMax} °C`, tono: lista.length ? "critico" : "exito" },
-          { icono: Package, etiqueta: "Insumos bajo mínimo", valor: bajoMinimo, detalle: bajoMinimo ? "Coordina reposición" : "Stock suficiente", tono: "alerta", to: "/inventario?filtro=bajo" },
-        ]}
-      />
-
-      <section className="grid gap-4 lg:grid-cols-[1.25fr_.75fr]">
-        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <header className="flex items-center justify-between">
+      <section aria-label="Resumen del estado de la operación" aria-live="polite" data-vista="supervisor" className="aiden-supervisor-pulso overflow-hidden rounded-[28px] bg-[#0b2b1b] text-white shadow-[0_24px_70px_rgba(11,43,27,0.16)]">
+        <section className="grid lg:grid-cols-[1.15fr_.85fr]">
+          <section className="p-6 sm:p-8 lg:p-10">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-300">Pulso de la operación</p>
+            <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
+              {lista.length ? plural(lista.length, "asunto requiere atención.", "asuntos requieren atención.") : "La operación está sin alertas."}
+            </h2>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-white/65">
+              {lista.length ? "Prioriza lo que puede detener producción, comprometer una condición ambiental o dejar una incidencia sin respuesta." : "No hay bloqueos detectados con los datos actuales. La supervisión puede concentrarse en el avance y la ejecución del equipo."}
+            </p>
+            <section className="mt-6 flex flex-wrap items-center gap-2">
+              <Link to={lista.length ? lista[0].ruta : "/produccion"} className="inline-flex items-center rounded-xl bg-white px-4 py-2.5 text-xs font-semibold text-[#0b2b1b] transition hover:bg-emerald-100">
+                {lista.length ? "Revisar atención" : "Abrir producción"}
+              </Link>
+              <Link to="/personal?vista=tareas" className="inline-flex items-center rounded-xl border border-white/15 px-4 py-2.5 text-xs font-semibold text-white/85 transition hover:border-white/30 hover:bg-white/5">
+                Ver equipo
+              </Link>
+            </section>
+          </section>
+          <section className="grid grid-cols-2 border-t border-white/10 lg:border-l lg:border-t-0">
+            <article className="flex min-h-32 flex-col justify-between border-r border-white/10 p-5 sm:p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">Trabajo abierto</p>
+              <div>
+                <p className="text-3xl font-semibold tracking-tight">{abiertas.length}</p>
+                <p className="mt-1 text-xs text-white/55">{vencidas ? plural(vencidas, "vencida", "vencidas") : "sin vencidas"} · {completadasHoy} hoy</p>
+              </div>
+            </article>
+            <article className="flex min-h-32 flex-col justify-between p-5 sm:p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">Lotes activos</p>
+              <div>
+                <p className="text-3xl font-semibold tracking-tight">{activos.length}</p>
+                <p className="mt-1 text-xs text-white/55">{activos.filter((l) => l.etapa === "Cosecha").length} en cosecha · {numero(activos.reduce((s, l) => s + Number(l.cantidad || 0), 0))} plantas</p>
+              </div>
+            </article>
+            <article className="flex min-h-32 flex-col justify-between border-r border-t border-white/10 p-5 sm:p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">Riesgos</p>
+              <div>
+                <p className="text-3xl font-semibold tracking-tight">{lista.length}</p>
+                <p className="mt-1 text-xs text-white/55">operación, ambiente y calidad</p>
+              </div>
+            </article>
+            <article className="flex min-h-32 flex-col justify-between border-t border-white/10 p-5 sm:p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">Inventario</p>
+              <div>
+                <p className="text-3xl font-semibold tracking-tight">{bajoMinimo}</p>
+                <p className="mt-1 text-xs text-white/55">{bajoMinimo ? "insumos por reponer" : "stock en rango"}</p>
+              </div>
+            </article>
+          </section>
+        </section>
+      </section>
+      <section className="aiden-supervisor-grid grid items-start gap-4 lg:grid-cols-[1.3fr_.7fr]">
+        <article className="aiden-supervisor-superficie rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm">
+          <header className="flex items-center justify-between gap-4">
             <section>
               <h2 className="font-semibold text-slate-900">Carga de trabajo</h2>
               <p className="mt-1 text-xs text-slate-500">Tareas pendientes por responsable</p>
             </section>
-            <Users size={18} className="text-emerald-700" aria-hidden="true" />
+            <Link to="/personal?vista=tareas" className="shrink-0 text-xs font-semibold text-emerald-700 hover:underline">
+              Ver todo
+            </Link>
           </header>
-          <section className="mt-5 space-y-4">
-            {carga.map(({ persona, abiertas: n, vencidas: v, lotes }) => (
-              <Link key={persona.id} to={`/personal?persona=${persona.id}`} className="group block">
-                <section className="mb-1 flex justify-between gap-2 text-xs">
-                  <span className="font-medium text-slate-700 group-hover:text-emerald-700">{persona.nombre}</span>
-                  <span className="font-semibold text-slate-500">
-                    {n} pendientes{v ? ` · ${v} vencida${v === 1 ? "" : "s"}` : ""} · {plural(lotes, "lote", "lotes")}
+          <section className="mt-3 space-y-1.5">
+            {(mostrarTodaCarga ? carga : carga.slice(0, 4)).map(({ persona, abiertas: n, vencidas: v, lotes }) => (
+              <Link key={persona.id} to={`/personal?persona=${persona.id}`} className="group block rounded-xl border border-transparent px-2.5 py-2 transition hover:border-slate-100 hover:bg-slate-50">
+                <section className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
+                  <section className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="min-w-0 truncate text-xs font-semibold text-slate-700 group-hover:text-emerald-700">{persona.nombre}</span>
+                      <span className="shrink-0 text-[10px] text-slate-400">{plural(lotes, "lote", "lotes")}</span>
+                    </div>
+                    <section className="mt-1.5 flex h-1.5 overflow-hidden rounded-full bg-slate-100">
+                      <span className="block h-full bg-red-500" style={{ width: `${(v / maximo) * 100}%` }} />
+                      <span className="block h-full bg-emerald-500" style={{ width: `${((n - v) / maximo) * 100}%` }} />
+                    </section>
+                  </section>
+                  <span className="text-right">
+                    <span className="block text-sm font-bold leading-none text-slate-800">{n}</span>
+                    <span className="mt-1 block text-[10px] font-medium text-slate-400">{v ? `${v} vencida${v === 1 ? "" : "s"}` : "pendientes"}</span>
                   </span>
-                </section>
-                <section className="flex h-2 overflow-hidden rounded-full bg-slate-100">
-                  <span className="block h-full bg-red-500" style={{ width: `${(v / maximo) * 100}%` }} />
-                  <span className="block h-full bg-emerald-500" style={{ width: `${((n - v) / maximo) * 100}%` }} />
                 </section>
               </Link>
             ))}
             {!carga.length && <p className="text-sm text-slate-500">Aún no hay tareas asignadas.</p>}
+            {carga.length > 4 && (
+              <button type="button" onClick={() => setMostrarTodaCarga((valor) => !valor)} className="w-full pt-1 text-[11px] font-semibold text-emerald-700 hover:underline">
+                {mostrarTodaCarga ? "Mostrar menos" : `Ver todo · ${carga.length} responsables`}
+              </button>
+            )}
           </section>
-          <EnlaceModulo to="/personal?vista=tareas">Gestionar tareas</EnlaceModulo>
         </article>
+
         <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <header>
-            <h2 className="font-semibold text-slate-900">Atención inmediata</h2>
-            <p className="mt-1 text-xs text-slate-500">Eventos que necesitan intervención del supervisor</p>
+          <header className="flex items-start justify-between gap-3">
+            <section>
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-700">Prioridad</p>
+              <h2 className="mt-1 font-semibold text-slate-900">Atención inmediata</h2>
+              <p className="mt-1 text-xs text-slate-500">Eventos que necesitan intervención del supervisor</p>
+            </section>
+            {lista.length > 2 && (
+              <button type="button" onClick={() => setMostrarTodasAtenciones((valor) => !valor)} className="shrink-0 text-xs font-semibold text-emerald-700 hover:underline">
+                {mostrarTodasAtenciones ? "Mostrar menos" : `Ver todo · ${lista.length}`}
+              </button>
+            )}
           </header>
-          <section className="mt-4 space-y-2">
-            {lista.map((alerta) => {
+          <section className="mt-3 space-y-2">
+            {lista.slice(0, mostrarTodasAtenciones ? lista.length : 2).map((alerta) => {
               const accion = accionRapida(alerta, datos);
               return (
-                <article key={alerta.id} className={`rounded-xl border bg-slate-50 p-3 ${alerta.severidad === "critico" ? "border-red-100" : "border-slate-100"}`}>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Insignia tono={alerta.severidad === "critico" ? "critico" : "alerta"}>{alerta.tipo}</Insignia>
-                    {alerta.lote && <EtiquetaLote codigo={alerta.lote} />}
-                  </div>
-                  <p className="mt-1.5 text-sm font-medium text-slate-800">{alerta.titulo}</p>
-                  <p className="text-xs text-slate-500">{alerta.detalle}</p>
-                  <div className="mt-2 flex gap-3 text-[11px] font-semibold">
-                    <Link to={alerta.ruta} className="text-slate-600 hover:text-emerald-700">
-                      Ver registro
-                    </Link>
-                    {accion.tarea ? (
-                      <button type="button" onClick={() => setTareaInicial(accion.tarea)} className="text-emerald-700 hover:underline">
-                        {accion.texto}
-                      </button>
-                    ) : (
-                      <Link to={accion.ruta} className="text-emerald-700 hover:underline">
-                        {accion.texto}
+                <article key={alerta.id} className={`aiden-supervisor-alerta rounded-xl border bg-slate-50 px-3 py-2.5 ${alerta.severidad === "critico" ? "border-red-100" : "border-slate-100"}`}>
+                  <section className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+                    <section className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <Insignia tono={alerta.severidad === "critico" ? "critico" : "alerta"}>{alerta.tipo}</Insignia>
+                        {alerta.lote && <EtiquetaLote codigo={alerta.lote} />}
+                      </div>
+                      <p className="mt-1 text-xs font-semibold leading-4 text-slate-800">{alerta.titulo}</p>
+                      <p className="mt-0.5 line-clamp-1 text-[10px] leading-4 text-slate-500">{alerta.detalle}</p>
+                    </section>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] font-semibold sm:shrink-0 sm:justify-end sm:pt-0.5">
+                      <Link to={alerta.ruta} className="text-slate-500 hover:text-emerald-700">
+                        Ver registro
                       </Link>
-                    )}
-                  </div>
+                      {accion.tarea ? (
+                        <button type="button" onClick={() => setTareaInicial(accion.tarea)} className="text-emerald-700 hover:underline">
+                          {accion.texto}
+                        </button>
+                      ) : (
+                        <Link to={accion.ruta} className="text-emerald-700 hover:underline">
+                          {accion.texto}
+                        </Link>
+                      )}
+                    </div>
+                  </section>
                 </article>
               );
             })}
@@ -143,70 +210,124 @@ export default function DashboardSupervisorContenido() {
         </article>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <TarjetaAccion icono={Sprout} titulo="Producción" texto="Avanza lotes, revisa etapas y crea tareas de seguimiento." accion="Abrir producción" to="/produccion" />
-        <TarjetaAccion icono={Package} titulo="Inventario" texto="Revisa consumos, niveles mínimos y reposiciones pendientes." accion="Abrir inventario" to="/inventario" />
-        <TarjetaAccion icono={Clock3} titulo="Seguimiento" texto="Consulta trazabilidad y verifica que cada actividad quede registrada." accion="Abrir trazabilidad" to="/trazabilidad" />
-      </section>
-
-      <Panel titulo="Lotes por etapa" descripcion="Toca un código para abrir la ficha del lote." accion={<Link to="/produccion" className="text-xs font-semibold text-emerald-700 hover:underline">Abrir producción</Link>}>
-        <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {ETAPAS.map((etapa) => {
-            const enEtapa = activos.filter((l) => l.etapa === etapa);
-            return (
-              <section key={etapa} aria-label={etapa} className="rounded-2xl bg-slate-50 p-3">
-                <h3 className="flex items-center justify-between text-xs font-semibold text-slate-700">
-                  {etapa}
-                  <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-slate-500">{enEtapa.length}</span>
-                </h3>
-                <ul className="mt-3 space-y-2">
-                  {enEtapa.map((lote) => (
-                    <li key={lote.id} className="rounded-xl border border-slate-200 bg-white p-3">
-                      <EtiquetaLote codigo={lote.lote} />
-                      <p className="mt-1 text-sm font-semibold text-slate-800">{lote.cultivo}</p>
-                      <p className="text-[11px] text-slate-500">
-                        {numero(lote.cantidad)} plantas · {lote.ubicacion}
-                      </p>
-                    </li>
-                  ))}
-                  {!enEtapa.length && <li className="py-3 text-center text-xs text-slate-500">Sin lotes</li>}
-                </ul>
-              </section>
-            );
-          })}
-        </section>
-      </Panel>
-
-      <section className="grid gap-4 lg:grid-cols-2">
-        <Panel titulo="Ambiente por zona" descripcion={`Rango: ${cfg.tempMin}–${cfg.tempMax} °C y ${cfg.humMin}–${cfg.humMax} % de humedad`}>
-          <ul className="divide-y divide-slate-100">
-            {datos.zonas.map((zona) => {
-              const lectura = lecturas.get(zona.nombre);
-              const e = evaluarLectura(lectura, cfg);
+      <section className="aiden-supervisor-operacion overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
+        <header className="flex flex-col gap-4 border-b border-slate-100 p-5 sm:flex-row sm:items-end sm:justify-between">
+          <section>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-700">Vista operativa</p>
+            <h2 className="mt-1 text-lg font-semibold tracking-tight text-slate-900">Consulta sin recorrer toda la página</h2>
+            <p className="mt-1 text-xs text-slate-500">Cambia de contexto según lo que necesites revisar. Los datos siguen siendo los mismos.</p>
+          </section>
+          <nav className="grid grid-cols-3 rounded-xl border border-slate-200 bg-slate-50 p-1" aria-label="Vistas operativas">
+            {[
+              ["lotes", "Lotes", Sprout],
+              ["ambiente", "Ambiente", Thermometer],
+              ["actividad", "Actividad", Clock3],
+            ].map(([id, label, Icono]) => {
+              const activo = vistaOperativa === id;
               return (
-                <li key={zona.id}>
-                  <Link to={`/ambiental?zona=${encodeURIComponent(zona.nombre)}`} className="flex items-center justify-between gap-3 py-3 hover:bg-slate-50">
-                    <span className="min-w-0">
-                      <span className="block text-sm font-medium text-slate-800">{zona.nombre}</span>
-                      <span className="block text-[11px] text-slate-500">{lectura ? `Última lectura ${haceTiempo(lectura.fecha)}` : "Sin lecturas"}</span>
-                    </span>
-                    {lectura && (
-                      <span className="flex items-center gap-2">
-                        <span className={`text-sm font-semibold ${e.fuera ? "text-red-600" : "text-slate-800"}`}>
-                          {numero(lectura.temperatura)} °C · {numero(lectura.humedad)} %
-                        </span>
-                        <Insignia tono={e.fuera ? "critico" : "exito"}>{e.fuera ? "Atención" : "Estable"}</Insignia>
-                      </span>
-                    )}
-                  </Link>
-                </li>
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setVistaOperativa(id)}
+                  aria-pressed={activo}
+                  className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition ${activo ? "bg-white text-emerald-800 shadow-sm" : "text-slate-500 hover:text-slate-800"}`}
+                >
+                  <Icono size={13} aria-hidden="true" />
+                  {label}
+                </button>
               );
             })}
-          </ul>
-        </Panel>
-        <Panel titulo="Actividad reciente" descripcion="Lo último registrado en los lotes" accion={<Link to="/trazabilidad" className="text-xs font-semibold text-emerald-700 hover:underline">Ver trazabilidad</Link>}>
-          {recientes.length ? <LineaTiempo eventos={recientes} mostrarLote /> : <p className="py-8 text-center text-sm text-slate-500">Todavía no hay actividad registrada.</p>}
-        </Panel>
+          </nav>
+        </header>
+
+        <section className="p-5 sm:p-6">
+          {vistaOperativa === "lotes" && (
+            <section>
+              <header className="mb-4 flex flex-wrap items-end justify-between gap-2">
+                <section>
+                  <h3 className="font-semibold text-slate-900">Lotes por etapa</h3>
+                  <p className="mt-1 text-xs text-slate-500">Distribución actual de la producción.</p>
+                </section>
+                <Link to="/produccion" className="text-xs font-semibold text-emerald-700 hover:underline">Abrir producción</Link>
+              </header>
+              <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                {ETAPAS.map((etapa) => {
+                  const enEtapa = activos.filter((l) => l.etapa === etapa);
+                  return (
+                    <section key={etapa} aria-label={etapa} className="rounded-2xl border border-slate-100 bg-slate-50/70 p-3">
+                      <h4 className="flex items-center justify-between text-xs font-semibold text-slate-700">
+                        {etapa}
+                        <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-slate-500">{enEtapa.length}</span>
+                      </h4>
+                      <ul className="mt-3 space-y-2">
+                        {enEtapa.slice(0, 3).map((lote) => (
+                          <li key={lote.id} className="rounded-xl border border-slate-200 bg-white p-3">
+                            <EtiquetaLote codigo={lote.lote} />
+                            <p className="mt-1 text-sm font-semibold text-slate-800">{lote.cultivo}</p>
+                            <p className="text-[11px] text-slate-500">{numero(lote.cantidad)} plantas · {lote.ubicacion}</p>
+                          </li>
+                        ))}
+                        {!enEtapa.length && <li className="py-3 text-center text-xs text-slate-500">Sin lotes</li>}
+                        {enEtapa.length > 3 && <li className="text-center text-[11px] font-semibold text-emerald-700">+{enEtapa.length - 3} más en producción</li>}
+                      </ul>
+                    </section>
+                  );
+                })}
+              </section>
+            </section>
+          )}
+
+          {vistaOperativa === "ambiente" && (
+            <section>
+              <header className="mb-4 flex flex-wrap items-end justify-between gap-2">
+                <section>
+                  <h3 className="font-semibold text-slate-900">Ambiente por zona</h3>
+                  <p className="mt-1 text-xs text-slate-500">Última lectura frente a los rangos configurados.</p>
+                </section>
+                <Link to="/ambiental" className="text-xs font-semibold text-emerald-700 hover:underline">Abrir ambiental</Link>
+              </header>
+              <ul className="grid gap-2 sm:grid-cols-2">
+                {datos.zonas.map((zona) => {
+                  const lectura = lecturas.get(zona.nombre);
+                  const e = evaluarLectura(lectura, cfg);
+                  return (
+                    <li key={zona.id}>
+                      <Link to={`/ambiental?zona=${encodeURIComponent(zona.nombre)}`} className="flex items-center justify-between gap-3 rounded-xl border border-slate-100 p-3 transition hover:border-emerald-100 hover:bg-emerald-50/30">
+                        <span className="min-w-0">
+                          <span className="block text-sm font-medium text-slate-800">{zona.nombre}</span>
+                          <span className="block text-[11px] text-slate-500">{lectura ? `Actualizada ${haceTiempo(lectura.fecha)}` : "Sin lecturas"}</span>
+                        </span>
+                        {lectura && (
+                          <span className="flex shrink-0 items-center gap-2">
+                            <span className={`text-xs font-semibold ${e.fuera ? "text-red-600" : "text-slate-800"}`}>{numero(lectura.temperatura)} °C · {numero(lectura.humedad)} %</span>
+                            <Insignia tono={e.fuera ? "critico" : "exito"}>{e.fuera ? "Atención" : "Estable"}</Insignia>
+                          </span>
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          )}
+
+          {vistaOperativa === "actividad" && (
+            <section>
+              <header className="mb-4 flex flex-wrap items-end justify-between gap-2">
+                <section>
+                  <h3 className="font-semibold text-slate-900">Actividad reciente</h3>
+                  <p className="mt-1 text-xs text-slate-500">Los últimos movimientos registrados en los lotes.</p>
+                </section>
+                <Link to="/trazabilidad" className="text-xs font-semibold text-emerald-700 hover:underline">Ver trazabilidad</Link>
+              </header>
+              {recientes.length ? (
+                <LineaTiempo eventos={recientes} mostrarLote />
+              ) : (
+                <p className="py-10 text-center text-sm text-slate-500">Todavía no hay actividad registrada.</p>
+              )}
+            </section>
+          )}
+        </section>
       </section>
 
       <ModalTarea abierto={Boolean(tareaInicial)} onCerrar={() => setTareaInicial(null)} inicial={tareaInicial || undefined} />

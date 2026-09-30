@@ -1,24 +1,22 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Eye, EyeOff, Leaf, Loader2, LogOut, User } from "lucide-react";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ArrowRight, Eye, EyeOff, Leaf, Loader2, LogOut } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginImage from "../assets/imagenes/login.webp";
-import { CUENTAS_DEMO, ensureInitialUser, getDashboardPath, login, logout } from "../utilidades/autenticacion";
+import { ensureInitialUser, getDashboardPath, login, logout } from "../utilidades/autenticacion";
 import { destinoTrasLogin } from "../routes/permisos";
 import { useSesion } from "../hooks/useSesion";
 import { useTitulo } from "../hooks/useTitulo";
+import "../estilos/autenticacion-aiden.css";
 
 const ROL = { admin: "Administrador", supervisor: "Supervisor", operario: "Operario" };
-const QUE_VE = { admin: "Dinero, decisiones y accesos", supervisor: "Alertas, equipo y producción del día", operario: "Su jornada: tareas y lotes a cargo" };
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [parametros] = useSearchParams();
   const sesion = useSesion();
-  const sugerida = CUENTAS_DEMO.find((c) => c.role === parametros.get("cuenta"));
   const [showPass, setShowPass] = useState(false);
-  const [email, setEmail] = useState(sugerida?.email || "");
-  const [password, setPassword] = useState(sugerida?.password || "");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   useTitulo("Iniciar sesión");
   const [remember, setRemember] = useState(
     () => localStorage.getItem("aiden_remember") === "true",
@@ -54,18 +52,18 @@ export default function Login() {
     entrar(email, password);
   };
   return (
-    <main className="flex min-h-screen bg-[#f5f7f5] text-slate-900">
-      <aside className="relative hidden min-h-screen overflow-hidden bg-[#0b2f20] lg:flex lg:w-[53%]">
+    <main className="aiden-auth">
+      <aside className="aiden-auth-side">
         <img
           src={loginImage}
           alt="Vivero agrícola"
           className="absolute inset-0 h-full w-full object-cover opacity-70"
         />
         <div
-          className="absolute inset-0 bg-[linear-gradient(135deg,rgba(11,47,32,.97),rgba(11,47,32,.72),rgba(11,47,32,.84))]"
+          className="aiden-auth-image-overlay"
           aria-hidden="true"
         />
-        <section className="relative z-10 flex w-full flex-col p-10 xl:p-14">
+        <section className="aiden-auth-side-content">
           <Link to="/" className="flex items-center gap-2 text-white">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/15 bg-white/10">
               <Leaf size={17} />
@@ -102,9 +100,9 @@ export default function Login() {
         </section>
       </aside>
 
-      <section className="flex w-full items-center justify-center px-5 py-10 sm:px-8 lg:w-[47%] lg:px-12">
-        <section className="w-full max-w-md">
-          <header className="mb-8 lg:hidden">
+      <section className="aiden-auth-panel">
+        <section className="aiden-auth-form-wrap">
+          <header className="aiden-auth-mobile-brand">
             <Link to="/" className="inline-flex items-center gap-2 text-emerald-900">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-900 text-white">
                 <Leaf size={15} />
@@ -113,7 +111,7 @@ export default function Login() {
             </Link>
           </header>
 
-          <section className="mb-7">
+          <section className="aiden-auth-heading">
             <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">
               Acceso
             </p>
@@ -126,7 +124,7 @@ export default function Login() {
           </section>
 
           {sesion ? (
-            <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <section className="aiden-auth-session">
               <p className="text-sm text-slate-600">
                 Tienes una sesión abierta como <span className="font-semibold text-slate-900">{sesion.name}</span> ({ROL[sesion.role]}).
               </p>
@@ -158,7 +156,7 @@ export default function Login() {
             </p>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="aiden-auth-form">
             <Field label="Correo electrónico">
               <input
                 id="email"
@@ -167,8 +165,9 @@ export default function Login() {
                 autoComplete="email"
                 required
                 value={email}
+                aria-invalid={Boolean(error)}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder="tu@vivero.com"
+                placeholder="nombre@vivero.com"
               />
             </Field>
 
@@ -189,6 +188,7 @@ export default function Login() {
                   type="button"
                   onClick={() => setShowPass((value) => !value)}
                   aria-label={showPass ? "Ocultar contraseña" : "Mostrar contraseña"}
+                  aria-controls="password"
                   className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
                 >
                   {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -196,7 +196,7 @@ export default function Login() {
               </div>
             </Field>
 
-            <section className="flex items-center justify-between gap-4">
+            <section className="aiden-auth-options">
               <label className="inline-flex items-center gap-2 text-sm text-slate-500">
                 <input
                   type="checkbox"
@@ -242,42 +242,8 @@ export default function Login() {
               Crear cuenta
             </Link>
           </p>
-          <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" aria-labelledby="titulo-demo">
-            <p id="titulo-demo" className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">
-              Cuentas de demostración
-            </p>
-            <p className="mt-1 text-xs text-slate-500">Cada rol ve una aplicación distinta. Contraseña de las tres: aiden123</p>
-            <ul className="mt-3 space-y-2">
-              {CUENTAS_DEMO.map((cuenta) => (
-                <li key={cuenta.id}>
-                  <button
-                    type="button"
-                    onClick={() => entrar(cuenta.email, cuenta.password)}
-                    className={`group flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors hover:border-emerald-200 hover:bg-emerald-50 ${sugerida?.id === cuenta.id ? "border-emerald-300 bg-emerald-50" : "border-slate-200"}`}
-                  >
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white">
-                      <User size={13} aria-hidden="true" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-semibold text-slate-800">
-                        {ROL[cuenta.role]} · {cuenta.name}
-                      </span>
-                      <span className="block truncate text-xs text-slate-500">{QUE_VE[cuenta.role]}</span>
-                    </span>
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">
-                      Entrar <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </section>
             </>
           )}
-          <p className="mt-8 text-center text-[11px] leading-5 text-slate-400">
-            V1 frontend local · Las credenciales se almacenan únicamente en este
-            navegador durante el desarrollo.
-          </p>
         </section>
       </section>
     </main>

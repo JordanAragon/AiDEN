@@ -44,7 +44,7 @@ export default function DashboardAdminContenido() {
   ];
 
   return (
-    <article className="space-y-6">
+    <article className="aiden-modulo-vista aiden-admin-vista aiden-rol-admin space-y-6">
       <EncabezadoPagina
         rotulo="AiDEN / control del sistema"
         titulo="Centro de administración"

@@ -1,7 +1,7 @@
 export default function Panel({ titulo, descripcion, rotulo, accion, icono: Icono, children, className = "", cuerpo = "px-5 pb-5", oscuro = false, as: Etiqueta = "section", id }) {
   if (oscuro) {
     return (
-      <Etiqueta id={id} className={`min-w-0 rounded-2xl bg-slate-950 p-5 text-white ${className}`}>
+      <Etiqueta id={id} className={`aiden-panel aiden-panel-dark min-w-0 rounded-2xl bg-slate-950 p-5 text-white ${className}`}>
         {(rotulo || titulo || accion) && (
           <header className="mb-4 flex flex-wrap items-start justify-between gap-3">
             <div>
@@ -18,7 +18,7 @@ export default function Panel({ titulo, descripcion, rotulo, accion, icono: Icon
   }
   const borde = cuerpo === "" || cuerpo.includes("p-0") || cuerpo.includes("overflow-x-auto");
   return (
-    <Etiqueta id={id} className={`min-w-0 rounded-2xl border border-slate-200 bg-white shadow-sm ${className}`}>
+    <Etiqueta id={id} className={`aiden-panel min-w-0 rounded-2xl border border-slate-200 bg-white ${className}`}>
       {(titulo || accion) && (
         <header className={`flex flex-wrap items-start justify-between gap-3 px-5 pt-5 ${borde ? "border-b border-slate-100 pb-4" : "pb-4"}`}>
           <div className="flex min-w-0 items-start gap-2">

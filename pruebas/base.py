@@ -35,10 +35,22 @@ class Registro:
         if self.fallos or self.errores:
             raise SystemExit(1)
 
+CREDENCIALES_PRUEBA = {
+    "admin": ("jordanaragon@aiden.com", "aiden123"),
+    "supervisor": ("supervisor@aiden.com", "aiden123"),
+    "operario": ("operario@aiden.com", "aiden123"),
+}
+
 def entrar(pg, rol):
-    nombres = {"admin": "Administrador", "supervisor": "Supervisor", "operario": "Operario"}
+    try:
+        correo, clave = CREDENCIALES_PRUEBA[rol]
+    except KeyError as exc:
+        raise ValueError(f"Rol de prueba no reconocido: {rol}") from exc
+
     pg.goto(BASE + "/login")
-    pg.get_by_role("button", name=f"{nombres[rol]} ·").click()
+    pg.get_by_label("Correo electrónico").fill(correo)
+    pg.get_by_label("Contraseña").fill(clave)
+    pg.get_by_role("button", name="Iniciar sesión", exact=True).click()
     pg.wait_for_url("**/dashboard-*")
     pg.wait_for_timeout(400)
 

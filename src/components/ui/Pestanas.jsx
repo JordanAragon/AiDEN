@@ -28,10 +28,10 @@ export default function Pestanas({ pestanas, activa, onCambio, etiqueta }) {
               if (evento.key === "ArrowRight") mover(indice + 1);
               if (evento.key === "ArrowLeft") mover(indice - 1);
             }}
-            className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${seleccionada ? "bg-emerald-700 text-white" : "bg-slate-100 text-slate-600 hover:text-slate-700"}`}
+            className={`relative whitespace-nowrap px-1.5 py-3 text-xs font-semibold transition-colors after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:transition-colors ${seleccionada ? "text-emerald-800 after:bg-emerald-700" : "text-slate-500 after:bg-transparent hover:text-slate-800"}`}
           >
             {pestana.etiqueta}
-            {pestana.cuenta !== undefined && <span className={`ml-1.5 ${seleccionada ? "text-emerald-100" : "text-slate-600"}`}>{pestana.cuenta}</span>}
+            {pestana.cuenta !== undefined && <span className={`ml-1.5 ${seleccionada ? "text-emerald-700" : "text-slate-400"}`}>{pestana.cuenta}</span>}
           </button>
         );
       })}

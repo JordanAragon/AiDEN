@@ -243,7 +243,7 @@ export default function PersonalOperativo() {
   const conCarga = activos.filter((p) => p.cargo !== "Administrador");
 
   return (
-    <section className="space-y-6">
+    <section className="aiden-modulo-vista aiden-modulo-personal space-y-6">
       <EncabezadoPagina
         icono={Users}
         rotulo="AiDEN / sistema"

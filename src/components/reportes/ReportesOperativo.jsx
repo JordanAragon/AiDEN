@@ -211,7 +211,7 @@ export default function ReportesOperativo() {
     ejecutar(() => descargarCSV(`aiden-${reporte.id}-${reporte.periodo ? periodo : "actual"}-${hoyISO()}`, filas), (n) => ({ titulo: "CSV descargado", detalle: `${reporte.titulo}: ${plural(n, "fila")}.` }));
 
   return (
-    <section className="space-y-6">
+    <section className="aiden-modulo-vista aiden-modulo-reportes space-y-6">
       <EncabezadoPagina
         rotulo="AiDEN / sistema"
         titulo="Reportes operativos"

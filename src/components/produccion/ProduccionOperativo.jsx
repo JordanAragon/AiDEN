@@ -49,9 +49,10 @@ export default function ProduccionOperativo() {
   const plantas = activos.reduce((a, l) => a + Number(l.cantidad || 0), 0);
   const sembradas = activos.reduce((a, l) => a + Number(l.cantidadInicial || l.cantidad || 0), 0);
   const atrasados = activos.filter((l) => l.fechaEstimada && diasEntre(hoyISO(), l.fechaEstimada) < 0).length;
+  const zonasFiltro = [...new Set(visibles.map((l) => l.ubicacion))].sort();
 
   return (
-    <section className="space-y-6">
+    <section className="aiden-modulo-vista aiden-operario-vista aiden-modulo-produccion space-y-7">
       <EncabezadoPagina
         rotulo="AiDEN / operación"
         titulo="Producción"
@@ -74,36 +75,49 @@ export default function ProduccionOperativo() {
         ]}
       />
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <header className="flex flex-wrap items-center justify-between gap-3">
-          <section>
-            <h2 className="font-semibold text-slate-900">Etapa de cada lote</h2>
-            <p className="text-xs text-slate-500">
-              {canManage ? "Avanza el ciclo desde aquí y registra automáticamente la trazabilidad." : "Consulta el estado del lote. Los cambios de etapa los realiza supervisión."}
-            </p>
+      <section className="aiden-list-row rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm">
+        <header className="flex flex-col gap-3">
+          <section className="flex flex-wrap items-end justify-between gap-3">
+            <section>
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-700">Ciclo de trabajo</p>
+              <h2 className="mt-1 font-semibold text-slate-900">Etapa de cada lote</h2>
+              <p className="mt-1 max-w-2xl text-xs text-slate-500">
+                {canManage ? "Avanza el ciclo desde aquí y registra automáticamente la trazabilidad." : "Consulta el estado del lote. Los cambios de etapa los realiza supervisión."}
+              </p>
+            </section>
+            <span className="text-xs font-medium text-slate-500">{plural(filtrados.length, "lote visible", "lotes visibles")}</span>
           </section>
-          <Segmentos
-            etiqueta="Filtrar por etapa"
-            valor={stage}
-            onCambio={setStage}
-            opciones={[
-              { valor: "Todas", etiqueta: "Todas" },
-              ...ETAPAS.map((e) => ({ valor: e, etiqueta: e })),
-              ...(cerrados ? [{ valor: "Cerrados", etiqueta: "Cerrados" }] : []),
-            ]}
-          />
+          <section className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1.2fr)_minmax(220px,1fr)_auto]">
+            <Buscador valor={query} onCambio={setQuery} etiqueta="Buscar lotes" placeholder="Lote, cultivo o ubicación..." />
+            <Selector value={zona} onChange={(e) => setZona(e.target.value)} aria-label="Filtrar por zona" className="min-h-11">
+              <option value="Todas">Todas las zonas</option>
+              {zonasFiltro.map((nombreZona) => (
+                <option key={nombreZona}>{nombreZona}</option>
+              ))}
+            </Selector>
+            <Segmentos
+              etiqueta="Etapa"
+              valor={stage}
+              onCambio={setStage}
+              opciones={[
+                { valor: "Todas", etiqueta: "Todas" },
+                ...ETAPAS.map((e) => ({ valor: e, etiqueta: e })),
+                ...(cerrados ? [{ valor: "Cerrados", etiqueta: "Cerrados" }] : []),
+              ]}
+            />
+          </section>
         </header>
         <section className="mt-5 space-y-3">
           {filtrados.map((l) => {
             const cerrado = l.estado === "Cerrado";
             return (
-              <article key={l.id} className="rounded-2xl border border-slate-200 p-4">
+              <article key={l.id} className="aiden-list-row rounded-2xl border border-slate-200 p-4 transition duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-[0_14px_36px_rgba(11,47,32,0.07)]">
                 <section className="flex flex-wrap items-center gap-4">
-                  <section className="min-w-48 flex-1">
+                  <section className="min-w-52 flex-1">
                     <EtiquetaLote codigo={l.lote} />
                     <h3 className="mt-1 font-semibold text-slate-900">{l.cultivo}</h3>
                     <p className="mt-1 text-xs text-slate-500">
-                      {nombrePersona(datos.personas, l.responsableId)} · {l.ubicacion}
+                      {isOperator ? `A tu cargo · ${l.ubicacion}` : `${nombrePersona(datos.personas, l.responsableId)} · ${l.ubicacion}`}
                     </p>
                   </section>
                   <section className="w-full sm:w-52">
@@ -112,8 +126,8 @@ export default function ProduccionOperativo() {
                       <Salida lote={l} />
                     </p>
                   </section>
-                  <section className="text-right">
-                    <p className="text-sm font-bold text-slate-800">{numero(l.cantidad)}</p>
+                  <section className="min-w-24 text-right">
+                    <p className="text-base font-bold tracking-tight text-slate-900">{numero(l.cantidad)}</p>
                     <p className="text-[11px] text-slate-500">de {numero(l.cantidadInicial)} plantas</p>
                   </section>
                   <section className="flex gap-1">
@@ -162,18 +176,6 @@ export default function ProduccionOperativo() {
         </section>
       </section>
 
-      <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <header className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
-          <Buscador valor={query} onCambio={setQuery} etiqueta="Buscar lotes" placeholder="Buscar lote, cultivo, responsable o ubicación..." className="flex-1" />
-          <Selector value={zona} onChange={(e) => setZona(e.target.value)} aria-label="Filtrar por zona" className="sm:w-52">
-            <option value="Todas">Todas las zonas</option>
-            {datos.zonas.map((z) => (
-              <option key={z.id}>{z.nombre}</option>
-            ))}
-          </Selector>
-          <span className="text-xs text-slate-500">{plural(filtrados.length, "resultado")}</span>
-        </header>
-      </section>
 
       <ModalLote abierto={modal?.tipo === "nuevo"} onCerrar={() => setModal(null)} />
       <ModalLote abierto={modal?.tipo === "editar"} onCerrar={() => setModal(null)} lote={modal?.lote} />

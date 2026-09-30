@@ -89,7 +89,7 @@ export default function InteligenciaArtificial() {
   const sugerencias = [...SUGERENCIAS, ...lotesSugeridos(datos)];
 
   return (
-    <article className="space-y-6">
+    <article className="aiden-modulo-vista aiden-modulo-ia space-y-6">
       <header>
         <h1 className="text-2xl font-bold text-slate-800">Inteligencia</h1>
         <p className="mt-1 text-sm text-slate-600">Herramientas para apoyar el análisis y la gestión del vivero con los datos registrados en AiDEN.</p>
@@ -110,7 +110,7 @@ export default function InteligenciaArtificial() {
             <section className="flex shrink-0 items-center gap-2">
               <span className="hidden items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 sm:flex">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" aria-hidden="true" />
-                Datos locales
+                Estado operativo
               </span>
               {historial.length > 0 && (
                 <button type="button" onClick={() => setHistorial([])} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100" aria-label="Limpiar conversación" title="Limpiar conversación">
@@ -141,7 +141,7 @@ export default function InteligenciaArtificial() {
                     </span>
                     <section className="min-w-0">
                       <p className="text-sm font-semibold text-slate-800">Resumen operativo</p>
-                      <p className="mt-1 text-sm leading-6 text-slate-600">Detecto alertas y relaciones entre los registros guardados en AiDEN. No invento información que no exista en el sistema: cada respuesta dice de qué módulo sale. También puedes escribir el código de un lote, por ejemplo LT-2026-011.</p>
+                      <p className="mt-1 text-sm leading-6 text-slate-600">Detecto alertas y relaciones entre los registros de AiDEN. Cada respuesta se basa en la información disponible en el sistema y señala de qué módulo proviene. También puedes escribir el código de un lote, por ejemplo LT-2026-011.</p>
                     </section>
                   </section>
                 </article>

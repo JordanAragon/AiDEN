@@ -4,7 +4,7 @@ Este documento describe la identidad **original** de AiDEN (rama `main`) y cómo
 
 ## Dos registros visuales
 
-**Landing (`src/pages/Home.jsx` + `landing-aiden-redesign.css`).** Editorial: DM Sans con acentos en Instrument Serif cursiva, verde bosque `#0b2b1b`, acento lima, fondos papel y crema (`#f7f6f0`, `#ebe7db`), numeración de sección (`02 / LA OPERACIÓN`), rótulos diminutos espaciados, vista previa del producto en el hero. No se modificó su diseño.
+**Landing (`src/pages/Home.jsx` + `landing-aiden-redesign.css`).** Editorial: DM Sans con acentos en Instrument Serif cursiva, verde bosque `#0b2b1b`, acento lima, fondos papel y crema (`#f7f6f0`, `#ebe7db`), numeración de sección (`02 / LA OPERACIÓN`), rótulos diminutos espaciados, vista previa del producto en el hero. En la revisión integral se mantuvo la composición y se redujeron recursos decorativos que añadían ruido, ajustando escala, sombras y navegación sin cambiar la identidad.
 
 **Aplicación (`index.css`, `experiencia-aiden.css`, `animaciones-app.css`, `modo-oscuro.css`).** Tailwind con paleta slate y emerald:
 

@@ -27,7 +27,7 @@
   border-bottom: 1px solid rgba(20, 39, 31, .09);
   background: #ebefe7;
   color: #657066;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 800;
 }
 .aiden-live-preview .aiden-product-brand  {
@@ -120,7 +120,7 @@
 }
 .aiden-live-preview .aiden-product-date  {
   color: #778279;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -149,7 +149,7 @@
   display: block;
   margin-top: 7px;
   color: #718076;
-  font-size: 8px;
+  font-size: 9px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -189,7 +189,7 @@
   border-radius: 999px;
   color: #526239;
   background: rgba(214,230,111,.32);
-  font-size: 7px;
+  font-size: 8px;
   font-weight: 800;
 }
 .aiden-live-preview .aiden-lote-meta  {
@@ -198,7 +198,7 @@
   gap: 6px 11px;
   margin-top: 14px;
   color: #748078;
-  font-size: 8px;
+  font-size: 9px;
 }
 .aiden-live-preview .aiden-progress-row  {
   display: flex;
@@ -206,7 +206,7 @@
   align-items: center;
   margin-top: 23px;
   color: #6c786f;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
 }
 .aiden-live-preview .aiden-progress-row strong  {
@@ -294,7 +294,7 @@
   display: flex;
   justify-content: space-between;
   color: #788279;
-  font-size: 8px;
+  font-size: 9px;
 }
 .aiden-live-preview .aiden-chart-card footer span  {
   display: inline-flex;
@@ -324,7 +324,7 @@
   border-radius: 999px;
   background: #edf1e8;
   color: #6f7c6f;
-  font-size: 7px;
+  font-size: 8px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: .08em;
@@ -358,12 +358,12 @@
 }
 .aiden-live-preview .aiden-live-alert strong  {
   color: #38483d;
-  font-size: 8px;
+  font-size: 9px;
 }
 .aiden-live-preview .aiden-live-alert div span  {
   margin-top: 2px;
   color: #788176;
-  font-size: 7px;
+  font-size: 8px;
 }
 .aiden-live-preview .aiden-live-alert > svg  {
   color: #859080;

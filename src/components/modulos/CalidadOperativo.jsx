@@ -198,14 +198,14 @@ function TarjetaIncidencia({ incidencia, onDetalle }) {
   };
 
   return (
-    <article className="rounded-2xl border border-slate-200 p-4">
+    <article className="aiden-operario-superficie rounded-[22px] border border-slate-200 bg-white p-4 transition duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-[0_14px_36px_rgba(11,47,32,0.07)]">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <section className="min-w-0">
           <p className="font-mono text-[10px] text-emerald-700">
             {incidencia.codigo} · <EtiquetaLote codigo={incidencia.lote} className="!font-normal" />
             {lote ? <span className="font-sans text-slate-500"> · {lote.cultivo}</span> : null}
           </p>
-          <h2 className="mt-1 text-sm font-semibold text-slate-900">{incidencia.descripcion}</h2>
+          <h2 className="mt-1 text-base font-semibold tracking-tight text-slate-900">{incidencia.descripcion}</h2>
           <p className="mt-1 text-xs text-slate-500">
             {nombrePersona(datos.personas, incidencia.responsableId)} · {fechaCorta(incidencia.fecha)} ·{" "}
             <span className={estado !== "Cerrada" && dias > 3 ? "font-semibold text-red-600" : ""}>{estado === "Cerrada" ? `cerrada en ${plural(dias, "día")}` : dias === 0 ? "reportada hoy" : `abierta hace ${plural(dias, "día")}`}</span>
@@ -229,7 +229,7 @@ function TarjetaIncidencia({ incidencia, onDetalle }) {
           )}
         </section>
       </header>
-      <section className="mt-4">
+      <section className="mt-5">
         {gestor && estado !== "Cerrada" ? (
           <label className="block text-sm font-medium text-slate-600">
             Acción correctiva
@@ -297,7 +297,7 @@ export default function CalidadOperativo() {
   };
 
   return (
-    <section className="space-y-6">
+    <section className="aiden-modulo-vista aiden-operario-vista aiden-modulo-calidad space-y-7">
       <EncabezadoPagina
         rotulo="AiDEN / seguimiento"
         titulo="Calidad"
@@ -318,7 +318,7 @@ export default function CalidadOperativo() {
         ]}
       />
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+      <section className="aiden-operario-superficie rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm">
         <header className="flex flex-wrap items-center gap-2">
           <Buscador valor={consulta} onCambio={setConsulta} etiqueta="Buscar incidencias" placeholder="Buscar incidencia, lote o responsable..." className="min-w-56 flex-1" />
           <Segmentos
@@ -329,7 +329,7 @@ export default function CalidadOperativo() {
           />
           <Segmentos etiqueta="Prioridad" valor={prioridad} onCambio={setPrioridad} opciones={["Todas", ...PRIORIDADES].map((p) => ({ valor: p, etiqueta: p === "Todas" ? "Toda prioridad" : p }))} />
         </header>
-        <section className="mt-4 space-y-3">
+        <section className="mt-5 space-y-3">
           {filtradas.map((i) => (
             <TarjetaIncidencia key={`${i.id}-${estadoIncidencia(i)}-${i.accion}`} incidencia={i} onDetalle={abrir} />
           ))}

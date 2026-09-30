@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Save, ShieldCheck, UserCircle2 } from "lucide-react";
+import { Save, ShieldCheck, UserCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getDashboardPath } from "../utilidades/autenticacion";
 import { Boton } from "../components/ui/Boton";
@@ -27,7 +27,7 @@ export default function Perfil() {
   const rol = ROLES[sesion?.role] || "Usuario";
 
   return (
-    <section className="mx-auto max-w-4xl space-y-6">
+    <section className="aiden-modulo-vista aiden-modulo-perfil mx-auto max-w-4xl space-y-6">
       <EncabezadoPagina
         icono={UserCircle2}
         rotulo="AiDEN / cuenta"
@@ -90,10 +90,6 @@ export default function Perfil() {
                 <p className="mt-1 text-sm font-semibold text-slate-800">{persona.departamento}</p>
               </div>
             )}
-            <div className="flex items-start gap-2 rounded-xl border border-slate-200 p-3 text-xs text-slate-500">
-              <Mail size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
-              Para cambiar contraseña usa Recuperar contraseña desde el acceso. En esta V1 ese flujo sigue siendo local.
-            </div>
           </div>
         </Panel>
       </section>

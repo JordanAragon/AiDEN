@@ -1,0 +1,100 @@
+/* Capa final del sistema visual AiDEN. Solo contiene reglas que afectan el
+   lenguaje común de la aplicación y no altera la lógica de los módulos. */
+
+.aiden-panel-dark {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 20px 54px rgba(7, 27, 17, 0.13) !important;
+}
+
+.aiden-rol-admin .aiden-page-header,
+.aiden-rol-supervisor .aiden-page-header,
+.aiden-rol-operario .aiden-page-header {
+  margin-bottom: 0.15rem;
+}
+
+.aiden-rol-admin .aiden-page-header h1,
+.aiden-rol-supervisor .aiden-page-header h1,
+.aiden-rol-operario .aiden-page-header h1 {
+  color: #12251b;
+}
+
+.aiden-rol-admin .aiden-page-header::after {
+  width: 4.25rem;
+  background: #718b58;
+}
+
+.aiden-rol-operario .aiden-page-header::after {
+  width: 3.5rem;
+  background: #d9ea73;
+}
+
+.aiden-rol-supervisor .aiden-page-header::after {
+  width: 5rem;
+  background: #0b2b1b;
+}
+
+.aiden-rol-admin > section.grid > article,
+.aiden-rol-operario > section.grid > article {
+  border-radius: 18px;
+}
+
+.aiden-rol-admin .aiden-panel,
+.aiden-rol-operario .aiden-panel {
+  min-height: 100%;
+}
+
+.aiden-rol-admin .aiden-stat-grid,
+.aiden-rol-operario .aiden-stat-grid {
+  margin-top: 0.25rem;
+}
+
+/* Mantiene la jerarquía del supervisor sin convertir cada bloque en una
+   tarjeta pesada. */
+.aiden-rol-supervisor .aiden-supervisor-grid > article,
+.aiden-rol-supervisor .aiden-supervisor-grid > section,
+.aiden-rol-supervisor .aiden-supervisor-grid > div {
+  min-width: 0;
+}
+
+/* Acciones de operario: se leen como una barra de trabajo y no como tres
+   tarjetas independientes. */
+.aiden-rol-operario > section[aria-label="Acciones rápidas"] {
+  gap: 0.55rem;
+}
+
+.aiden-rol-operario > section[aria-label="Acciones rápidas"] > button {
+  box-shadow: none !important;
+  border: 1px solid #dfe5de;
+}
+
+.aiden-rol-operario > section[aria-label="Acciones rápidas"] > button:first-child {
+  box-shadow: 0 8px 20px rgba(11, 43, 27, 0.1) !important;
+}
+
+html.aiden-dark .aiden-rol-admin .aiden-page-header h1,
+html.aiden-dark .aiden-rol-supervisor .aiden-page-header h1,
+html.aiden-dark .aiden-rol-operario .aiden-page-header h1 {
+  color: #f1f5f3 !important;
+}
+
+html.aiden-dark .aiden-page-header {
+  border-color: #26332d;
+}
+
+html.aiden-dark .aiden-panel {
+  background: #121815 !important;
+  border-color: #26332d !important;
+}
+
+html.aiden-dark .aiden-stat-grid > * {
+  background: #121815 !important;
+  border-color: #26332d !important;
+}
+
+@media (max-width: 640px) {
+  .aiden-rol-admin,
+  .aiden-rol-supervisor,
+  .aiden-rol-operario {
+    gap: 1.25rem;
+  }
+}

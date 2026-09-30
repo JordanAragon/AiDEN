@@ -482,6 +482,10 @@ export function editarInsumo(id, formulario, sesion) {
 
 export function eliminarInsumo(id, sesion) {
   exigirGestor(sesion);
+  const movimientos = obtener("movimientos").filter((m) => m.itemId === id);
+  if (movimientos.length) {
+    fallo("No puedes eliminar un insumo que ya tiene movimientos registrados. Conserva su historial o deja su stock en cero.");
+  }
   guardar({ inventario: obtener("inventario").filter((i) => i.id !== id) });
 }
 
@@ -570,6 +574,7 @@ export function editarCosto(id, formulario, sesion) {
   exigirGestor(sesion);
   const actual = obtener("costos").find((c) => c.id === id);
   if (!actual) fallo("El movimiento ya no existe.");
+  if (actual.origen === "inventario") fallo("Los costos generados desde inventario se mantienen vinculados al movimiento de origen y no se pueden editar.");
   const siguiente = { ...actual, ...validarCosto({ ...actual, ...formulario }) };
   guardar({ costos: obtener("costos").map((c) => (c.id === id ? siguiente : c)) });
   return siguiente;
@@ -577,6 +582,9 @@ export function editarCosto(id, formulario, sesion) {
 
 export function eliminarCosto(id, sesion) {
   exigirGestor(sesion);
+  const actual = obtener("costos").find((c) => c.id === id);
+  if (!actual) fallo("El movimiento ya no existe.");
+  if (actual.origen === "inventario") fallo("Los costos generados desde inventario se eliminan junto con su movimiento de origen para conservar la trazabilidad.");
   guardar({ costos: obtener("costos").filter((c) => c.id !== id) });
 }
 
@@ -619,6 +627,7 @@ export function actualizarIncidencia(id, cambios, sesion) {
   if (cambios.accion !== undefined) siguiente.accion = texto(cambios.accion);
   if (cambios.prioridad !== undefined) siguiente.prioridad = cambios.prioridad;
   if (cambios.responsableId !== undefined) siguiente.responsableId = responsableActivo(cambios.responsableId).id;
+  if (cambios.estado !== undefined && !["Abierta", "En revisión", "Cerrada"].includes(cambios.estado)) fallo("El estado de la incidencia no es válido.");
   if (cambios.estado !== undefined && cambios.estado !== estadoIncidencia(actual)) {
     if (cambios.estado === "Cerrada" && siguiente.accion.length < 5) {
       fallo("Documenta la acción correctiva antes de cerrar la incidencia.");
@@ -715,7 +724,7 @@ export function eliminarZona(id, sesion) {
   guardar({ zonas: obtener("zonas").filter((z) => z.id !== id) });
 }
 
-export function restablecerDemo() {
+export function restablecerDatosBase() {
   inicializarDatos({ forzar: true });
   asegurarPersonasDeUsuarios();
 }

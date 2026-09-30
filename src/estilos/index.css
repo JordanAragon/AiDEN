@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap");
 @import "tailwindcss";
 :root  {
   --verde-900: #0b2f20;
@@ -18,8 +19,17 @@
   --blanco: #fff;
   --sombra: 0 30px 90px rgba(11, 47, 32, 0.11);
   --radio: 18px;
+  --aiden-ink: #12251b;
+  --aiden-forest: #0b2b1b;
+  --aiden-forest-deep: #071b11;
+  --aiden-moss: #718b58;
+  --aiden-lime: #d9ea73;
+  --aiden-paper: #f7f6f0;
+  --aiden-cream: #ebe7db;
+  --aiden-white: #fffdf8;
+  --aiden-muted: #526057;
   font-family:
-  Inter,
+  "DM Sans",
   ui-sans-serif,
   system-ui,
   -apple-system,
@@ -1775,5 +1785,285 @@ img  {
   }
   .pie-marca {
     grid-column:auto
+  }
+}
+
+/* AiDEN · refinamiento editorial del rol Operario */
+.aiden-operario-vista > header {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #dfe7e2;
+}
+.aiden-operario-vista > header h1 {
+  font-size: clamp(2.15rem, 4vw, 3.25rem);
+  letter-spacing: -0.055em;
+}
+.aiden-operario-vista > header p {
+  line-height: 1.65;
+}
+.aiden-operario-superficie {
+  transition: border-color 180ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+.aiden-operario-superficie:focus-within {
+  border-color: #b9d5c2;
+  box-shadow: 0 12px 34px rgba(11, 47, 32, 0.07);
+}
+@media (max-width: 640px) {
+  .aiden-operario-vista > header {
+    padding-bottom: 1rem;
+  }
+  .aiden-operario-vista > header h1 {
+    font-size: clamp(2rem, 10vw, 2.65rem);
+  }
+}
+
+/* AiDEN · refinamiento editorial del Supervisor */
+.aiden-supervisor-vista > header {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #dfe7e2;
+}
+.aiden-supervisor-vista > header h1 {
+  font-size: clamp(2.2rem, 4vw, 3.35rem);
+  letter-spacing: -0.055em;
+}
+.aiden-supervisor-pulso {
+  position: relative;
+  isolation: isolate;
+}
+.aiden-supervisor-pulso::after {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  right: -190px;
+  top: -180px;
+  border: 1px solid rgba(217, 234, 115, 0.11);
+  border-radius: 999px;
+  pointer-events: none;
+}
+.aiden-supervisor-superficie {
+  transition: border-color 180ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+.aiden-supervisor-superficie:focus-within {
+  border-color: #b9d5c2;
+  box-shadow: 0 12px 34px rgba(11, 47, 32, 0.07);
+}
+.aiden-supervisor-rutas > article {
+  min-height: 190px;
+  transition: border-color 180ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+.aiden-supervisor-rutas > article:hover {
+  border-color: #bdd7c6;
+  box-shadow: 0 16px 40px rgba(11, 47, 32, 0.07);
+  transform: translateY(-3px);
+}
+.aiden-supervisor-panel {
+  border-radius: 24px !important;
+}
+@media (max-width: 640px) {
+  .aiden-supervisor-vista > header {
+    padding-bottom: 1rem;
+  }
+  .aiden-supervisor-vista > header h1 {
+    font-size: clamp(2rem, 10vw, 2.7rem);
+  }
+  .aiden-supervisor-pulso {
+    border-radius: 22px;
+  }
+  .aiden-supervisor-pulso::after {
+    width: 280px;
+    height: 280px;
+    right: -150px;
+    top: -120px;
+  }
+}
+
+.aiden-supervisor-main {
+  background:
+    radial-gradient(circle at 92% 0%, rgba(113, 139, 88, 0.06), transparent 26%),
+    linear-gradient(180deg, rgba(255,255,255,0.18), transparent 24%);
+}
+.aiden-supervisor-shell .aiden-app-shell {
+  background: #f5f7f5;
+}
+
+
+/* AiDEN · sistema transversal 2026
+   La interfaz comparte ritmo, controles y superficies sin convertir cada bloque en una card. */
+:root {
+  --aiden-app-bg: #f5f7f4;
+  --aiden-surface: #fffdfa;
+  --aiden-surface-muted: #f7f8f5;
+  --aiden-border: #dfe6e1;
+  --aiden-border-strong: #ccd8d0;
+  --aiden-ink: #17231c;
+  --aiden-muted: #647169;
+  --aiden-shadow: 0 12px 32px rgba(11, 43, 27, .045);
+}
+
+.aiden-modulo-vista {
+  color: var(--aiden-ink);
+}
+
+.aiden-modulo-vista > header:first-child {
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid var(--aiden-border);
+}
+
+.aiden-modulo-vista > header:first-child h1,
+.aiden-modulo-vista > header:first-child h2 {
+  letter-spacing: -.045em;
+}
+
+.aiden-modulo-vista :where(input[type="text"], input[type="search"], input[type="number"], input[type="date"], input[type="email"], input[type="password"], select, textarea) {
+  border-color: var(--aiden-border-strong) !important;
+  background: rgba(255, 253, 250, .86) !important;
+  border-radius: .8rem !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+.aiden-modulo-vista :where(input[type="text"], input[type="search"], input[type="number"], input[type="date"], input[type="email"], input[type="password"], select, textarea):focus {
+  border-color: #91b49d !important;
+  box-shadow: 0 0 0 3px rgba(217, 234, 115, .2) !important;
+}
+
+.aiden-modulo-vista :where(table) thead tr {
+  background: transparent !important;
+}
+
+.aiden-modulo-vista :where(th) {
+  color: #68746d !important;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+  font-size: 10px !important;
+}
+
+.aiden-modulo-vista :where(tbody tr) {
+  transition: background-color 150ms ease;
+}
+
+.aiden-modulo-vista :where(tbody tr:hover) {
+  background: rgba(245, 248, 245, .8);
+}
+
+.aiden-modulo-vista :where([role="tablist"]) > button {
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-bottom: 2px solid transparent;
+}
+
+.aiden-modulo-vista :where([role="tablist"]) > button[aria-selected="true"] {
+  border-bottom-color: #718b58;
+  color: #1b3427 !important;
+}
+
+.aiden-modulo-vista :where([role="tablist"]) {
+  gap: 1rem !important;
+  border-bottom: 1px solid var(--aiden-border);
+}
+
+.aiden-modulo-vista .aiden-list-row {
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.aiden-modulo-vista .aiden-list-row:hover {
+  background: rgba(247, 249, 246, .9);
+}
+
+.aiden-modulo-vista :where(.shadow-sm, .shadow-md, .shadow-lg) {
+  box-shadow: var(--aiden-shadow) !important;
+}
+
+.aiden-modulo-vista :where(.rounded-2xl) {
+  border-radius: 1.15rem !important;
+}
+
+.aiden-modulo-vista :where(.bg-slate-50) {
+  background-color: var(--aiden-surface-muted) !important;
+}
+
+.aiden-modulo-inventario .aiden-modulo-toolbar,
+.aiden-modulo-costos .aiden-modulo-toolbar,
+.aiden-modulo-reportes .aiden-modulo-toolbar {
+  border-bottom: 1px solid var(--aiden-border);
+}
+
+.aiden-modulo-vista :where(button, a):focus-visible {
+  outline: 2px solid #718b58;
+  outline-offset: 3px;
+}
+
+.aiden-app-shell {
+  background: var(--aiden-app-bg) !important;
+}
+
+.aiden-app-shell main {
+  scrollbar-color: #b8c8bd transparent;
+  scrollbar-width: thin;
+}
+
+.aiden-modal-fondo {
+  background: rgba(7, 27, 17, .42) !important;
+  backdrop-filter: blur(5px);
+}
+
+@media (max-width: 700px) {
+  .aiden-modulo-vista > header:first-child {
+    padding-bottom: 1rem;
+  }
+
+  .aiden-modulo-vista :where(table) {
+    min-width: 720px;
+  }
+}
+
+/* dark mode: mantiene contraste sin convertir la interfaz en negro puro. */
+.aiden-dark .aiden-modulo-vista {
+  --aiden-app-bg: #0f1813;
+  --aiden-surface: #162119;
+  --aiden-surface-muted: #1b2820;
+  --aiden-border: #2a3a30;
+  --aiden-border-strong: #3a4c41;
+  --aiden-ink: #f0f4f1;
+  --aiden-muted: #a9b5ad;
+}
+
+
+/* Module-specific refinements: each page keeps its information model. */
+.aiden-modulo-produccion .aiden-list-row td:first-child,
+.aiden-modulo-trazabilidad :where(ol, ul) li,
+.aiden-modulo-ambiental .aiden-zona-card,
+.aiden-modulo-calidad .aiden-incidencia-card,
+.aiden-modulo-inventario .aiden-stock-row,
+.aiden-modulo-costos .aiden-costo-row,
+.aiden-modulo-personal .aiden-persona-card,
+.aiden-modulo-reportes .aiden-reporte-card,
+.aiden-modulo-config .aiden-config-block,
+.aiden-modulo-ia .aiden-respuesta,
+.aiden-modulo-perfil .aiden-profile-block {
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.aiden-modulo-vista :where(.aiden-zona-card, .aiden-incidencia-card, .aiden-stock-row, .aiden-costo-row, .aiden-persona-card, .aiden-reporte-card, .aiden-config-block, .aiden-respuesta, .aiden-profile-block) {
+  box-shadow: none;
+}
+
+.aiden-modulo-vista :where(.aiden-zona-card:hover, .aiden-incidencia-card:hover, .aiden-stock-row:hover, .aiden-costo-row:hover, .aiden-persona-card:hover, .aiden-reporte-card:hover, .aiden-config-block:hover, .aiden-profile-block:hover) {
+  border-color: #cbd9d0;
+}
+
+.aiden-modulo-ia > header:first-child,
+.aiden-modulo-perfil > header:first-child {
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--aiden-border);
+}
+
+.aiden-admin-vista > section :where(.rounded-2xl.border, .rounded-xl.border) {
+  border-color: #dfe6e1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-modulo-vista :where(*) {
+    scroll-behavior: auto !important;
   }
 }

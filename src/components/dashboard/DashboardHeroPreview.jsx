@@ -41,14 +41,14 @@ export default function DashboardHeroPreview() {
   const actividad = Math.min(24, Math.max(1, totalTareas));
 
   return (
-    <div className="aiden-live-preview" aria-label="Vista previa del dashboard real de AiDEN">
+    <div className="aiden-live-preview" aria-label="Vista previa del dashboard de AiDEN">
       <header className="aiden-product-topbar">
         <div className="aiden-product-brand">
           <span><Leaf size={11} /></span>
           AiDEN
         </div>
         <div className="aiden-product-path">Operación / Resumen</div>
-        <div className="aiden-product-status"><span /> Datos locales</div>
+        <div className="aiden-product-status"><span /> Datos registrados</div>
       </header>
 
       <div className="aiden-product-main">
@@ -67,7 +67,7 @@ export default function DashboardHeroPreview() {
               <small>Centro de supervisión</small>
               <h2>Resumen de operación</h2>
             </div>
-            <span className="aiden-product-date">Sincronizado ahora</span>
+            <span className="aiden-product-date">Estado actual</span>
           </div>
 
           <div className="aiden-stat-grid">

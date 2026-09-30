@@ -10,13 +10,13 @@ import Pestanas from "../ui/Pestanas";
 import AlertaFormulario from "../ui/AlertaFormulario";
 import { exportarRespaldo, importarRespaldo, useDatos } from "../../datos/almacen";
 import { CONFIG_INICIAL } from "../../datos/catalogos";
-import { crearZona, eliminarZona, guardarConfiguracion, restablecerDemo } from "../../datos/acciones";
+import { crearZona, eliminarZona, guardarConfiguracion, restablecerDatosBase } from "../../datos/acciones";
 import { evaluarLectura, ultimasLecturas } from "../../datos/selectores";
 import { useAccion, useAviso, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
 import { descargarTexto } from "../../utilidades/exportar";
-import { hoyISO, numero, plural } from "../../utilidades/formato";
+import { hoyISO, plural } from "../../utilidades/formato";
 import UsuariosConfiguracion from "../configuracion/UsuariosConfiguracion";
 
 const CAMPOS = [
@@ -57,7 +57,7 @@ function Zonas() {
                 {zona.descripcion && <span className="block truncate text-xs text-slate-500">{zona.descripcion}</span>}
               </span>
               <Insignia tono={lotes ? "exito" : "neutral"}>{plural(lotes, "lote activo", "lotes activos")}</Insignia>
-              <BotonIcono icono={Trash2} etiqueta={`Eliminar ${zona.nombre}`} tamano="sm" onClick={() => borrar(zona)} className="hover:!bg-red-50 hover:!text-red-600" />
+              <BotonIcono icono={Trash2} etiqueta={`Eliminar ${zona.nombre}`} tamano="sm" onClick={() => borrar(zona)} disabled={lotes > 0} className="hover:!bg-red-50 hover:!text-red-600" title={lotes ? `No se puede eliminar: ${plural(lotes, "hay un lote activo", "hay lotes activos")}` : `Eliminar ${zona.nombre}`} />
             </li>
           );
         })}
@@ -171,7 +171,7 @@ function Formulario({ cfg }) {
           <section className="mt-5 space-y-3 text-sm text-white/70">
             <p>Ambiental, las notificaciones y los tableros usan los umbrales guardados aquí.</p>
             <p>El centro de notificaciones muestra alertas de calidad, ambiente, inventario y tareas vencidas mientras esté activado.</p>
-            <p>La configuración queda almacenada en este navegador y se comparte entre módulos al instante.</p>
+            <p>Los ajustes se aplican entre módulos al instante.</p>
           </section>
           <label className="mt-5 block text-sm font-medium text-white/80">
             Notificaciones
@@ -197,14 +197,13 @@ export default function ConfiguracionOperativo() {
   const [parametros, setParametros] = useSearchParams();
   const vista = parametros.get("vista") === "usuarios" ? "usuarios" : "general";
   useTitulo("Configuración");
-  const registros = ["lotes", "tareas", "trazabilidad", "inventario", "movimientos", "costos", "calidad", "ambiental", "personas"].reduce((s, k) => s + (datos[k]?.length || 0), 0);
   const cfg = datos.configuracion;
 
   const importar = async (evento) => {
     const file = evento.target.files?.[0];
     evento.target.value = "";
     if (!file) return;
-    const ok = await confirmar({ titulo: "Importar respaldo", mensaje: `Los datos actuales de este navegador se reemplazan por los de “${file.name}”. Las cuentas de acceso no cambian.`, confirmar: "Reemplazar datos", peligro: true });
+    const ok = await confirmar({ titulo: "Importar respaldo", mensaje: `Los datos actuales se reemplazarán por los de “${file.name}”. Las cuentas de acceso no cambian.`, confirmar: "Reemplazar datos", peligro: true });
     if (!ok) return;
     try {
       importarRespaldo(await file.text());
@@ -216,12 +215,12 @@ export default function ConfiguracionOperativo() {
   };
 
   const restablecer = async () => {
-    const ok = await confirmar({ titulo: "Restablecer datos de demostración", mensaje: "Se borran los lotes, tareas, movimientos y registros de este navegador y se cargan los datos de ejemplo con fechas de hoy. Las cuentas de acceso se conservan.", confirmar: "Restablecer", peligro: true });
-    if (ok && ejecutar(() => restablecerDemo(), "Datos de demostración restablecidos")) setVersion((v) => v + 1);
+    const ok = await confirmar({ titulo: "Restaurar datos base", mensaje: "Se reemplazarán los lotes, tareas, movimientos y registros actuales por los datos base del sistema. Las cuentas de acceso se conservarán.", confirmar: "Restablecer", peligro: true });
+    if (ok && ejecutar(() => restablecerDatosBase(), "Datos base restaurados")) setVersion((v) => v + 1);
   };
 
   return (
-    <section className="space-y-6">
+    <section className="aiden-modulo-vista aiden-modulo-config space-y-6">
       <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div className="border-b border-slate-100 px-4 pt-4">
           <Pestanas
@@ -241,7 +240,7 @@ export default function ConfiguracionOperativo() {
               <Formulario key={`cfg-${version}-${cfg.tempMin}-${cfg.tempMax}-${cfg.humMin}-${cfg.humMax}-${cfg.notificaciones}`} cfg={cfg} />
               <section className="grid gap-4 px-0 xl:grid-cols-2">
                 <Zonas />
-                <Panel icono={Database} titulo="Datos de este navegador" descripcion={`AiDEN funciona sin servidor: ${numero(registros)} registros guardados localmente. Si borras los datos del navegador, se pierden.`}>
+                <Panel icono={Database} titulo="Respaldo de datos" descripcion="Protege la información registrada con copias de respaldo que puedes exportar o importar cuando sea necesario.">
                   <section className="space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
                       <p className="text-sm text-slate-600">Descarga una copia para guardarla o llevarla a otro equipo.</p>
@@ -257,9 +256,9 @@ export default function ConfiguracionOperativo() {
                       </Boton>
                     </div>
                     <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-red-50 p-3">
-                      <p className="text-sm text-red-600">Vuelve a los datos de ejemplo, con fechas relativas a hoy.</p>
+                      <p className="text-sm text-red-600">Restaura los datos base del sistema para comenzar nuevamente la operación.</p>
                       <Boton variante="secundario" tamano="sm" icono={RotateCcw} onClick={restablecer}>
-                        Restablecer demo
+                        Restaurar datos
                       </Boton>
                     </div>
                   </section>

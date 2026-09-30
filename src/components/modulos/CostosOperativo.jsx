@@ -141,7 +141,7 @@ export default function CostosOperativo() {
     );
 
   return (
-    <section className="space-y-6">
+    <section className="aiden-modulo-vista aiden-modulo-costos space-y-6">
       <EncabezadoPagina
         rotulo="AiDEN / seguimiento"
         titulo="Costos"
@@ -281,10 +281,14 @@ export default function CostosOperativo() {
                     {dinero(c.valor)}
                   </td>
                   <td className="px-4 py-3">
-                    <span className="flex gap-1">
-                      <BotonIcono icono={FilePenLine} etiqueta={`Editar ${c.concepto}`} tamano="sm" onClick={() => setModal({ costo: c })} />
-                      <BotonIcono icono={Trash2} etiqueta={`Eliminar ${c.concepto}`} tamano="sm" onClick={() => borrar(c)} className="hover:!bg-red-50 hover:!text-red-600" />
-                    </span>
+                    {c.origen === "inventario" ? (
+                      <span className="px-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-400" title="Este costo deriva de un movimiento de inventario y conserva su vínculo de origen">Integrado</span>
+                    ) : (
+                      <span className="flex gap-1">
+                        <BotonIcono icono={FilePenLine} etiqueta={`Editar ${c.concepto}`} tamano="sm" onClick={() => setModal({ costo: c })} />
+                        <BotonIcono icono={Trash2} etiqueta={`Eliminar ${c.concepto}`} tamano="sm" onClick={() => borrar(c)} className="hover:!bg-red-50 hover:!text-red-600" />
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -303,13 +307,13 @@ export default function CostosOperativo() {
       <Modal
         abierto={Boolean(modal)}
         onCerrar={() => setModal(null)}
-        titulo={modal?.costo ? "Editar movimiento" : "Nuevo movimiento"}
+        titulo={modal?.costo ? (modal.costo.origen === "inventario" ? "Movimiento integrado" : "Editar movimiento") : "Nuevo movimiento"}
         pie={
           <>
             <Boton variante="secundario" onClick={() => setModal(null)}>
               Cancelar
             </Boton>
-            <Boton variante="primario" type="submit" form={idForm}>
+            <Boton variante="primario" type="submit" form={idForm} disabled={modal?.costo?.origen === "inventario"}>
               {modal?.costo ? "Guardar cambios" : "Registrar"}
             </Boton>
           </>

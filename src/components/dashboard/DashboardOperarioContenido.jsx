@@ -157,25 +157,27 @@ export default function DashboardOperarioContenido() {
   const incidencias = datos.calidad.filter((i) => codigos.has(i.lote) && estadoIncidencia(i) !== "Cerrada");
 
   return (
-    <article className="space-y-6">
+    <article className="aiden-rol-operario aiden-operario-vista space-y-7">
       <EncabezadoPagina
         rotulo="AiDEN / ejecución"
         titulo={`Mi jornada, ${nombre}`}
         descripcion="Tu vista se limita al trabajo que tienes asignado: tareas, lotes, condiciones y novedades que afectan tu jornada."
-        acciones={
-          <>
-            <Boton variante="secundario" icono={ListChecks} onClick={() => setModal({ tipo: "evento" })} className="!px-3 hover:border-emerald-200 hover:text-emerald-700">
-              Registrar actividad
-            </Boton>
-            <Boton variante="secundario" icono={FlagTriangleRight} onClick={() => setModal({ tipo: "incidencia" })} className="!px-3 hover:border-emerald-200 hover:text-emerald-700">
-              Reportar problema
-            </Boton>
-            <Boton variante="secundario" icono={Thermometer} onClick={() => setModal({ tipo: "lectura" })} className="!px-3 hover:border-emerald-200 hover:text-emerald-700">
-              Tomar lectura
-            </Boton>
-          </>
-        }
       />
+
+      <section className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap" aria-label="Acciones rápidas">
+        <Boton variante="primario" icono={ListChecks} onClick={() => setModal({ tipo: "evento" })} className="!min-h-12 w-full !px-2 text-xs sm:w-auto sm:flex-1 sm:!px-3">
+          <span className="sm:hidden">Actividad</span>
+          <span className="hidden sm:inline">Registrar actividad</span>
+        </Boton>
+        <Boton variante="secundario" icono={FlagTriangleRight} onClick={() => setModal({ tipo: "incidencia" })} className="!min-h-12 w-full !px-2 text-xs sm:w-auto sm:flex-1 sm:!px-3">
+          <span className="sm:hidden">Problema</span>
+          <span className="hidden sm:inline">Reportar problema</span>
+        </Boton>
+        <Boton variante="secundario" icono={Thermometer} onClick={() => setModal({ tipo: "lectura" })} className="!min-h-12 w-full !px-2 text-xs sm:w-auto sm:flex-1 sm:!px-3">
+          <span className="sm:hidden">Lectura</span>
+          <span className="hidden sm:inline">Tomar lectura</span>
+        </Boton>
+      </section>
 
       <Cifras
         items={[
@@ -191,7 +193,7 @@ export default function DashboardOperarioContenido() {
           <header className="flex items-center justify-between">
             <section>
               <h2 className="font-semibold text-slate-900">Lo que tengo que hacer</h2>
-              <p className="mt-1 text-xs text-slate-500">Completa una tarea para que supervisión vea el avance.</p>
+              <p className="mt-1 text-xs text-slate-500">Actualiza cada tarea a medida que avances para mantener al equipo informado.</p>
             </section>
             <Clock3 size={18} className="text-emerald-700" aria-hidden="true" />
           </header>
@@ -207,7 +209,7 @@ export default function DashboardOperarioContenido() {
         <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <header>
             <h2 className="font-semibold text-slate-900">Mis lotes</h2>
-            <p className="mt-1 text-xs text-slate-500">Solo lotes asignados a tu usuario</p>
+            <p className="mt-1 text-xs text-slate-500">Lotes bajo tu responsabilidad</p>
           </header>
           <section className="mt-4 space-y-2">
             {misLotes.map((lote) => {
@@ -220,7 +222,9 @@ export default function DashboardOperarioContenido() {
                       <EtiquetaLote codigo={lote.lote} interactiva={false} />
                       <span className="mt-1 block text-sm font-semibold text-slate-800">{lote.cultivo}</span>
                     </span>
-                    <span className="rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-700">{lote.etapa}</span>
+                    <span className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${e.fuera ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-700"}`}>
+                      {e.fuera ? "Atención" : lote.etapa}
+                    </span>
                   </section>
                   <div className="mt-3">
                     <PasosEtapa etapa={lote.etapa} compacto mostrarEtiqueta={false} />
@@ -244,10 +248,12 @@ export default function DashboardOperarioContenido() {
       </section>
 
       <section className="grid gap-4 md:grid-cols-2">
-        <article className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+        <article className={`aiden-operario-superficie rounded-[22px] border p-4 transition duration-200 hover:shadow-[0_14px_36px_rgba(11,47,32,0.06)] ${incidencias.length || zonasAlerta.length ? "border-amber-200 bg-amber-50" : "border-slate-200 bg-white"}`}>
           <header className="flex items-center gap-2">
-            <AlertTriangle size={16} className="text-amber-700" aria-hidden="true" />
-            <h2 className="font-semibold text-amber-900">Atención</h2>
+            <AlertTriangle size={16} className={incidencias.length || zonasAlerta.length ? "text-amber-700" : "text-emerald-700"} aria-hidden="true" />
+            <h2 className={`font-semibold ${incidencias.length || zonasAlerta.length ? "text-amber-900" : "text-slate-900"}`}>
+              {incidencias.length || zonasAlerta.length ? "Atención" : "Sin novedades"}
+            </h2>
           </header>
           {incidencias.length || zonasAlerta.length ? (
             <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-900/80">
@@ -267,14 +273,14 @@ export default function DashboardOperarioContenido() {
               ))}
             </ul>
           ) : (
-            <p className="mt-2 text-sm leading-6 text-amber-900/80">No hay incidencias abiertas ni zonas fuera de rango en tus lotes.</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">No hay incidencias abiertas ni zonas fuera de rango en tus lotes.</p>
           )}
           <Link to="/calidad" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-amber-900">
             Revisar calidad
             <ArrowRight size={12} aria-hidden="true" />
           </Link>
         </article>
-        <article className="rounded-2xl bg-slate-950 p-4 text-white">
+        <article className="aiden-operario-superficie rounded-[22px] bg-slate-950 p-4 text-white transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(11,47,32,0.12)]">
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-300">Tu responsabilidad</p>
           <p className="mt-2 text-sm leading-6 text-white/75">
             Ejecuta las tareas asignadas, registra lo ocurrido en campo y deja evidencia para que supervisión pueda decidir.

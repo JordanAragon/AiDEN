@@ -55,7 +55,7 @@ export default function TrazabilidadOperativo() {
     );
 
   return (
-    <section className="space-y-6">
+    <section className="aiden-modulo-vista aiden-operario-vista aiden-modulo-trazabilidad space-y-7">
       <EncabezadoPagina
         rotulo="AiDEN / seguimiento"
         titulo="Trazabilidad"
@@ -81,8 +81,8 @@ export default function TrazabilidadOperativo() {
         ]}
       />
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <header className="flex flex-wrap items-center justify-between gap-3">
+      <section className="aiden-operario-superficie rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm">
+        <header className="flex flex-wrap items-end justify-between gap-3 border-b border-slate-100 pb-4">
           <section>
             <h2 className="font-semibold text-slate-900">Filtros</h2>
             <p className="text-xs text-slate-500">Consulta toda la historia disponible o la de un lote.</p>
@@ -127,7 +127,7 @@ export default function TrazabilidadOperativo() {
           </div>
         </section>
         {lote && (
-          <section className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
+          <section className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-100 bg-slate-50/80 p-3">
             <span className="text-sm text-slate-600">
               <span className="font-semibold text-slate-800">{lote.cultivo}</span> · {lote.estado === "Cerrado" ? "Cerrado" : lote.etapa} · {lote.ubicacion} · {numero(lote.cantidad)} plantas · {nombrePersona(datos.personas, lote.responsableId)}
             </span>
@@ -138,9 +138,13 @@ export default function TrazabilidadOperativo() {
         )}
       </section>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <header className="mb-6">
-          <h2 className="font-semibold text-slate-900">Línea de vida del lote</h2>
+      <section className="aiden-operario-superficie overflow-hidden rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm">
+        <header className="mb-5 flex flex-wrap items-end justify-between gap-2 border-b border-slate-100 pb-4">
+          <section>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-700">Registro cronológico</p>
+            <h2 className="mt-1 font-semibold text-slate-900">Línea de vida del lote</h2>
+          </section>
+          <span className="text-xs text-slate-500">{plural(filtered.length, "evento visible", "eventos visibles")}</span>
         </header>
         {filtered.length ? (
           <LineaTiempo eventos={filtered} mostrarLote={lot === "Todos"} />

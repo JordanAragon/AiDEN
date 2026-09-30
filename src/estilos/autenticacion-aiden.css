@@ -1,0 +1,787 @@
+.aiden-auth {
+  --ink: #12251b;
+  --forest: #0b2b1b;
+  --forest-2: #071b11;
+  --moss: #718b58;
+  --lime: #d9ea73;
+  --paper: #f7f6f0;
+  --cream: #ebe7db;
+  --white: #fffdf8;
+  --muted: #526057;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(500px, .96fr);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: clip;
+}
+
+.aiden-auth *, .aiden-auth *::before, .aiden-auth *::after {
+  box-sizing: border-box;
+}
+
+.aiden-auth a { color: inherit; text-decoration: none; }
+
+.aiden-auth-side {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--forest);
+  isolation: isolate;
+}
+
+.aiden-auth-side > img,
+.aiden-auth-image {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .68;
+  filter: saturate(.78) contrast(1.02);
+}
+
+.aiden-auth-side::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(7,27,17,.30), rgba(7,27,17,.88) 74%),
+    linear-gradient(90deg, rgba(7,27,17,.84), rgba(7,27,17,.25) 70%);
+}
+
+.aiden-auth-side::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .36;
+  background-image:
+    linear-gradient(rgba(217,234,115,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(217,234,115,.08) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, #000, transparent 88%);
+  pointer-events: none;
+}
+
+.aiden-auth-side-content {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 34px 44px 42px;
+}
+
+.aiden-auth-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  color: var(--white) !important;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -.045em;
+}
+
+.aiden-auth-brand-mark {
+  width: 33px;
+  height: 33px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,253,248,.18);
+  border-radius: 10px;
+  background: rgba(255,253,248,.08);
+}
+
+.aiden-auth-side-content > a {
+  display: inline-flex;
+}
+
+.aiden-auth-side-copy {
+  max-width: 590px;
+  padding-bottom: 8px;
+}
+
+.aiden-auth-side-copy > p {
+  margin: 0 0 16px;
+  color: rgba(217,234,115,.88);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.aiden-auth-side-copy h1,
+.aiden-auth-side-copy h2 {
+  margin: 0;
+  max-width: 610px;
+  color: var(--white);
+  font-size: clamp(52px, 5vw, 78px);
+  font-weight: 500;
+  line-height: .86;
+  letter-spacing: -.078em;
+}
+
+.aiden-auth-side-copy h1 em,
+.aiden-auth-side-copy h2 em {
+  color: var(--lime);
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.aiden-auth-side-copy > p + h1 + p,
+.aiden-auth-side-copy > h2 + span,
+.aiden-auth-side-copy > h1 + p {
+  display: block;
+  max-width: 520px;
+  margin-top: 26px;
+  color: rgba(255,253,248,.66);
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.aiden-auth-panel {
+  min-width: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 54px clamp(34px, 5vw, 84px);
+  background:
+    radial-gradient(circle at 88% 10%, rgba(217,234,115,.09), transparent 20rem),
+    var(--paper);
+}
+
+.aiden-auth-panel-centered {
+  display: block;
+  padding: 0;
+  background: var(--paper);
+}
+
+.aiden-auth-side-inline {
+  display: none;
+}
+
+.aiden-auth-form-wrap {
+  width: min(100%, 510px);
+}
+
+.aiden-auth-mobile-brand {
+  display: none;
+}
+
+.aiden-auth-heading {
+  margin-bottom: 32px;
+}
+
+.aiden-auth-heading > p,
+.aiden-auth-heading p {
+  color: var(--moss);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.aiden-auth-heading h2,
+.aiden-auth-heading h1 {
+  margin-top: 13px;
+  color: var(--ink);
+  font-size: clamp(40px, 4vw, 57px);
+  font-weight: 600;
+  line-height: .9;
+  letter-spacing: -.068em;
+}
+
+.aiden-auth-heading > p + h2::first-letter,
+.aiden-auth-heading > p + h1::first-letter {
+  color: var(--forest);
+}
+
+.aiden-auth-heading > p:last-child,
+.aiden-auth-heading h2 + p,
+.aiden-auth-heading h1 + p {
+  max-width: 480px;
+  margin-top: 16px;
+  color: #59655d;
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+
+.aiden-auth-form {
+  display: grid;
+  gap: 18px;
+}
+
+.aiden-auth-form > label {
+  display: block;
+  color: #435047;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.aiden-auth-form > label > span {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.aiden-auth-form input[type="email"],
+.aiden-auth-form input[type="text"],
+.aiden-auth-form input[type="password"] {
+  width: 100%;
+  height: 56px;
+  border: 1px solid rgba(18,37,27,.16) !important;
+  border-radius: 12px !important;
+  outline: none;
+  background: rgba(255,253,248,.65) !important;
+  color: var(--ink) !important;
+  padding: 0 16px !important;
+  font: 500 13px/1.2 'DM Sans', sans-serif !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.aiden-auth-form input::placeholder {
+  color: #89928c !important;
+}
+
+.aiden-auth-form input:focus {
+  border-color: rgba(113,139,88,.72) !important;
+  background: var(--white) !important;
+  box-shadow: 0 0 0 4px rgba(217,234,115,.16) !important;
+}
+
+.aiden-auth-form .relative input {
+  padding-right: 48px !important;
+}
+
+.aiden-auth-form button[type="button"] {
+  color: #718078 !important;
+}
+
+.aiden-auth-form button[type="submit"] {
+  min-height: 54px;
+  margin-top: 4px;
+  border-radius: 11px;
+  background: var(--forest) !important;
+  color: var(--white) !important;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  box-shadow: 0 16px 34px rgba(11,43,27,.12);
+  transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.aiden-auth-form button[type="submit"]:hover {
+  transform: translateY(-2px);
+  background: #082317 !important;
+  box-shadow: 0 20px 38px rgba(11,43,27,.16);
+}
+
+.aiden-auth-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 2px 0 3px;
+  font-size: 12px !important;
+}
+
+.aiden-auth-options label {
+  color: #68746c;
+}
+
+.aiden-auth-options a,
+.aiden-auth-form-wrap > p a {
+  color: var(--forest) !important;
+  font-weight: 700;
+}
+
+
+.aiden-auth-form-wrap > p {
+  color: #758078 !important;
+  font-size: 12px !important;
+}
+
+.aiden-auth-session {
+  border: 1px solid rgba(18,37,27,.13);
+  border-radius: 16px;
+  background: rgba(255,253,248,.62);
+  padding: 22px;
+}
+
+.aiden-auth-card {
+  width: min(100%, 510px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.aiden-auth-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 26px auto 0;
+  border: 0;
+  background: transparent;
+  color: #67736b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.aiden-auth-back:hover { color: var(--forest); }
+
+.aiden-auth-panel-centered > .aiden-auth-form-wrap > .aiden-auth-heading {
+  margin-top: 16px;
+}
+
+.aiden-auth-panel-centered .aiden-auth-form-wrap {
+  margin-inline: auto;
+}
+
+.aiden-auth-panel-centered .aiden-auth-heading > p {
+  color: var(--moss);
+}
+
+.aiden-auth-panel-centered .aiden-auth-card {
+  margin-inline: auto;
+}
+
+@media (max-width: 1023px) {
+  .aiden-auth {
+    display: block;
+    min-height: 100vh;
+  }
+
+  .aiden-auth-side {
+    display: none;
+  }
+
+  .aiden-auth-panel {
+    min-height: 100vh;
+    padding: 34px 24px 42px;
+  }
+
+  .aiden-auth-form-wrap {
+    width: min(100%, 520px);
+  }
+
+  .aiden-auth-mobile-brand {
+    display: block;
+    margin-bottom: 52px;
+  }
+
+  .aiden-auth-mobile-brand a {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--forest);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -.04em;
+  }
+
+  .aiden-auth-mobile-brand a span:first-child {
+    width: 31px;
+    height: 31px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: var(--forest);
+    color: var(--lime);
+  }
+
+  .aiden-auth-panel-centered {
+    padding: 44px 24px;
+  }
+
+  .aiden-auth-side-inline { display: none; }
+}
+
+@media (max-width: 600px) {
+  .aiden-auth-panel {
+    padding: 26px 18px 34px;
+  }
+
+  .aiden-auth-mobile-brand {
+    margin-bottom: 42px;
+  }
+
+  .aiden-auth-heading {
+    margin-bottom: 28px;
+  }
+
+  .aiden-auth-heading h2,
+  .aiden-auth-heading h1 {
+    font-size: 43px;
+  }
+
+  .aiden-auth-heading > p:last-child,
+  .aiden-auth-heading h2 + p,
+  .aiden-auth-heading h1 + p {
+    font-size: 12.5px;
+  }
+
+  .aiden-auth-form {
+    gap: 16px;
+  }
+
+  .aiden-auth-form input[type="email"],
+  .aiden-auth-form input[type="text"],
+  .aiden-auth-form input[type="password"] {
+    height: 54px;
+  }
+
+  .aiden-auth-options {
+    align-items: flex-start;
+    font-size: 11px !important;
+  }
+
+  .aiden-auth-panel-centered {
+    padding: 30px 18px 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-auth *,
+  .aiden-auth *::before,
+  .aiden-auth *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+
+/* Acabado visual final de autenticación. */
+
+.aiden-auth-side > img,
+.aiden-auth-image {
+  z-index: 0;
+  opacity: .82;
+}
+
+.aiden-auth-side::before {
+  display: none;
+}
+
+.aiden-auth-side::after {
+  z-index: 1;
+  opacity: .16;
+  background-size: 88px 88px;
+  mask-image: linear-gradient(to bottom, #000 0, rgba(0,0,0,.45) 62%, transparent 100%);
+}
+
+.aiden-auth-image-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(7,27,17,.12), rgba(7,27,17,.82) 88%),
+    linear-gradient(90deg, rgba(7,27,17,.50), rgba(7,27,17,.08) 76%);
+  pointer-events: none;
+}
+
+.aiden-auth-side-content { z-index: 2; }
+
+.aiden-auth-panel {
+  position: relative;
+  padding-left: clamp(42px, 6vw, 96px);
+}
+
+.aiden-auth-panel::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 9%;
+  bottom: 9%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(113,139,88,.20), transparent);
+  pointer-events: none;
+}
+
+.aiden-auth-form-wrap { position: relative; }
+
+.aiden-auth-heading {
+  position: relative;
+  padding-left: 18px;
+}
+
+.aiden-auth-heading::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  bottom: 2px;
+  width: 2px;
+  background: var(--lime);
+}
+
+.aiden-auth-heading h2,
+.aiden-auth-heading h1 {
+  font-size: clamp(43px, 4.1vw, 60px);
+}
+
+.aiden-auth-heading > p:last-child,
+.aiden-auth-heading h2 + p,
+.aiden-auth-heading h1 + p {
+  max-width: 520px;
+  font-size: 14px;
+}
+
+
+.aiden-auth-form input[type="email"]:hover,
+.aiden-auth-form input[type="text"]:hover,
+.aiden-auth-form input[type="password"]:hover {
+  border-color: rgba(18,37,27,.23) !important;
+}
+
+.aiden-auth-form button[type="submit"] {
+  min-height: 56px;
+  margin-top: 7px;
+  border-radius: 10px;
+}
+
+.aiden-auth-session {
+  background: rgba(255,253,248,.66);
+  box-shadow: 0 24px 60px rgba(18,37,27,.06);
+}
+
+@media (max-width: 1023px) {
+  .aiden-auth-panel {
+    padding-left: 24px;
+  }
+  .aiden-auth-panel::before,
+  .aiden-auth-heading::before {
+    display: none;
+  }
+  .aiden-auth-heading {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .aiden-auth-panel { padding-left: 18px; }
+}
+
+/* Pulido de acceso: más producto editorial, menos formulario genérico. */
+.aiden-auth {
+  background: #f7f6f0;
+}
+
+.aiden-auth-side {
+  background: #0b2b1b;
+}
+
+.aiden-auth-side::before {
+  background: linear-gradient(180deg, rgba(7, 27, 17, 0.2), rgba(7, 27, 17, 0.82));
+}
+
+.aiden-auth-side::after {
+  background:
+    linear-gradient(90deg, rgba(217, 234, 115, 0.9), rgba(217, 234, 115, 0)) 0 100% / 5.5rem 1px no-repeat,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 26%);
+}
+
+.aiden-auth-side-content {
+  padding: 2.25rem clamp(2rem, 5vw, 4.5rem);
+}
+
+.aiden-auth-side-copy h1,
+.aiden-auth-side-copy h2 {
+  max-width: 760px;
+  letter-spacing: -0.055em;
+}
+
+.aiden-auth-panel {
+  background:
+    radial-gradient(circle at 90% 8%, rgba(217, 234, 115, 0.12), transparent 18rem),
+    #f7f6f0;
+}
+
+.aiden-auth-form-wrap {
+  width: min(100%, 35rem);
+}
+
+.aiden-auth-heading {
+  margin-bottom: 1.65rem;
+}
+
+.aiden-auth-heading h1,
+.aiden-auth-heading h2 {
+  letter-spacing: -0.055em;
+  font-weight: 680;
+}
+
+.aiden-auth-form {
+  gap: 1.15rem;
+}
+
+.aiden-auth-form > label > span {
+  color: #314036;
+  font-weight: 650;
+}
+
+.aiden-auth-form input[type="email"],
+.aiden-auth-form input[type="text"],
+.aiden-auth-form input[type="password"] {
+  min-height: 50px;
+  border-radius: 13px;
+  border-color: #d7e0d9;
+  background: rgba(255, 253, 248, 0.94);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
+}
+
+.aiden-auth-form input[type="email"]:focus,
+.aiden-auth-form input[type="text"]:focus,
+.aiden-auth-form input[type="password"]:focus {
+  border-color: #718b58;
+  box-shadow: 0 0 0 4px rgba(113, 139, 88, 0.12);
+}
+
+.aiden-auth-form button[type="submit"] {
+  min-height: 50px;
+  border-radius: 13px;
+  background: #12251b;
+  box-shadow: 0 14px 28px rgba(11, 43, 27, 0.12);
+}
+
+.aiden-auth-form button[type="submit"]:hover:not(:disabled) {
+  background: #0b2b1b;
+  box-shadow: 0 18px 34px rgba(11, 43, 27, 0.16);
+}
+
+.aiden-auth-options {
+  margin-top: -0.15rem;
+}
+
+.aiden-auth-session,
+.aiden-auth-card {
+  border-color: #dce4dd;
+  background: rgba(255, 253, 248, 0.82);
+  box-shadow: 0 18px 48px rgba(11, 43, 27, 0.055);
+}
+
+.aiden-auth-note {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: 0.25rem;
+  padding: 0.8rem 0.9rem;
+  border-left: 2px solid #718b58;
+  background: rgba(113, 139, 88, 0.07);
+  color: #526057;
+  font-size: 0.72rem;
+  line-height: 1.55;
+}
+
+.aiden-auth-note strong {
+  color: #223329;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.aiden-password-meter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.45rem;
+}
+
+.aiden-password-meter > span {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.aiden-password-meter i {
+  width: 1.8rem;
+  height: 3px;
+  border-radius: 999px;
+  background: #dfe5de;
+  transition: background-color 160ms ease;
+}
+
+.aiden-password-meter i.is-on {
+  background: #718b58;
+}
+
+.aiden-password-meter small {
+  color: #718078;
+  font-size: 0.68rem;
+}
+
+@media (max-width: 1023px) {
+  .aiden-auth-side-content {
+    padding: 1.5rem;
+  }
+
+  .aiden-auth-panel {
+    min-height: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .aiden-auth-panel {
+    background: #f7f6f0;
+  }
+
+  .aiden-auth-form-wrap {
+    width: 100%;
+  }
+
+  .aiden-password-meter i {
+    width: 1.45rem;
+  }
+}
+
+
+/* AiDEN · auth refinement after reference review */
+.aiden-auth-panel {
+  transition: background .2s ease;
+}
+
+.aiden-auth-form-wrap {
+  position: relative;
+}
+
+.aiden-auth-form input[type="email"],
+.aiden-auth-form input[type="text"],
+.aiden-auth-form input[type="password"] {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.64) !important;
+}
+
+.aiden-auth-form button[type="submit"]:focus-visible,
+.aiden-auth-form button[type="button"]:focus-visible,
+.aiden-auth-form a:focus-visible,
+.aiden-auth-side-content a:focus-visible {
+  outline: 2px solid #718b58;
+  outline-offset: 4px;
+}
+
+.aiden-auth-session {
+  box-shadow: 0 12px 30px rgba(11,43,27,.045);
+}
+
+@media (max-width: 680px) {
+  .aiden-auth-panel {
+    padding: 34px 20px 42px;
+  }
+
+  .aiden-auth-heading {
+    margin-bottom: 24px;
+  }
+
+  .aiden-auth-heading h2,
+  .aiden-auth-heading h1 {
+    font-size: clamp(34px, 10vw, 47px);
+  }
+}

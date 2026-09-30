@@ -97,9 +97,14 @@ export default function InventarioOperativo() {
   const salidasMes = datos.movimientos.filter((m) => m.tipo === "salida" && String(m.fecha).startsWith(mes));
 
   const borrar = async (insumo) => {
+    const tieneHistorial = datos.movimientos.some((m) => m.itemId === insumo.id);
+    if (tieneHistorial) {
+      ejecutar(() => { throw new Error("No puedes eliminar un insumo que ya tiene movimientos registrados. Conserva su historial o deja su stock en cero."); }, "El historial protege este insumo");
+      return;
+    }
     const ok = await confirmar({
       titulo: `Eliminar ${insumo.nombre}`,
-      mensaje: `Se quita del inventario con ${numero(insumo.stock)} ${insumo.unidad} en existencia. Sus movimientos pasados se conservan en el historial.`,
+      mensaje: `Se quitará del inventario con ${numero(insumo.stock)} ${insumo.unidad} en existencia. Esta acción solo está disponible mientras no tenga movimientos registrados.`,
       confirmar: "Eliminar insumo",
       peligro: true,
     });
@@ -123,7 +128,7 @@ export default function InventarioOperativo() {
   };
 
   return (
-    <section className="space-y-6">
+    <section className="aiden-modulo-vista aiden-modulo-inventario space-y-6">
       <EncabezadoPagina
         rotulo="AiDEN / operación"
         titulo="Inventario"
@@ -304,7 +309,11 @@ export default function InventarioOperativo() {
         pie={
           detalle && (
             <>
-              <BotonIcono icono={Trash2} etiqueta="Eliminar insumo" onClick={() => borrar(detalle)} className="mr-auto hover:!bg-red-50 hover:!text-red-600" />
+              {datos.movimientos.some((m) => m.itemId === detalle.id) ? (
+                <span className="mr-auto inline-flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2 text-[11px] font-semibold text-slate-500" title="El historial de movimientos mantiene este insumo protegido">Historial protegido</span>
+              ) : (
+                <BotonIcono icono={Trash2} etiqueta="Eliminar insumo" onClick={() => borrar(detalle)} className="mr-auto hover:!bg-red-50 hover:!text-red-600" />
+              )}
               <Boton variante="contorno" icono={FilePenLine} onClick={() => setModal({ tipo: "insumo", insumo: detalle })}>
                 Editar
               </Boton>

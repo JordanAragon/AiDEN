@@ -17,8 +17,8 @@ with sync_playwright() as p:
     r.check(pg.locator(".aiden-roles .aiden-section-header > p").evaluate("e => getComputedStyle(e).color") != "rgba(255, 253, 248, 0.64)", "párrafo de Roles visible sobre fondo claro")
     activos = pg.locator(".aiden-product-frame strong").first.inner_text()
     r.check(activos not in ("00", "0"), f"vista previa del hero con datos reales ({activos} lotes activos)")
-    pg.get_by_role("link", name="Supervisor:").click(); pg.wait_for_url("**/login?cuenta=supervisor")
-    r.check(pg.locator("input[type=email]").input_value() == "supervisor@aiden.com", "fila de Roles precarga la cuenta demo")
+    pg.get_by_role("link", name="Supervisor:").click(); pg.wait_for_url("**/login")
+    r.check(pg.locator("input[type=email]").input_value() == "", "fila de Roles lleva al acceso sin precargar credenciales")
 
     print("Login admin")
     entrar(pg, "admin")
