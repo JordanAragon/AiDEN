@@ -90,10 +90,6 @@ export default function Perfil() {
                 <p className="mt-1 text-sm font-semibold text-slate-800">{persona.departamento}</p>
               </div>
             )}
-            <div className="flex items-start gap-2 rounded-xl border border-slate-200 p-3 text-xs text-slate-500">
-              <Mail size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
-              Para cambiar contraseña usa Recuperar contraseña desde el acceso. En esta V1 ese flujo sigue siendo local.
-            </div>
           </div>
         </Panel>
       </section>
