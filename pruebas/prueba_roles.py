@@ -106,7 +106,7 @@ with sync_playwright() as p:
     pg.get_by_role("button", name="Cuenta").click(); pg.get_by_role("button", name="Cerrar sesión").click(); pg.wait_for_url("**/login")
     entrar(pg, "admin")
     r.check(visible(pg.get_by_text("Cuenta nueva: Camila Ortiz")), "admin ve la cuenta nueva en sus decisiones")
-    pg.goto(BASE + "/personal?vista=accesos")
+    pg.goto(BASE + "/configuracion?vista=usuarios")
     pg.get_by_label("Rol de Camila Ortiz").select_option("supervisor")
     pg.get_by_role("button", name="Cambiar rol").click()
     r.check(toast(pg, "Camila Ortiz ahora es supervisor"), "admin cambia el rol")
