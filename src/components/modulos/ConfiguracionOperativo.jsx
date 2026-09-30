@@ -235,7 +235,7 @@ export default function ConfiguracionOperativo() {
           />
           <div className="h-4" />
         </div>
-        <div className="p-0">
+        <div className="p-0" role="tabpanel" id={`panel-${vista}`} aria-labelledby={`pestana-${vista}`}>
           {vista === "general" ? (
             <div className="space-y-6">
               <Formulario key={`cfg-${version}-${cfg.tempMin}-${cfg.tempMax}-${cfg.humMin}-${cfg.humMax}-${cfg.notificaciones}`} cfg={cfg} />
