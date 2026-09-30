@@ -104,7 +104,7 @@ export default function InteligenciaArtificial() {
               <section>
                 <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">Inteligencia</p>
                 <h2 className="text-lg font-bold text-slate-900">Asistente de AiDEN</h2>
-                <p className="mt-1 text-sm text-slate-500">Consulta la operación con datos reales del sistema. Responde con reglas sobre tus registros; no usa modelos de lenguaje ni servicios externos.</p>
+                <p className="mt-1 text-sm text-slate-600">Consulta la operación con datos reales del sistema. Responde con reglas sobre tus registros; no usa modelos de lenguaje ni servicios externos.</p>
               </section>
             </section>
             <section className="flex shrink-0 items-center gap-2">
