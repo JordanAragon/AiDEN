@@ -185,10 +185,6 @@ export default function UsuariosConfiguracion() {
         )}
       </section>
 
-      <p className="text-xs leading-5 text-slate-500">
-        Esta V1 guarda las cuentas en el navegador. La autenticación no es de producción y será reemplazada por control de acceso del servidor cuando AiDEN tenga backend.
-      </p>
-
       <Modal
         abierto={modal?.tipo === "cuenta"}
         onCerrar={() => setModal(null)}
