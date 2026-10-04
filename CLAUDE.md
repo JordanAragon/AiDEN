@@ -10,7 +10,7 @@ Rules:
 
 ## Diseño
 
-- La identidad visual está en `design-system/aiden/MASTER.md`. Léelo antes de cualquier trabajo de UI; si existe `design-system/aiden/pages/<página>.md`, sus reglas tienen prioridad.
-- Prioridad: este MASTER, luego las preferencias de diseño de David (brain David-AI) y al final el skill `ui-ux-pro-max`.
-- `ui-ux-pro-max` se usa aquí solo como checklist de UX y accesibilidad y como guía del stack. No apliques sus paletas, tipografías ni estilos, y no ejecutes `--persist` ni `--force` sobre este MASTER.
-- Si un cambio visual contradice el MASTER, propónlo a David y actualiza el MASTER en el mismo cambio.
+- Fuente de verdad visual: `DESIGN.md` (raíz). Producto: `PRODUCT.md` (raíz). Léelos antes de cualquier trabajo de UI. `design-system/aiden/MASTER.md` solo apunta a ellos.
+- Flujo principal de diseño: el skill `impeccable` (`/impeccable critique`, `audit`, `polish`, `harden`, `typeset`, `layout`, `clarify`…). Aquí todo trabajo es **refinamiento**: preserva la identidad de `DESIGN.md`. Un rediseño solo si David lo pide.
+- `ui-ux-pro-max` es solo consulta (guías del stack y datos de UX). No apliques sus paletas, tipografías ni estilos, ni ejecutes `--persist`.
+- Si un cambio visual contradice `DESIGN.md`, propónlo a David y actualiza `DESIGN.md` en el mismo cambio. `PRODUCT.md` solo cambia con hechos confirmados por David.
