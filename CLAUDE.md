@@ -14,3 +14,12 @@ Rules:
 - Flujo principal de diseño: el skill `impeccable` (`/impeccable critique`, `audit`, `polish`, `harden`, `typeset`, `layout`, `clarify`…). Aquí todo trabajo es **refinamiento**: preserva la identidad de `DESIGN.md`. Un rediseño solo si David lo pide.
 - `ui-ux-pro-max` es solo consulta (guías del stack y datos de UX). No apliques sus paletas, tipografías ni estilos, ni ejecutes `--persist`.
 - Si un cambio visual contradice `DESIGN.md`, propónlo a David y actualiza `DESIGN.md` en el mismo cambio. `PRODUCT.md` solo cambia con hechos confirmados por David.
+
+## Verificación
+
+- Servidor de desarrollo: `npm run dev` → http://localhost:5173
+- Todo cambio de UI se verifica en el navegador con el skill `playwright-cli` antes de darlo por terminado: abrir la página, revisar 375, 768 y 1440 px (`resize`), sin errores en consola, y una captura por ancho.
+- Para recorrer o verificar la app usa `playwright-cli` (`snapshot` y `find` en vez de leer el DOM completo). Para tareas largas, usa una sesión propia: `-s=<proyecto>`.
+- No uses `--persistent` ni guardes estado de sesión (`state-save`) con cuentas reales; las salidas van a `.playwright-cli/` (ignorado por Git).
+- Flujos clave: login y dashboard de cada rol (admin, supervisor, operario), un módulo por rol, modo oscuro (`aiden-dark`). Las cuentas de prueba salen de los datos semilla de la app (`src/datos/semilla.js`); no inventes credenciales.
+- Pruebas existentes: `pruebas/` (Python).

@@ -57,3 +57,6 @@ graphify-out/
 
 # Caché de Python de las pruebas
 __pycache__/
+
+# Playwright CLI: capturas, snapshots y trazas locales
+.playwright-cli/
