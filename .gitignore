@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# graphify: grafo local, se regenera con `graphify update .`
+graphify-out/
