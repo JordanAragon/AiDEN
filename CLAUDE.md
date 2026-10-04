@@ -21,5 +21,5 @@ Rules:
 - Todo cambio de UI se verifica en el navegador con el skill `playwright-cli` antes de darlo por terminado: abrir la página, revisar 375, 768 y 1440 px (`resize`), sin errores en consola, y una captura por ancho.
 - Para recorrer o verificar la app usa `playwright-cli` (`snapshot` y `find` en vez de leer el DOM completo). Para tareas largas, usa una sesión propia: `-s=<proyecto>`.
 - No uses `--persistent` ni guardes estado de sesión (`state-save`) con cuentas reales; las salidas van a `.playwright-cli/` (ignorado por Git).
-- Flujos clave: login y dashboard de cada rol (admin, supervisor, operario), un módulo por rol, modo oscuro (`aiden-dark`). Las cuentas de prueba salen de los datos semilla de la app (`src/datos/semilla.js`); no inventes credenciales.
+- Flujos clave: login y dashboard de cada rol (admin, supervisor, operario), un módulo por rol, modo oscuro (`aiden-dark`). Las cuentas de prueba son `CUENTAS_INICIALES` en `src/utilidades/autenticacion.js`; no inventes credenciales.
 - Pruebas existentes: `pruebas/` (Python).
