@@ -19,4 +19,4 @@ El acrónimo queda como propuesta de identidad y requiere formalización definit
 - Continuidad cromática con forest / moss / lime / paper.
 
 ## Nota sobre los artes generados
-Las imágenes generadas durante la exploración se consideran referencias de diseño. El arte entregado está en `Identidad visual/Logo/originales/` y contiene dos símbolos; el oficial no está decidido (ver `Identidad visual/Logo/README.md`). Los SVG actuales son aproximaciones, no masters: el master vectorial se hará al vectorizar el símbolo elegido.
+Las imágenes generadas durante la exploración se consideran referencias de diseño. El arte oficial está en `Identidad visual/Logo/originales/`: las versiones monocromáticas son para documentación, informes y reportes, y las de color para la web (ver `Identidad visual/Logo/README.md`). Los SVG actuales son aproximaciones, no masters.

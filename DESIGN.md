@@ -107,6 +107,8 @@ Símbolo oficial desde 2026-10-05: una **A** abstracta con una **hoja** y un **p
 - Fondo claro (landing, autenticación móvil, 404): `LogotipoAiden` (isotipo + palabra AiDEN). Fondo oscuro (panel lateral de autenticación): `IsotipoAiden` con `placa` + «AiDEN» en blanco. Barra lateral: `IsotipoAiden` con clase `aiden-isotipo-adaptable` (gana una placa clara en modo oscuro).
 - El isotipo nunca va directo sobre verde bosque u oscuro: sus partes verde bosque desaparecen. Siempre con placa clara.
 - Assets: `src/assets/marca/` (los que importa la app), `public/marca/` (versiones grandes para compartir y `og:image`) y en `public/` el favicon, los íconos de la PWA y `site.webmanifest`.
+- Favicon e íconos de app: favicon claro oficial (A con cinta sobre placa clara), recortado de `MARCA/Identidad visual/Logo/originales/simbolo-b-cinta/favicon-claro.png`.
+- En la web se usan las versiones a color; las monocromáticas son para documentación, informes y reportes. Arte original y reglas por contexto en `MARCA/Identidad visual/Logo/`.
 - Pendiente de confirmar: la tipografía de marca (propuesta Nunito Sans + DM Sans) y el significado oficial del acrónimo. Hasta entonces la interfaz sigue con DM Sans.
 
 ## Components

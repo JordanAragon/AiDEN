@@ -51,7 +51,7 @@ Funciona sobrescribiendo clases concretas bajo `html.aiden-dark` (`modo-oscuro.c
 | Se perdía el foco al escribir | `<main>` se remontaba con cada cambio de datos | Solo cambia al navegar |
 | Fondo claro en modo oscuro y rótulos ilegibles | El contenedor no se oscurecía | Mismo fondo que el `body` oscuro |
 | Minigráficas de Ambiental con puntos sueltos | Solo existía una lectura por zona | Historial real de lecturas por zona |
-| Favicon vacío | Archivo de 0 bytes | Favicon del isotipo oficial (`favicon.ico`, PNG y `site.webmanifest`) desde 2026-10-05 |
+| Favicon vacío | Archivo de 0 bytes | Favicon claro oficial (`favicon.ico`, PNG y `site.webmanifest`) desde 2026-10-05 |
 | Textos de detalle `slate-400` | Contraste 2,56 | `slate-500` (4,76) |
 
 ## Accesibilidad
