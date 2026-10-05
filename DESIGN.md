@@ -99,6 +99,16 @@ Sombra de marca `0 30px 90px rgba(11, 47, 32, 0.11)`; paneles oscuros `0 20px 54
 
 `rounded-xl` por defecto (botones, campos, tarjetas pequeñas), `rounded-2xl` en paneles, `rounded-full` en insignias y avatares. Radio de marca de 18 px (`--radio`).
 
+## Brand
+
+Símbolo oficial desde 2026-10-05: una **A** abstracta con una **hoja** y un **punto** circular (inteligencia y datos), en la familia forest/moss/lime. Sustituye al ícono de hoja de lucide que se usaba como marca provisional.
+
+- Componentes: `IsotipoAiden` y `LogotipoAiden` en `src/components/ui/MarcaAiden.jsx`. No volver a dibujar la marca con íconos de lucide.
+- Fondo claro (landing, autenticación móvil, 404): `LogotipoAiden` (isotipo + palabra AiDEN). Fondo oscuro (panel lateral de autenticación): `IsotipoAiden` con `placa` + «AiDEN» en blanco. Barra lateral: `IsotipoAiden` con clase `aiden-isotipo-adaptable` (gana una placa clara en modo oscuro).
+- El isotipo nunca va directo sobre verde bosque u oscuro: sus partes verde bosque desaparecen. Siempre con placa clara.
+- Assets: `src/assets/marca/` (los que importa la app), `public/marca/` (versiones grandes para compartir y `og:image`) y en `public/` el favicon, los íconos de la PWA y `site.webmanifest`.
+- Pendiente de confirmar: la tipografía de marca (propuesta Nunito Sans + DM Sans) y el significado oficial del acrónimo. Hasta entonces la interfaz sigue con DM Sans.
+
 ## Components
 
 Reutilizar los de `src/components/ui/` antes de crear otros: `Boton` (clases en `clasesBoton.js`), `Campo`, `Modal`, `Panel`, `Pestanas`, `Filtros`, `Insignia` (tonos en `tonos.js`), `Avatar`, `EncabezadoPagina`, `EstadoVacio`, `AlertaFormulario`, `Cifras`, `CargandoVista` y `LimiteError`. Tablas con `tabla.js`.

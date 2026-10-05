@@ -88,16 +88,6 @@
   letter-spacing: -.045em;
 }
 
-.aiden-auth-brand-mark {
-  width: 33px;
-  height: 33px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255,253,248,.18);
-  border-radius: 10px;
-  background: rgba(255,253,248,.08);
-}
-
 .aiden-auth-side-content > a {
   display: inline-flex;
 }
@@ -389,15 +379,6 @@
     letter-spacing: -.04em;
   }
 
-  .aiden-auth-mobile-brand a span:first-child {
-    width: 31px;
-    height: 31px;
-    display: grid;
-    place-items: center;
-    border-radius: 9px;
-    background: var(--forest);
-    color: var(--lime);
-  }
 
   .aiden-auth-panel-centered {
     padding: 44px 24px;
