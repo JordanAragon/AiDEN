@@ -1,26 +1,28 @@
 # Identidad visual
 
-## Sistema
-La identidad visual conserva la continuidad del producto existente, pero sustituye la hoja provisional por un símbolo propio.
+La identidad conserva la continuidad del producto y sustituye la hoja provisional por un símbolo propio.
 
-### Concepto
-El símbolo integra:
-- una **A** abstracta asociada a AiDEN y Agricultural;
-- hojas como referencia al entorno vegetal;
-- un elemento circular asociado conceptualmente a inteligencia, datos y tecnología.
+## Concepto
 
-La construcción busca un símbolo orgánico, profesional y reconocible, evitando un icono genérico de hoja.
+| Elemento | Significado |
+| --- | --- |
+| **A** | Inicial del nombre. Agricultura, crecimiento y evolución. |
+| **Hoja** | Vida, naturaleza y sostenibilidad. |
+| **Punto** | Tecnología, datos e inteligencia. |
 
-### Tipografía
-Dirección aprobada: sans serif redondeada, profesional y legible. La propuesta trabajada usa **Nunito Sans** como principal y **DM Sans** como secundaria. La selección final debe confirmarse antes de convertirla en norma definitiva.
+A + hoja + punto = AiDEN. El resultado es orgánico, profesional y reconocible, y evita el ícono genérico de hoja.
 
-### Color
-Se mantiene la familia existente:
-- Forest
-- Moss
-- Lime
-- Paper
-- White / neutros
+## Secciones
 
-### Logo
-Existen versiones a color, monocromáticas y adaptaciones para favicon/app icon. Ver la carpeta Logo.
+| Sección | Contenido |
+| --- | --- |
+| [Logo](Logo/README.md) | Estilos A y B, versiones, archivos, zona de protección, tamaños mínimos, fondos y usos incorrectos |
+| [Color](Color/README.md) | Paleta, roles, contrastes WCAG y valores de impresión |
+| [Tipografía](Tipografía/README.md) | Nunito Sans y DM Sans, jerarquía y licencias |
+| [Iconografía](Iconografía/README.md) | Lucide y sus reglas |
+| [Fotografía](Fotografía/README.md) | Temas, tratamiento y derechos |
+| [Recursos gráficos](Recursos%20gráficos/README.md) | Curva, punto de datos y patrones |
+
+## Regla de contexto
+
+**Monocromático para documentación, informes y reportes; a color para la web.**

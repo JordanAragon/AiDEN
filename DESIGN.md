@@ -108,7 +108,8 @@ Símbolo oficial desde 2026-10-05: una **A** abstracta con una **hoja** y un **p
 - El isotipo nunca va directo sobre verde bosque u oscuro: sus partes verde bosque desaparecen. Siempre con placa clara.
 - Assets: `src/assets/marca/` (los que importa la app), `public/marca/` (versiones grandes para compartir y `og:image`) y en `public/` el favicon, los íconos de la PWA y `site.webmanifest`.
 - Favicon e íconos de app: favicon claro oficial (A con cinta sobre placa clara), recortado de `MARCA/Identidad visual/Logo/originales/simbolo-b-cinta/favicon-claro.png`.
-- En la web se usan las versiones a color; las monocromáticas son para documentación, informes y reportes. Arte original y reglas por contexto en `MARCA/Identidad visual/Logo/`.
+- En la web se usan las versiones a color; las monocromáticas son para documentación, informes y reportes.
+- Sistema de marca completo en `MARCA/` (manual en PDF, masters SVG, kit de exportación, color, tipografía, plantillas). Las reglas de marca viven allí; este archivo manda en la interfaz.
 - Pendiente de confirmar: la tipografía de marca (propuesta Nunito Sans + DM Sans) y el significado oficial del acrónimo. Hasta entonces la interfaz sigue con DM Sans.
 
 ## Components

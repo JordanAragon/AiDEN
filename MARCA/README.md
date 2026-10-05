@@ -1,22 +1,68 @@
-# Identidad de marca AiDEN
+# Marca AiDEN
+
+Sistema de identidad de AiDEN: estrategia, identidad verbal, identidad visual, producto y aplicaciones. Esta carpeta es la fuente de verdad de la marca; `DESIGN.md` (raíz) lo es de la interfaz del producto.
+
+**Manual completo:** [`manual-de-marca-aiden.pdf`](manual-de-marca-aiden.pdf).
+
+## Definición
+
+**AiDEN** — *Agricultural Intelligence & Data Ecosystem for Nurseries*. A = Agricultural, i = Intelligence, D = Data, E = Ecosystem, N = Nurseries.
+
+Se escribe siempre **AiDEN**: A, D, E y N en mayúscula, i en minúscula. Nunca «Aiden», «AIDEN» ni «AiDen».
+
+Descriptores oficiales:
+
+- **Gestión inteligente para viveros**: web, producto y piezas a color.
+- **Gestión agrícola inteligente**: piezas institucionales monocromáticas (documentación, informes, reportes).
+
+## Qué pieza usar
+
+Regla general (confirmada por David, 2026-10-05): **monocromático para documentación, informes y reportes; a color para la web.** Todas las piezas son oficiales.
+
+| Contexto | Pieza | Archivo |
+| --- | --- | --- |
+| Web: cabecera, pie, autenticación | Logo horizontal a color (A) | `Identidad visual/Logo/svg/a-logo-horizontal-color.svg` o `a-logotipo-color.svg` |
+| Web: barra lateral, avatar, sello | Isotipo a color (A) | `Identidad visual/Logo/svg/a-isotipo-color.svg` |
+| Web: favicon y pestaña | Favicon claro (B) | `Identidad visual/Logo/favicon/` |
+| App instalada, tiendas, perfiles | App icon oscuro o negativo (B) | `Identidad visual/Logo/svg/b-app-icon-*.svg` |
+| Informes, reportes, entregables | Logo monocromático (B) | `Identidad visual/Logo/svg/b-logo-horizontal-monocromatico.svg` |
+| Documentos sobre fondo oscuro | Logo o isotipo en blanco (B) | `Identidad visual/Logo/svg/b-*-blanco.svg` |
+| Sello pequeño en documentos | Isotipo monocromático (B) | `Identidad visual/Logo/svg/b-isotipo-monocromatico.svg` |
+
+## Estructura
+
+```
+MARCA/
+├── manual-de-marca-aiden.pdf       Manual completo
+├── Estrategia/                     Propósito, visión, personalidad, propuesta de misión y valores
+├── Identidad verbal/               Nombre, descriptores, voz, tono, mensajes
+├── Identidad visual/
+│   ├── Logo/                       Versiones, construcción, usos
+│   │   ├── originales/             Arte entregado, sin modificar (referencia de verdad)
+│   │   ├── svg/                    Masters vectoriales
+│   │   ├── png/                    Exportaciones por tamaño
+│   │   └── favicon/                Set de favicon de la web
+│   ├── Color/                      Paleta, contrastes, valores de impresión
+│   ├── Tipografía/                 Nunito Sans y DM Sans, con licencias
+│   ├── Iconografía/
+│   ├── Fotografía/
+│   └── Recursos gráficos/          Curva, punto de datos, patrones
+├── Producto/                       Cómo vive la marca en la app
+├── Aplicaciones/                   Web, documentos, presentaciones, redes, institucional
+└── herramientas/                   Scripts para regenerar el kit
+```
 
 ## Estado
-Base de trabajo de la identidad de marca de AiDEN. Esta carpeta consolida la estrategia, identidad verbal, identidad visual, producto y aplicaciones.
 
-## Definición de marca
-**AiDEN** — *Agricultural Intelligence & Data Ecosystem for Nurseries*.
+| Bloque | Estado |
+| --- | --- |
+| Logo, color, tipografía | Oficial. Masters vectoriales y kit completo. |
+| Identidad verbal | Oficial en nombre y descriptores; voz y tono como guía de trabajo. |
+| Estrategia | Propósito y visión confirmados. Misión, valores y posicionamiento: **propuesta** pendiente de validar por David. |
+| Aplicaciones | Plantillas de informe y presentación, kit de redes y web. |
 
-Descriptor de uso en español: **Gestión inteligente para viveros**.
+Pendientes:
 
-El acrónimo queda como propuesta de identidad y requiere formalización definitiva antes de tratarlo como naming oficial.
-
-## Principios actuales
-- Inteligencia aplicada al contexto agrícola.
-- Datos como base para la gestión y la toma de decisiones.
-- Ecosistema digital orientado a viveros e invernaderos.
-- Lenguaje visual orgánico, profesional, claro y tecnológico.
-- Formas redondeadas; evitar una estética excesivamente rectangular.
-- Continuidad cromática con forest / moss / lime / paper.
-
-## Nota sobre los artes generados
-Las imágenes generadas durante la exploración se consideran referencias de diseño. El arte oficial está en `Identidad visual/Logo/originales/`: las versiones monocromáticas son para documentación, informes y reportes, y las de color para la web (ver `Identidad visual/Logo/README.md`). Los SVG actuales son aproximaciones, no masters.
+- Validar la propuesta de misión y valores (`Estrategia/`).
+- Posicionamiento: depende de la investigación de mercado en Colombia.
+- El símbolo A solo existe a color: no hay arte suelto monocromático ni en blanco de la A montaña (aparece en el tablero de marca, pero no como archivo). Si se necesita, pedirlo a diseño.
