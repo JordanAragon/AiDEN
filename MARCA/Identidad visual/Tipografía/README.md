@@ -6,14 +6,15 @@ Dirección: sans serif redondeada, profesional y legible. Definida en el tablero
 | --- | --- | --- | --- |
 | **Nunito Sans** | Principal de marca: títulos, portadas, cifras destacadas | 600, 700, 800 | SIL Open Font License 1.1 |
 | **DM Sans** | Secundaria: texto de lectura, tablas, interfaz | 400, 600, 700 | SIL Open Font License 1.1 |
+| **JetBrains Mono** | Solo datos: códigos, fechas técnicas, rótulos y pies de informes | 400, 500, 700 | SIL Open Font License 1.1 |
 
-Las dos son gratuitas y de uso comercial libre (OFL). Las licencias están junto a los archivos, en `fuentes/`.
+Las tres son gratuitas y de uso comercial libre (OFL). JetBrains Mono es de apoyo: nunca para títulos ni texto corrido. Las licencias están junto a los archivos, en `fuentes/`.
 
 La palabra **AiDEN** del logo es un dibujo propio, no una fuente: nunca se reescribe con Nunito Sans ni con otra tipografía.
 
 ## Dónde conseguirlas
 
-- Escritorio (Word, PowerPoint, diseño): descargar de Google Fonts, [Nunito Sans](https://fonts.google.com/specimen/Nunito+Sans) y [DM Sans](https://fonts.google.com/specimen/DM+Sans), e instalar.
+- Escritorio (Word, PowerPoint, diseño): descargar de Google Fonts, [Nunito Sans](https://fonts.google.com/specimen/Nunito+Sans), [DM Sans](https://fonts.google.com/specimen/DM+Sans) y [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono), e instalar.
 - Web: `fuentes/` tiene los WOFF2 latinos (incluyen tildes y ñ) en los pesos de la tabla, o se cargan desde Google Fonts.
 
 ## Jerarquía en documentos
@@ -35,7 +36,7 @@ La interfaz de la app usa **DM Sans** e **Instrument Serif** (acento editorial s
 
 ## Reglas
 
-- Máximo dos familias por pieza.
+- Máximo dos familias por pieza, más JetBrains Mono para códigos y rótulos técnicos.
 - Sin mayúsculas sostenidas en textos largos; solo en rótulos cortos.
 - Sin subrayados decorativos ni contornos.
 - Alinear a la izquierda; centrar solo portadas y piezas cortas.

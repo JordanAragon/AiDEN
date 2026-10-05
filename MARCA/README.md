@@ -4,6 +4,8 @@ Sistema de identidad de AiDEN: estrategia, identidad verbal, identidad visual, p
 
 **Manual completo:** [`manual-de-marca-aiden.pdf`](manual-de-marca-aiden.pdf).
 
+**Informes:** «genera un informe de AiDEN» usa [`Aplicaciones/Documentos/informes/`](Aplicaciones/Documentos/informes/README.md).
+
 ## Definición
 
 **AiDEN** — *Agricultural Intelligence & Data Ecosystem for Nurseries*. A = Agricultural, i = Intelligence, D = Data, E = Ecosystem, N = Nurseries.
@@ -59,7 +61,7 @@ MARCA/
 | Logo, color, tipografía | Oficial. Masters vectoriales y kit completo. |
 | Identidad verbal | Oficial en nombre y descriptores; voz y tono como guía de trabajo. |
 | Estrategia | Propósito y visión confirmados. Misión, valores y posicionamiento: **propuesta** pendiente de validar por David. |
-| Aplicaciones | Plantillas de informe y presentación, kit de redes y web. |
+| Aplicaciones | Informes PDF (generador + guía de redacción), plantillas de Word y PowerPoint, kit de redes y web. |
 
 Pendientes:
 

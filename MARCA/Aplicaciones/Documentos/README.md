@@ -2,7 +2,11 @@
 
 Informes, reportes, actas, propuestas y entregables. Van con la **versión monocromática** del logo.
 
-## Plantilla
+## Informes PDF
+
+Los informes se generan con el sistema de [`informes/`](informes/README.md): portada oscura con la conclusión y cifras clave, secciones numeradas, tarjetas, avisos y tablas con estados. Es el formato por defecto cuando se pide «un informe de AiDEN». Se escriben con [`informes/GUIA-DE-REDACCION.md`](informes/GUIA-DE-REDACCION.md).
+
+## Plantilla de Word
 
 `plantilla-informe-aiden.docx` (Word, A4):
 
