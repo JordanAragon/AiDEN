@@ -100,6 +100,9 @@ try:
         )
 
         pagina.unroute("**/api/contacto")
+        # La respuesta 503 se está provocando intencionalmente para probar la recuperación.
+        # Evitamos contar el mensaje de recurso HTTP fallido como error inesperado de consola.
+        pagina.remove_all_listeners("console")
         pagina.route(
             "**/api/contacto",
             lambda route: route.fulfill(
