@@ -8,7 +8,6 @@ import {
   CircleDollarSign,
   GitBranch,
   LayoutDashboard,
-  Leaf,
   Menu,
   Moon,
   Package,
@@ -24,6 +23,7 @@ import { getDashboardPath } from "../../utilidades/autenticacion";
 import { useSesion } from "../../hooks/useSesion";
 import { useDatos } from "../../datos/almacen";
 import { alertas as calcularAlertas } from "../../datos/selectores";
+import { IsotipoAiden } from "../ui/MarcaAiden";
 
 const navItems = [
   { label: "Dashboard", path: "/dashboard-admin", icon: <LayoutDashboard size={18} />, roles: ["admin", "supervisor", "operario"] },
@@ -150,9 +150,7 @@ export default function BarraLateral() {
           <section className="w-full">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-800 text-white">
-                  <Leaf size={16} aria-hidden="true" />
-                </span>
+                <IsotipoAiden tamano={32} className="aiden-isotipo-adaptable" />
                 {(movilAbierto || !colapsado) && (
                   <span className="text-lg font-bold tracking-tight text-emerald-800">
                     AiDEN

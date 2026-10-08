@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, Leaf, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { resetPassword } from "../utilidades/autenticacion";
 import { useTitulo } from "../hooks/useTitulo";
 import loginImage from "../assets/imagenes/login.webp";
 import "../estilos/autenticacion-aiden.css";
+import { IsotipoAiden, LogotipoAiden } from "../components/ui/MarcaAiden";
 
 export default function ForgotPassword() {
   useTitulo("Recuperar contraseña");
@@ -42,7 +43,7 @@ export default function ForgotPassword() {
         <div className="aiden-auth-image-overlay" aria-hidden="true" />
         <section className="aiden-auth-side-content">
           <Link to="/" className="aiden-auth-brand">
-            <span className="aiden-auth-brand-mark"><Leaf size={17} /></span>
+            <IsotipoAiden tamano={34} placa />
             <span>AiDEN</span>
           </Link>
           <div className="aiden-auth-side-copy">
@@ -56,9 +57,8 @@ export default function ForgotPassword() {
       <section className="aiden-auth-panel">
         <div className="aiden-auth-form-wrap">
           <header className="aiden-auth-mobile-brand">
-            <Link to="/" className="inline-flex items-center gap-2 text-emerald-900">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-900 text-white"><Leaf size={15} /></span>
-              <span className="font-bold tracking-tight">AiDEN</span>
+            <Link to="/" className="inline-flex items-center" aria-label="AiDEN, ir al inicio">
+              <LogotipoAiden alto={34} />
             </Link>
           </header>
 

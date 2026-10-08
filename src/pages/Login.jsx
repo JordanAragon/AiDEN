@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Eye, EyeOff, Leaf, Loader2, LogOut } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Loader2, LogOut } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginImage from "../assets/imagenes/login.webp";
 import { ensureInitialUser, getDashboardPath, login, logout } from "../utilidades/autenticacion";
@@ -7,6 +7,7 @@ import { destinoTrasLogin } from "../routes/permisos";
 import { useSesion } from "../hooks/useSesion";
 import { useTitulo } from "../hooks/useTitulo";
 import "../estilos/autenticacion-aiden.css";
+import { IsotipoAiden, LogotipoAiden } from "../components/ui/MarcaAiden";
 
 const ROL = { admin: "Administrador", supervisor: "Supervisor", operario: "Operario" };
 
@@ -65,10 +66,8 @@ export default function Login() {
         />
         <section className="aiden-auth-side-content">
           <Link to="/" className="flex items-center gap-2 text-white">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/15 bg-white/10">
-              <Leaf size={17} />
-            </span>
-            <span className="text-xl font-bold tracking-tight">AiDEN</span>
+            <IsotipoAiden tamano={36} placa />
+            <span className="text-xl font-bold tracking-tight !text-white">AiDEN</span>
           </Link>
 
           <section className="mt-auto max-w-xl pb-6">
@@ -103,11 +102,8 @@ export default function Login() {
       <section className="aiden-auth-panel">
         <section className="aiden-auth-form-wrap">
           <header className="aiden-auth-mobile-brand">
-            <Link to="/" className="inline-flex items-center gap-2 text-emerald-900">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-900 text-white">
-                <Leaf size={15} />
-              </span>
-              <span className="font-bold tracking-tight">AiDEN</span>
+            <Link to="/" className="inline-flex items-center" aria-label="AiDEN, ir al inicio">
+              <LogotipoAiden alto={34} />
             </Link>
           </header>
 

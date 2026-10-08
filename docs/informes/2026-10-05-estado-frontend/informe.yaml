@@ -1,0 +1,251 @@
+codigo: AIDEN-INF-2026-001
+version: Borrador 1
+fecha: 5 de octubre de 2026
+area: Gestión agrícola inteligente · Frontend
+etiqueta: Estado del frontend · octubre 2026
+titulo:
+  - El frontend de AiDEN
+  - funciona completo.
+  - Faltan 7 arreglos para cerrarlo.
+resumen: >-
+  Los 9 módulos, los 3 roles y las 21 pantallas cargan sin errores en celular y en escritorio.
+  Para darlo por cerrado faltan arreglos concretos: pruebas automáticas que hoy fallan, textos con poco contraste,
+  el modo sin conexión y la nueva marca, que espera aprobación. Además hay 3 decisiones que son tuyas.
+kpis:
+  - valor: "9 de 9"
+    etiqueta: módulos funcionando
+    detalle: más Inteligencia y Mi perfil
+  - valor: "0"
+    etiqueta: errores en consola
+    detalle: en 156 vistas revisadas
+  - valor: "7"
+    etiqueta: arreglos para cerrar
+    detalle: 4 bloquean, 3 recomendados
+  - valor: "3"
+    etiqueta: decisiones tuyas
+    detalle: no son trabajo técnico
+preparado_por:
+  nombre: Claude para Jordan David Micolta Aragón
+  detalle: Revisión del repositorio AiDEN, rama main (445bb17) y rama feat/identidad-marca
+
+secciones:
+  - titulo: La respuesta corta
+    subtitulo: Qué hay, qué falta y qué depende de ti, en una página.
+    encabezado: Resumen
+    bloques:
+      - tipo: banda
+        rotulo: Conclusión
+        titulo: Como producto de solo frontend, AiDEN está casi cerrado.
+        texto: >-
+          Todo lo que el producto promete hoy existe y funciona: producción por lotes, trazabilidad, ambiente, calidad,
+          inventario, costos, personal, reportes, configuración e inteligencia por reglas, con permisos por rol y modo oscuro.
+          Lo que falta no son módulos nuevos sino **acabado y garantías**: que las pruebas automáticas vuelvan a pasar,
+          que todos los textos se lean bien y que la app sirva en el campo sin internet.
+      - tipo: tarjetas
+        columnas: 3
+        items:
+          - etiqueta: Lo que tiene
+            titulo: 21 pantallas que funcionan
+            color: ok
+            texto: >-
+              9 módulos, 3 tableros por rol, landing, acceso, legales y 404. Sin errores en consola y sin desbordes
+              en celular de 375 px.
+          - etiqueta: Lo que falta
+            titulo: 4 arreglos que bloquean el cierre
+            color: critico
+            texto: >-
+              Pruebas automáticas rotas, textos con poco contraste en 11 pantallas, modo oscuro que se cuela en el acceso
+              y la nueva marca sin publicar.
+          - etiqueta: Lo que decides tú
+            titulo: 3 decisiones abiertas
+            color: info
+            texto: >-
+              Qué módulos nuevos entran (hoy en investigación), si se avisa que el acceso no es de producción y el
+              siguiente objetivo del proyecto.
+      - tipo: tabla
+        titulo: Los 7 arreglos, de un vistazo
+        anchos: [6%, 60%, 17%, 17%]
+        columnas: ["#", Arreglo, Tamaño, Estado]
+        filas:
+          - ["1", "Arreglar las pruebas automáticas", "Pequeño", "[[critico:Bloquea]]"]
+          - ["2", "Corregir textos con poco contraste", "Pequeño", "[[critico:Bloquea]]"]
+          - ["3", "Separar el modo oscuro de las páginas públicas", "Pequeño", "[[critico:Bloquea]]"]
+          - ["4", "Publicar la nueva marca (PR #9)", "Tu aprobación", "[[critico:Bloquea]]"]
+          - ["5", "Modo sin conexión", "Medio", "[[alerta:Recomendado]]"]
+          - ["6", "Cambiar la contraseña desde Mi perfil", "Pequeño", "[[alerta:Recomendado]]"]
+          - ["7", "Pruebas de la lógica de datos", "Medio", "[[alerta:Recomendado]]"]
+      - tipo: aviso
+        estilo: info
+        titulo: Qué significa «cerrar el frontend» en este informe
+        texto: >-
+          Que los 9 módulos actuales y todo lo transversal queden terminados, probados y accesibles. Los módulos que
+          todavía están en investigación no entran porque no tienen definición; si decides cuáles son, se suman al plan.
+
+  - titulo: Lo que tiene la web hoy
+    subtitulo: Revisado pantalla por pantalla con los tres roles.
+    encabezado: Inventario de la web
+    bloques:
+      - tipo: tabla
+        titulo: Módulos
+        anchos: [22%, 58%, 20%]
+        columnas: [Módulo, Qué hace, Estado]
+        filas:
+          - ["**Producción**", "Crear, editar y cerrar lotes; avanzar etapa con confirmación; filtros por etapa, zona y búsqueda; ficha de cada lote.", "[[ok:Listo]]"]
+          - ["**Trazabilidad**", "Línea de vida por lote con filtros; enlace directo a un lote; exportación CSV.", "[[ok:Listo]]"]
+          - ["**Ambiental**", "Zonas con minigráfica, historial con el rango configurado, registro de lecturas y tarea de revisión desde una alerta.", "[[ok:Listo]]"]
+          - ["**Calidad**", "Incidencias con acción correctiva; solo se cierran con acción documentada; tiempo medio de cierre.", "[[ok:Listo]]"]
+          - ["**Inventario**", "Existencias, movimientos, cola de reposición, salidas cargadas al costo de un lote, CSV.", "[[ok:Listo]]"]
+          - ["**Costos**", "Gasto por categoría, resultado por lote, movimientos editables y CSV. Los costos que vienen de inventario quedan protegidos.", "[[ok:Listo]]"]
+          - ["**Personal**", "Colaboradores y tareas con filtros y estados. Para desactivar a alguien hay que reasignar sus tareas.", "[[ok:Listo]]"]
+          - ["**Reportes**", "Reportes por periodo o por lote con vista previa, CSV e impresión.", "[[ok:Listo]]"]
+          - ["**Configuración**", "Usuarios y accesos, umbrales con vista previa, notificaciones, zonas, respaldo y restauración.", "[[ok:Listo]]"]
+          - ["**Inteligencia**", "Asistente por reglas sobre los datos locales; dice de qué módulo sale cada respuesta. No usa modelos de lenguaje.", "[[ok:Listo]]"]
+          - ["**Mi perfil**", "Nombre, correo, rol y área. No permite cambiar la contraseña.", "[[alerta:Parcial]]"]
+      - tipo: tarjetas
+        columnas: 3
+        items:
+          - etiqueta: Roles
+            titulo: Una vista por responsabilidad
+            color: forest
+            texto: "Administrador: centro de administración. Supervisor: centro de supervisión. Operario: mi jornada. Cada rol ve solo lo que le corresponde."
+          - etiqueta: Transversal
+            titulo: Lo que está en todas partes
+            color: moss
+            texto: "Buscador con ⌘K o Ctrl K, notificaciones con estado de leídas, avisos y confirmaciones, modo oscuro y carga diferida de cada pantalla."
+          - etiqueta: Datos
+            titulo: Todo vive en el navegador
+            color: verde
+            texto: "Los datos se guardan en el navegador de cada persona. La capa de datos ya está separada para cambiarla por un servidor sin tocar las pantallas."
+
+  - titulo: Cómo se revisó y qué salió bien
+    subtitulo: Recorrido automático de todas las pantallas, más las pruebas que ya tiene el proyecto.
+    encabezado: Verificación
+    bloques:
+      - tipo: kpis
+        columnas: 4
+        items:
+          - valor: "156"
+            etiqueta: vistas revisadas
+            detalle: 21 pantallas × roles × 2 anchos × claro y oscuro
+          - valor: "0"
+            etiqueta: errores en consola
+            detalle: ni errores de página
+          - valor: "0"
+            etiqueta: desbordes en celular
+            detalle: a 375 px de ancho
+          - valor: "83 KB"
+            etiqueta: carga inicial
+            detalle: JavaScript comprimido; las gráficas cargan aparte
+      - tipo: barras
+        titulo: Pantallas sin fallos de contraste (WCAG 2.1 AA)
+        items:
+          - nombre: App · modo claro
+            valor: 69
+            color: alerta
+            nota: 44 de 64 vistas. Fallan rótulos pequeños en gris claro de Ambiental, Calidad, Inventario, Perfil, Trazabilidad y dos tableros.
+          - nombre: App · modo oscuro
+            valor: 89
+            color: verde
+            nota: 57 de 64 vistas. Fallan rótulos en el tablero de supervisión y tarjetas de Producción.
+          - nombre: Páginas públicas
+            valor: 64
+            color: alerta
+            nota: 9 de 14 vistas. Fallan la sección «problema» de la landing y textos pequeños de acceso y registro.
+      - tipo: aviso
+        estilo: ok
+        titulo: Lo que está bien y no hay que tocar
+        lista:
+          - "Revisión de código (lint) sin errores ni advertencias; la compilación de producción funciona."
+          - "Las 21 pantallas tienen un título principal y se adaptan a celular sin barras de desplazamiento laterales."
+          - "Las reglas de negocio protegen los datos: no se borra un insumo con historial ni una zona con lotes activos."
+          - "Teclado: pasan las 6 pruebas de navegación del proyecto (saltar al contenido, foco en modales, Escape, pestañas con flechas, ficha de lote con Enter)."
+
+  - titulo: Lo que falta para cerrar el frontend
+    subtitulo: Ordenado por impacto. Los 4 primeros bloquean el cierre.
+    encabezado: Pendientes
+    bloques:
+      - tipo: tabla
+        anchos: [5%, 27%, 46%, 11%, 11%]
+        columnas: ["#", Qué falta, Por qué importa, Tamaño, Estado]
+        filas:
+          - ["1", "**Arreglar las pruebas automáticas**", "Fallan en `main` desde antes de esta revisión: buscan el campo «Contraseña» de una forma que hoy encuentra dos elementos, y dos flujos esperan alertas que el tablero de supervisión ya no muestra de entrada. Mientras fallen, la prueba de accesibilidad nunca corre en GitHub.", "Pequeño", "[[critico:Falta]]"]
+          - ["2", "**Corregir el contraste de textos**", "25 de 78 vistas en modo claro y 12 de 78 en oscuro tienen textos que no alcanzan el mínimo de lectura (4,5:1), en 11 pantallas. Son rótulos pequeños en gris claro; se arregla cambiando ese color.", "Pequeño", "[[critico:Falta]]"]
+          - ["3", "**Separar el modo oscuro de las páginas públicas**", "Si alguien activa el modo oscuro y cierra sesión, la landing y el acceso se ven con el modo oscuro a medias y el título de acceso queda ilegible.", "Pequeño", "[[critico:Falta]]"]
+          - ["4", "**Publicar la nueva marca**", "Logo, favicon, imagen para compartir y sistema de marca están listos en el PR #9, sin aprobar. Producción sigue con la hoja provisional.", "Tu aprobación", "[[critico:Falta]]"]
+          - ["5", "**Modo sin conexión**", "El campo tiene mala señal y la auditoría técnica lo marcó como crítico. Los datos ya viven en el navegador: falta guardar la app para que abra sin internet.", "Medio", "[[alerta:Recomendado]]"]
+          - ["6", "**Cambiar la contraseña desde Mi perfil**", "Hoy solo se puede desde «Olvidé mi contraseña». Es lo que un usuario espera encontrar en su perfil.", "Pequeño", "[[alerta:Recomendado]]"]
+          - ["7", "**Pruebas de la lógica de datos**", "Las reglas de `acciones.js` y `selectores.js` solo se prueban a través del navegador. Pruebas directas atrapan errores antes y en segundos.", "Medio", "[[alerta:Recomendado]]"]
+        nota: "Tamaño: pequeño = menos de un día; medio = uno a tres días. Estimados de trabajo, no compromisos."
+      - tipo: aviso
+        estilo: alerta
+        titulo: Detalles menores que conviene arreglar en el mismo paso
+        lista:
+          - "El campo de contraseña se anuncia en lectores de pantalla como «Contraseña Mostrar contraseña»: la etiqueta incluye el botón del ojo."
+          - "En el tablero de supervisión, «Atención inmediata» muestra 2 de 7 alertas; las de ambiente e inventario quedan detrás de «Ver todo». Vale confirmar si es la prioridad que quieres."
+          - "El README dice que hay acceso de demostración «con un clic»; ya no existe. También repite Configuración y contradice a `docs/IDENTIDAD.md` sobre el contraste."
+
+  - titulo: Decisiones que son tuyas
+    subtitulo: Ninguna se resuelve con código; cada una cambia el alcance del plan.
+    encabezado: Decisiones
+    bloques:
+      - tipo: tarjetas
+        columnas: 3
+        items:
+          - etiqueta: Alcance
+            titulo: ¿Qué módulos nuevos entran?
+            color: info
+            texto: "Los módulos que faltan están en investigación y no tienen lista. Si entran antes del cierre, cada uno es trabajo nuevo; si no, el frontend se cierra con los 9 actuales."
+          - etiqueta: Honestidad
+            titulo: ¿Avisar que el acceso no es de producción?
+            color: info
+            texto: "Las contraseñas se guardan sin cifrar en el navegador. Una versión anterior lo avisaba en Configuración y se quitó. Recomiendo volver a mostrarlo mientras no haya servidor."
+          - etiqueta: Rumbo
+            titulo: ¿Cuál es el siguiente objetivo?
+            color: info
+            texto: "Cerrado el frontend, el paso natural es el servidor: la capa de datos ya está preparada para cambiarse sin rehacer pantallas."
+      - tipo: tabla
+        titulo: Fuera del frontend (no entra en este cierre)
+        anchos: [30%, 55%, 15%]
+        columnas: [Tema, Por qué no entra, Estado]
+        filas:
+          - ["Servidor y base de datos", "Es otra etapa del proyecto. Hoy cada navegador guarda sus propios datos.", "[[neutro:Fuera de alcance]]"]
+          - ["Acceso seguro", "Requiere servidor: contraseñas cifradas y roles verificados fuera del navegador.", "[[neutro:Fuera de alcance]]"]
+          - ["Sensores", "Las lecturas ambientales se registran a mano; conectar sensores necesita servidor.", "[[neutro:Fuera de alcance]]"]
+          - ["Inteligencia con modelos de lenguaje", "El asistente actual funciona por reglas y lo dice en pantalla.", "[[neutro:Fuera de alcance]]"]
+
+  - titulo: Plan para cerrarlo
+    nueva_pagina: false
+    subtitulo: En este orden, porque cada paso deja verificado el siguiente.
+    encabezado: Plan
+    bloques:
+      - tipo: tabla
+        anchos: [7%, 43%, 30%, 20%]
+        columnas: [Paso, Qué se hace, Cómo se sabe que quedó, Quién]
+        filas:
+          - ["1", "Aprobar y fusionar el PR #9 (marca)", "La web publicada muestra el nuevo logo y favicon", "Jordan"]
+          - ["2", "Arreglar las pruebas y actualizar los dos flujos del supervisor", "«Pruebas de navegador» en verde en GitHub", "Claude"]
+          - ["3", "Corregir contraste y separar el modo oscuro de las páginas públicas", "La prueba de accesibilidad pasa en las 21 pantallas", "Claude"]
+          - ["4", "Cambio de contraseña en Mi perfil y etiqueta del campo", "Prueba nueva del flujo en verde", "Claude"]
+          - ["5", "Modo sin conexión", "La app abre con el wifi apagado tras una primera visita", "Claude"]
+          - ["6", "Pruebas de la lógica de datos y README al día", "Pruebas unitarias en verde en GitHub", "Claude"]
+          - ["7", "Revisión final y cierre", "Este informe en versión final, con todo en [[ok:Listo]]", "Jordan y Claude"]
+      - tipo: aviso
+        estilo: marca
+        titulo: Con los pasos 1 a 4 el frontend queda cerrado
+        texto: >-
+          Los pasos 5 y 6 son recomendados: no cambian lo que el producto hace, pero lo vuelven usable en el campo
+          y más fácil de mantener. Si decides sumar módulos nuevos, entran después del paso 4.
+
+  - titulo: Método y fuentes
+    nueva_pagina: false
+    subtitulo: De dónde sale cada dato de este informe.
+    encabezado: Método
+    bloques:
+      - tipo: lista
+        items:
+          - "**Recorrido automático:** las 21 pantallas con los tres roles, a 375 y 1440 px, en modo claro y oscuro (156 vistas), con Chromium y axe-core 4.10.2 (reglas WCAG 2.0 y 2.1, niveles A y AA)."
+          - "**Pruebas del proyecto:** `pruebas/prueba_admin.py`, `prueba_roles.py`, `a11y.py` y `tooltip.py`, ejecutadas sobre `main` (`445bb17`) y sobre la rama de marca, con resultados idénticos."
+          - "**Código:** `src/routes/permisos.js`, `src/datos/`, componentes de cada módulo, `README.md`, `PRODUCT.md`, `DESIGN.md` y las auditorías de `docs/`."
+          - "**GitHub:** estado de «Lint y build» y «Pruebas de navegador» en `main` y en el PR #9."
+      - tipo: fuentes
+        texto: "Revisión del 5 de octubre de 2026. Las cifras de contraste cuentan vistas (pantalla + rol + ancho + modo), no elementos. Los tamaños de trabajo son estimados. Borrador para revisión de Jordan; la versión final cambia el estado de cada pendiente a medida que se cierre."

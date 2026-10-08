@@ -23,7 +23,7 @@ Este documento describe la identidad **original** de AiDEN (rama `main`) y cómo
 | Código de lote | `font-mono text-[10px] font-bold text-emerald-700` |
 | Modal | fondo `bg-slate-950/35 backdrop-blur-sm`, caja `rounded-2xl border border-slate-200 bg-white shadow-2xl` |
 | Aviso | `rounded-xl bg-slate-950 px-4 py-3 text-white shadow-2xl` abajo a la derecha |
-| Marca | cuadro `bg-emerald-800` con el ícono de hoja + «AiDEN» en `text-emerald-800` |
+| Marca | isotipo oficial (`IsotipoAiden`) + «AiDEN» en `text-emerald-800`; en fondos claros, `LogotipoAiden`. Reglas en `DESIGN.md` → Brand |
 
 ## Cómo se integró Premium
 
@@ -51,7 +51,7 @@ Funciona sobrescribiendo clases concretas bajo `html.aiden-dark` (`modo-oscuro.c
 | Se perdía el foco al escribir | `<main>` se remontaba con cada cambio de datos | Solo cambia al navegar |
 | Fondo claro en modo oscuro y rótulos ilegibles | El contenedor no se oscurecía | Mismo fondo que el `body` oscuro |
 | Minigráficas de Ambiental con puntos sueltos | Solo existía una lectura por zona | Historial real de lecturas por zona |
-| Favicon vacío | Archivo de 0 bytes | Logo original (hoja) en SVG |
+| Favicon vacío | Archivo de 0 bytes | Favicon claro oficial (`favicon.ico`, PNG y `site.webmanifest`) desde 2026-10-05 |
 | Textos de detalle `slate-400` | Contraste 2,56 | `slate-500` (4,76) |
 
 ## Accesibilidad

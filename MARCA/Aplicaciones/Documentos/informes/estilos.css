@@ -1,0 +1,121 @@
+/* Informes PDF de AiDEN — A4 vertical. Lo usa generar_informe.py. */
+@page { size: A4; margin: 0 }
+* { box-sizing: border-box; margin: 0; padding: 0 }
+:root {
+  --forest: #0b2b1b; --forest-deep: #071b11; --moss: #718b58; --lime: #d9ea73;
+  --paper: #f7f6f0; --cream: #ebe7db; --white: #fffdf8; --ink: #12251b; --muted: #5d6a62;
+  --verde: #176b45; --linea: #e2e5e0;
+  --ok: #176b45; --ok-bg: #f1f7f2;
+  --alerta: #a86a00; --alerta-bg: #fdf7e6;
+  --critico: #b42318; --critico-bg: #fdf1ef;
+  --info: #24609b; --info-bg: #eff5fb;
+}
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact }
+body { font-family: 'DM Sans', sans-serif; color: var(--ink); font-size: 8.6pt; line-height: 1.5; background: white }
+b, strong { font-weight: 700; color: var(--ink) }
+code { font-family: 'JetBrains Mono', monospace; font-size: .86em; background: var(--paper); border: 1px solid var(--linea); padding: 0 1.2mm; border-radius: 1mm }
+.mono { font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 6.4pt }
+
+/* ---------- Portada ---------- */
+.portada { width: 210mm; height: 297mm; padding: 9mm; page-break-after: always }
+.portada .tarjeta-portada { position: relative; height: 100%; border-radius: 5mm; overflow: hidden; color: var(--paper);
+  background:
+    radial-gradient(70mm 70mm at 82% 22%, rgba(23,107,69,.55), transparent 70%),
+    radial-gradient(90mm 70mm at 12% 92%, rgba(217,234,115,.16), transparent 70%),
+    radial-gradient(60mm 60mm at 60% 60%, rgba(113,139,88,.10), transparent 70%),
+    linear-gradient(160deg, #0d2219 0%, var(--forest-deep) 55%, #050f0a 100%);
+  padding: 13mm 13mm 11mm; display: flex; flex-direction: column }
+.portada .cabeza { display: flex; justify-content: space-between; align-items: flex-start }
+.portada .cabeza img { height: 9mm }
+.portada .cabeza .sub { color: #8fa597; margin-top: 2mm }
+.portada .meta { text-align: right; color: #8fa597; line-height: 1.9 }
+.portada .centro { margin-top: auto; margin-bottom: auto; padding-top: 30mm }
+.portada .pastilla { display: inline-block; border: 1px solid rgba(217,234,115,.55); color: var(--lime); border-radius: 10mm; padding: 1.6mm 4mm; margin-bottom: 7mm }
+.portada h1 { font-family: 'Nunito Sans', sans-serif; font-weight: 800; font-size: 31pt; line-height: 1.04; letter-spacing: -.02em; color: var(--paper) }
+.portada h1 .resalte { color: var(--lime) }
+.portada .resumen { margin-top: 6mm; max-width: 150mm; font-size: 9.6pt; line-height: 1.55; color: #c9d4cc }
+.portada .kpis { margin-top: 9mm; display: grid; gap: 3mm }
+.portada .kpi { border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.035); border-radius: 2.5mm; padding: 3.5mm 4mm }
+.portada .kpi .v { font-family: 'Nunito Sans'; font-weight: 800; font-size: 13pt; color: var(--lime) }
+.portada .kpi .e { font-size: 7.4pt; color: #c9d4cc; margin-top: .6mm }
+.portada .kpi .d { font-size: 6.6pt; color: #8fa597 }
+.portada .pie-portada { border-top: 1px solid rgba(255,255,255,.12); padding-top: 4mm; display: flex; justify-content: space-between; align-items: flex-end }
+.portada .pie-portada .mono { color: #8fa597 }
+.portada .pie-portada .quien { font-family: 'Nunito Sans'; font-weight: 800; font-size: 10pt; color: var(--paper); margin-top: 1.2mm }
+.portada .pie-portada .donde { font-size: 7pt; color: #8fa597 }
+.portada .pie-portada img { height: 11mm; opacity: .9 }
+
+/* ---------- Páginas interiores ---------- */
+.seccion { padding: 3mm 14mm 0 }
+.seccion.continua { padding-top: 4mm }
+.seccion.nueva { page-break-before: always }
+.cabecera { display: flex; justify-content: space-between; align-items: center; padding-bottom: 2.5mm; border-bottom: 1px solid var(--linea); margin-bottom: 6mm }
+.cabecera img { height: 5.2mm }
+.cabecera .mono { color: var(--muted) }
+.titulo-seccion { display: flex; gap: 3.5mm; align-items: flex-start; margin-bottom: 5mm }
+.numero { flex: none; width: 7mm; height: 7mm; border-radius: 1.6mm; background: var(--forest); color: var(--lime); font-family: 'JetBrains Mono'; font-weight: 700; font-size: 7pt; display: flex; align-items: center; justify-content: center; margin-top: .6mm }
+.titulo-seccion h2 { font-family: 'Nunito Sans'; font-weight: 800; font-size: 14pt; line-height: 1.2; color: var(--forest); letter-spacing: -.01em }
+.titulo-seccion p { color: var(--muted); font-size: 8.4pt; margin-top: .6mm }
+.bloque { margin-bottom: 5mm; break-inside: avoid }
+.bloque.partible { break-inside: auto }
+h3 { font-family: 'Nunito Sans'; font-weight: 800; font-size: 10pt; color: var(--forest); margin-bottom: 1.5mm }
+p + p { margin-top: 2mm }
+
+/* Tarjetas con borde superior de color */
+.tarjetas { display: grid; gap: 3.5mm }
+.tarjeta { border: 1px solid var(--linea); border-top: 2.5px solid var(--forest); border-radius: 2.5mm; padding: 3.5mm 4mm; background: white; break-inside: avoid }
+.tarjeta .etq { color: var(--muted); margin-bottom: 1.2mm }
+.tarjeta h3 { font-size: 9.4pt; margin-bottom: 1mm }
+.tarjeta p { font-size: 7.9pt; color: #34433a }
+
+/* Avisos */
+.aviso { border-left: 3px solid var(--ok); background: var(--ok-bg); border-radius: 0 2.5mm 2.5mm 0; padding: 3.5mm 4.5mm; break-inside: avoid }
+.aviso .t { font-family: 'Nunito Sans'; font-weight: 800; font-size: 8.8pt; margin-bottom: 1mm }
+.aviso ul { list-style: none } .aviso li { padding-left: 3.5mm; position: relative; margin-top: .6mm }
+.aviso li::before { content: '›'; position: absolute; left: 0; font-weight: 700 }
+.aviso.ok { border-color: var(--ok); background: var(--ok-bg) } .aviso.ok .t, .aviso.ok li::before { color: var(--ok) }
+.aviso.alerta { border-color: #d39a1c; background: var(--alerta-bg) } .aviso.alerta .t, .aviso.alerta li::before { color: var(--alerta) }
+.aviso.critico { border-color: var(--critico); background: var(--critico-bg) } .aviso.critico .t, .aviso.critico li::before { color: var(--critico) }
+.aviso.info { border-color: var(--info); background: var(--info-bg) } .aviso.info .t, .aviso.info li::before { color: var(--info) }
+.aviso.marca { border-color: var(--moss); background: var(--paper) } .aviso.marca .t, .aviso.marca li::before { color: var(--forest) }
+
+/* Banda oscura */
+.banda { background: var(--forest); color: #d6e0d9; border-radius: 3mm; padding: 6mm 6.5mm; break-inside: avoid;
+  background-image: radial-gradient(50mm 40mm at 92% 10%, rgba(217,234,115,.12), transparent 70%) }
+.banda .mono { color: var(--lime); margin-bottom: 2mm }
+.banda h3 { color: var(--paper); font-size: 12pt; margin-bottom: 2mm }
+.banda b { color: var(--paper) }
+
+/* Tablas */
+table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--linea); border-radius: 2.5mm; overflow: hidden }
+thead th { background: var(--forest); color: var(--paper); font-family: 'JetBrains Mono'; font-weight: 500; font-size: 6.2pt; letter-spacing: .12em; text-transform: uppercase; text-align: left; padding: 2.3mm 3mm }
+tbody td { padding: 2.3mm 3mm; border-top: 1px solid var(--linea); vertical-align: top; font-size: 7.9pt }
+tbody tr { break-inside: avoid }
+tfoot td { padding: 2.3mm 3mm; background: var(--forest); color: var(--paper); font-weight: 700 }
+.nota-tabla { font-size: 7pt; color: var(--muted); margin-top: 1.5mm }
+
+/* Chips de estado */
+.chip { display: inline-block; font-family: 'JetBrains Mono'; font-size: 6pt; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-radius: 6mm; padding: .5mm 2mm; white-space: nowrap }
+.chip.ok { background: #dff0e3; color: var(--ok) } .chip.alerta { background: #faeccb; color: var(--alerta) }
+.chip.critico { background: #f8dcd8; color: var(--critico) } .chip.info { background: #dbe8f5; color: var(--info) }
+.chip.neutro { background: var(--cream); color: var(--muted) }
+
+/* KPIs interiores */
+.kpis-int { display: grid; gap: 3mm }
+.kpis-int .k { border: 1px solid var(--linea); border-radius: 2.5mm; padding: 3.5mm 4mm; background: var(--paper) }
+.kpis-int .v { font-family: 'Nunito Sans'; font-weight: 800; font-size: 17pt; line-height: 1.1; color: var(--forest) }
+.kpis-int .e { font-size: 7.6pt; font-weight: 700; margin-top: .8mm } .kpis-int .d { font-size: 6.8pt; color: var(--muted) }
+
+/* Barras de avance */
+.barras { display: grid; gap: 2.4mm }
+.barra { display: grid; grid-template-columns: 34mm 1fr 12mm; gap: 3mm; align-items: center }
+.barra .n { font-weight: 700; font-size: 8pt } .barra .pct { font-family: 'JetBrains Mono'; font-size: 7pt; text-align: right }
+.barra .pista { height: 2.6mm; background: var(--cream); border-radius: 2mm; overflow: hidden } .barra .relleno { height: 100%; border-radius: 2mm }
+.barra .nota { grid-column: 2 / 4; font-size: 7pt; color: var(--muted); margin-top: -1.4mm }
+
+/* Listas */
+ul.lista { list-style: none } ul.lista li { position: relative; padding-left: 4mm; margin-top: .9mm }
+ul.lista li::before { content: ''; position: absolute; left: .4mm; top: 1.9mm; width: 1.6mm; height: 1.6mm; border-radius: 50%; background: var(--moss) }
+
+/* Fuentes */
+.fuentes { border-top: 1px solid var(--linea); padding-top: 2.5mm; font-size: 6.6pt; color: var(--muted); line-height: 1.55 }
