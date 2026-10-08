@@ -4895,3 +4895,10 @@
   color: #e0e9e2 !important;
   opacity: 1 !important;
 }
+
+
+/* En la sección de necesidades el encabezado descansa sobre fondo marfil,
+   por lo que su texto descriptivo usa tinta oscura en lugar de blanco. */
+.aiden-redesign #necesidades .aiden-section-header > p {
+  color: #536257 !important;
+}
