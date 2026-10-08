@@ -68,6 +68,8 @@ export default function Inicio() {
   useTitulo(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [solicitudEnviada, setSolicitudEnviada] = useState(false);
+  const [errorSolicitud, setErrorSolicitud] = useState(false);
+  const [enviandoSolicitud, setEnviandoSolicitud] = useState(false);
   const [headerCompacto, setHeaderCompacto] = useState(false);
   const [conexionActiva, setConexionActiva] = useState(0);
   const [intencionActiva, setIntencionActiva] = useState(0);
@@ -80,12 +82,22 @@ export default function Inicio() {
     document.getElementById("demostracion")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const prepararSolicitud = (event) => {
+  const prepararSolicitud = async (event) => {
     event.preventDefault();
-    const datos = Object.fromEntries(new FormData(event.currentTarget).entries());
-    localStorage.setItem("aiden-demo-request", JSON.stringify({ ...datos, createdAt: new Date().toISOString() }));
-    event.currentTarget.reset();
-    setSolicitudEnviada(true);
+    setEnviandoSolicitud(true);
+    setSolicitudEnviada(false);
+    setErrorSolicitud(false);
+    const form = new FormData(event.currentTarget);
+    try {
+      const response = await fetch("/api/contacto", { method: "POST", body: form });
+      if (!response.ok) throw new Error("No se pudo entregar la solicitud");
+      event.currentTarget.reset();
+      setSolicitudEnviada(true);
+    } catch {
+      setErrorSolicitud(true);
+    } finally {
+      setEnviandoSolicitud(false);
+    }
   };
 
   useEffect(() => {
@@ -314,7 +326,7 @@ export default function Inicio() {
             <div>
               <p className="aiden-index">SOLICITAR DEMO</p>
               <h2>Cuéntanos qué necesitas <em>ordenar en tu vivero.</em></h2>
-              <p className="aiden-contact-lead">Completa los datos para preparar una solicitud de demo. En esta fase la landing conserva la información localmente; el receptor comercial definitivo debe conectarse antes de producción.</p>
+              <p className="aiden-contact-lead">Cuéntanos qué quieres mejorar y prepara una conversación comercial. La landing entrega la solicitud al receptor configurado mediante un webhook seguro en el despliegue.</p>
               <div className="aiden-contact-points"><span>01 <b>Conversación orientada</b></span><span>02 <b>Necesidad concreta</b></span><span>03 <b>Demo del producto</b></span></div>
             </div>
             <form className="aiden-lead-form" onSubmit={prepararSolicitud}>
@@ -322,8 +334,9 @@ export default function Inicio() {
               <label>Empresa o vivero<input name="empresa" required autoComplete="organization" placeholder="Nombre de la organización" /></label>
               <label>Correo electrónico<input name="email" type="email" required autoComplete="email" placeholder="correo@empresa.com" /></label>
               <label>¿Qué quieres resolver?<textarea name="mensaje" rows="4" placeholder="Producción, trazabilidad, inventario, costos..." /></label>
-              <button type="submit" className="aiden-button aiden-button-dark aiden-button-large">Preparar solicitud <ArrowRight size={15} /></button>
-              {solicitudEnviada && <p className="aiden-form-status is-success" role="status">Solicitud preparada en este navegador. Falta conectar el receptor comercial para enviarla.</p>}
+              <button type="submit" className="aiden-button aiden-button-dark aiden-button-large" disabled={enviandoSolicitud}>{enviandoSolicitud ? "Enviando..." : "Solicitar demo"} <ArrowRight size={15} /></button>
+              {solicitudEnviada && <p className="aiden-form-status is-success" role="status">Solicitud recibida. El equipo puede continuar la conversación.</p>}
+              {errorSolicitud && <p className="aiden-form-status" role="alert">No fue posible entregar la solicitud. El receptor comercial debe estar configurado en el despliegue.</p>}
             </form>
           </div>
         </section>
