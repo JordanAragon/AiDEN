@@ -4878,3 +4878,18 @@
     animation-duration: .01ms !important;
   }
 }
+
+
+/* Contraste WCAG AA: índices legibles en papel y crema, con variante explícita
+   para secciones oscuras. La jerarquía y el tratamiento editorial se conservan. */
+.aiden-redesign .aiden-index {
+  color: #435448 !important;
+  opacity: 1 !important;
+}
+.aiden-redesign .aiden-section-header-dark .aiden-index,
+.aiden-redesign .aiden-complexity .aiden-index,
+.aiden-redesign .aiden-index-light,
+.aiden-redesign .aiden-final .aiden-index {
+  color: #e0e9e2 !important;
+  opacity: 1 !important;
+}

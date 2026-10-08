@@ -184,3 +184,11 @@ html.aiden-dark .aiden-app-shell :is(
 .aiden-app-shell button:disabled {
   cursor: not-allowed;
 }
+
+
+/* Texto auxiliar: contraste AA suficiente sobre tarjetas blancas, fondos
+   slate-50 y fondos de alerta. Solo aplica al tema claro. */
+html:not(.aiden-dark) .aiden-app-shell .text-slate-500,
+html:not(.aiden-dark) .aiden-app-shell .text-slate-400 {
+  color: #475569 !important;
+}

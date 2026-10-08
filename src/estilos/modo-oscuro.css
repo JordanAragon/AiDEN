@@ -232,3 +232,13 @@ html.aiden-dark .aiden-app-shell .aiden-modal-entrada > header h2 {
 html.aiden-dark .aiden-app-shell .aiden-modal-entrada > header p {
   color: #91a098 !important;
 }
+
+
+/* Contraste en tema oscuro para superficies translúcidas y llamadas a la acción. */
+html.aiden-dark .bg-slate-50\/80 {
+  background-color: #17211c !important;
+}
+html.aiden-dark .aiden-app-shell .aiden-supervisor-pulso a.aiden-supervisor-cta {
+  background-color: #fffdf8 !important;
+  color: #0b2b1b !important;
+}
