@@ -99,6 +99,30 @@ try:
             "el formulario enlaza a la política de privacidad",
         )
 
+        pagina.unroute("**/api/contacto")
+        pagina.route(
+            "**/api/contacto",
+            lambda route: route.fulfill(
+                status=503,
+                content_type="application/json",
+                body='{"error":"El receptor comercial todavía no está configurado."}',
+            ),
+        )
+        pagina.locator('.aiden-lead-form input[name="nombre"]').fill("María González")
+        pagina.locator('.aiden-lead-form input[name="empresa"]').fill("Vivero del Sur")
+        pagina.locator('.aiden-lead-form input[name="email"]').fill("maria@vivero.co")
+        pagina.locator(".aiden-lead-form button[type=submit]").click()
+        estado_error = pagina.locator('.aiden-form-status[role="alert"]')
+        estado_error.wait_for()
+        registro.check(
+            "no está disponible temporalmente" in estado_error.inner_text(),
+            "el formulario comunica un error temporal cuando el receptor no está configurado",
+        )
+        registro.check(
+            pagina.locator('.aiden-lead-form input[name="nombre"]').input_value() == "María González",
+            "los datos se conservan cuando el envío falla para permitir reintentar",
+        )
+
         navegador.close()
     registro.resumen()
 finally:

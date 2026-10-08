@@ -153,3 +153,34 @@ html { scroll-padding-top: 1.25rem; }
     transition-duration: .01ms !important;
   }
 }
+
+
+/* Teclado y feedback coherentes en todos los módulos privados. */
+.aiden-app-shell :is(
+  a,
+  button,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea,
+  [tabindex="0"]
+):focus-visible {
+  outline: 3px solid #176b45;
+  outline-offset: 2px;
+}
+html.aiden-dark .aiden-app-shell :is(
+  a,
+  button,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea,
+  [tabindex="0"]
+):focus-visible {
+  outline-color: #8ee0ae;
+}
+.aiden-app-shell :is(a,button) {
+  -webkit-tap-highlight-color: rgba(23, 107, 69, 0.12);
+}
+.aiden-app-shell :is(button,a)[aria-disabled="true"],
+.aiden-app-shell button:disabled {
+  cursor: not-allowed;
+}

@@ -105,11 +105,20 @@ export default function Inicio() {
         },
         body: JSON.stringify(datos),
       });
-      if (!response.ok) throw new Error("No se pudo entregar la solicitud");
+
+      if (response.status === 503) {
+        throw new Error("FORMULARIO_NO_DISPONIBLE");
+      }
+      if (!response.ok) throw new Error("ENVIO_NO_CONFIRMADO");
+
       formulario.reset();
       setSolicitudEnviada(true);
-    } catch {
-      setErrorSolicitud("No fue posible enviar la solicitud. Inténtalo de nuevo más tarde.");
+    } catch (error) {
+      setErrorSolicitud(
+        error?.message === "FORMULARIO_NO_DISPONIBLE"
+          ? "El formulario no está disponible temporalmente. Inténtalo de nuevo más tarde."
+          : "No fue posible enviar la solicitud. Inténtalo de nuevo más tarde.",
+      );
     } finally {
       setEnviandoSolicitud(false);
     }
