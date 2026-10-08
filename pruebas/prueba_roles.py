@@ -91,7 +91,7 @@ with sync_playwright() as p:
     pg.get_by_role("button", name="Cuenta").click(); pg.get_by_role("button", name="Cerrar sesión").click()
     pg.wait_for_url("**/login"); entrar(pg, "supervisor")
     r.check("/dashboard-supervisor" in pg.url, "tras cerrar sesión, la siguiente cuenta entra a su propio tablero")
-    r.check(visible(pg.get_by_text("1 completadas hoy")), "el supervisor ve la tarea completada por el operario")
+    r.check(visible(pg.get_by_text("1 completada hoy")), "el supervisor ve la tarea completada por el operario")
     pg.goto(BASE + "/trazabilidad"); pg.locator("ol li").first.wait_for(timeout=8000)
     r.check(pg.locator("ol li").filter(has_text="Tarea completada").filter(has_text="Andrés").count() >= 1, "la tarea completada entra a la trazabilidad")
     ctx.close()
