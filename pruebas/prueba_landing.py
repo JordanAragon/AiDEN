@@ -14,6 +14,7 @@ try:
 
         pagina.goto(BASE + "/")
         pagina.wait_for_load_state("domcontentloaded")
+        pagina.locator(".aiden-redesign").wait_for()
         registro.check("AiDEN" in pagina.title(), "la landing define el título del documento")
         enlace_salto = pagina.locator(".aiden-skip-link")
         registro.check(
