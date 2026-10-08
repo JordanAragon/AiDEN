@@ -100,9 +100,7 @@ try:
         )
 
         pagina.unroute("**/api/contacto")
-        # La respuesta 503 se está provocando intencionalmente para probar la recuperación.
-        # Evitamos contar el mensaje de recurso HTTP fallido como error inesperado de consola.
-        pagina.remove_all_listeners("console")
+        # La respuesta 503 se provoca intencionalmente; se comprueba la recuperación en la interfaz.
         pagina.route(
             "**/api/contacto",
             lambda route: route.fulfill(
@@ -125,6 +123,8 @@ try:
             pagina.locator('.aiden-lead-form input[name="nombre"]').input_value() == "María González",
             "los datos se conservan cuando el envío falla para permitir reintentar",
         )
+        # Playwright registra el 503 simulado como error de red aunque la UI lo gestione correctamente.
+        registro.errores[:] = [error for error in registro.errores if "status of 503 (Service Unavailable)" not in error]
 
         navegador.close()
     registro.resumen()
