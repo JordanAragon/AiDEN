@@ -79,10 +79,11 @@ with sync_playwright() as p:
 
     print("Inventario desde alerta")
     pg.goto(BASE + "/dashboard-supervisor"); pg.wait_for_timeout(400)
-    ver_todo = pg.get_by_role("button", name=re.compile("^Ver todo"))
+    panel_alertas = pg.locator("article").filter(has=pg.get_by_role("heading", name="Atención inmediata"))
+    ver_todo = panel_alertas.get_by_role("button", name=re.compile("^Ver todo"))
     if ver_todo.count():
-        ver_todo.first.click()
-    pg.get_by_role("link", name="Registrar entrada", exact=True).click(); pg.wait_for_timeout(400)
+        ver_todo.click()
+    panel_alertas.get_by_role("link", name="Registrar entrada", exact=True).click(); pg.wait_for_timeout(400)
     dlg = pg.get_by_role("dialog")
     r.check(dlg.get_by_role("heading", name="Registrar movimiento").is_visible(), "alerta de inventario abre la entrada precargada")
     dlg.get_by_label("Cantidad").fill("10"); dlg.get_by_role("button", name="Guardar movimiento").click()
