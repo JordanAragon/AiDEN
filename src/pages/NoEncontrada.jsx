@@ -9,20 +9,20 @@ export default function NoEncontrada() {
   const sesion = useSesion();
   useTitulo("Página no encontrada");
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#f5f7f5] px-6 py-12 text-slate-900">
-      <section className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+    <main className="aiden-public-page aiden-not-found-page">
+      <section className="aiden-public-card aiden-not-found-card">
         <Link to="/" className="inline-flex items-center" aria-label="AiDEN, ir al inicio">
           <LogotipoAiden alto={34} />
         </Link>
-        <p className="mt-8 text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">Error 404</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Esta página no existe.</h1>
-        <p className="mt-2 text-sm leading-6 text-slate-500">Puede que el enlace esté mal escrito o que la vista haya cambiado de lugar. Si buscabas un lote, entra y usa el buscador (⌘K o Ctrl K) con su código.</p>
+        <p className="aiden-public-eyebrow">Error 404 · Página no encontrada</p>
+        <h1>Esta página no existe.</h1>
+        <p className="aiden-not-found-copy">Puede que el enlace esté mal escrito o que la vista haya cambiado de lugar. Si buscabas un lote, entra y usa el buscador (⌘K o Ctrl K) con su código.</p>
         <div className="mt-6 flex flex-wrap gap-2">
-          <Link to={sesion ? getDashboardPath(sesion.role) : "/"} className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 px-4 py-2.5 text-sm font-semibold !text-white hover:bg-emerald-800">
+          <Link to={sesion ? getDashboardPath(sesion.role) : "/"} className="aiden-public-primary inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold">
             {sesion ? "Ir a mi tablero" : "Ir al inicio"} <ArrowRight size={15} aria-hidden="true" />
           </Link>
           {!sesion && (
-            <Link to="/login" className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+            <Link to="/login" className="aiden-public-secondary inline-flex items-center rounded-xl px-4 py-2.5 text-sm font-semibold">
               Iniciar sesión
             </Link>
           )}

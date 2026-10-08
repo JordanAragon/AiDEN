@@ -14,7 +14,7 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardHeroPreview from "../components/dashboard/DashboardHeroPreview";
 import { useTitulo } from "../hooks/useTitulo";
@@ -68,33 +68,48 @@ export default function Inicio() {
   useTitulo(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [solicitudEnviada, setSolicitudEnviada] = useState(false);
-  const [errorSolicitud, setErrorSolicitud] = useState(false);
+  const [errorSolicitud, setErrorSolicitud] = useState("");
   const [enviandoSolicitud, setEnviandoSolicitud] = useState(false);
   const [headerCompacto, setHeaderCompacto] = useState(false);
   const [conexionActiva, setConexionActiva] = useState(0);
   const [intencionActiva, setIntencionActiva] = useState(0);
   const [pasoActivo, setPasoActivo] = useState(0);
+  const menuButtonRef = useRef(null);
+  const menuPanelRef = useRef(null);
   const cerrarMenu = () => setMenuAbierto(false);
 
   const seleccionarIntencion = (index) => {
     setIntencionActiva(index);
     setPasoActivo(intenciones[index][3]);
-    document.getElementById("demostracion")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById("demostracion")?.scrollIntoView({
+      behavior: movimientoReducido ? "auto" : "smooth",
+      block: "start",
+    });
   };
 
   const prepararSolicitud = async (event) => {
     event.preventDefault();
+    const formulario = event.currentTarget;
+    const datos = Object.fromEntries(new FormData(formulario).entries());
     setEnviandoSolicitud(true);
     setSolicitudEnviada(false);
-    setErrorSolicitud(false);
-    const form = new FormData(event.currentTarget);
+    setErrorSolicitud("");
+
     try {
-      const response = await fetch("/api/contacto", { method: "POST", body: form });
+      const response = await fetch("/api/contacto", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(datos),
+      });
       if (!response.ok) throw new Error("No se pudo entregar la solicitud");
-      event.currentTarget.reset();
+      formulario.reset();
       setSolicitudEnviada(true);
     } catch {
-      setErrorSolicitud(true);
+      setErrorSolicitud("No fue posible enviar la solicitud. Inténtalo de nuevo más tarde.");
     } finally {
       setEnviandoSolicitud(false);
     }
@@ -112,8 +127,22 @@ export default function Inicio() {
     return () => document.body.classList.remove("aiden-menu-open");
   }, [menuAbierto]);
 
+  useEffect(() => {
+    if (!menuAbierto) return undefined;
+    const manejarTecla = (event) => {
+      if (event.key === "Escape") {
+        setMenuAbierto(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", manejarTecla);
+    menuPanelRef.current?.querySelector("a")?.focus();
+    return () => window.removeEventListener("keydown", manejarTecla);
+  }, [menuAbierto]);
+
   return (
     <div className="aiden-redesign">
+      <a className="aiden-skip-link" href="#contenido">Saltar al contenido principal</a>
       <header className={`aiden-header ${headerCompacto ? "is-compact" : ""}`}>
         <nav className="aiden-shell aiden-header-inner" aria-label="Navegación principal">
           <Link to="/" className="aiden-brand" onClick={cerrarMenu} aria-label="AiDEN, ir al inicio"><LogotipoAiden alto={34} /></Link>
@@ -128,11 +157,25 @@ export default function Inicio() {
             <a href="#contacto" className="aiden-header-login">Solicitar demo</a>
             <Link to="/login" className="aiden-button aiden-button-ghost">Iniciar sesión</Link>
           </div>
-          <button type="button" className="aiden-menu" aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"} aria-expanded={menuAbierto} onClick={() => setMenuAbierto((open) => !open)}>
+          <button
+            ref={menuButtonRef}
+            type="button"
+            className="aiden-menu"
+            aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
+            aria-controls="aiden-mobile-panel"
+            aria-expanded={menuAbierto}
+            onClick={() => setMenuAbierto((open) => !open)}
+          >
             {menuAbierto ? <X size={19} /> : <Menu size={19} />}
           </button>
         </nav>
-        <div className={`aiden-mobile-panel ${menuAbierto ? "is-visible" : ""}`} aria-hidden={!menuAbierto}>
+        <div
+          id="aiden-mobile-panel"
+          ref={menuPanelRef}
+          className={`aiden-mobile-panel ${menuAbierto ? "is-visible" : ""}`}
+          aria-hidden={!menuAbierto}
+          inert={!menuAbierto}
+        >
           <a href="#operacion" onClick={cerrarMenu}>La operación</a>
           <a href="#necesidades" onClick={cerrarMenu}>Necesidades</a>
           <a href="#sistema" onClick={cerrarMenu}>El sistema</a>
@@ -143,7 +186,7 @@ export default function Inicio() {
         </div>
       </header>
 
-      <main>
+      <main id="contenido" tabIndex={-1}>
         <section className="aiden-hero" id="inicio">
           <div className="aiden-shell aiden-hero-grid">
             <article className="aiden-hero-copy">
@@ -213,7 +256,7 @@ export default function Inicio() {
               <p>El lote funciona como punto de lectura para conectar eventos que, de otra forma, aparecen como registros aislados.</p>
             </header>
             <article className="aiden-operation-map">
-              <div className="aiden-map-visual" aria-label="Relaciones de AiDEN">
+              <div className="aiden-map-visual" role="img" aria-label="Relaciones de AiDEN: producción, inventario, ambiente, calidad, trazabilidad y costos conectados alrededor del lote">
                 <span className="aiden-map-eyebrow">RELACIONES DEL SISTEMA</span>
                 <span className="aiden-map-ring aiden-map-ring-one" /><span className="aiden-map-ring aiden-map-ring-two" />
                 {connections.map(([name], index) => <span className={`aiden-map-node aiden-map-node-${index + 1} ${conexionActiva === index ? "is-active" : ""}`} key={name}>{name}</span>)}
@@ -255,7 +298,7 @@ export default function Inicio() {
                 </div>
               ))}
             </div>
-            <div className="aiden-demo-readout">
+            <div className="aiden-demo-readout" aria-live="polite" aria-atomic="true">
               <div><span>PASO {demoPasos[pasoActivo][0]}</span><strong>{demoPasos[pasoActivo][1]}</strong></div>
               <p>{demoPasos[pasoActivo][3]}</p>
             </div>
@@ -325,18 +368,19 @@ export default function Inicio() {
           <div className="aiden-shell aiden-contact-grid">
             <div>
               <p className="aiden-index">SOLICITAR DEMO</p>
-              <h2>Cuéntanos qué necesitas <em>ordenar en tu vivero.</em></h2>
+              <h2 id="contacto-titulo">Cuéntanos qué necesitas <em>ordenar en tu vivero.</em></h2>
               <p className="aiden-contact-lead">Cuéntanos qué quieres mejorar y prepara una conversación comercial. La landing entrega la solicitud al receptor configurado mediante un webhook seguro en el despliegue.</p>
               <div className="aiden-contact-points"><span>01 <b>Conversación orientada</b></span><span>02 <b>Necesidad concreta</b></span><span>03 <b>Demo del producto</b></span></div>
             </div>
-            <form className="aiden-lead-form" onSubmit={prepararSolicitud}>
-              <label>Nombre<input name="nombre" required autoComplete="name" placeholder="Tu nombre" /></label>
-              <label>Empresa o vivero<input name="empresa" required autoComplete="organization" placeholder="Nombre de la organización" /></label>
-              <label>Correo electrónico<input name="email" type="email" required autoComplete="email" placeholder="correo@empresa.com" /></label>
-              <label>¿Qué quieres resolver?<textarea name="mensaje" rows="4" placeholder="Producción, trazabilidad, inventario, costos..." /></label>
+            <form className="aiden-lead-form" onSubmit={prepararSolicitud} aria-label="Solicitud de demostración de AiDEN" aria-busy={enviandoSolicitud}>
+              <label>Nombre<input name="nombre" required minLength="2" maxLength="120" autoComplete="name" placeholder="Tu nombre" /></label>
+              <label>Empresa o vivero<input name="empresa" required minLength="2" maxLength="160" autoComplete="organization" placeholder="Nombre de la organización" /></label>
+              <label>Correo electrónico<input name="email" type="email" required maxLength="254" autoComplete="email" placeholder="correo@empresa.com" /></label>
+              <label>¿Qué quieres resolver?<textarea name="mensaje" rows="4" maxLength="2000" placeholder="Producción, trazabilidad, inventario, costos..." /></label>
               <button type="submit" className="aiden-button aiden-button-dark aiden-button-large" disabled={enviandoSolicitud}>{enviandoSolicitud ? "Enviando..." : "Solicitar demo"} <ArrowRight size={15} /></button>
-              {solicitudEnviada && <p className="aiden-form-status is-success" role="status">Solicitud recibida. El equipo puede continuar la conversación.</p>}
-              {errorSolicitud && <p className="aiden-form-status" role="alert">No fue posible entregar la solicitud. El receptor comercial debe estar configurado en el despliegue.</p>}
+              <p className="aiden-lead-privacy">Al enviar estos datos, solicitas que el equipo te contacte. Consulta la <Link to="/privacidad">Política de privacidad</Link>.</p>
+              {solicitudEnviada && <p className="aiden-form-status is-success" role="status" aria-live="polite">Solicitud recibida. El equipo puede continuar la conversación.</p>}
+              {errorSolicitud && <p className="aiden-form-status" role="alert">{errorSolicitud}</p>}
             </form>
           </div>
         </section>

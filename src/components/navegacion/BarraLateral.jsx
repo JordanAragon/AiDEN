@@ -45,12 +45,28 @@ const roleLabel = {
   operario: "Operario",
 };
 
+function leerPreferencia(clave) {
+  try {
+    return window.localStorage.getItem(clave);
+  } catch {
+    return null;
+  }
+}
+
+function guardarPreferencia(clave, valor) {
+  try {
+    window.localStorage.setItem(clave, valor);
+  } catch {
+    // Son preferencias opcionales: la barra sigue funcionando sin persistencia.
+  }
+}
+
 export default function BarraLateral() {
   const [colapsado, setColapsado] = useState(
-    () => localStorage.getItem("aiden-sidebar") === "collapsed",
+    () => leerPreferencia("aiden-sidebar") === "collapsed",
   );
   const [oscuro, setOscuro] = useState(
-    () => localStorage.getItem("aiden-theme") === "dark",
+    () => leerPreferencia("aiden-theme") === "dark",
   );
   const [movilAbierto, setMovilAbierto] = useState(false);
   const location = useLocation();
@@ -70,11 +86,11 @@ export default function BarraLateral() {
 
   useEffect(() => {
     document.documentElement.classList.toggle("aiden-dark", oscuro);
-    localStorage.setItem("aiden-theme", oscuro ? "dark" : "light");
+    guardarPreferencia("aiden-theme", oscuro ? "dark" : "light");
   }, [oscuro]);
 
   useEffect(() => {
-    localStorage.setItem("aiden-sidebar", colapsado ? "collapsed" : "expanded");
+    guardarPreferencia("aiden-sidebar", colapsado ? "collapsed" : "expanded");
   }, [colapsado]);
 
   useEffect(() => {

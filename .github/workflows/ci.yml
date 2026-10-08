@@ -66,6 +66,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Landing y captación
+        run: python pruebas/prueba_landing.py
+
       - name: Flujos principales
         run: |
           python pruebas/prueba_admin.py

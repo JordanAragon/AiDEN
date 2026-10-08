@@ -4742,3 +4742,139 @@
     justify-content: center;
   }
 }
+
+
+/* Refinamiento transversal: legibilidad, foco y controles públicos. */
+.aiden-skip-link {
+  position: fixed;
+  z-index: 200;
+  top: 1rem;
+  left: 1rem;
+  padding: .8rem 1rem;
+  transform: translateY(calc(-100% - 1.5rem));
+  border: 1px solid rgba(255,253,248,.28);
+  border-radius: .7rem;
+  background: #0b2b1b;
+  color: #fffdf8;
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform 160ms ease;
+}
+.aiden-skip-link:focus {
+  transform: translateY(0);
+  outline: 3px solid #d9ea73;
+  outline-offset: 3px;
+}
+.aiden-redesign [id] { scroll-margin-top: 6rem; }
+.aiden-redesign #contenido:focus { outline: none; }
+.aiden-mobile-panel[aria-hidden="true"] {
+  visibility: hidden;
+  pointer-events: none;
+}
+.aiden-mobile-panel.is-visible {
+  visibility: visible;
+  pointer-events: auto;
+}
+.aiden-redesign :is(a,button,input,textarea):focus-visible {
+  outline: 3px solid #718b58;
+  outline-offset: 3px;
+}
+.aiden-intent-card strong {
+  font-size: clamp(17px, 1.45vw, 20px);
+  line-height: 1.2;
+}
+.aiden-intent-card p,
+.aiden-connection-item p,
+.aiden-system-readout small,
+.aiden-evidence-cards article p,
+.aiden-bento-card p,
+.aiden-role-row p {
+  font-size: 13px;
+  line-height: 1.65;
+}
+.aiden-connection-item small { font-size: 11px; line-height: 1.6; }
+.aiden-flow-card > span,
+.aiden-demo-readout span {
+  color: rgba(255,253,248,.74);
+  font-size: 10px;
+}
+.aiden-flow-card p {
+  color: rgba(255,253,248,.78);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.aiden-demo-readout p {
+  color: rgba(255,253,248,.82);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.aiden-complexity-metrics span {
+  color: rgba(255,253,248,.72);
+  font-size: 10px;
+}
+.aiden-contact-points span { font-size: 10px; }
+.aiden-contact-points b { font-size: 12px; line-height: 1.45; }
+.aiden-lead-form label {
+  font-size: 11px;
+  letter-spacing: .055em;
+}
+.aiden-lead-form input,
+.aiden-lead-form textarea {
+  font-size: 15px;
+  line-height: 1.5;
+}
+.aiden-lead-form input { min-height: 48px; }
+.aiden-lead-form input:focus-visible,
+.aiden-lead-form textarea:focus-visible {
+  outline: 3px solid #718b58;
+  outline-offset: 2px;
+}
+.aiden-lead-privacy {
+  margin: 0;
+  color: #526057;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.aiden-lead-privacy a {
+  color: #176b45;
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: .18em;
+}
+.aiden-form-status { margin: 0; font-size: 13px; line-height: 1.6; }
+.aiden-flow-card:focus-visible,
+.aiden-intent-card:focus-visible,
+.aiden-connection-item:focus-visible {
+  outline: 3px solid #d9ea73;
+  outline-offset: 3px;
+}
+@media (max-width: 900px) {
+  .aiden-contact-grid {
+    grid-template-columns: minmax(0,1fr);
+    gap: 2.5rem;
+  }
+  .aiden-lead-form { width: 100%; }
+  .aiden-demo-readout { gap: 1.25rem; }
+}
+@media (max-width: 600px) {
+  .aiden-demo-readout {
+    grid-template-columns: minmax(0,1fr);
+    gap: .75rem;
+    padding: 1rem;
+  }
+  .aiden-lead-form {
+    padding: 1.1rem;
+    border-radius: 1rem;
+  }
+  .aiden-lead-form input,
+  .aiden-lead-form textarea { font-size: 16px; }
+  .aiden-flow-card p { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aiden-skip-link,
+  .aiden-redesign * {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+  }
+}
