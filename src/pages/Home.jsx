@@ -52,6 +52,7 @@ export default function Inicio() {
   useTitulo(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [solicitudEnviada, setSolicitudEnviada] = useState(false);
+  const [errorSolicitud, setErrorSolicitud] = useState(false);
   const [enviandoSolicitud, setEnviandoSolicitud] = useState(false);
   const [headerCompacto, setHeaderCompacto] = useState(false);
   const [conexionActiva, setConexionActiva] = useState(0);
@@ -61,6 +62,7 @@ export default function Inicio() {
     event.preventDefault();
     setEnviandoSolicitud(true);
     setSolicitudEnviada(false);
+    setErrorSolicitud(false);
     const form = new FormData(event.currentTarget);
     try {
       const response = await fetch("/api/contacto", { method: "POST", body: form });
@@ -69,6 +71,7 @@ export default function Inicio() {
       setSolicitudEnviada(true);
     } catch {
       setSolicitudEnviada(false);
+      setErrorSolicitud(true);
     } finally {
       setEnviandoSolicitud(false);
     }
@@ -206,7 +209,7 @@ export default function Inicio() {
               <label>¿Qué quieres resolver?<textarea name="mensaje" rows="4" placeholder="Producción, trazabilidad, inventario, costos..." /></label>
               <button type="submit" className="aiden-button aiden-button-dark aiden-button-large" disabled={enviandoSolicitud}>{enviandoSolicitud ? "Enviando..." : "Solicitar demo"} <ArrowRight size={15} /></button>
               {solicitudEnviada && <p className="aiden-form-status is-success" role="status">Solicitud recibida. Nos pondremos en contacto contigo.</p>}
-              {!solicitudEnviada && !enviandoSolicitud && <p className="aiden-form-status">La recepción comercial requiere configurar el endpoint de leads antes de producción.</p>}
+              {errorSolicitud && <p className="aiden-form-status" role="alert">No se pudo enviar la solicitud. El receptor comercial todavía debe quedar configurado.</p>}
             </form>
           </div>
         </section>
