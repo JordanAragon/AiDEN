@@ -2081,7 +2081,7 @@
 
 @keyframes aiden-premium-reveal {
   from {
-    opacity: .08;
+    opacity: 1;
     transform: translateY(24px);
   }
   to {
@@ -2379,12 +2379,14 @@
 
 @keyframes aiden-premium-reveal-safe {
   from {
-    opacity: .08;
-    filter: blur(7px);
+    opacity: 1;
+    filter: none;
+    transform: translateY(18px);
   }
   to {
     opacity: 1;
-    filter: blur(0);
+    filter: none;
+    transform: translateY(0);
   }
 }
 
