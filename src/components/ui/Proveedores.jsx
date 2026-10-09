@@ -3,6 +3,7 @@ import { AlertTriangle, CheckCircle2, Info, X } from "lucide-react";
 import { ContextoAvisos, ContextoConfirmacion } from "../../contexto/retroalimentacion";
 import Modal from "./Modal";
 import { Boton } from "./Boton";
+import EstadoConexion from "./EstadoConexion";
 
 const ICONOS = { exito: CheckCircle2, error: AlertTriangle, info: Info };
 const COLOR_ICONO = { exito: "text-emerald-400", error: "text-red-400", info: "text-sky-300" };
@@ -54,6 +55,7 @@ export default function ProveedorRetroalimentacion({ children }) {
           <p className="text-sm leading-6 text-slate-600">{confirmacion?.mensaje}</p>
         </Modal>
         <div aria-live="polite" className="pointer-events-none fixed inset-x-3 bottom-5 z-[60] flex flex-col items-center gap-2 sm:inset-x-auto sm:right-5 sm:items-end">
+          <EstadoConexion />
           {avisos.map((item) => {
             const Icono = ICONOS[item.tipo] || Info;
             return (
