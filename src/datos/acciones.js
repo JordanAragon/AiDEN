@@ -1,7 +1,7 @@
-import { crearId, guardar, inicializarDatos, obtener } from "./almacen";
-import { CARGO_A_ROL, ETAPAS, EVENTOS_MANUALES, ROLES, indiceEtapa } from "./catalogos";
+import { crearId, guardar, importarRespaldo, inicializarDatos, obtener } from "./almacen";
+import { CARGO_A_ROL, ETAPAS, EVENTOS_MANUALES, PRIORIDADES, ROLES, indiceEtapa } from "./catalogos";
 import { estadoIncidencia, siguienteCodigo } from "./selectores";
-import { actualizarUsuario, listarUsuarios, register } from "../utilidades/autenticacion";
+import { actualizarUsuario, asignarContrasena, cambiarContrasena, listarUsuarios, register } from "../utilidades/autenticacion";
 import { ahoraLocal, aFecha, dinero, hoyISO, numero } from "../utilidades/formato";
 
 /*
@@ -39,10 +39,22 @@ function fechaValida(valor, campo) {
   return valor;
 }
 
+function exigirActivo(sesion) {
+  if (!sesion?.id) fallo("No hay una sesión activa.");
+  if (sesion.personaId && persona(sesion.personaId)?.estado === "Inactivo") {
+    fallo("Tu ficha está inactiva. Pide a administración que la reactive.");
+  }
+}
+
 function exigirGestor(sesion) {
   if (sesion?.role !== "admin" && sesion?.role !== "supervisor") {
     fallo("Esta acción la realiza supervisión o administración.");
   }
+  exigirActivo(sesion);
+}
+
+function plural(n, uno, varios) {
+  return `${n} ${n === 1 ? uno : varios}`;
 }
 
 function persona(id) {
@@ -66,7 +78,13 @@ function buscarLote(codigo) {
   return lote;
 }
 
+function exigirLoteActivo(lote) {
+  if (lote.estado === "Cerrado") fallo(`El lote ${lote.lote} está cerrado.`);
+  return lote;
+}
+
 function loteDeOperario(codigo, sesion) {
+  exigirActivo(sesion);
   const lote = buscarLote(codigo);
   if (sesion?.role === "operario" && lote.responsableId !== sesion.personaId) {
     fallo(`El lote ${codigo} no está asignado a ti.`);
@@ -146,7 +164,7 @@ export function crearLote(formulario, sesion) {
 
 export function editarLote(codigo, cambios, sesion) {
   exigirGestor(sesion);
-  const actual = buscarLote(codigo);
+  const actual = exigirLoteActivo(buscarLote(codigo));
   const siguiente = { ...actual };
   const eventos = [];
 
@@ -220,44 +238,63 @@ export function avanzarEtapa(codigo, sesion) {
   return etapa;
 }
 
+/*
+  Un lote se despacha desde Cosecha y se descarta desde cualquier etapa. No se
+  cierra con tareas abiertas (quedarían como alertas sin salida); al descartarlo,
+  sus incidencias abiertas se cierran con el descarte como acción documentada.
+*/
 export function cerrarLote(codigo, { motivo, detalle }, sesion) {
   exigirGestor(sesion);
   const lote = buscarLote(codigo);
   if (lote.estado === "Cerrado") fallo("El lote ya está cerrado.");
   if (!["Despachado", "Descartado"].includes(motivo)) fallo("Elige si el lote se despachó o se descartó.");
+  if (motivo === "Despachado" && lote.etapa !== ETAPAS[ETAPAS.length - 1]) {
+    fallo(`Solo se despachan lotes en ${ETAPAS[ETAPAS.length - 1]}. Si el lote se perdió, descártalo.`);
+  }
+  const tareasAbiertas = obtener("tareas").filter((t) => t.lote === codigo && t.estado !== "Completada");
+  if (tareasAbiertas.length) {
+    fallo(`Antes de cerrar ${codigo}, completa o elimina ${plural(tareasAbiertas.length, "tarea abierta", "tareas abiertas")}: ${tareasAbiertas.map((t) => t.titulo).join(", ")}.`);
+  }
+  const incidenciasAbiertas = obtener("calidad").filter((i) => i.lote === codigo && estadoIncidencia(i) !== "Cerrada");
+  if (motivo === "Despachado" && incidenciasAbiertas.length) {
+    fallo(`${codigo} tiene ${plural(incidenciasAbiertas.length, "incidencia abierta", "incidencias abiertas")} (${incidenciasAbiertas.map((i) => i.codigo).join(", ")}). Ciérralas antes de despachar.`);
+  }
   const nota = texto(detalle);
-  guardar(
-    conEventos(
-      {
-        lotes: obtener("lotes").map((l) =>
-          l.lote === codigo ? { ...l, estado: "Cerrado", cierre: hoyISO(), motivoCierre: motivo, notas: nota || l.notas } : l,
-        ),
-      },
-      [
-        evento({
-          lote: codigo,
-          tipo: motivo === "Despachado" ? "Despacho" : "Observación",
-          detalle: `Lote cerrado (${motivo.toLowerCase()}) con ${numero(lote.cantidad)} plantas.${nota ? ` ${nota}` : ""}`,
-          sesion,
-          origen: "Producción",
-        }),
-      ],
-    ),
-  );
+  const cambios = {
+    lotes: obtener("lotes").map((l) => (l.lote === codigo ? { ...l, estado: "Cerrado", cierre: hoyISO(), motivoCierre: motivo, detalleCierre: nota } : l)),
+  };
+  const eventos = [
+    evento({
+      lote: codigo,
+      tipo: motivo === "Despachado" ? "Despacho" : "Observación",
+      detalle: `Lote cerrado (${motivo.toLowerCase()}) con ${numero(lote.cantidad)} plantas.${nota ? ` ${nota}` : ""}`,
+      sesion,
+      origen: "Producción",
+    }),
+  ];
+  if (incidenciasAbiertas.length) {
+    // Se conserva la acción que ya estaba documentada y se deja constancia del descarte.
+    const cierre = `Cerrada por descarte del lote${nota ? `: ${nota}` : "."}`;
+    const accionDe = (i) => (i.accion ? `${i.accion} ${cierre}` : cierre);
+    const ids = new Set(incidenciasAbiertas.map((i) => i.id));
+    cambios.calidad = obtener("calidad").map((i) => (ids.has(i.id) ? { ...i, estado: "Cerrada", accion: accionDe(i), cierre: hoyISO() } : i));
+    for (const incidencia of incidenciasAbiertas) {
+      eventos.push(evento({ lote: codigo, tipo: "Cierre de incidencia", detalle: `${incidencia.codigo} cerrada: ${accionDe(incidencia)}`, sesion, origen: "Calidad" }));
+    }
+  }
+  guardar(conEventos(cambios, eventos));
 }
 
 /* ---------- Tareas ---------- */
 
-function validarTarea(formulario) {
+function validarTarea(formulario, actual) {
   const titulo = texto(formulario.titulo);
   if (titulo.length < 3) fallo("Escribe qué hay que hacer.");
-  const responsable = responsableActivo(formulario.responsableId);
-  if (!["Alta", "Media", "Baja"].includes(formulario.prioridad)) fallo("Elige la prioridad.");
+  const responsable =
+    actual && formulario.responsableId === actual.responsableId ? persona(actual.responsableId) || responsableActivo(formulario.responsableId) : responsableActivo(formulario.responsableId);
+  if (!PRIORIDADES.includes(formulario.prioridad)) fallo("Elige la prioridad.");
   const fecha = fechaValida(formulario.fecha, "la fecha límite");
-  if (formulario.lote) {
-    const lote = buscarLote(formulario.lote);
-    if (lote.estado === "Cerrado") fallo(`El lote ${lote.lote} está cerrado.`);
-  }
+  if (formulario.lote && formulario.lote !== actual?.lote) exigirLoteActivo(buscarLote(formulario.lote));
   return {
     titulo,
     responsableId: responsable.id,
@@ -280,7 +317,7 @@ export function editarTarea(id, formulario, sesion) {
   exigirGestor(sesion);
   const actual = obtener("tareas").find((t) => t.id === id);
   if (!actual) fallo("La tarea ya no existe.");
-  const siguiente = { ...actual, ...validarTarea({ ...actual, ...formulario }) };
+  const siguiente = { ...actual, ...validarTarea({ ...actual, ...formulario }, actual) };
   guardar({ tareas: obtener("tareas").map((t) => (t.id === id ? siguiente : t)) });
   return siguiente;
 }
@@ -289,6 +326,7 @@ export function cambiarEstadoTarea(id, estado, sesion, nota = "") {
   const tarea = obtener("tareas").find((t) => t.id === id);
   if (!tarea) fallo("La tarea ya no existe.");
   if (!["Pendiente", "En curso", "Completada"].includes(estado)) fallo("Estado de tarea no válido.");
+  exigirActivo(sesion);
   if (sesion?.role === "operario" && tarea.responsableId !== sesion.personaId) fallo("Solo puedes actualizar tus propias tareas.");
   const notaLimpia = texto(nota);
   const siguiente = {
@@ -308,6 +346,9 @@ export function cambiarEstadoTarea(id, estado, sesion, nota = "") {
         origen: "Personal",
       }),
     );
+  }
+  if (tarea.estado === "Completada" && estado !== "Completada" && tarea.lote) {
+    eventos.push(evento({ lote: tarea.lote, tipo: "Observación", detalle: `Se reabre la tarea «${tarea.titulo}».`, sesion, origen: "Personal" }));
   }
   guardar(conEventos({ tareas: obtener("tareas").map((t) => (t.id === id ? siguiente : t)) }, eventos));
   return siguiente;
@@ -339,13 +380,23 @@ export function crearPersona(formulario, sesion) {
   return nueva;
 }
 
+function cuentaDePersona(id) {
+  return listarUsuarios().find((u) => u.personaId === id);
+}
+
 export function editarPersona(id, formulario, sesion) {
   exigirGestor(sesion);
   const actual = persona(id);
   if (!actual) fallo("La persona ya no existe.");
+  const cuenta = cuentaDePersona(id);
+  if (cuenta?.role === "admin" && sesion.role !== "admin") fallo("Solo administración puede editar la ficha de una persona administradora.");
   const siguiente = { ...actual, ...validarPersona({ ...actual, ...formulario }, id) };
+  // Con cuenta de acceso, el cargo es el rol: cambiarlo es cambiar sus permisos.
+  if (cuenta && CARGO_A_ROL[siguiente.cargo] !== cuenta.role) {
+    if (sesion.role !== "admin") fallo("El cargo de una persona con cuenta lo cambia administración, porque cambia sus permisos.");
+    cambiarRolUsuario(cuenta.id, CARGO_A_ROL[siguiente.cargo], sesion);
+  }
   guardar({ personas: obtener("personas").map((p) => (p.id === id ? siguiente : p)) });
-  const cuenta = listarUsuarios().find((u) => u.personaId === id);
   if (cuenta && cuenta.name !== siguiente.nombre) actualizarUsuario(cuenta.id, { name: siguiente.nombre });
   return siguiente;
 }
@@ -355,12 +406,19 @@ export function cambiarEstadoPersona(id, estado, sesion) {
   const actual = persona(id);
   if (!actual) fallo("La persona ya no existe.");
   if (id === sesion.personaId) fallo("No puedes desactivar tu propio perfil.");
+  if (!["Activo", "Inactivo"].includes(estado)) fallo("Estado no válido.");
+  if (cuentaDePersona(id)?.role === "admin" && sesion.role !== "admin") fallo("Solo administración puede cambiar el estado de una persona administradora.");
   if (estado === "Inactivo") {
     const tareas = obtener("tareas").filter((t) => t.responsableId === id && t.estado !== "Completada").length;
     const lotes = obtener("lotes").filter((l) => l.responsableId === id && l.estado !== "Cerrado").length;
-    if (tareas || lotes) {
-      const partes = [tareas && `${tareas} tarea${tareas === 1 ? "" : "s"} abierta${tareas === 1 ? "" : "s"}`, lotes && `${lotes} lote${lotes === 1 ? "" : "s"} activo${lotes === 1 ? "" : "s"}`].filter(Boolean);
-      fallo(`Antes de desactivar a ${actual.nombre}, reasigna ${partes.join(" y ")}.`);
+    const incidencias = obtener("calidad").filter((i) => i.responsableId === id && estadoIncidencia(i) !== "Cerrada").length;
+    if (tareas || lotes || incidencias) {
+      const partes = [
+        tareas && plural(tareas, "tarea abierta", "tareas abiertas"),
+        lotes && plural(lotes, "lote activo", "lotes activos"),
+        incidencias && plural(incidencias, "incidencia abierta", "incidencias abiertas"),
+      ].filter(Boolean);
+      fallo(`Antes de desactivar a ${actual.nombre}, reasigna ${partes.join(", ").replace(/, ([^,]*)$/, " y $1")}.`);
     }
   }
   guardar({ personas: obtener("personas").map((p) => (p.id === id ? { ...p, estado } : p)) });
@@ -383,13 +441,24 @@ export function marcarCuentaRevisada(usuarioId, sesion) {
   return actualizarUsuario(usuarioId, { revisado: true });
 }
 
-export function asegurarPersonasDeUsuarios() {
+/*
+  Cada cuenta tiene su ficha en Personal. Una cuenta nueva NUNCA se une a una ficha
+  existente por coincidir el nombre (alguien podría registrarse como otra persona y
+  heredar sus lotes y tareas); solo administración puede pedirlo al crear la cuenta,
+  y solo con una ficha que no tenga ya otra cuenta.
+*/
+export function asegurarPersonasDeUsuarios({ vincularPorNombre = [] } = {}) {
   const personas = obtener("personas");
   const nuevas = [];
-  for (const usuario of listarUsuarios()) {
+  const usuarios = listarUsuarios();
+  const conCuenta = new Set(usuarios.map((u) => u.personaId).filter(Boolean));
+  for (const usuario of usuarios) {
     if (usuario.personaId && personas.some((p) => p.id === usuario.personaId)) continue;
-    const existente = personas.find((p) => p.nombre.toLowerCase() === usuario.name.toLowerCase());
+    const existente = vincularPorNombre.includes(usuario.id)
+      ? personas.find((p) => !conCuenta.has(p.id) && p.nombre.toLowerCase() === usuario.name.toLowerCase())
+      : null;
     if (existente) {
+      conCuenta.add(existente.id);
       actualizarUsuario(usuario.id, { personaId: existente.id });
       continue;
     }
@@ -434,12 +503,30 @@ export function actualizarMiPerfil(formulario, sesion) {
   return usuario;
 }
 
+export function cambiarMiContrasena({ actual, nueva, confirmacion }, sesion) {
+  if (!sesion?.id) fallo("No hay una sesión activa.");
+  if (!actual) fallo("Escribe tu contraseña actual.");
+  if (nueva !== confirmacion) fallo("La confirmación no coincide con la contraseña nueva.");
+  const resultado = cambiarContrasena(sesion.id, actual, nueva);
+  if (!resultado.ok) fallo(resultado.message);
+  return resultado;
+}
+
+export function restablecerContrasenaUsuario(usuarioId, { nueva, confirmacion }, sesion) {
+  if (sesion?.role !== "admin") fallo("Solo administración puede restablecer contraseñas.");
+  if (usuarioId === sesion.id) fallo("Cambia tu propia contraseña desde Mi perfil.");
+  if (nueva !== confirmacion) fallo("La confirmación no coincide con la contraseña nueva.");
+  const resultado = asignarContrasena(usuarioId, nueva);
+  if (!resultado.ok) fallo(resultado.message);
+  return resultado;
+}
+
 export function crearCuentaAdministrativa(formulario, sesion) {
   if (sesion?.role !== "admin") fallo("Solo administración puede crear cuentas.");
   if (!ROLES[formulario.role]) fallo("Elige un rol válido.");
   const resultado = register(formulario);
   if (!resultado.ok) return resultado;
-  asegurarPersonasDeUsuarios();
+  asegurarPersonasDeUsuarios({ vincularPorNombre: [resultado.user.id] });
   const usuario = listarUsuarios().find((u) => u.id === resultado.user.id);
   if (!usuario) fallo("La cuenta se creó, pero no se pudo recuperar.");
   cambiarRolUsuario(usuario.id, formulario.role, sesion);
@@ -499,7 +586,7 @@ export function registrarMovimiento(formulario, sesion) {
     fallo(`Solo hay ${numero(insumo.stock)} ${insumo.unidad} de ${insumo.nombre}.`);
   }
   const fecha = fechaValida(formulario.fecha, "la fecha");
-  if (formulario.lote) buscarLote(formulario.lote);
+  if (formulario.lote) exigirLoteActivo(buscarLote(formulario.lote));
   const valor = cantidad * Number(insumo.precio || 0);
   const movimiento = {
     id: crearId("MOV"),
@@ -551,6 +638,59 @@ export function registrarMovimiento(formulario, sesion) {
   return movimiento;
 }
 
+/*
+  Corrige un movimiento sin borrar la historia: crea el movimiento inverso, marca el
+  original como anulado, retira el costo que había cargado al lote y lo deja en la
+  trazabilidad del lote.
+*/
+export function anularMovimiento(id, sesion) {
+  exigirGestor(sesion);
+  const original = obtener("movimientos").find((m) => m.id === id);
+  if (!original) fallo("El movimiento ya no existe.");
+  if (original.anulado) fallo("Este movimiento ya fue anulado.");
+  if (original.anulaA) fallo("Este movimiento es una anulación y no se puede anular.");
+  const insumo = obtener("inventario").find((i) => i.id === original.itemId);
+  if (!insumo) fallo("El insumo de este movimiento ya no existe.");
+  const cantidad = Number(original.cantidad) || 0;
+  const delta = original.tipo === "entrada" ? -cantidad : cantidad;
+  if (Number(insumo.stock) + delta < 0) {
+    fallo(`No se puede anular la entrada: solo quedan ${numero(insumo.stock)} ${insumo.unidad} de ${insumo.nombre} y ya se usaron.`);
+  }
+  const inverso = {
+    id: crearId("MOV"),
+    itemId: insumo.id,
+    item: insumo.nombre,
+    tipo: original.tipo === "entrada" ? "salida" : "entrada",
+    cantidad,
+    fecha: hoyISO(),
+    motivo: `Anulación: ${original.motivo}`,
+    lote: original.lote || "",
+    responsableId: sesion.personaId,
+    valor: Number(original.valor) || 0,
+    anulaA: original.id,
+  };
+  const cambios = {
+    inventario: obtener("inventario").map((i) => (i.id === insumo.id ? { ...i, stock: Number(i.stock) + delta } : i)),
+    movimientos: [inverso, ...obtener("movimientos").map((m) => (m.id === id ? { ...m, anulado: true, anuladoPor: inverso.id } : m))],
+  };
+  const costo = obtener("costos").find((c) => c.movimientoId === id);
+  if (costo) cambios.costos = obtener("costos").filter((c) => c.id !== costo.id);
+  const eventos = [];
+  if (original.lote && obtener("lotes").some((l) => l.lote === original.lote)) {
+    eventos.push(
+      evento({
+        lote: original.lote,
+        tipo: "Observación",
+        detalle: `Se anula la ${original.tipo} de ${numero(cantidad)} ${insumo.unidad} de ${insumo.nombre}${costo ? ` y se retiran ${dinero(costo.valor)} del costo del lote` : ""}.`,
+        sesion,
+        origen: "Inventario",
+      }),
+    );
+  }
+  guardar(conEventos(cambios, eventos));
+  return inverso;
+}
+
 /* ---------- Costos ---------- */
 
 function validarCosto(formulario) {
@@ -574,7 +714,7 @@ export function editarCosto(id, formulario, sesion) {
   exigirGestor(sesion);
   const actual = obtener("costos").find((c) => c.id === id);
   if (!actual) fallo("El movimiento ya no existe.");
-  if (actual.origen === "inventario") fallo("Los costos generados desde inventario se mantienen vinculados al movimiento de origen y no se pueden editar.");
+  if (actual.origen === "inventario") fallo("Este costo viene de una salida de inventario y no se edita aquí: anula el movimiento en Inventario › Movimientos y registra la salida correcta.");
   const siguiente = { ...actual, ...validarCosto({ ...actual, ...formulario }) };
   guardar({ costos: obtener("costos").map((c) => (c.id === id ? siguiente : c)) });
   return siguiente;
@@ -584,18 +724,17 @@ export function eliminarCosto(id, sesion) {
   exigirGestor(sesion);
   const actual = obtener("costos").find((c) => c.id === id);
   if (!actual) fallo("El movimiento ya no existe.");
-  if (actual.origen === "inventario") fallo("Los costos generados desde inventario se eliminan junto con su movimiento de origen para conservar la trazabilidad.");
+  if (actual.origen === "inventario") fallo("Este costo viene de una salida de inventario: anula ese movimiento en Inventario › Movimientos y el costo se retira con él.");
   guardar({ costos: obtener("costos").filter((c) => c.id !== id) });
 }
 
 /* ---------- Calidad ---------- */
 
 export function crearIncidencia(formulario, sesion) {
-  const lote = loteDeOperario(formulario.lote, sesion);
-  if (lote.estado === "Cerrado") fallo(`El lote ${lote.lote} está cerrado.`);
+  const lote = exigirLoteActivo(loteDeOperario(formulario.lote, sesion));
   const descripcion = texto(formulario.descripcion);
   if (descripcion.length < 8) fallo("Describe lo que observaste con un poco más de detalle.");
-  if (!["Alta", "Media", "Baja"].includes(formulario.prioridad)) fallo("Elige la prioridad.");
+  if (!PRIORIDADES.includes(formulario.prioridad)) fallo("Elige la prioridad.");
   const responsableId = sesion.role === "operario" ? sesion.personaId : responsableActivo(formulario.responsableId).id;
   const codigo = siguienteCodigo("INC", obtener("calidad").map((i) => i.codigo));
   const nueva = {
@@ -625,13 +764,23 @@ export function actualizarIncidencia(id, cambios, sesion) {
   const siguiente = { ...actual };
   const eventos = [];
   if (cambios.accion !== undefined) siguiente.accion = texto(cambios.accion);
-  if (cambios.prioridad !== undefined) siguiente.prioridad = cambios.prioridad;
-  if (cambios.responsableId !== undefined) siguiente.responsableId = responsableActivo(cambios.responsableId).id;
+  if (cambios.prioridad !== undefined) {
+    if (!PRIORIDADES.includes(cambios.prioridad)) fallo("Elige una prioridad válida.");
+    siguiente.prioridad = cambios.prioridad;
+  }
+  // Solo se valida el responsable si cambia: una incidencia de alguien que ya no está
+  // activo debe poder cerrarse o reabrirse sin reasignarla primero.
+  if (cambios.responsableId !== undefined && cambios.responsableId !== actual.responsableId) {
+    const responsable = responsableActivo(cambios.responsableId);
+    siguiente.responsableId = responsable.id;
+    eventos.push(evento({ lote: actual.lote, tipo: "Observación", detalle: `${actual.codigo}: responsable cambia de ${nombreDe(actual.responsableId)} a ${responsable.nombre}.`, sesion, origen: "Calidad" }));
+  }
   if (cambios.estado !== undefined && !["Abierta", "En revisión", "Cerrada"].includes(cambios.estado)) fallo("El estado de la incidencia no es válido.");
+  const estadoFinal = cambios.estado ?? estadoIncidencia(actual);
+  if (estadoFinal === "Cerrada" && (siguiente.accion || "").length < 5) {
+    fallo("Una incidencia cerrada necesita su acción correctiva documentada.");
+  }
   if (cambios.estado !== undefined && cambios.estado !== estadoIncidencia(actual)) {
-    if (cambios.estado === "Cerrada" && siguiente.accion.length < 5) {
-      fallo("Documenta la acción correctiva antes de cerrar la incidencia.");
-    }
     siguiente.estado = cambios.estado;
     siguiente.cierre = cambios.estado === "Cerrada" ? hoyISO() : undefined;
     eventos.push(
@@ -654,11 +803,13 @@ export function actualizarIncidencia(id, cambios, sesion) {
 /* ---------- Ambiental ---------- */
 
 export function registrarLectura(formulario, sesion, zonasPermitidas) {
+  exigirActivo(sesion);
   if (!obtener("zonas").some((z) => z.nombre === formulario.zona)) fallo("Elige la zona de la lectura.");
   if (zonasPermitidas && !zonasPermitidas.includes(formulario.zona)) fallo("Solo puedes registrar lecturas en las zonas de tus lotes.");
   const temperatura = decimal(formulario.temperatura, "La temperatura", -5, 50);
   const humedad = decimal(formulario.humedad, "La humedad", 0, 100);
-  const iluminacion = formulario.iluminacion === "" || formulario.iluminacion === undefined ? 0 : decimal(formulario.iluminacion, "La iluminación", 0, 150000);
+  const sinLuz = formulario.iluminacion === "" || formulario.iluminacion === undefined || formulario.iluminacion === null;
+  const iluminacion = sinLuz ? null : decimal(formulario.iluminacion, "La iluminación", 0, 150000);
   const fecha = fechaValida(formulario.fecha, "la fecha y hora");
   if (aFecha(fecha).getTime() > Date.now() + 5 * 60_000) fallo("La lectura no puede tener una hora futura.");
   const nueva = {
@@ -666,7 +817,7 @@ export function registrarLectura(formulario, sesion, zonasPermitidas) {
     zona: formulario.zona,
     temperatura: Math.round(temperatura * 10) / 10,
     humedad: Math.round(humedad),
-    iluminacion: Math.round(iluminacion),
+    iluminacion: iluminacion === null ? null : Math.round(iluminacion),
     fecha,
     registradoPor: sesion?.name || "Sin registrar",
   };
@@ -677,7 +828,7 @@ export function registrarLectura(formulario, sesion, zonasPermitidas) {
 /* ---------- Trazabilidad ---------- */
 
 export function registrarEvento(formulario, sesion) {
-  const lote = loteDeOperario(formulario.lote, sesion);
+  const lote = exigirLoteActivo(loteDeOperario(formulario.lote, sesion));
   if (!EVENTOS_MANUALES.includes(formulario.evento)) fallo("Elige el tipo de actividad.");
   const detalle = texto(formulario.detalle);
   if (detalle.length < 5) fallo("Describe lo que se hizo.");
@@ -724,7 +875,14 @@ export function eliminarZona(id, sesion) {
   guardar({ zonas: obtener("zonas").filter((z) => z.id !== id) });
 }
 
-export function restablecerDatosBase() {
+export function restaurarRespaldo(texto, sesion) {
+  if (sesion?.role !== "admin") fallo("Solo administración puede restaurar respaldos.");
+  importarRespaldo(texto);
+  asegurarPersonasDeUsuarios();
+}
+
+export function restablecerDatosBase(sesion) {
+  if (sesion && sesion.role !== "admin") fallo("Solo administración puede restablecer los datos.");
   inicializarDatos({ forzar: true });
   asegurarPersonasDeUsuarios();
 }

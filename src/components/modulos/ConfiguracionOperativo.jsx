@@ -8,9 +8,9 @@ import Insignia from "../ui/Insignia";
 import Panel from "../ui/Panel";
 import Pestanas from "../ui/Pestanas";
 import AlertaFormulario from "../ui/AlertaFormulario";
-import { exportarRespaldo, importarRespaldo, useDatos } from "../../datos/almacen";
+import { exportarRespaldo, useDatos } from "../../datos/almacen";
 import { CONFIG_INICIAL } from "../../datos/catalogos";
-import { crearZona, eliminarZona, guardarConfiguracion, restablecerDatosBase } from "../../datos/acciones";
+import { crearZona, eliminarZona, guardarConfiguracion, restablecerDatosBase, restaurarRespaldo } from "../../datos/acciones";
 import { evaluarLectura, ultimasLecturas } from "../../datos/selectores";
 import { useAccion, useAviso, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion } from "../../hooks/useSesion";
@@ -189,6 +189,7 @@ function Formulario({ cfg }) {
 
 export default function ConfiguracionOperativo() {
   const datos = useDatos();
+  const sesion = useSesion();
   const aviso = useAviso();
   const ejecutar = useAccion();
   const confirmar = useConfirmar();
@@ -203,10 +204,10 @@ export default function ConfiguracionOperativo() {
     const file = evento.target.files?.[0];
     evento.target.value = "";
     if (!file) return;
-    const ok = await confirmar({ titulo: "Importar respaldo", mensaje: `Los datos actuales se reemplazarán por los de “${file.name}”. Las cuentas de acceso no cambian.`, confirmar: "Reemplazar datos", peligro: true });
+    const ok = await confirmar({ titulo: "Importar respaldo", mensaje: `Los datos actuales se reemplazarán por los de “${file.name}”. Las cuentas de acceso no cambian y AiDEN guarda una copia de los datos actuales antes de importar.`, confirmar: "Reemplazar datos", peligro: true });
     if (!ok) return;
     try {
-      importarRespaldo(await file.text());
+      restaurarRespaldo(await file.text(), sesion);
       setVersion((v) => v + 1);
       aviso({ tipo: "exito", titulo: "Respaldo importado", detalle: file.name });
     } catch (error) {
@@ -216,7 +217,7 @@ export default function ConfiguracionOperativo() {
 
   const restablecer = async () => {
     const ok = await confirmar({ titulo: "Restaurar datos base", mensaje: "Se reemplazarán los lotes, tareas, movimientos y registros actuales por los datos base del sistema. Las cuentas de acceso se conservarán.", confirmar: "Restablecer", peligro: true });
-    if (ok && ejecutar(() => restablecerDatosBase(), "Datos base restaurados")) setVersion((v) => v + 1);
+    if (ok && ejecutar(() => restablecerDatosBase(sesion), "Datos base restaurados")) setVersion((v) => v + 1);
   };
 
   return (

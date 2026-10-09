@@ -12,6 +12,11 @@ export function dinero(valor) {
   return formatoDinero.format(Number(valor) || 0);
 }
 
+// Para valores que pueden no existir (por ejemplo, el costo por planta de un lote sin plantas vivas).
+export function dineroOGuion(valor) {
+  return valor === null || valor === undefined || !Number.isFinite(Number(valor)) ? "—" : dinero(valor);
+}
+
 export function dineroCorto(valor) {
   const n = Number(valor) || 0;
   const abs = Math.abs(n);

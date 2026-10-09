@@ -125,7 +125,8 @@ export default function ModalLote({ abierto, onCerrar, lote }) {
 
 function FormularioCierre({ id, lote, onListo }) {
   const sesion = useSesion();
-  const [motivo, setMotivo] = useState(lote.etapa === "Cosecha" ? "Despachado" : "Descartado");
+  const enCosecha = lote.etapa === "Cosecha";
+  const [motivo, setMotivo] = useState(enCosecha ? "Despachado" : "Descartado");
   const [detalle, setDetalle] = useState("");
   const { error, enviar } = useEnvio(onListo);
   return (
@@ -141,22 +142,26 @@ function FormularioCierre({ id, lote, onListo }) {
       <AlertaFormulario mensaje={error} />
       <p className="text-sm text-slate-600">
         {lote.lote} saldrá de la producción activa con {numero(lote.cantidad)} plantas. Su historia, costos e incidencias se conservan para reportes.
+        {motivo === "Descartado" ? " Sus incidencias abiertas se cerrarán con el descarte como acción." : ""}
       </p>
       <fieldset className="grid gap-2 sm:grid-cols-2">
         <legend className="mb-1.5 text-sm font-medium text-slate-600">Motivo</legend>
         {[
-          ["Despachado", "Se vendió o entregó."],
+          ["Despachado", enCosecha ? "Se vendió o entregó." : "Solo desde Cosecha."],
           ["Descartado", "Se perdió o se retiró."],
-        ].map(([valor, texto]) => (
-          <label
-            key={valor}
-            className={`cursor-pointer rounded-xl border p-3 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-emerald-500 ${motivo === valor ? "border-emerald-300 bg-emerald-50" : "border-slate-200 hover:bg-slate-50"}`}
-          >
-            <input type="radio" name="motivo" value={valor} checked={motivo === valor} onChange={() => setMotivo(valor)} className="sr-only" />
-            <span className="block text-sm font-semibold text-slate-900">{valor}</span>
-            <span className="block text-xs text-slate-500">{texto}</span>
-          </label>
-        ))}
+        ].map(([valor, texto]) => {
+          const bloqueado = valor === "Despachado" && !enCosecha;
+          return (
+            <label
+              key={valor}
+              className={`rounded-xl border p-3 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-emerald-500 ${bloqueado ? "cursor-not-allowed border-slate-200 opacity-60" : "cursor-pointer"} ${motivo === valor ? "border-emerald-300 bg-emerald-50" : bloqueado ? "" : "border-slate-200 hover:bg-slate-50"}`}
+            >
+              <input type="radio" name="motivo" value={valor} checked={motivo === valor} disabled={bloqueado} onChange={() => setMotivo(valor)} className="sr-only" />
+              <span className="block text-sm font-semibold text-slate-900">{valor}</span>
+              <span className="block text-xs text-slate-500">{texto}</span>
+            </label>
+          );
+        })}
       </fieldset>
       <AreaTexto etiqueta="Detalle" opcional value={detalle} onChange={(e) => setDetalle(e.target.value)} placeholder={motivo === "Despachado" ? "Cliente o destino del despacho" : "Causa del descarte"} />
     </form>
@@ -170,7 +175,7 @@ export function ModalCerrarLote({ abierto, onCerrar, lote }) {
     <Modal
       abierto={abierto}
       onCerrar={onCerrar}
-      titulo={`Cerrar ${lote.lote}`}
+      titulo={lote.etapa === "Cosecha" ? `Cerrar ${lote.lote}` : `Descartar ${lote.lote}`}
       ancho="sm"
       pie={
         <>
@@ -178,7 +183,7 @@ export function ModalCerrarLote({ abierto, onCerrar, lote }) {
             Cancelar
           </Boton>
           <Boton variante="primario" type="submit" form={id}>
-            Cerrar lote
+            {lote.etapa === "Cosecha" ? "Cerrar lote" : "Descartar lote"}
           </Boton>
         </>
       }

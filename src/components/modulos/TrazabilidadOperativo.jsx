@@ -13,7 +13,7 @@ import { useAccion } from "../../contexto/retroalimentacion";
 import { useFichaLote } from "../../contexto/ficha";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
-import { aFecha, coincide, fechaCorta, fechaHora, numero, plural } from "../../utilidades/formato";
+import { aFecha, coincide, fechaCorta, numero, plural } from "../../utilidades/formato";
 import { descargarCSV } from "../../utilidades/exportar";
 
 const ORIGENES = { Todos: "Todos", Producción: "Producción", Manual: "Campo", Calidad: "Calidad", Inventario: "Inventario", Personal: "Tareas" };
@@ -50,7 +50,7 @@ export default function TrazabilidadOperativo() {
 
   const exportar = () =>
     ejecutar(
-      () => descargarCSV(`aiden-trazabilidad-${lot === "Todos" ? "todos" : lot}`, filtered.map((e) => ({ Fecha: fechaHora(e.fecha), Lote: e.lote, Evento: e.evento, Detalle: e.detalle, Responsable: e.responsable, Origen: e.origen }))),
+      () => descargarCSV(`aiden-trazabilidad-${lot === "Todos" ? "todos" : lot}`, filtered.map((e) => ({ Fecha: String(e.fecha).replace("T", " "), Lote: e.lote, Evento: e.evento, Detalle: e.detalle, Responsable: e.responsable, Origen: e.origen }))),
       (n) => plural(n, "evento exportado", "eventos exportados"),
     );
 

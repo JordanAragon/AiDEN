@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "test": "node --import ./pruebas/unitarias/registrar.mjs --test \"pruebas/unitarias/*.test.mjs\"",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -23,9 +23,14 @@ const MODULOS = [
 ];
 const roleLabel = { admin: "Administrador", supervisor: "Supervisor", operario: "Operario" };
 
-function leerLeidas() {
+// Cada cuenta guarda sus propias notificaciones leídas.
+function claveLeidas(sesion) {
+  return sesion?.id ? `${CLAVE_NOTIFICACIONES}:${sesion.id}` : CLAVE_NOTIFICACIONES;
+}
+
+function leerLeidas(sesion) {
   try {
-    const valor = JSON.parse(localStorage.getItem(CLAVE_NOTIFICACIONES) || "[]");
+    const valor = JSON.parse(localStorage.getItem(claveLeidas(sesion)) || "[]");
     return Array.isArray(valor) ? valor : [];
   } catch {
     return [];
@@ -44,7 +49,7 @@ export default function BarraSuperior() {
   const [showPalette, setShowPalette] = useState(false);
   const [search, setSearch] = useState("");
   const [activo, setActivo] = useState(0);
-  const [leidas, setLeidas] = useState(leerLeidas);
+  const [leidas, setLeidas] = useState(() => leerLeidas(session));
   const entrada = useRef(null);
   const zona = useRef(null);
 
@@ -52,6 +57,19 @@ export default function BarraSuperior() {
   const activadas = datos.configuracion.notificaciones !== "Desactivadas";
   const notificaciones = useMemo(() => (activadas ? calcularAlertas(datos, session) : []), [datos, session, activadas]);
   const noLeidas = notificaciones.filter((n) => !leidas.includes(n.id)).length;
+
+  // Una alerta resuelta sale de la lista de leídas: si vuelve a ocurrir (el insumo baja
+  // otra vez del mínimo, se reabre la incidencia) aparece como nueva.
+  useEffect(() => {
+    const vigentes = leidas.filter((id) => notificaciones.some((n) => n.id === id));
+    if (vigentes.length === leidas.length) return;
+    setLeidas(vigentes);
+    try {
+      localStorage.setItem(claveLeidas(session), JSON.stringify(vigentes));
+    } catch {
+      // Si no se puede guardar, la poda se repite en el próximo cambio.
+    }
+  }, [leidas, notificaciones, session]);
 
   useEffect(() => {
     const key = (event) => {
@@ -138,7 +156,7 @@ export default function BarraSuperior() {
     const vigentes = [...new Set(ids)];
     setLeidas(vigentes);
     try {
-      localStorage.setItem(CLAVE_NOTIFICACIONES, JSON.stringify(vigentes));
+      localStorage.setItem(claveLeidas(session), JSON.stringify(vigentes));
     } catch (error) {
       console.warn("No se pudo guardar el estado de notificaciones", error);
     }

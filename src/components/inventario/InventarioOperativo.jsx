@@ -1,7 +1,7 @@
 import { useId, useState } from "react";
 import { FormularioMovimiento, FormularioInsumo } from "./InventarioFormularios";
 import { useSearchParams } from "react-router-dom";
-import { AlertTriangle, ArrowDownToLine, ArrowLeftRight, ArrowUpFromLine, CircleDollarSign, Download, FilePenLine, History, Package, Plus, Trash2, X } from "lucide-react";
+import { AlertTriangle, ArrowDownToLine, ArrowLeftRight, ArrowUpFromLine, CircleDollarSign, Download, FilePenLine, History, Package, Plus, Trash2, Undo2, X } from "lucide-react";
 import { Boton, BotonIcono } from "../ui/Boton";
 import Cifras from "../ui/Cifras";
 import EncabezadoPagina from "../ui/EncabezadoPagina";
@@ -12,7 +12,7 @@ import { Buscador, Segmentos } from "../ui/Filtros";
 import { FILA_ENCABEZADO, TD, TH, TR } from "../ui/tabla";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import { useDatos } from "../../datos/almacen";
-import { eliminarInsumo } from "../../datos/acciones";
+import { anularMovimiento, eliminarInsumo } from "../../datos/acciones";
 import { nombrePersona } from "../../datos/selectores";
 import { useAccion, useConfirmar } from "../../contexto/retroalimentacion";
 import { useSesion } from "../../hooks/useSesion";
@@ -109,6 +109,17 @@ export default function InventarioOperativo() {
       peligro: true,
     });
     if (ok && ejecutar(() => eliminarInsumo(insumo.id, sesion), `${insumo.nombre} eliminado`)) actualizar({ insumo: null });
+  };
+
+  const anular = async (m) => {
+    const costo = datos.costos.find((c) => c.movimientoId === m.id);
+    const ok = await confirmar({
+      titulo: `Anular ${m.tipo} de ${m.item}`,
+      mensaje: `Se registrará una ${m.tipo === "entrada" ? "salida" : "entrada"} de ${numero(m.cantidad)} para devolver el stock${costo ? ` y se retirarán ${dinero(costo.valor)} del costo de ${m.lote}` : ""}. El movimiento original queda en el historial marcado como anulado.`,
+      confirmar: "Anular movimiento",
+      peligro: true,
+    });
+    if (ok) ejecutar(() => anularMovimiento(m.id, sesion), "Movimiento anulado");
   };
 
   const exportar = () =>
@@ -268,15 +279,22 @@ export default function InventarioOperativo() {
                       {h}
                     </th>
                   ))}
+                  <th className={TH}>
+                    <span className="sr-only">Acciones</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {movimientos.map((m) => (
-                  <tr key={m.id} className={TR}>
+                  <tr key={m.id} className={`${TR} ${m.anulado ? "text-slate-400 [&_td]:line-through [&_td:last-child]:no-underline" : ""}`}>
                     <td className={`${TD} whitespace-nowrap`}>{fechaCorta(m.fecha)}</td>
                     <td className="px-4 py-3 text-sm font-medium text-slate-800">{m.item}</td>
                     <td className="px-4 py-3">
-                      <Insignia tono={m.tipo === "entrada" ? "exito" : "neutral"}>{m.tipo === "entrada" ? "entrada" : "salida"}</Insignia>
+                      <span className="flex flex-wrap items-center gap-1">
+                        <Insignia tono={m.tipo === "entrada" ? "exito" : "neutral"}>{m.tipo === "entrada" ? "entrada" : "salida"}</Insignia>
+                        {m.anulado && <Insignia tono="alerta">anulado</Insignia>}
+                        {m.anulaA && <Insignia>anulación</Insignia>}
+                      </span>
                     </td>
                     <td className="px-4 py-3 text-sm font-semibold text-slate-800">
                       {m.tipo === "entrada" ? "+" : "−"}
@@ -285,11 +303,14 @@ export default function InventarioOperativo() {
                     <td className="px-4 py-3">{m.lote ? <EtiquetaLote codigo={m.lote} /> : <span className="text-xs text-slate-500">—</span>}</td>
                     <td className={`${TD} max-w-[240px] truncate`}>{m.motivo}</td>
                     <td className="px-4 py-3 text-xs font-semibold text-slate-700">{dinero(m.valor)}</td>
+                    <td className="px-2 py-3 text-right">
+                      {!m.anulado && !m.anulaA && <BotonIcono icono={Undo2} etiqueta={`Anular ${m.tipo} de ${m.item}`} tamano="sm" onClick={() => anular(m)} />}
+                    </td>
                   </tr>
                 ))}
                 {!movimientos.length && (
                   <tr>
-                    <td colSpan={7} className="px-4 py-10 text-center text-sm text-slate-500">
+                    <td colSpan={8} className="px-4 py-10 text-center text-sm text-slate-500">
                       Sin movimientos para estos filtros.
                     </td>
                   </tr>

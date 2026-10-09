@@ -29,6 +29,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Pruebas de la capa de datos
+        run: npm test
+
       - name: Build
         run: npm run build
 

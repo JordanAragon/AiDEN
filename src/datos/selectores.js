@@ -98,6 +98,20 @@ export function describirLectura(lectura, cfg) {
   return partes.join(" y ");
 }
 
+// Sin plantas vivas no hay costo por planta: se devuelve null para que la interfaz
+// muestre «—» en vez de un engañoso $ 0.
+export function costoPorPlanta(gasto, plantas) {
+  const n = Number(plantas) || 0;
+  return n > 0 ? (Number(gasto) || 0) / n : null;
+}
+
+export const HORAS_LECTURA_VIGENTE = 12;
+
+export function lecturaVencida(lectura, ahora = Date.now()) {
+  if (!lectura?.fecha) return true;
+  return ahora - aFecha(lectura.fecha).getTime() > HORAS_LECTURA_VIGENTE * 3_600_000;
+}
+
 export function costosPorLote(costos) {
   const mapa = new Map();
   for (const costo of costos) {
@@ -127,7 +141,7 @@ export function resumenLote(lote, datos) {
     plantas,
     inicial,
     supervivencia: inicial ? Math.round((plantas / inicial) * 1000) / 10 : 100,
-    costoPlanta: plantas ? costos.gasto / plantas : 0,
+    costoPlanta: costoPorPlanta(costos.gasto, plantas),
     dias: diasEntre(lote.fecha),
     diasParaSalida: lote.fechaEstimada ? diasEntre(hoyISO(), lote.fechaEstimada) : null,
     avance: ((indiceEtapa(lote.etapa) + 1) / 4) * 100,
@@ -204,8 +218,23 @@ export function alertas(datos, sesion) {
     });
   }
 
-  for (const [zona, lectura] of ultimasLecturas(datos.ambiental)) {
-    if (!zonas.has(zona)) continue;
+  const ultimas = ultimasLecturas(datos.ambiental);
+  for (const zona of zonas) {
+    const lectura = ultimas.get(zona);
+    if (!lectura || lecturaVencida(lectura)) {
+      lista.push({
+        id: `amb-sin-${zona}-${lectura?.id || "ninguna"}`,
+        tipo: "Ambiental",
+        severidad: "alerta",
+        titulo: lectura ? `${zona} sin lectura reciente` : `${zona} sin lecturas`,
+        detalle: lectura ? `La última es del ${fechaCorta(lectura.fecha)}. Registra una lectura para saber si sigue en rango.` : "Todavía no hay lecturas registradas en esta zona.",
+        ruta: `/ambiental?zona=${encodeURIComponent(zona)}`,
+        zona,
+      });
+    }
+  }
+  for (const [zona, lectura] of ultimas) {
+    if (!zonas.has(zona) || lecturaVencida(lectura)) continue;
     const evaluacion = evaluarLectura(lectura, cfg);
     if (!evaluacion.fuera) continue;
     lista.push({
@@ -221,12 +250,15 @@ export function alertas(datos, sesion) {
 
   if (gestor) {
     for (const insumo of datos.inventario) {
-      if (Number(insumo.stock) > Number(insumo.minimo)) continue;
+      const stock = Number(insumo.stock);
+      const minimo = Number(insumo.minimo);
+      // Mínimo 0 significa «no reponer automáticamente»: no genera alerta.
+      if (!(minimo > 0) || stock > minimo) continue;
       lista.push({
         id: `inv-${insumo.id}`,
         tipo: "Inventario",
-        severidad: Number(insumo.stock) <= 0 ? "critico" : "alerta",
-        titulo: `${insumo.nombre} bajo el mínimo`,
+        severidad: stock <= 0 ? "critico" : "alerta",
+        titulo: stock <= 0 ? `${insumo.nombre} agotado` : stock === minimo ? `${insumo.nombre} en el mínimo` : `${insumo.nombre} bajo el mínimo`,
         detalle: `Quedan ${numero(insumo.stock)} ${insumo.unidad}; el mínimo es ${numero(insumo.minimo)}.`,
         ruta: `/inventario?insumo=${insumo.id}`,
       });

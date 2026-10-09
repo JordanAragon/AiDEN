@@ -10,9 +10,25 @@ function descargar(nombre, contenido, tipo) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-function celda(valor) {
-  const texto = String(valor ?? "");
+/*
+  - Decimales con coma: con punto, Excel en español los toma como texto o fecha.
+  - Un texto que empieza por = + - @ se abriría como fórmula (por ejemplo un
+    =HYPERLINK que envía datos a otro sitio): se antepone un apóstrofo.
+*/
+export function celdaCSV(valor) {
+  let texto;
+  if (typeof valor === "number") {
+    texto = Number.isFinite(valor) ? (Number.isInteger(valor) ? String(valor) : String(valor).replace(".", ",")) : "";
+  } else {
+    texto = String(valor ?? "");
+    if (/^[=+\-@\t\r]/.test(texto)) texto = `'${texto}`;
+  }
   return /[";\n\r]/.test(texto) ? `"${texto.replace(/"/g, '""')}"` : texto;
+}
+
+export function contenidoCSV(filas) {
+  const columnas = Object.keys(filas[0]);
+  return [columnas.map(celdaCSV).join(";"), ...filas.map((fila) => columnas.map((c) => celdaCSV(fila[c])).join(";"))].join("\r\n");
 }
 
 /*
@@ -21,9 +37,7 @@ function celda(valor) {
 */
 export function descargarCSV(nombre, filas) {
   if (!filas.length) throw new Error("No hay filas para exportar con los filtros actuales.");
-  const columnas = Object.keys(filas[0]);
-  const contenido = [columnas.map(celda).join(";"), ...filas.map((fila) => columnas.map((c) => celda(fila[c])).join(";"))].join("\r\n");
-  descargar(`${nombre}.csv`, `\uFEFF${contenido}`, "text/csv;charset=utf-8");
+  descargar(`${nombre}.csv`, `\uFEFF${contenidoCSV(filas)}`, "text/csv;charset=utf-8");
   return filas.length;
 }
 

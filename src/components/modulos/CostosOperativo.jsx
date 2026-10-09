@@ -15,12 +15,12 @@ import EtiquetaLote from "../lote/EtiquetaLote";
 import { useDatos } from "../../datos/almacen";
 import { CATEGORIAS_GASTO, CATEGORIAS_INGRESO } from "../../datos/catalogos";
 import { crearCosto, editarCosto, eliminarCosto } from "../../datos/acciones";
-import { costosPorLote, lotesActivos, resumenLote } from "../../datos/selectores";
+import { costoPorPlanta, costosPorLote, lotesActivos, resumenLote } from "../../datos/selectores";
 import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
 import { useColoresGrafica } from "../../hooks/useColoresGrafica";
-import { coincide, dinero, dineroCorto, fechaCorta, hoyISO, plural, sumarDias } from "../../utilidades/formato";
+import { coincide, dinero, dineroCorto, dineroOGuion, fechaCorta, hoyISO, plural, sumarDias } from "../../utilidades/formato";
 import { descargarCSV } from "../../utilidades/exportar";
 
 const PERIODOS = [
@@ -109,14 +109,14 @@ export default function CostosOperativo() {
   const ingresos = ingresosLista.reduce((s, c) => s + Number(c.valor), 0);
   const activos = lotesActivos(datos.lotes).map((l) => resumenLote(l, datos));
   const plantas = activos.reduce((s, r) => s + r.plantas, 0);
-  const costoPlanta = plantas ? activos.reduce((s, r) => s + r.gasto, 0) / plantas : 0;
+  const costoPlanta = costoPorPlanta(activos.reduce((s, r) => s + r.gasto, 0), plantas);
   const categorias = Object.entries(gastosLista.reduce((m, c) => ({ ...m, [c.categoria]: (m[c.categoria] || 0) + Number(c.valor) }), {}))
     .map(([categoria, total]) => ({ categoria, total }))
     .sort((a, b) => b.total - a.total);
   const porLote = [...costosPorLote(datos.costos)]
     .map(([codigo, v]) => {
       const l = datos.lotes.find((x) => x.lote === codigo);
-      return { codigo, ...v, costoPlanta: l && Number(l.cantidad) ? v.gasto / Number(l.cantidad) : 0, cerrado: l?.estado === "Cerrado" };
+      return { codigo, ...v, costoPlanta: costoPorPlanta(v.gasto, l?.cantidad), cerrado: l?.estado === "Cerrado" };
     })
     .sort((a, b) => b.gasto - a.gasto);
   const movimientos = delPeriodo
@@ -168,7 +168,7 @@ export default function CostosOperativo() {
           { icono: TrendingDown, etiqueta: "Gastos", valor: dinero(gastos), detalle: `${plural(gastosLista.length, "movimiento")} · ${nombrePeriodo}`, tono: "critico" },
           { icono: TrendingUp, etiqueta: "Ingresos", valor: dinero(ingresos), detalle: `${plural(ingresosLista.length, "movimiento")} · ${nombrePeriodo}` },
           { icono: CircleDollarSign, etiqueta: "Balance", valor: dinero(ingresos - gastos), detalle: ingresos - gastos < 0 ? "Gastos superiores a ingresos" : "Ingresos cubren los gastos", tono: ingresos - gastos < 0 ? "critico" : "exito" },
-          { icono: BarChart3, etiqueta: "Costo/planta ponderado", valor: dinero(costoPlanta), detalle: `${plantas.toLocaleString("es-CO")} plantas con gastos asociados`, tono: "info" },
+          { icono: BarChart3, etiqueta: "Costo/planta ponderado", valor: dineroOGuion(costoPlanta), detalle: `${plantas.toLocaleString("es-CO")} plantas con gastos asociados`, tono: "info" },
         ]}
       />
 
@@ -208,7 +208,8 @@ export default function CostosOperativo() {
                   <span className="mt-1 block text-xs text-white/70">
                     Gastos {dinero(r.gasto)}
                     {r.ingreso ? ` · ingresos ${dinero(r.ingreso)}` : ""}
-                    {!r.cerrado && r.costoPlanta ? ` · ${dinero(r.costoPlanta)} por planta` : ""}
+                    {!r.cerrado && r.costoPlanta !== null ? ` · ${dinero(r.costoPlanta)} por planta` : ""}
+                    {!r.cerrado && r.costoPlanta === null ? " · sin plantas vivas" : ""}
                   </span>
                 </button>
               </li>

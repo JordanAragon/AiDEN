@@ -8,11 +8,11 @@ import Panel from "../ui/Panel";
 import { AccionRapida, EnlaceModulo, Estadistica, ItemOscuro } from "../ui/Piezas";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import { useDatos } from "../../datos/almacen";
-import { alertas as calcularAlertas, estadoIncidencia, lotesActivos, resumenLote, resumenMensual } from "../../datos/selectores";
+import { alertas as calcularAlertas, costoPorPlanta, estadoIncidencia, lotesActivos, resumenLote, resumenMensual } from "../../datos/selectores";
 import { useColoresGrafica } from "../../hooks/useColoresGrafica";
 import { useSesion, useUsuarios } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
-import { dinero, dineroCorto, fechaCorta, numero, plural } from "../../utilidades/formato";
+import { dinero, dineroCorto, dineroOGuion, fechaCorta, numero, plural } from "../../utilidades/formato";
 
 export default function DashboardAdminContenido() {
   const datos = useDatos();
@@ -28,7 +28,7 @@ export default function DashboardAdminContenido() {
   const porRevisar = usuarios.filter((u) => !u.revisado);
   const resumenes = lotesActivos(datos.lotes).map((lote) => ({ lote, r: resumenLote(lote, datos) }));
   const plantas = resumenes.reduce((s, x) => s + x.r.plantas, 0);
-  const costoPromedio = plantas ? resumenes.reduce((s, x) => s + x.r.gasto, 0) / plantas : 0;
+  const costoPromedio = costoPorPlanta(resumenes.reduce((s, x) => s + x.r.gasto, 0), plantas);
   const meses = resumenMensual(datos.costos, 4);
   const mes = meses[meses.length - 1];
   const lista = calcularAlertas(datos, sesion);
@@ -68,7 +68,7 @@ export default function DashboardAdminContenido() {
       <Cifras
         items={[
           { icono: Users, etiqueta: "Usuarios", valor: usuarios.length, detalle: `${roles.supervisor} supervisores · ${roles.operario} operarios${porRevisar.length ? ` · ${porRevisar.length} por revisar` : ""}`, tono: porRevisar.length ? "alerta" : "exito", to: "/configuracion?vista=usuarios" },
-          { icono: Sprout, etiqueta: "Lotes activos", valor: resumenes.length, detalle: `${numero(plantas)} plantas · ${dinero(costoPromedio)} por planta`, to: "/produccion" },
+          { icono: Sprout, etiqueta: "Lotes activos", valor: resumenes.length, detalle: `${numero(plantas)} plantas · ${dineroOGuion(costoPromedio)} por planta`, to: "/produccion" },
           { icono: CircleDollarSign, etiqueta: `Balance de ${mes.mes}`, valor: dinero(mes.balance), detalle: `${dinero(mes.ingresos)} ingresos · ${dinero(mes.gastos)} gastos`, tono: "info", to: "/costos" },
           { icono: ShieldCheck, etiqueta: "Alertas operativas", valor: lista.length, detalle: criticas.length ? `${plural(criticas.length, "crítica", "críticas")} · requieren seguimiento` : "Sin alertas críticas", tono: criticas.length ? "critico" : "exito", to: "/dashboard-supervisor" },
         ]}
@@ -140,7 +140,7 @@ export default function DashboardAdminContenido() {
                 <span className="min-w-0">
                   <EtiquetaLote codigo={lote.lote} />
                   <span className="block truncate text-sm font-medium text-slate-800">{lote.cultivo}</span>
-                  <span className="block text-[11px] text-slate-500">{dinero(r.costoPlanta)} por planta</span>
+                  <span className="block text-[11px] text-slate-500">{r.costoPlanta === null ? "Sin plantas vivas" : `${dinero(r.costoPlanta)} por planta`}</span>
                 </span>
                 <span className={`shrink-0 text-sm font-bold ${r.resultado < 0 ? "text-red-600" : "text-emerald-700"}`}>{dinero(r.resultado)}</span>
               </li>

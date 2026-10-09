@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ClipboardList, FilePenLine, FlagTriangleRight, History, ListPlus, PackageCheck } from "lucide-react";
+import { ArrowRight, ClipboardList, FilePenLine, FlagTriangleRight, History, ListPlus, PackageCheck, Trash2 } from "lucide-react";
 import Modal from "../ui/Modal";
 import { Boton } from "../ui/Boton";
 import Insignia from "../ui/Insignia";
@@ -16,7 +16,7 @@ import { ETAPAS } from "../../datos/catalogos";
 import { esGestor, estadoIncidencia, evaluarLectura, nombrePersona, resumenLote, ultimasLecturas } from "../../datos/selectores";
 import { useAvanzarEtapa } from "../../hooks/useAvanzarEtapa";
 import { useSesion } from "../../hooks/useSesion";
-import { dinero, fechaCorta, fechaHora, haceTiempo, numero, vencimiento } from "../../utilidades/formato";
+import { dinero, dineroOGuion, fechaCorta, fechaHora, haceTiempo, numero, vencimiento } from "../../utilidades/formato";
 
 function Info({ etiqueta, valor, detalle, alerta = false }) {
   return (
@@ -76,7 +76,7 @@ function Contenido({ lote, datos, sesion, onAccion }) {
             detalle={cerrado ? lote.motivoCierre : salida === null ? `${r.dias} días en vivero` : salida < 0 ? `Atrasada ${-salida} días` : `En ${salida} días · ${r.dias} en vivero`}
             alerta={!cerrado && salida !== null && salida < 0}
           />
-          <Info etiqueta="Costo por planta" valor={dinero(r.costoPlanta)} detalle={`${dinero(r.gasto)} acumulados`} />
+          <Info etiqueta="Costo por planta" valor={dineroOGuion(r.costoPlanta)} detalle={r.costoPlanta === null ? `Sin plantas vivas · ${dinero(r.gasto)} acumulados` : `${dinero(r.gasto)} acumulados`} />
           <Info
             etiqueta="Incidencias abiertas"
             valor={r.incidenciasAbiertas.length || "Ninguna"}
@@ -105,6 +105,11 @@ function Contenido({ lote, datos, sesion, onAccion }) {
           {gestor && !cerrado && lote.etapa === "Cosecha" && (
             <Boton variante="primario" tamano="sm" icono={PackageCheck} onClick={() => onAccion("cerrar")}>
               Cerrar lote
+            </Boton>
+          )}
+          {gestor && !cerrado && lote.etapa !== "Cosecha" && (
+            <Boton variante="contorno" tamano="sm" icono={Trash2} onClick={() => onAccion("cerrar")}>
+              Descartar lote
             </Boton>
           )}
           {gestor && !cerrado && (
@@ -211,7 +216,7 @@ function Contenido({ lote, datos, sesion, onAccion }) {
             Gastos {dinero(r.gasto)} · Ingresos {dinero(r.ingreso)} · <span className={`font-semibold ${r.resultado < 0 ? "text-red-600" : "text-emerald-700"}`}>Resultado {dinero(r.resultado)}</span>
           </p>
         )}
-        <Link to={`/trazabilidad?lote=${lote.lote}`} className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 hover:underline">
+        <Link to={`/trazabilidad?lote=${encodeURIComponent(lote.lote)}`} className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 hover:underline">
           Ver trazabilidad completa <ArrowRight size={12} aria-hidden="true" />
         </Link>
       </aside>
