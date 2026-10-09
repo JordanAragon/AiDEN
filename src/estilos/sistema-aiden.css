@@ -98,3 +98,30 @@ html.aiden-dark .aiden-stat-grid > * {
     gap: 1.25rem;
   }
 }
+
+/* Marca: isotipo y logotipo oficiales (ver docs/IDENTIDAD.md) */
+.aiden-isotipo-caja,
+.aiden-isotipo-placa {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+}
+.aiden-isotipo,
+.aiden-logotipo {
+  display: block;
+  max-width: none;
+  user-select: none;
+}
+.aiden-isotipo-placa {
+  border-radius: 10px;
+  background: var(--aiden-white);
+  box-shadow: 0 1px 2px rgba(7, 27, 17, 0.12);
+}
+html.aiden-dark .aiden-isotipo-placa {
+  background: var(--aiden-paper);
+}
+html.aiden-dark .aiden-isotipo-adaptable {
+  border-radius: 9px;
+  background: var(--aiden-paper);
+  padding: 3px;
+}

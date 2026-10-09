@@ -1,0 +1,1 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="punto" x1="0.15" y1="0.1" x2="0.85" y2="0.95"><stop offset="0" stop-color="#a9c851"/><stop offset="1" stop-color="#3d683a"/></linearGradient></defs><circle cx="50" cy="50" r="50" fill="url(#punto)"/></svg>

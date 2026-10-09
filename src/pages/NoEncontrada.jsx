@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Leaf } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useSesion } from "../hooks/useSesion";
 import { useTitulo } from "../hooks/useTitulo";
 import { getDashboardPath } from "../utilidades/autenticacion";
+import { LogotipoAiden } from "../components/ui/MarcaAiden";
 
 export default function NoEncontrada() {
   const sesion = useSesion();
@@ -10,11 +11,8 @@ export default function NoEncontrada() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#f5f7f5] px-6 py-12 text-slate-900">
       <section className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-        <Link to="/" className="inline-flex items-center gap-2 text-emerald-900">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-900 text-white">
-            <Leaf size={15} aria-hidden="true" />
-          </span>
-          <span className="font-bold tracking-tight">AiDEN</span>
+        <Link to="/" className="inline-flex items-center" aria-label="AiDEN, ir al inicio">
+          <LogotipoAiden alto={34} />
         </Link>
         <p className="mt-8 text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">Error 404</p>
         <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Esta página no existe.</h1>

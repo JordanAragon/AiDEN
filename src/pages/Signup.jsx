@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { ArrowRight, Eye, EyeOff, Leaf, Loader2 } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import loginImage from "../assets/imagenes/login.webp";
 import { registrarCuenta } from "../datos/acciones";
 import { useTitulo } from "../hooks/useTitulo";
 import "../estilos/autenticacion-aiden.css";
+import { IsotipoAiden, LogotipoAiden } from "../components/ui/MarcaAiden";
 
 export default function Register() {
   useTitulo("Crear cuenta");
@@ -46,7 +47,7 @@ export default function Register() {
         <img src={loginImage} alt="Invernadero agrícola" className="absolute inset-0 h-full w-full object-cover opacity-70" />
         <div className="aiden-auth-image-overlay" aria-hidden="true" />
         <section className="aiden-auth-side-content">
-          <Link to="/" className="flex items-center gap-2 text-white"><span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/15 bg-white/10"><Leaf size={17} /></span><span className="text-xl font-bold tracking-tight">AiDEN</span></Link>
+          <Link to="/" className="flex items-center gap-2 text-white"><IsotipoAiden tamano={36} placa /><span className="text-xl font-bold tracking-tight !text-white">AiDEN</span></Link>
           <div className="mt-auto max-w-xl pb-6">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-200">Una vista, una operación</p>
             <h1 className="mt-4 text-5xl font-semibold leading-[.98] tracking-[-.05em] text-white xl:text-6xl">Empieza con una operación más clara.</h1>
@@ -57,7 +58,7 @@ export default function Register() {
 
       <section className="aiden-auth-panel">
         <div className="aiden-auth-form-wrap">
-          <header className="aiden-auth-mobile-brand"><Link to="/" className="inline-flex items-center gap-2 text-emerald-900"><span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-900 text-white"><Leaf size={15} /></span><span className="font-bold tracking-tight">AiDEN</span></Link></header>
+          <header className="aiden-auth-mobile-brand"><Link to="/" className="inline-flex items-center" aria-label="AiDEN, ir al inicio"><LogotipoAiden alto={34} /></Link></header>
           <div className="aiden-auth-heading"><p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">Nuevo acceso</p><h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Crear cuenta.</h2><p className="mt-2 text-sm leading-6 text-slate-500">Registra tus datos para entrar al entorno de trabajo de AiDEN.</p></div>
           {error && <p role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
           <form onSubmit={handleRegister} className="aiden-auth-form">

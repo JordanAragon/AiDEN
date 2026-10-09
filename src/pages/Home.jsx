@@ -6,7 +6,6 @@ import {
   CircleDollarSign,
   ClipboardList,
   GitBranch,
-  Leaf,
   Menu,
   Package,
   ShieldCheck,
@@ -20,6 +19,7 @@ import { Link } from "react-router-dom";
 import DashboardHeroPreview from "../components/dashboard/DashboardHeroPreview";
 import { useTitulo } from "../hooks/useTitulo";
 import "../estilos/landing-aiden-redesign.css";
+import { LogotipoAiden } from "../components/ui/MarcaAiden";
 
 const modulos = [
   [Sprout, "Producción", "Lotes, etapas y actividades", "Saber qué está ocurriendo con cada lote y en qué punto del proceso se encuentra.", "/produccion", "01"],
@@ -103,9 +103,8 @@ export default function Inicio() {
     <div className="aiden-redesign">
       <header className={`aiden-header ${headerCompacto ? "is-compact" : ""}`}>
         <nav className="aiden-shell aiden-header-inner" aria-label="Navegación principal">
-          <Link to="/" className="aiden-brand" onClick={cerrarMenu}>
-            <span className="aiden-brand-mark" aria-hidden="true"><Leaf size={15} strokeWidth={2.4} /></span>
-            <span>AiDEN</span>
+          <Link to="/" className="aiden-brand" onClick={cerrarMenu} aria-label="AiDEN, ir al inicio">
+            <LogotipoAiden alto={34} />
           </Link>
           <div className="aiden-header-links"><a href="#soluciones">Soluciones</a><a href="#sistema">Cómo funciona</a><a href="#roles">Para tu equipo</a><a href="#contacto">Contacto</a></div>
           <div className="aiden-header-actions"><Link to="/login" className="aiden-header-login">Entrar a la demo</Link><a href="#contacto" className="aiden-button aiden-button-dark">Solicitar demo <ArrowRight size={14} /></a></div>
@@ -177,7 +176,7 @@ export default function Inicio() {
         <section className="aiden-final"><div className="aiden-shell aiden-final-inner"><div className="aiden-final-copy"><p className="aiden-index aiden-index-light">EMPIEZA CON VISIBILIDAD</p><h2>Cuando cada lote tiene contexto, <em>las decisiones dejan de esperar.</em></h2><p>Explora la demo de AiDEN y descubre una forma más clara de gestionar la operación diaria del vivero.</p><a href="#contacto" className="aiden-button aiden-button-light aiden-button-large">Solicitar una demo <ArrowRight size={15} /></a></div><aside className="aiden-final-stamp" aria-label="Resumen de AiDEN"><span>AiDEN</span><strong>09</strong><small>módulos conectados</small><i /><strong>03</strong><small>roles operativos</small><i /><b>01</b><small>experiencia</small></aside></div></section>
       </main>
 
-      <footer className="aiden-footer"><div className="aiden-shell aiden-footer-inner"><Link to="/" className="aiden-brand"><span className="aiden-brand-mark" aria-hidden="true"><Leaf size={14} /></span><span>AiDEN</span></Link><span>Gestión operativa para viveros</span><div><Link to="/terminos">Términos</Link><Link to="/privacidad">Privacidad</Link><Link to="/login">Ingresar</Link></div></div></footer>
+      <footer className="aiden-footer"><div className="aiden-shell aiden-footer-inner"><Link to="/" className="aiden-brand" aria-label="AiDEN, ir al inicio"><LogotipoAiden alto={28} /></Link><span>Gestión operativa para viveros</span><div><Link to="/terminos">Términos</Link><Link to="/privacidad">Privacidad</Link><Link to="/login">Ingresar</Link></div></div></footer>
     </div>
   );
 }

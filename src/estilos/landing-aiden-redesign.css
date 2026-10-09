@@ -78,15 +78,6 @@
   font-weight: 700;
   letter-spacing: -.04em;
 }
-.aiden-brand-mark  {
-  width: 31px;
-  height: 31px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  color: var(--lime);
-  background: var(--forest);
-}
 .aiden-header-links  {
   display: flex;
   justify-content: center;
@@ -2428,12 +2419,6 @@
   box-shadow:
     0 10px 36px rgba(18,37,27,.045),
     inset 0 1px 0 rgba(255,255,255,.74);
-}
-
-.aiden-brand-mark {
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
 }
 
 .aiden-header-links {

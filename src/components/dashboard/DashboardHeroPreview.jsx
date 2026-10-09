@@ -2,7 +2,6 @@ import {
   AlertTriangle,
   ArrowRight,
   ClipboardList,
-  Leaf,
   Package,
   Sprout,
   Thermometer,
@@ -10,6 +9,7 @@ import {
 } from "lucide-react";
 import { useDashboardOperacion } from "../../hooks/useDashboardOperacion";
 import "../../estilos/dashboard-hero-preview.css";
+import { IsotipoAiden } from "../ui/MarcaAiden";
 
 const chartHeights = [28, 42, 35, 58, 52, 72, 64, 84];
 
@@ -44,7 +44,7 @@ export default function DashboardHeroPreview() {
     <div className="aiden-live-preview" aria-label="Vista previa del dashboard de AiDEN">
       <header className="aiden-product-topbar">
         <div className="aiden-product-brand">
-          <span><Leaf size={11} /></span>
+          <IsotipoAiden tamano={22} />
           AiDEN
         </div>
         <div className="aiden-product-path">Operación / Resumen</div>
