@@ -60,3 +60,6 @@ __pycache__/
 
 # Playwright CLI: capturas, snapshots y trazas locales
 .playwright-cli/
+
+# axe-core para las pruebas de accesibilidad (se descarga; ver pruebas/README.md)
+pruebas/axe.min.js
