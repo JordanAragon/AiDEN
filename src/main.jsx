@@ -5,12 +5,18 @@ import "./estilos/modo-oscuro.css";
 import "./estilos/animaciones-app.css";
 import "./estilos/experiencia-aiden.css";
 import "./estilos/sistema-aiden.css";
+import "./estilos/refinamiento-global.css";
 import App from "./App.jsx";
 import { inicializarDatos } from "./datos/almacen";
 import { asegurarPersonasDeUsuarios } from "./datos/acciones";
 import { ensureInitialUser } from "./utilidades/autenticacion";
 
-const temaGuardado = localStorage.getItem("aiden-theme");
+let temaGuardado = "light";
+try {
+  temaGuardado = window.localStorage.getItem("aiden-theme") || "light";
+} catch {
+  // AiDEN puede iniciar aunque el navegador bloquee el almacenamiento local.
+}
 document.documentElement.classList.toggle("aiden-dark", temaGuardado === "dark");
 
 try {

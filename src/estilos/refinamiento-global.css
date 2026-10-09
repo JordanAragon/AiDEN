@@ -1,0 +1,194 @@
+/* AiDEN · pulido transversal para el producto operativo y páginas públicas. */
+:root {
+  color-scheme: light;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+html.aiden-dark { color-scheme: dark; }
+html { scroll-padding-top: 1.25rem; }
+.aiden-app-shell {
+  height: 100dvh;
+  min-height: 0;
+}
+.aiden-app-shell main {
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
+}
+.aiden-app-shell main :is(h1,h2,h3) { text-wrap: balance; }
+.aiden-app-shell main :is(p,li) { text-wrap: pretty; }
+.aiden-app-shell main form :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),select,textarea) {
+  min-width: 0;
+  max-width: 100%;
+}
+.aiden-app-shell main form textarea { resize: vertical; }
+.aiden-app-shell main :is(input,select,textarea)[aria-invalid="true"] {
+  border-color: #b42318 !important;
+  box-shadow: 0 0 0 3px rgba(180,35,24,.12) !important;
+}
+.aiden-app-shell main table { font-variant-numeric: tabular-nums; }
+.aiden-app-shell main :is(th,td) { vertical-align: middle; overflow-wrap: anywhere; }
+.aiden-app-shell main :is(.overflow-x-auto,[role="region"]) {
+  -webkit-overflow-scrolling: touch;
+}
+.aiden-app-shell main [role="dialog"] {
+  overscroll-behavior: contain;
+  max-height: calc(100dvh - 2rem);
+}
+.aiden-app-shell main button:disabled { cursor: not-allowed; transform: none; }
+.aiden-app-shell main a:not([class]) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .18em;
+}
+.aiden-public-page {
+  display: grid;
+  min-height: 100vh;
+  min-height: 100dvh;
+  place-items: center;
+  padding: clamp(1.5rem,5vw,4rem) 1.25rem;
+  background: #f7f6f0;
+  color: #12251b;
+}
+.aiden-public-card {
+  width: min(100%,52rem);
+  margin-inline: auto;
+  padding: clamp(1.5rem,4vw,3.25rem);
+  border: 1px solid #dce4dd;
+  border-radius: 1.25rem;
+  background: #fffdf8;
+  box-shadow: 0 24px 64px rgba(11,43,27,.07);
+}
+.aiden-public-heading { margin-top: 1.5rem; }
+.aiden-public-eyebrow {
+  margin: 0;
+  color: #466b4f;
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .12em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.aiden-public-card h1 {
+  margin: .5rem 0 0;
+  color: #12251b;
+  font-size: clamp(2rem,5vw,3.25rem);
+  font-weight: 650;
+  letter-spacing: -.055em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+.aiden-public-card p { line-height: 1.75; }
+.aiden-public-back {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: .5rem;
+  border: 0;
+  border-radius: .65rem;
+  background: transparent;
+  color: #176b45;
+  cursor: pointer;
+  font-size: .875rem;
+  font-weight: 650;
+}
+.aiden-public-back:hover { background: #f1f6ef; color: #0b2f20; }
+.aiden-legal-sections { margin-top: 2rem; }
+.aiden-legal-section { padding-block: 1.35rem; }
+.aiden-legal-section + .aiden-legal-section { border-top: 1px solid #e1e8e1; }
+.aiden-legal-section h2 {
+  margin: 0;
+  color: #20392a;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.aiden-legal-section p {
+  margin: .55rem 0 0;
+  color: #46564b;
+  font-size: .9375rem;
+}
+.aiden-public-related {
+  margin: 1.5rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e1e8e1;
+  color: #526057;
+  font-size: .875rem;
+}
+.aiden-public-related a {
+  color: #176b45;
+  font-weight: 700;
+  text-underline-offset: .2em;
+}
+.aiden-not-found-card { max-width: 34rem; }
+.aiden-not-found-card .aiden-public-eyebrow { margin-top: 2rem; }
+.aiden-not-found-copy { margin-top: 1rem; color: #526057; font-size: .9375rem; }
+.aiden-not-found-card > div:last-child { margin-top: 1.75rem; }
+.aiden-public-primary {
+  border: 1px solid #0b2b1b;
+  background: #0b2b1b;
+  color: #fffdf8 !important;
+  transition: background-color 160ms ease,border-color 160ms ease;
+}
+.aiden-public-primary:hover { border-color: #104a31; background: #104a31; }
+.aiden-public-secondary {
+  border: 1px solid #d5dfd6;
+  background: #fffdf8;
+  color: #20392a;
+  transition: background-color 160ms ease,border-color 160ms ease;
+}
+.aiden-public-secondary:hover { border-color: #b9cbbb; background: #f3f7f1; }
+@media (max-width: 640px) {
+  .aiden-app-shell { height: 100dvh; }
+  .aiden-app-shell main form :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),select,textarea) { font-size: 16px; }
+  .aiden-public-page { padding-inline: 1rem; }
+  .aiden-public-card { border-radius: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *,*::before,*::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+
+/* Teclado y feedback coherentes en todos los módulos privados. */
+.aiden-app-shell :is(
+  a,
+  button,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea,
+  [tabindex="0"]
+):focus-visible {
+  outline: 3px solid #176b45;
+  outline-offset: 2px;
+}
+html.aiden-dark .aiden-app-shell :is(
+  a,
+  button,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea,
+  [tabindex="0"]
+):focus-visible {
+  outline-color: #8ee0ae;
+}
+.aiden-app-shell :is(a,button) {
+  -webkit-tap-highlight-color: rgba(23, 107, 69, 0.12);
+}
+.aiden-app-shell :is(button,a)[aria-disabled="true"],
+.aiden-app-shell button:disabled {
+  cursor: not-allowed;
+}
+
+
+/* Texto auxiliar: contraste AA suficiente sobre tarjetas blancas, fondos
+   slate-50 y fondos de alerta. Solo aplica al tema claro. */
+html:not(.aiden-dark) .aiden-app-shell .text-slate-500,
+html:not(.aiden-dark) .aiden-app-shell .text-slate-400 {
+  color: #475569 !important;
+}

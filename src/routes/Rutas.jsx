@@ -1,5 +1,5 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense, useLayoutEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import PlantillaPrincipal from "../plantillas/PlantillaPrincipal";
 import RutaProtegida from "../components/autenticacion/RutaProtegida";
 import CargandoVista from "../components/ui/CargandoVista";
@@ -45,6 +45,25 @@ const VISTAS = {
 
 const PRIVADAS = Object.entries(VISTAS).map(([path, Vista]) => ({ path, roles: PERMISOS[path], Vista }));
 
+function SincronizarTemaDeRuta() {
+  const { pathname } = useLocation();
+
+  useLayoutEffect(() => {
+    const esRutaPrivada = Object.keys(VISTAS).some(
+      (ruta) => pathname === ruta || pathname.startsWith(`${ruta}/`),
+    );
+    let tema = "light";
+    try {
+      tema = window.localStorage.getItem("aiden-theme") || "light";
+    } catch {
+      // La preferencia de tema no debe impedir que se muestre una página.
+    }
+    document.documentElement.classList.toggle("aiden-dark", esRutaPrivada && tema === "dark");
+  }, [pathname]);
+
+  return null;
+}
+
 function CargandoPagina() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
@@ -56,6 +75,7 @@ function CargandoPagina() {
 export default function Rutas() {
   return (
     <BrowserRouter>
+      <SincronizarTemaDeRuta />
       <Suspense fallback={<CargandoPagina />}>
         <Routes>
           <Route path="/" element={<Home />} />

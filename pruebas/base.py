@@ -49,7 +49,7 @@ def entrar(pg, rol):
 
     pg.goto(BASE + "/login")
     pg.get_by_label("Correo electrónico").fill(correo)
-    pg.get_by_label("Contraseña").fill(clave)
+    pg.get_by_label("Contraseña", exact=True).fill(clave)
     pg.get_by_role("button", name="Iniciar sesión", exact=True).click()
     pg.wait_for_url("**/dashboard-*")
     pg.wait_for_timeout(400)

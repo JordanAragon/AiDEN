@@ -165,15 +165,15 @@ export default function DashboardOperarioContenido() {
       />
 
       <section className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap" aria-label="Acciones rápidas">
-        <Boton variante="primario" icono={ListChecks} onClick={() => setModal({ tipo: "evento" })} className="!min-h-12 w-full !px-2 text-xs sm:w-auto sm:flex-1 sm:!px-3">
+        <Boton variante="primario" icono={ListChecks} aria-label="Registrar actividad" onClick={() => setModal({ tipo: "evento" })} className="!min-h-12 w-full !px-2 text-xs sm:w-auto sm:flex-1 sm:!px-3">
           <span className="sm:hidden">Actividad</span>
           <span className="hidden sm:inline">Registrar actividad</span>
         </Boton>
-        <Boton variante="secundario" icono={FlagTriangleRight} onClick={() => setModal({ tipo: "incidencia" })} className="!min-h-12 w-full !px-2 text-xs sm:w-auto sm:flex-1 sm:!px-3">
+        <Boton variante="secundario" icono={FlagTriangleRight} aria-label="Reportar problema" onClick={() => setModal({ tipo: "incidencia" })} className="!min-h-12 w-full !px-2 text-xs sm:w-auto sm:flex-1 sm:!px-3">
           <span className="sm:hidden">Problema</span>
           <span className="hidden sm:inline">Reportar problema</span>
         </Boton>
-        <Boton variante="secundario" icono={Thermometer} onClick={() => setModal({ tipo: "lectura" })} className="!min-h-12 w-full !px-2 text-xs sm:w-auto sm:flex-1 sm:!px-3">
+        <Boton variante="secundario" icono={Thermometer} aria-label="Tomar lectura" onClick={() => setModal({ tipo: "lectura" })} className="!min-h-12 w-full !px-2 text-xs sm:w-auto sm:flex-1 sm:!px-3">
           <span className="sm:hidden">Lectura</span>
           <span className="hidden sm:inline">Tomar lectura</span>
         </Boton>

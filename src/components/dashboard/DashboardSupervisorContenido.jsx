@@ -79,7 +79,7 @@ export default function DashboardSupervisorContenido() {
               {lista.length ? "Prioriza lo que puede detener producción, comprometer una condición ambiental o dejar una incidencia sin respuesta." : "No hay bloqueos detectados con los datos actuales. La supervisión puede concentrarse en el avance y la ejecución del equipo."}
             </p>
             <section className="mt-6 flex flex-wrap items-center gap-2">
-              <Link to={lista.length ? lista[0].ruta : "/produccion"} className="inline-flex items-center rounded-xl bg-white px-4 py-2.5 text-xs font-semibold text-[#0b2b1b] transition hover:bg-emerald-100">
+              <Link to={lista.length ? lista[0].ruta : "/produccion"} className="aiden-supervisor-cta inline-flex items-center rounded-xl bg-white px-4 py-2.5 text-xs font-semibold text-[#0b2b1b] transition hover:bg-emerald-100">
                 {lista.length ? "Revisar atención" : "Abrir producción"}
               </Link>
               <Link to="/personal?vista=tareas" className="inline-flex items-center rounded-xl border border-white/15 px-4 py-2.5 text-xs font-semibold text-white/85 transition hover:border-white/30 hover:bg-white/5">
@@ -89,28 +89,28 @@ export default function DashboardSupervisorContenido() {
           </section>
           <section className="grid grid-cols-2 border-t border-white/10 lg:border-l lg:border-t-0">
             <article className="flex min-h-32 flex-col justify-between border-r border-white/10 p-5 sm:p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">Trabajo abierto</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Trabajo abierto</p>
               <div>
                 <p className="text-3xl font-semibold tracking-tight">{abiertas.length}</p>
                 <p className="mt-1 text-xs text-white/55">{vencidas ? plural(vencidas, "vencida", "vencidas") : "sin vencidas"} · {completadasHoy} hoy</p>
               </div>
             </article>
             <article className="flex min-h-32 flex-col justify-between p-5 sm:p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">Lotes activos</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Lotes activos</p>
               <div>
                 <p className="text-3xl font-semibold tracking-tight">{activos.length}</p>
                 <p className="mt-1 text-xs text-white/55">{activos.filter((l) => l.etapa === "Cosecha").length} en cosecha · {numero(activos.reduce((s, l) => s + Number(l.cantidad || 0), 0))} plantas</p>
               </div>
             </article>
             <article className="flex min-h-32 flex-col justify-between border-r border-t border-white/10 p-5 sm:p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">Riesgos</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Riesgos</p>
               <div>
                 <p className="text-3xl font-semibold tracking-tight">{lista.length}</p>
                 <p className="mt-1 text-xs text-white/55">operación, ambiente y calidad</p>
               </div>
             </article>
             <article className="flex min-h-32 flex-col justify-between border-t border-white/10 p-5 sm:p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">Inventario</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Inventario</p>
               <div>
                 <p className="text-3xl font-semibold tracking-tight">{bajoMinimo}</p>
                 <p className="mt-1 text-xs text-white/55">{bajoMinimo ? "insumos por reponer" : "stock en rango"}</p>

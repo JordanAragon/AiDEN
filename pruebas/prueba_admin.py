@@ -11,7 +11,7 @@ with sync_playwright() as p:
 
     print("Landing original")
     pg.goto(BASE + "/"); pg.wait_for_timeout(600)
-    r.check("El vivero no es una colección de datos" in pg.get_by_role("heading", level=1).inner_text().replace("\n", " "), "landing original con su titular")
+    r.check(" ".join(pg.get_by_role("heading", level=1).inner_text().split()) == "Gestiona cada lote con toda la operación conectada.", "landing actual con su titular")
     boton = pg.locator(".aiden-hero-actions .aiden-button-dark").first
     r.check(boton.evaluate("e => getComputedStyle(e).color") == "rgb(255, 253, 248)", "botón oscuro del hero con el texto crema de la paleta (antes heredaba el oscuro)")
     r.check(pg.locator(".aiden-roles .aiden-section-header > p").evaluate("e => getComputedStyle(e).color") != "rgba(255, 253, 248, 0.64)", "párrafo de Roles visible sobre fondo claro")
@@ -79,7 +79,11 @@ with sync_playwright() as p:
 
     print("Inventario desde alerta")
     pg.goto(BASE + "/dashboard-supervisor"); pg.wait_for_timeout(400)
-    pg.get_by_role("link", name="Registrar entrada").first.click(); pg.wait_for_timeout(400)
+    panel_alertas = pg.locator("article").filter(has=pg.get_by_role("heading", name="Atención inmediata"))
+    ver_todo = panel_alertas.get_by_role("button", name=re.compile("^Ver todo"))
+    if ver_todo.count():
+        ver_todo.click()
+    panel_alertas.get_by_role("link", name="Registrar entrada", exact=True).first.click(); pg.wait_for_timeout(400)
     dlg = pg.get_by_role("dialog")
     r.check(dlg.get_by_role("heading", name="Registrar movimiento").is_visible(), "alerta de inventario abre la entrada precargada")
     dlg.get_by_label("Cantidad").fill("10"); dlg.get_by_role("button", name="Guardar movimiento").click()
@@ -137,7 +141,7 @@ with sync_playwright() as p:
     dlg = pg.get_by_role("dialog")
     dlg.get_by_label("Nombre completo").fill("Sofía Martínez")
     dlg.get_by_label("Correo electrónico").fill("sofia@vivero.com")
-    dlg.get_by_label("Contraseña").fill("clave12345")
+    dlg.get_by_label("Contraseña", exact=True).fill("clave12345")
     dlg.get_by_label("Rol").select_option("supervisor")
     dlg.get_by_role("button", name="Crear cuenta").click()
     r.check(visible(pg.get_by_text("Sofía Martínez").first), "admin crea una cuenta desde Configuración")
