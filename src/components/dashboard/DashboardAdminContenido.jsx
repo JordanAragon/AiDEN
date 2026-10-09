@@ -7,6 +7,7 @@ import EncabezadoPagina from "../ui/EncabezadoPagina";
 import Panel from "../ui/Panel";
 import { AccionRapida, EnlaceModulo, Estadistica, ItemOscuro } from "../ui/Piezas";
 import EtiquetaLote from "../lote/EtiquetaLote";
+import PulsoSemana from "./PulsoSemana";
 import { useDatos } from "../../datos/almacen";
 import { alertas as calcularAlertas, costoPorPlanta, estadoIncidencia, lotesActivos, resumenLote, resumenMensual } from "../../datos/selectores";
 import { useColoresGrafica } from "../../hooks/useColoresGrafica";
@@ -85,13 +86,12 @@ export default function DashboardAdminContenido() {
             <Estadistica etiqueta="Incidencias abiertas" valor={incidenciasAbiertas} to="/calidad" />
             <Estadistica etiqueta="Insumos bajo mínimo" valor={bajoMinimo} to="/inventario?filtro=bajo" />
           </section>
-          <section className="mt-5 rounded-xl bg-slate-50 p-4">
-            <p className="text-xs font-semibold text-slate-500">Responsabilidad del administrador</p>
-            <p className="mt-1 text-sm leading-6 text-slate-700">Administrar usuarios, reglas, seguridad y reportes para evaluar el funcionamiento global de AiDEN.</p>
-          </section>
+          <div className="mt-5">
+            <PulsoSemana datos={datos} />
+          </div>
         </article>
-        <article className="rounded-2xl bg-slate-950 p-5 text-white">
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-300">Prioridad</p>
+        <article className="rounded-2xl bg-aiden-forest-deep p-5 text-white">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-aiden-lime">Prioridad</p>
           <h2 className="mt-2 text-lg font-semibold">Alertas que requieren decisión</h2>
           <section className="mt-4 space-y-2">
             {decisiones.slice(0, visibles).map((d) => (
@@ -99,7 +99,7 @@ export default function DashboardAdminContenido() {
             ))}
             {!decisiones.length && <p className="text-sm text-white/70">No hay alertas pendientes.</p>}
             {decisiones.length > visibles && (
-              <Link to="/dashboard-supervisor" className="inline-block pt-1 text-xs font-semibold text-emerald-200 underline-offset-4 hover:underline">
+              <Link to="/dashboard-supervisor" className="inline-block pt-1 text-xs font-semibold text-aiden-lime underline-offset-4 hover:underline">
                 Ver {plural(decisiones.length - visibles, "asunto más", "asuntos más")} en el centro de supervisión
               </Link>
             )}
@@ -124,8 +124,9 @@ export default function DashboardAdminContenido() {
                   formatter={(valor, nombre) => [dinero(valor), nombre]}
                 />
                 <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
-                <Bar dataKey="ingresos" name="Ingresos" fill={colores.verdeClaro} radius={[6, 6, 0, 0]} maxBarSize={34} />
-                <Bar dataKey="gastos" name="Gastos" fill={colores.verde} radius={[6, 6, 0, 0]} maxBarSize={34} />
+                {/* Ingresos en verde y gastos en neutro: antes eran dos verdes y los gastos parecían ganancia. */}
+                <Bar dataKey="ingresos" name="Ingresos" fill={colores.verde} radius={[6, 6, 0, 0]} maxBarSize={34} />
+                <Bar dataKey="gastos" name="Gastos" fill={colores.neutro} radius={[6, 6, 0, 0]} maxBarSize={34} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -159,9 +160,9 @@ export default function DashboardAdminContenido() {
           </header>
           <section className="mt-5 space-y-3">
             {[
-              ["Administrador", roles.admin, "bg-emerald-700"],
-              ["Supervisor", roles.supervisor, "bg-sky-500"],
-              ["Operario", roles.operario, "bg-amber-500"],
+              ["Administrador", roles.admin, "bg-aiden-moss"],
+              ["Supervisor", roles.supervisor, "bg-verde-800"],
+              ["Operario", roles.operario, "bg-aiden-lime ring-1 ring-inset ring-aiden-moss/40"],
             ].map(([etiqueta, cuenta, barra]) => (
               <section key={etiqueta}>
                 <section className="mb-1 flex justify-between text-xs">

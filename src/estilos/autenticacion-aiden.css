@@ -170,13 +170,21 @@
   margin-bottom: 32px;
 }
 
-.aiden-auth-heading > p,
-.aiden-auth-heading p {
-  color: var(--moss);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: .18em;
+/* Solo el rótulo va en mayúsculas; el subtítulo se lee como texto normal. */
+.aiden-auth-heading > p:first-child {
+  color: #176b45;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
   text-transform: uppercase;
+}
+.aiden-auth-heading :is(h1, h2) + p {
+  color: #526057;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.6;
+  text-transform: none;
 }
 
 .aiden-auth-heading h2,
@@ -252,7 +260,7 @@
 }
 
 .aiden-auth-form button[type="button"] {
-  color: #718078 !important;
+  color: #526057 !important;
 }
 
 .aiden-auth-form button[type="submit"] {
@@ -294,9 +302,10 @@
 }
 
 
-.aiden-auth-form-wrap > p {
-  color: #758078 !important;
-  font-size: 12px !important;
+/* Notas al pie del formulario; los avisos (role=status/alert) conservan su color. */
+.aiden-auth-form-wrap > p:not([role]) {
+  color: #526057 !important;
+  font-size: 13px !important;
 }
 
 .aiden-auth-session {

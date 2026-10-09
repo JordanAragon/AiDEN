@@ -36,13 +36,13 @@ export default function EstadoConexion() {
   return (
     <>
       {!enLinea && avisoVisto && (
-        <p role="status" className="pointer-events-auto inline-flex items-center gap-2 self-center rounded-full bg-slate-950 px-3 py-1.5 text-xs font-semibold text-white shadow-lg sm:self-end">
+        <p role="status" className="pointer-events-auto inline-flex items-center gap-2 self-center rounded-full bg-aiden-forest-deep px-3 py-1.5 text-xs font-semibold text-white shadow-lg sm:self-end">
           <WifiOff size={13} className="text-amber-300" aria-hidden="true" />
           Sin conexión
         </p>
       )}
       {!enLinea && !avisoVisto && (
-        <div role="status" className="aiden-modal-entrada pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl bg-slate-950 px-4 py-3 text-white shadow-2xl">
+        <div role="status" className="aiden-modal-entrada pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl bg-aiden-forest-deep px-4 py-3 text-white shadow-2xl">
           <WifiOff size={17} className="mt-0.5 shrink-0 text-amber-300" aria-hidden="true" />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold">Sin conexión</p>
@@ -54,7 +54,7 @@ export default function EstadoConexion() {
         </div>
       )}
       {trabajadorNuevo && !aplazada && (
-        <div role="status" className="aiden-modal-entrada pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl bg-slate-950 px-4 py-3 text-white shadow-2xl">
+        <div role="status" className="aiden-modal-entrada pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl bg-aiden-forest-deep px-4 py-3 text-white shadow-2xl">
           <RefreshCw size={17} className="mt-0.5 shrink-0 text-emerald-400" aria-hidden="true" />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold">Hay una versión nueva de AiDEN</p>

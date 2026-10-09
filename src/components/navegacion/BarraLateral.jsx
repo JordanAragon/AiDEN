@@ -26,7 +26,7 @@ import { alertas as calcularAlertas } from "../../datos/selectores";
 import { IsotipoAiden } from "../ui/MarcaAiden";
 
 const navItems = [
-  { label: "Dashboard", path: "/dashboard-admin", icon: <LayoutDashboard size={18} />, roles: ["admin", "supervisor", "operario"] },
+  { label: "Inicio", path: "/dashboard-admin", icon: <LayoutDashboard size={18} />, roles: ["admin", "supervisor", "operario"] },
   { label: "Producción", path: "/produccion", icon: <Sprout size={18} />, roles: ["admin", "supervisor", "operario"] },
   { label: "Trazabilidad", path: "/trazabilidad", icon: <GitBranch size={18} />, roles: ["admin", "supervisor", "operario"] },
   { label: "Ambiental", path: "/ambiental", icon: <Thermometer size={18} />, roles: ["admin", "supervisor", "operario"] },
@@ -106,8 +106,8 @@ export default function BarraLateral() {
     <nav aria-label="Menú principal" className="flex-1 overflow-y-auto px-3 py-4">
       <ul className="space-y-1">
         {visible.map((item) => {
-          const targetPath = item.label === "Dashboard" ? pathDashboard : item.path;
-          const isActive = location.pathname === targetPath || (item.label === "Dashboard" && location.pathname.startsWith("/dashboard-"));
+          const targetPath = item.label === "Inicio" ? pathDashboard : item.path;
+          const isActive = location.pathname === targetPath || (item.label === "Inicio" && location.pathname.startsWith("/dashboard-"));
           return (
             <li key={item.label}>
               <NavLink
@@ -154,7 +154,7 @@ export default function BarraLateral() {
         <button
           type="button"
           aria-label="Cerrar menú"
-          className="fixed inset-0 z-40 bg-slate-950/30 lg:hidden"
+          className="fixed inset-0 z-40 bg-aiden-forest-deep/35 lg:hidden"
           onClick={() => setMovilAbierto(false)}
         />
       )}

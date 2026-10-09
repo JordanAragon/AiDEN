@@ -1,11 +1,11 @@
 export default function Panel({ titulo, descripcion, rotulo, accion, icono: Icono, children, className = "", cuerpo = "px-5 pb-5", oscuro = false, as: Etiqueta = "section", id }) {
   if (oscuro) {
     return (
-      <Etiqueta id={id} className={`aiden-panel aiden-panel-dark min-w-0 rounded-2xl bg-slate-950 p-5 text-white ${className}`}>
+      <Etiqueta id={id} className={`aiden-panel aiden-panel-dark min-w-0 rounded-2xl bg-aiden-forest-deep p-5 text-white ${className}`}>
         {(rotulo || titulo || accion) && (
           <header className="mb-4 flex flex-wrap items-start justify-between gap-3">
             <div>
-              {rotulo && <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-300">{rotulo}</p>}
+              {rotulo && <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-aiden-lime">{rotulo}</p>}
               {titulo && <h2 className="mt-1 text-lg font-semibold text-white">{titulo}</h2>}
               {descripcion && <p className="mt-1 text-sm text-slate-300">{descripcion}</p>}
             </div>

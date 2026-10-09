@@ -194,15 +194,15 @@ export default function CostosOperativo() {
             <p className="py-10 text-center text-sm text-slate-500">Sin gastos en este periodo.</p>
           )}
         </section>
-        <section className="rounded-2xl bg-slate-950 p-5 text-white">
-          <p className="text-xs font-bold uppercase tracking-wider text-emerald-300">Resultado por lote</p>
+        <section className="rounded-2xl bg-aiden-forest-deep p-5 text-white">
+          <p className="text-xs font-bold uppercase tracking-wider text-aiden-lime">Resultado por lote</p>
           <p className="mt-1 text-xs text-white/60">Acumulado desde la siembra. Toca un lote para ver sus movimientos.</p>
           <ul className="mt-4 space-y-2">
             {porLote.map((r) => (
               <li key={r.codigo}>
                 <button type="button" onClick={() => setLote(lote === r.codigo ? "" : r.codigo)} aria-pressed={lote === r.codigo} className={`w-full rounded-xl border p-3 text-left hover:bg-white/10 ${lote === r.codigo ? "border-emerald-300/60 bg-white/10" : "border-white/10 bg-white/5"}`}>
                   <span className="flex items-center justify-between gap-2">
-                    <span className="font-mono text-[11px] font-bold text-emerald-300">{r.codigo}</span>
+                    <span className="font-mono text-[11px] font-bold text-aiden-lime">{r.codigo}</span>
                     <span className={`text-sm font-bold ${r.resultado < 0 ? "text-red-300" : "text-emerald-300"}`}>{dinero(r.resultado)}</span>
                   </span>
                   <span className="mt-1 block text-xs text-white/70">

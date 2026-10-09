@@ -1,5 +1,6 @@
+import { Check } from "lucide-react";
 import { ETAPAS, indiceEtapa } from "../../datos/catalogos";
-import { fechaCorta } from "../../utilidades/formato";
+import { diasEntre, fechaCorta, hoyISO } from "../../utilidades/formato";
 
 export default function PasosEtapa({ etapa, fechas = {}, compacto = false, cerrado = false, mostrarEtiqueta = true }) {
   const actual = indiceEtapa(etapa);
@@ -13,21 +14,31 @@ export default function PasosEtapa({ etapa, fechas = {}, compacto = false, cerra
             <span className="font-semibold text-slate-700">{pct}%</span>
           </div>
         )}
-        <section className="h-2 rounded-full bg-slate-100">
-          <span className={`block h-full rounded-full ${cerrado ? "bg-slate-400" : "bg-emerald-500"}`} style={{ width: `${pct}%` }} />
+        <section className="grid grid-cols-4 gap-1" aria-hidden="true">
+          {ETAPAS.map((nombre, i) => (
+            <span key={nombre} className={`h-1.5 rounded-full ${cerrado ? "bg-slate-300" : i < actual ? "bg-aiden-moss" : i === actual ? "bg-aiden-forest" : "bg-slate-200"}`} />
+          ))}
         </section>
       </section>
     );
   }
+  // Pista de cuatro tramos: lo hecho en moss, la etapa en curso en bosque con sus días.
   return (
-    <ol className="grid gap-2 sm:grid-cols-4" aria-label="Etapas del lote">
+    <ol className="grid grid-cols-4 gap-1.5" aria-label="Etapas del lote">
       {ETAPAS.map((nombre, i) => {
-        const alcanzada = i <= actual;
+        const hecha = i < actual || (cerrado && i <= actual);
+        const enCurso = i === actual && !cerrado;
+        const dias = enCurso && fechas[nombre] ? diasEntre(fechas[nombre], hoyISO()) + 1 : null;
         return (
-          <li key={nombre} aria-current={i === actual && !cerrado ? "step" : undefined} className={`rounded-xl border p-3 ${alcanzada ? "border-emerald-200 bg-emerald-50" : "border-slate-200 bg-slate-50"}`}>
-            <p className="text-[10px] font-bold text-slate-500">{i + 1}</p>
-            <p className="mt-1 text-xs font-semibold text-slate-800">{nombre}</p>
-            <p className="mt-0.5 text-[10px] text-slate-500">{fechas[nombre] ? fechaCorta(fechas[nombre]) : i === actual && !cerrado ? "En curso" : "—"}</p>
+          <li key={nombre} aria-current={enCurso ? "step" : undefined} className="min-w-0">
+            <span className={`block h-1.5 rounded-full ${hecha ? "bg-aiden-moss" : enCurso ? "bg-aiden-forest" : "bg-slate-200"}`} aria-hidden="true" />
+            <p className={`mt-2 flex items-center gap-1 truncate text-[11px] font-semibold sm:text-xs ${enCurso ? "text-slate-950" : hecha ? "text-slate-700" : "text-slate-500"}`}>
+              {hecha && <Check size={12} className="shrink-0 text-aiden-moss" aria-hidden="true" />}
+              {nombre}
+            </p>
+            <p className="mt-0.5 truncate text-[11px] text-slate-500 tabular-nums">
+              {enCurso ? (dias ? `Día ${dias}` : "En curso") : fechas[nombre] ? fechaCorta(fechas[nombre]) : "—"}
+            </p>
           </li>
         );
       })}

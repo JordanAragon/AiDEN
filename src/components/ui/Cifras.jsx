@@ -1,24 +1,20 @@
 import { Link } from "react-router-dom";
 
-const TONOS = {
-  exito: "bg-emerald-50 text-emerald-700",
-  neutral: "bg-emerald-50 text-emerald-700",
-  alerta: "bg-amber-50 text-amber-700",
-  critico: "bg-red-50 text-red-600",
-  info: "bg-sky-50 text-sky-700",
-};
+// El tono solo se marca cuando pide atención: un punto ámbar o rojo junto a la etiqueta.
+const PUNTO = { alerta: "bg-amber-500", critico: "bg-red-600" };
 
 function Contenido({ etiqueta, valor, detalle, icono: Icono, tono }) {
   return (
     <>
-      {Icono && (
-        <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${TONOS[tono] || TONOS.exito}`}>
-          <Icono size={17} aria-hidden="true" />
+      <span className="flex items-start justify-between gap-3">
+        <span className="flex min-w-0 items-center gap-2 text-[13px] font-semibold leading-5 text-slate-600">
+          {PUNTO[tono] && <span className={`h-2 w-2 shrink-0 rounded-full ${PUNTO[tono]}`} aria-hidden="true" />}
+          {etiqueta}
         </span>
-      )}
-      <span className={`block text-2xl font-bold tracking-tight text-slate-950 ${Icono ? "mt-4" : ""}`}>{valor}</span>
-      <span className="block text-xs font-semibold text-slate-600">{etiqueta}</span>
-      {detalle && <span className="mt-1 block text-[11px] text-slate-500">{detalle}</span>}
+        {Icono && <Icono size={16} className="mt-0.5 shrink-0 text-aiden-moss" aria-hidden="true" />}
+      </span>
+      <span className="mt-3 block break-words text-[clamp(1.35rem,4.6vw,1.75rem)] font-semibold leading-none tracking-tight text-slate-950 tabular-nums">{valor}</span>
+      {detalle && <span className="mt-2 block text-xs leading-5 text-slate-500">{detalle}</span>}
     </>
   );
 }
@@ -27,19 +23,19 @@ const COLUMNAS = { 2: "xl:grid-cols-2", 3: "xl:grid-cols-3", 4: "xl:grid-cols-4"
 
 export default function Cifras({ items, className = "" }) {
   return (
-    <section className={`aiden-stat-grid grid gap-4 sm:grid-cols-2 ${COLUMNAS[items.length] || "xl:grid-cols-4"} ${className}`}>
+    <section className={`aiden-stat-grid grid grid-cols-2 gap-3 sm:gap-4 ${COLUMNAS[items.length] || "xl:grid-cols-4"} ${className}`}>
       {items.map((item) => {
-        const base = `block rounded-2xl border bg-white p-4 text-left transition-colors ${item.activo ? "border-emerald-300 ring-1 ring-emerald-100" : "border-slate-200"}`;
+        const base = `block min-w-0 rounded-2xl border bg-white p-4 text-left transition-colors ${item.activo ? "border-aiden-moss ring-1 ring-aiden-moss/30" : "border-slate-200"}`;
         if (item.to) {
           return (
-            <Link key={item.etiqueta} to={item.to} className={`${base} transition-colors hover:border-emerald-200`}>
+            <Link key={item.etiqueta} to={item.to} className={`${base} hover:border-aiden-moss/60`}>
               <Contenido {...item} />
             </Link>
           );
         }
         if (item.onClick) {
           return (
-            <button key={item.etiqueta} type="button" onClick={item.onClick} aria-pressed={item.activo} className={`${base} transition-colors hover:border-emerald-200`}>
+            <button key={item.etiqueta} type="button" onClick={item.onClick} aria-pressed={item.activo} className={`${base} hover:border-aiden-moss/60`}>
               <Contenido {...item} />
             </button>
           );

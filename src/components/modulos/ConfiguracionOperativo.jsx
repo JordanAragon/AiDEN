@@ -163,9 +163,9 @@ function Formulario({ cfg }) {
             </Boton>
           </div>
         </form>
-        <article className="rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white">
+        <article className="rounded-2xl border border-slate-200 bg-aiden-forest-deep p-5 text-white">
           <header className="flex items-center gap-2">
-            <ShieldCheck size={18} className="text-emerald-300" aria-hidden="true" />
+            <ShieldCheck size={18} className="text-aiden-lime" aria-hidden="true" />
             <h2 className="font-semibold">Comportamiento del sistema</h2>
           </header>
           <section className="mt-5 space-y-3 text-sm text-white/70">
@@ -180,7 +180,7 @@ function Formulario({ cfg }) {
               <option>Desactivadas</option>
             </select>
           </label>
-          {cambios && <p className="mt-3 text-xs text-emerald-300">Hay cambios sin guardar. Usa “Guardar cambios”.</p>}
+          {cambios && <p className="mt-3 text-xs text-aiden-lime">Hay cambios sin guardar. Usa “Guardar cambios”.</p>}
         </article>
       </section>
     </>

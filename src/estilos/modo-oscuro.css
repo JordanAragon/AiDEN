@@ -242,3 +242,11 @@ html.aiden-dark .aiden-app-shell .aiden-supervisor-pulso a.aiden-supervisor-cta 
   background-color: #fffdf8 !important;
   color: #0b2b1b !important;
 }
+
+/* Paneles de marca en modo oscuro: verde 900 de la paleta en lugar del bosque
+   profundo, que sobre el fondo casi negro se leería como un hueco. */
+html.aiden-dark .bg-aiden-forest-deep { background-color: var(--verde-900); }
+html.aiden-dark .aiden-linea-dia { color: #c5d0ca; }
+/* Bandas y barras suaves (rango objetivo, pulso de la semana): en oscuro, verde 800. */
+html.aiden-dark .bg-verde-100 { background-color: var(--verde-800); }
+html.aiden-dark .ring-verde-300 { --tw-ring-color: var(--verde-500); }

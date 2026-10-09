@@ -60,7 +60,7 @@ export default function ProveedorRetroalimentacion({ children }) {
           {avisos.map((item) => {
             const Icono = ICONOS[item.tipo] || Info;
             return (
-              <div key={item.id} role={item.tipo === "error" ? "alert" : "status"} className="aiden-modal-entrada pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl bg-slate-950 px-4 py-3 text-white shadow-2xl">
+              <div key={item.id} role={item.tipo === "error" ? "alert" : "status"} className="aiden-modal-entrada pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl bg-aiden-forest-deep px-4 py-3 text-white shadow-2xl">
                 <Icono size={17} className={`mt-0.5 shrink-0 ${COLOR_ICONO[item.tipo]}`} aria-hidden="true" />
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold">{item.titulo}</p>

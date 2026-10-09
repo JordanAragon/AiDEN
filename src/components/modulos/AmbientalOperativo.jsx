@@ -10,6 +10,7 @@ import Panel from "../ui/Panel";
 import { Segmentos } from "../ui/Filtros";
 import { FILA_ENCABEZADO, TD, TH, TR } from "../ui/tabla";
 import EtiquetaLote from "../lote/EtiquetaLote";
+import BarraRango from "../ui/BarraRango";
 import ModalLectura from "../formularios/ModalLectura";
 import ModalTarea from "../formularios/ModalTarea";
 import { useDatos } from "../../datos/almacen";
@@ -18,15 +19,6 @@ import { useColoresGrafica } from "../../hooks/useColoresGrafica";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
 import { aFecha, fechaHora, haceTiempo, hora, hoyISO, numero, plural } from "../../utilidades/formato";
-
-function Metric({ label, value, danger = false }) {
-  return (
-    <section className={`rounded-xl border p-3 ${danger ? "border-red-100 bg-red-50" : "border-slate-100 bg-slate-50"}`}>
-      <p className="text-[10px] font-medium text-slate-500">{label}</p>
-      <p className={`mt-1 text-lg font-bold tracking-tight ${danger ? "text-red-700" : "text-slate-900"}`}>{value}</p>
-    </section>
-  );
-}
 
 export default function AmbientalOperativo() {
   const datos = useDatos();
@@ -154,10 +146,10 @@ export default function AmbientalOperativo() {
               </header>
               {row ? (
                 <>
-                  <section className="mt-5 grid grid-cols-3 gap-2">
-                    <Metric label="Temperatura" value={`${numero(row.temperatura)} °C`} danger={Boolean(e.temperatura)} />
-                    <Metric label="Humedad" value={`${numero(row.humedad)}%`} danger={Boolean(e.humedad)} />
-                    <Metric label="Luz" value={row.iluminacion ? `${numero(row.iluminacion)} lux` : "—"} />
+                  <section className="mt-5 space-y-4">
+                    <BarraRango etiqueta="Temperatura" unidad="°C" valor={row.temperatura} minimo={cfg.tempMin} maximo={cfg.tempMax} historico={history.map((h) => Number(h.temperatura))} />
+                    <BarraRango etiqueta="Humedad" unidad="%" valor={row.humedad} minimo={cfg.humMin} maximo={cfg.humMax} historico={history.map((h) => Number(h.humedad))} />
+                    <p className="text-xs text-slate-500">Luz: {row.iluminacion ? `${numero(row.iluminacion)} lux` : "sin medición"}</p>
                   </section>
                   <section className="mt-4 h-24 rounded-xl bg-slate-50/80 px-2 py-1" role="img" aria-label={`Últimas ${history.length} lecturas de ${nombre}`}>
                     <ResponsiveContainer width="100%" height="100%">

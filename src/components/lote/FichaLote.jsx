@@ -7,6 +7,7 @@ import Insignia from "../ui/Insignia";
 import Pestanas from "../ui/Pestanas";
 import { TONO_ESTADO_TAREA, TONO_INCIDENCIA, TONO_PRIORIDAD } from "../ui/tonos";
 import PasosEtapa from "./PasosEtapa";
+import LineaTiempo from "./LineaTiempo";
 import ModalTarea from "../formularios/ModalTarea";
 import ModalIncidencia from "../formularios/ModalIncidencia";
 import ModalEvento from "../formularios/ModalEvento";
@@ -16,7 +17,7 @@ import { ETAPAS } from "../../datos/catalogos";
 import { esGestor, estadoIncidencia, evaluarLectura, nombrePersona, resumenLote, ultimasLecturas } from "../../datos/selectores";
 import { useAvanzarEtapa } from "../../hooks/useAvanzarEtapa";
 import { useSesion } from "../../hooks/useSesion";
-import { dinero, dineroOGuion, fechaCorta, fechaHora, haceTiempo, numero, vencimiento } from "../../utilidades/formato";
+import { dinero, dineroOGuion, fechaCorta, haceTiempo, numero, vencimiento } from "../../utilidades/formato";
 
 function Info({ etiqueta, valor, detalle, alerta = false }) {
   return (
@@ -154,17 +155,11 @@ function Contenido({ lote, datos, sesion, onAccion }) {
           />
         </div>
         <ul role="tabpanel" id={`panel-${pestana}`} aria-labelledby={`pestana-${pestana}`} className="mt-3 max-h-[46vh] space-y-2 overflow-y-auto pr-1">
-          {pestana === "historia" &&
-            r.eventos.slice(0, 12).map((e) => (
-              <Tarjeta key={e.id}>
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-[11px] font-bold text-emerald-700">{e.evento}</p>
-                  <time className="text-[10px] text-slate-500">{fechaHora(e.fecha)}</time>
-                </div>
-                <p className="mt-1 text-sm text-slate-800">{e.detalle}</p>
-                <p className="mt-1 text-[11px] text-slate-500">{e.responsable || "Sistema"}</p>
-              </Tarjeta>
-            ))}
+          {pestana === "historia" && r.eventos.length > 0 && (
+            <li>
+              <LineaTiempo eventos={r.eventos} limite={20} />
+            </li>
+          )}
           {pestana === "tareas" &&
             r.tareas.map((t) => (
               <Tarjeta key={t.id}>

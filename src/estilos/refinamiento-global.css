@@ -236,3 +236,7 @@ html:not(.aiden-dark) .aiden-app-shell .text-slate-400 {
 /* Texto escrito por las personas (descripciones, notas, acciones): una palabra muy
    larga se parte antes que desbordar la tarjeta. */
 .aiden-app-shell main :is(p, li, h3, dd, blockquote) { overflow-wrap: break-word; }
+
+/* Placeholders legibles (texto-2 de DESIGN.md, 4,8:1); antes quedaban en 3,1:1. */
+.aiden-app-shell :is(input, textarea)::placeholder { color: #66736b; opacity: 1; }
+html.aiden-dark .aiden-app-shell :is(input, textarea)::placeholder { color: #9aa79f; }

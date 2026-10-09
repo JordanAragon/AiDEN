@@ -56,7 +56,7 @@ export default function Modal({ abierto, onCerrar, titulo, descripcion, children
   const anchoFinal = variante === "panel" ? "max-w-3xl" : ANCHOS[ancho];
 
   return createPortal(
-    <section className="aiden-modal-fondo fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 p-4 backdrop-blur-sm" onMouseDown={(e) => e.target === e.currentTarget && cerrar.current?.()}>
+    <section className="aiden-modal-fondo fixed inset-0 z-50 flex items-center justify-center bg-aiden-forest-deep/40 p-4 backdrop-blur-sm" onMouseDown={(e) => e.target === e.currentTarget && cerrar.current?.()}>
       <article
         ref={dialogo}
         role="dialog"

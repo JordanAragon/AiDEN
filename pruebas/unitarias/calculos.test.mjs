@@ -53,3 +53,10 @@ test("el asistente pide aclaración ante un empate y reconoce cuando no sabe", (
   assert.ok(fuente("ambiente y plagas").aclaracion);
   assert.ok(fuente("cuéntame un chiste").sinRegla);
 });
+
+test("el pulso de la semana cuenta los registros de los últimos 7 días", async () => {
+  const { pulsoDeLaSemana } = await import("../../src/datos/selectores.js");
+  const semana = pulsoDeLaSemana(obtenerDatos());
+  assert.equal(semana.length, 7);
+  assert.ok(semana.reduce((s, d) => s + d.registros, 0) > 0);
+});

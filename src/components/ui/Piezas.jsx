@@ -47,7 +47,7 @@ export function TarjetaAccion({ icono: Icono, titulo, texto, accion, to }) {
 export function ItemOscuro({ tipo, texto, detalle, to }) {
   return (
     <Link to={to} className="block w-full rounded-xl border border-white/10 bg-white/5 p-3 text-left hover:bg-white/10">
-      <p className="text-xs font-semibold text-emerald-300">{tipo}</p>
+      <p className="text-xs font-semibold text-aiden-lime">{tipo}</p>
       <p className="mt-1 text-sm text-white/85">{texto}</p>
       {detalle && <p className="mt-0.5 text-xs text-white/60">{detalle}</p>}
     </Link>

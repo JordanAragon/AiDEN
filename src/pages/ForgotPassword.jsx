@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, Loader2 } from "lucid
 import { Link, useNavigate } from "react-router-dom";
 import { resetPassword } from "../utilidades/autenticacion";
 import { useTitulo } from "../hooks/useTitulo";
-import loginImage from "../assets/imagenes/login.webp";
+import FotoAcceso from "../components/autenticacion/FotoAcceso";
 import "../estilos/autenticacion-aiden.css";
 import { IsotipoAiden, LogotipoAiden } from "../components/ui/MarcaAiden";
 
@@ -39,7 +39,7 @@ export default function ForgotPassword() {
   return (
     <main className="aiden-auth">
       <aside className="aiden-auth-side">
-        <img src={loginImage} alt="Invernadero agrícola" className="aiden-auth-image" />
+        <FotoAcceso className="aiden-auth-image" />
         <div className="aiden-auth-image-overlay" aria-hidden="true" />
         <section className="aiden-auth-side-content">
           <Link to="/" className="aiden-auth-brand">

@@ -71,7 +71,7 @@ export default function DashboardSupervisorContenido() {
       <section aria-label="Resumen del estado de la operación" aria-live="polite" data-vista="supervisor" className="aiden-supervisor-pulso overflow-hidden rounded-[28px] bg-[#0b2b1b] text-white shadow-[0_24px_70px_rgba(11,43,27,0.16)]">
         <section className="grid lg:grid-cols-[1.15fr_.85fr]">
           <section className="p-6 sm:p-8 lg:p-10">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-300">Pulso de la operación</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-aiden-lime">Pulso de la operación</p>
             <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
               {lista.length ? plural(lista.length, "asunto requiere atención.", "asuntos requieren atención.") : "La operación está sin alertas."}
             </h2>

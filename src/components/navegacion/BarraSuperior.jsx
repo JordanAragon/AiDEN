@@ -9,7 +9,7 @@ import { useSesion } from "../../hooks/useSesion";
 import { coincide, numero } from "../../utilidades/formato";
 
 const MODULOS = [
-  { nombre: "Dashboard", ruta: "/dashboard-admin", roles: ["admin", "supervisor", "operario"] },
+  { nombre: "Inicio", ruta: "/dashboard-admin", roles: ["admin", "supervisor", "operario"] },
   { nombre: "Producción", ruta: "/produccion", roles: ["admin", "supervisor", "operario"] },
   { nombre: "Trazabilidad", ruta: "/trazabilidad", roles: ["admin", "supervisor", "operario"] },
   { nombre: "Ambiental", ruta: "/ambiental", roles: ["admin", "supervisor", "operario"] },

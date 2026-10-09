@@ -1,5 +1,5 @@
 import { indiceEtapa } from "./catalogos";
-import { aFecha, diasEntre, fechaCorta, hoyISO, numero, cantidadConUnidad } from "../utilidades/formato";
+import { aFecha, diasEntre, fechaCorta, hoyISO, numero, cantidadConUnidad, sumarDias } from "../utilidades/formato";
 
 export const estadoIncidencia = (incidencia) => incidencia?.estado ?? incidencia?.estadoManual ?? "Abierta";
 
@@ -296,4 +296,22 @@ export function siguienteCodigo(prefijo, existentes, anio) {
 export function diasAbierta(incidencia) {
   const fin = estadoIncidencia(incidencia) === "Cerrada" && incidencia.cierre ? incidencia.cierre : hoyISO();
   return diasEntre(incidencia.fecha, fin);
+}
+
+const DIAS_SEMANA = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+
+// Actividad de los últimos 7 días contada desde la trazabilidad: cada registro de
+// campo, cambio de etapa, consumo o incidencia suma al día en que ocurrió.
+export function pulsoDeLaSemana(datos, hoy = hoyISO()) {
+  const dias = Array.from({ length: 7 }, (_, i) => sumarDias(hoy, i - 6));
+  const conteo = new Map(dias.map((d) => [d, { registros: 0, completadas: 0 }]));
+  for (const e of datos.trazabilidad) {
+    const dia = String(e.fecha).slice(0, 10);
+    if (conteo.has(dia)) conteo.get(dia).registros += 1;
+  }
+  for (const t of datos.tareas) {
+    const dia = t.completada ? String(t.completada).slice(0, 10) : null;
+    if (dia && conteo.has(dia)) conteo.get(dia).completadas += 1;
+  }
+  return dias.map((dia) => ({ dia, etiqueta: DIAS_SEMANA[aFecha(dia).getDay()], ...conteo.get(dia) }));
 }

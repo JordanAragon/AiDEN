@@ -19,7 +19,7 @@ import { useAccion, useEnvio } from "../../contexto/retroalimentacion";
 import { useFichaLote } from "../../contexto/ficha";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
-import { fechaCorta, haceTiempo, hoyISO, numero, plural, vencimiento } from "../../utilidades/formato";
+import { haceTiempo, hoyISO, numero, plural, vencimiento } from "../../utilidades/formato";
 
 function ModalCompletar({ tarea, onCerrar, onReportar }) {
   const id = useId();
@@ -67,20 +67,15 @@ function FilaTarea({ tarea, onCompletar }) {
   const hecha = tarea.estado === "Completada";
   const v = vencimiento(tarea.fecha);
   return (
-    <li className="flex items-start gap-3 py-3">
-      <button
-        type="button"
-        onClick={() => (hecha ? ejecutar(() => cambiarEstadoTarea(tarea.id, "Pendiente", sesion), "Tarea reabierta") : onCompletar(tarea))}
-        className="mt-0.5 shrink-0 rounded-full"
-        aria-label={hecha ? `Reabrir ${tarea.titulo}` : `Marcar hecha ${tarea.titulo}`}
-      >
-        {hecha ? <CheckCircle2 size={18} className="text-emerald-600" /> : <span className={`block h-[18px] w-[18px] rounded-full border-2 ${tarea.prioridad === "Alta" ? "border-red-400" : "border-slate-300"}`} />}
-      </button>
-      <span className="min-w-0 flex-1">
-        <span className={`block text-sm font-medium ${hecha ? "text-slate-500 line-through" : "text-slate-700"}`}>{tarea.titulo}</span>
-        {!hecha && tarea.descripcion && <span className="mt-0.5 block text-xs text-slate-500">{tarea.descripcion}</span>}
-        {hecha && tarea.nota && <span className="mt-0.5 block text-xs text-slate-500">Nota: {tarea.nota}</span>}
-        <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-slate-500">
+    <li className="flex flex-wrap items-start gap-x-3 gap-y-3 py-4">
+      <span className="mt-0.5 shrink-0" aria-hidden="true">
+        {hecha ? <CheckCircle2 size={20} className="text-verde-500" /> : <span className={`block h-5 w-5 rounded-full border-2 ${tarea.prioridad === "Alta" ? "border-red-500" : "border-slate-300"}`} />}
+      </span>
+      <span className="min-w-0 flex-1 basis-56">
+        <span className={`block text-[15px] font-semibold leading-6 ${hecha ? "text-slate-500 line-through" : "text-slate-900"}`}>{tarea.titulo}</span>
+        {!hecha && tarea.descripcion && <span className="mt-0.5 block text-sm leading-6 text-slate-600">{tarea.descripcion}</span>}
+        {hecha && tarea.nota && <span className="mt-0.5 block text-sm text-slate-600">Nota: {tarea.nota}</span>}
+        <span className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-600">
           <span>{tarea.modulo}</span>
           {tarea.lote && (
             <>
@@ -94,20 +89,21 @@ function FilaTarea({ tarea, onCompletar }) {
         </span>
       </span>
       {!hecha && (
-        <span className="flex shrink-0 flex-col gap-1.5 sm:flex-row">
+        <span className="flex w-full shrink-0 gap-2 pl-8 sm:w-auto sm:pl-0">
           {tarea.estado === "Pendiente" && (
-            <Boton tamano="sm" variante="contorno" icono={PlayCircle} onClick={() => ejecutar(() => cambiarEstadoTarea(tarea.id, "En curso", sesion), "Tarea en curso")}>
+            <Boton variante="contorno" icono={PlayCircle} aria-label={`Empezar, ${tarea.titulo}`} onClick={() => ejecutar(() => cambiarEstadoTarea(tarea.id, "En curso", sesion), "Tarea en curso")} className="min-h-11 flex-1 sm:flex-none">
               Empezar
             </Boton>
           )}
-          <Boton tamano="sm" variante="suave" icono={CheckCircle2} onClick={() => onCompletar(tarea)}>
+          <Boton variante="primario" icono={CheckCircle2} aria-label={`Hecha, ${tarea.titulo}`} onClick={() => onCompletar(tarea)} className="min-h-11 flex-1 sm:flex-none">
             Hecha
           </Boton>
         </span>
       )}
       {hecha && (
-        <button type="button" onClick={() => ejecutar(() => cambiarEstadoTarea(tarea.id, "Pendiente", sesion), "Tarea reabierta")} className="shrink-0 rounded-lg p-2 text-slate-400 hover:bg-slate-100" aria-label={`Deshacer ${tarea.titulo}`} title="Deshacer">
-          <RotateCcw size={14} aria-hidden="true" />
+        <button type="button" onClick={() => ejecutar(() => cambiarEstadoTarea(tarea.id, "Pendiente", sesion), "Tarea reabierta")} className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-slate-600 hover:bg-slate-100" aria-label={`Deshacer, ${tarea.titulo}`}>
+          <RotateCcw size={15} aria-hidden="true" />
+          Deshacer
         </button>
       )}
     </li>
@@ -118,7 +114,7 @@ function Grupo({ titulo, tareas, onCompletar, critico = false }) {
   if (!tareas.length) return null;
   return (
     <section aria-label={titulo}>
-      <h3 className={`pt-3 text-[11px] font-bold uppercase tracking-wider ${critico ? "text-red-600" : "text-slate-500"}`}>
+      <h3 className={`pt-4 text-xs font-bold uppercase tracking-wider ${critico ? "text-red-700" : "text-slate-600"}`}>
         {titulo} · {tareas.length}
       </h3>
       <ul className="divide-y divide-slate-100">
@@ -157,14 +153,14 @@ export default function DashboardOperarioContenido() {
   const incidencias = datos.calidad.filter((i) => codigos.has(i.lote) && estadoIncidencia(i) !== "Cerrada");
 
   return (
-    <article className="aiden-rol-operario aiden-operario-vista space-y-7">
-      <EncabezadoPagina
-        rotulo="AiDEN / ejecución"
-        titulo={`Mi jornada, ${nombre}`}
-        descripcion="Tu vista se limita al trabajo que tienes asignado: tareas, lotes, condiciones y novedades que afectan tu jornada."
-      />
+    <article className="aiden-rol-operario aiden-operario-vista flex flex-col gap-7 pb-24 lg:pb-0">
+      <EncabezadoPagina rotulo="AiDEN / ejecución" titulo={`Mi jornada, ${nombre}`} descripcion="Tus tareas, tus lotes y lo que pasa en tus zonas hoy." />
 
-      <section className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap" aria-label="Acciones rápidas">
+      {/* En el celular las acciones van abajo, al alcance del pulgar; en escritorio, aquí. */}
+      <section
+        className="aiden-operario-acciones fixed inset-x-0 bottom-0 z-30 grid grid-cols-3 gap-2 border-t border-slate-200 bg-aiden-white/95 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:static lg:z-auto lg:order-1 lg:flex lg:flex-wrap lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none"
+        aria-label="Acciones rápidas"
+      >
         <Boton variante="primario" icono={ListChecks} aria-label="Registrar actividad" onClick={() => setModal({ tipo: "evento" })} className="!min-h-12 w-full !px-2 text-xs sm:w-auto sm:flex-1 sm:!px-3">
           <span className="sm:hidden">Actividad</span>
           <span className="hidden sm:inline">Registrar actividad</span>
@@ -180,6 +176,7 @@ export default function DashboardOperarioContenido() {
       </section>
 
       <Cifras
+        className="order-3 lg:order-2"
         items={[
           { icono: ListChecks, etiqueta: "Mis tareas", valor: pendientes, detalle: `${plural(hechas.length, "hecha", "hechas")} hoy`, tono: pendientes ? "alerta" : "exito" },
           { icono: Sprout, etiqueta: "Lotes a cargo", valor: misLotes.length, detalle: "Asignados a ti", to: "/produccion" },
@@ -188,12 +185,12 @@ export default function DashboardOperarioContenido() {
         ]}
       />
 
-      <section className="grid gap-4 lg:grid-cols-[1.15fr_.85fr]">
+      <section className="order-2 grid gap-4 lg:order-3 lg:grid-cols-[1.15fr_.85fr]">
         <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <header className="flex items-center justify-between">
             <section>
-              <h2 className="font-semibold text-slate-900">Lo que tengo que hacer</h2>
-              <p className="mt-1 text-xs text-slate-500">Actualiza cada tarea a medida que avances para mantener al equipo informado.</p>
+              <h2 className="text-lg font-semibold text-slate-900">Lo que tengo que hacer</h2>
+              <p className="mt-1 text-sm text-slate-600">Marca cada tarea al terminarla: queda en la historia del lote.</p>
             </section>
             <Clock3 size={18} className="text-emerald-700" aria-hidden="true" />
           </header>
@@ -247,7 +244,7 @@ export default function DashboardOperarioContenido() {
         </article>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="order-4 grid gap-4">
         <article className={`aiden-operario-superficie rounded-[22px] border p-4 transition duration-200 hover:shadow-[0_14px_36px_rgba(11,47,32,0.06)] ${incidencias.length || zonasAlerta.length ? "border-amber-200 bg-amber-50" : "border-slate-200 bg-white"}`}>
           <header className="flex items-center gap-2">
             <AlertTriangle size={16} className={incidencias.length || zonasAlerta.length ? "text-amber-700" : "text-emerald-700"} aria-hidden="true" />
@@ -279,16 +276,6 @@ export default function DashboardOperarioContenido() {
             Revisar calidad
             <ArrowRight size={12} aria-hidden="true" />
           </Link>
-        </article>
-        <article className="aiden-operario-superficie rounded-[22px] bg-slate-950 p-4 text-white transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(11,47,32,0.12)]">
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-300">Tu responsabilidad</p>
-          <p className="mt-2 text-sm leading-6 text-white/75">
-            Ejecuta las tareas asignadas, registra lo ocurrido en campo y deja evidencia para que supervisión pueda decidir.
-            {hechas.length ? ` Hoy llevas ${plural(hechas.length, "tarea completada", "tareas completadas")}.` : ""}
-          </p>
-          {tareas.some((t) => t.estado === "Completada") && (
-            <p className="mt-2 text-xs text-white/60">Última tarea completada: {fechaCorta([...tareas].filter((t) => t.completada).sort((a, b) => (a.completada < b.completada ? 1 : -1))[0]?.completada)}.</p>
-          )}
         </article>
       </section>
 

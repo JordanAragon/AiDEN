@@ -207,13 +207,11 @@
   --app-green-2: #176b45;
 }
 
+/* La interfaz operativa es sobria (DESIGN.md): sin cuadrícula decorativa de fondo. */
 .aiden-app-shell > section > main {
   background:
-    linear-gradient(90deg, rgba(11, 43, 27, 0.018) 1px, transparent 1px),
-    linear-gradient(rgba(11, 43, 27, 0.018) 1px, transparent 1px),
     radial-gradient(circle at 88% 0%, rgba(217, 234, 115, 0.1), transparent 22rem),
     var(--app-bg);
-  background-size: 40px 40px, 40px 40px, auto, auto;
 }
 
 .aiden-page-header {
@@ -236,7 +234,7 @@
   font-size: clamp(1.7rem, 2.2vw, 2.45rem) !important;
   line-height: 1.02;
   font-weight: 680;
-  letter-spacing: -0.055em !important;
+  letter-spacing: -0.035em !important;
 }
 
 .aiden-page-header p {
@@ -255,7 +253,6 @@
 }
 
 .aiden-stat-grid > * {
-  min-height: 8.6rem;
   border-radius: 18px !important;
   border-color: rgba(203, 214, 204, 0.82) !important;
   background: rgba(255, 253, 248, 0.94) !important;
@@ -267,21 +264,12 @@
   background: #fffdf8 !important;
 }
 
-.aiden-rol-admin > section:first-of-type,
-.aiden-operario-vista > section[aria-label="Acciones rápidas"] {
+.aiden-rol-admin > section:first-of-type {
   position: relative;
 }
 
-.aiden-rol-admin > section:first-of-type::before,
-.aiden-operario-vista > section[aria-label="Acciones rápidas"]::before {
-  content: "";
-  position: absolute;
-  inset: -0.5rem -0.7rem;
-  z-index: -1;
-  border-radius: 24px;
-  background: rgba(255, 253, 248, 0.4);
-  border: 1px solid rgba(203, 214, 204, 0.48);
-}
+/* Sin marco decorativo detrás de las cifras: duplicaba el borde de cada tarjeta y en
+   modo oscuro se veía como una franja gris. */
 
 .aiden-supervisor-pulso {
   border-radius: 22px !important;
@@ -305,7 +293,7 @@
 }
 
 .aiden-app-shell thead th {
-  font-size: 10px !important;
+  font-size: 11px !important;
   font-weight: 750 !important;
   text-transform: uppercase;
 }
@@ -315,10 +303,6 @@
 }
 
 @media (max-width: 640px) {
-  .aiden-app-shell > section > main {
-    background-size: 28px 28px, 28px 28px, auto, auto;
-  }
-
   .aiden-page-header {
     padding-bottom: 0.9rem;
   }
@@ -327,7 +311,4 @@
     font-size: 1.55rem !important;
   }
 
-  .aiden-stat-grid > * {
-    min-height: 7.8rem;
-  }
 }

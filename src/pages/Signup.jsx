@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import loginImage from "../assets/imagenes/login.webp";
+import FotoAcceso from "../components/autenticacion/FotoAcceso";
 import { registrarCuenta } from "../datos/acciones";
 import { useTitulo } from "../hooks/useTitulo";
 import "../estilos/autenticacion-aiden.css";
@@ -44,12 +44,12 @@ export default function Register() {
   return (
     <main className="aiden-auth">
       <aside className="aiden-auth-side">
-        <img src={loginImage} alt="Invernadero agrícola" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+        <FotoAcceso />
         <div className="aiden-auth-image-overlay" aria-hidden="true" />
         <section className="aiden-auth-side-content">
           <Link to="/" className="flex items-center gap-2 text-white"><IsotipoAiden tamano={36} placa /><span className="text-xl font-bold tracking-tight !text-white">AiDEN</span></Link>
           <div className="mt-auto max-w-xl pb-6">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-200">Una vista, una operación</p>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-aiden-lime">Una vista, una operación</p>
             <h1 className="mt-4 text-5xl font-semibold leading-[.98] tracking-[-.05em] text-white xl:text-6xl">Empieza con una operación más clara.</h1>
             <p className="mt-6 max-w-lg text-base leading-7 text-white/65">Tu cuenta te da acceso al entorno de AiDEN. Cada rol cuenta con una experiencia adaptada a sus responsabilidades.</p>
           </div>

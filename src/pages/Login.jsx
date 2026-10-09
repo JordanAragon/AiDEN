@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, Eye, EyeOff, Loader2, LogOut } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import loginImage from "../assets/imagenes/login.webp";
+import FotoAcceso from "../components/autenticacion/FotoAcceso";
 import { ensureInitialUser, getDashboardPath, login, logout } from "../utilidades/autenticacion";
 import { destinoTrasLogin } from "../routes/permisos";
 import { useSesion } from "../hooks/useSesion";
 import { useTitulo } from "../hooks/useTitulo";
 import "../estilos/autenticacion-aiden.css";
 import { IsotipoAiden, LogotipoAiden } from "../components/ui/MarcaAiden";
+
 
 const ROL = { admin: "Administrador", supervisor: "Supervisor", operario: "Operario" };
 
@@ -55,11 +56,7 @@ export default function Login() {
   return (
     <main className="aiden-auth">
       <aside className="aiden-auth-side">
-        <img
-          src={loginImage}
-          alt="Vivero agrícola"
-          className="absolute inset-0 h-full w-full object-cover opacity-70"
-        />
+        <FotoAcceso />
         <div
           className="aiden-auth-image-overlay"
           aria-hidden="true"
@@ -71,7 +68,7 @@ export default function Login() {
           </Link>
 
           <section className="mt-auto max-w-xl pb-6">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-200">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-aiden-lime">
               Gestión operativa para viveros
             </p>
             <h1 className="mt-4 text-5xl font-semibold leading-[.98] tracking-[-.05em] text-white xl:text-6xl">
@@ -89,10 +86,6 @@ export default function Login() {
               <div>
                 <strong className="block text-2xl text-white">09</strong>
                 <span className="text-xs text-white/50">módulos</span>
-              </div>
-              <div>
-                <strong className="block text-2xl text-white">01</strong>
-                <span className="text-xs text-white/50">operación conectada</span>
               </div>
             </section>
           </section>
@@ -112,7 +105,7 @@ export default function Login() {
               Acceso
             </p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
-              Bienvenido de nuevo.
+              Hola de nuevo.
             </h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">
               Ingresa para continuar con la operación de tu vivero.

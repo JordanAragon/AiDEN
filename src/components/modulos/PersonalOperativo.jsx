@@ -295,8 +295,8 @@ export default function PersonalOperativo() {
             })}
           </section>
         </article>
-        <article className="rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white">
-          <p className="text-xs font-bold uppercase tracking-wider text-emerald-300">Prioridades</p>
+        <article className="rounded-2xl border border-slate-200 bg-aiden-forest-deep p-5 text-white">
+          <p className="text-xs font-bold uppercase tracking-wider text-aiden-lime">Prioridades</p>
           <p className="mt-2 text-3xl font-bold">{altas.length}</p>
           <p className="text-sm text-white/70">tareas de alta prioridad pendientes</p>
           <section className="mt-5 space-y-2">
