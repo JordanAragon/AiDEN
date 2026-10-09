@@ -1,5 +1,27 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap");
 @import "tailwindcss";
+
+/* Paleta oficial de DESIGN.md como utilidades de Tailwind (bg-aiden-lime, text-verde-700…).
+   `inline` hace que cada clase lea la variable, así el modo oscuro puede redefinirla. */
+@theme inline {
+  --color-aiden-ink: var(--aiden-ink);
+  --color-aiden-forest: var(--aiden-forest);
+  --color-aiden-forest-deep: var(--aiden-forest-deep);
+  --color-aiden-moss: var(--aiden-moss);
+  --color-aiden-lime: var(--aiden-lime);
+  --color-aiden-paper: var(--aiden-paper);
+  --color-aiden-cream: var(--aiden-cream);
+  --color-aiden-white: var(--aiden-white);
+  --color-aiden-muted: var(--aiden-muted);
+  --color-verde-900: var(--verde-900);
+  --color-verde-800: var(--verde-800);
+  --color-verde-700: var(--verde-700);
+  --color-verde-500: var(--verde-500);
+  --color-verde-300: var(--verde-300);
+  --color-verde-100: var(--verde-100);
+  --color-verde-50: var(--verde-50);
+}
+
 :root  {
   --verde-900: #0b2f20;
   --verde-800: #104a31;
