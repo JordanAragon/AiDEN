@@ -312,7 +312,7 @@ export default function CalidadOperativo() {
       <Cifras
         items={[
           { icono: ClipboardCheck, etiqueta: "Incidencias", valor: visibles.length, detalle: "Registros visibles", onClick: () => setEstado("Todas"), activo: estado === "Todas" },
-          { icono: AlertCircle, etiqueta: "Abiertas", valor: cuenta("Abierta"), detalle: `${cuenta("En revisión")} más en revisión`, tono: "alerta", onClick: () => setEstado("Abierta"), activo: estado === "Abierta" },
+          { icono: AlertCircle, etiqueta: "Abiertas", valor: cuenta("Abierta"), detalle: cuenta("En revisión") ? `${cuenta("En revisión")} más en revisión` : "Ninguna en revisión", tono: "alerta", onClick: () => setEstado("Abierta"), activo: estado === "Abierta" },
           { icono: AlertTriangle, etiqueta: "Alta prioridad", valor: altas, detalle: "Requieren respuesta", tono: "critico", onClick: () => setPrioridad(prioridad === "Alta" ? "Todas" : "Alta"), activo: prioridad === "Alta" },
           { icono: CheckCircle2, etiqueta: "Resueltas", valor: cuenta("Cerrada"), detalle: promedio === null ? "Cerradas" : `Cierre medio en ${numero(Math.round(promedio * 10) / 10)} días`, onClick: () => setEstado("Cerrada"), activo: estado === "Cerrada" },
         ]}

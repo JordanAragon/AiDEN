@@ -68,7 +68,7 @@ export default function ProduccionOperativo() {
 
       <Cifras
         items={[
-          { icono: Sprout, etiqueta: isOperator ? "Mis lotes" : "Lotes activos", valor: activos.length, detalle: `${activos.filter((l) => l.etapa === "Cosecha").length} en cosecha${cerrados ? ` · ${cerrados} cerrados` : ""}` },
+          { icono: Sprout, etiqueta: isOperator ? "Mis lotes" : "Lotes activos", valor: activos.length, detalle: `${activos.filter((l) => l.etapa === "Cosecha").length} en cosecha${cerrados ? ` · ${cerrados} ${cerrados === 1 ? "cerrado" : "cerrados"}` : ""}` },
           { icono: CheckCircle2, etiqueta: "Plantas", valor: numero(plantas), detalle: sembradas ? `${numero(Math.round((plantas / sembradas) * 1000) / 10)} % de supervivencia` : "En producción" },
           { icono: ListChecks, etiqueta: "Tareas", valor: tareasLotes, detalle: isOperator ? "Abiertas en tus lotes" : "Abiertas en lotes activos", tono: "info", to: canManage ? "/personal?vista=tareas" : "/dashboard-operario" },
           { icono: Clock3, etiqueta: "Por avanzar", valor: activos.filter((l) => l.etapa !== "Cosecha").length, detalle: atrasados ? `${plural(atrasados, "lote atrasado", "lotes atrasados")} en su salida` : "Con siguiente etapa", tono: atrasados ? "critico" : "alerta" },
