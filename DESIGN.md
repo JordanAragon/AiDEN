@@ -11,6 +11,7 @@ colors:
   aiden-cream: "#ebe7db"
   aiden-white: "#fffdf8"
   aiden-muted: "#526057"
+  aiden-moss-oscuro: "#66804f"
   verde-900: "#0b2f20"
   verde-800: "#104a31"
   verde-700: "#176b45"
@@ -29,6 +30,9 @@ colors:
   dark-surface: "#121815"
   dark-surface-2: "#18201c"
   dark-border: "#26332d"
+  dark-texto: "#f1f5f3"
+  dark-texto-2: "#c5d0ca"
+  dark-texto-3: "#91a098"
 typography:
   body:
     fontFamily: "DM Sans, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
@@ -76,12 +80,20 @@ Texto `texto`, `texto-2`, `texto-3`; bordes `borde`, `borde-fuerte`; fondos `fon
 
 ### Named Rules
 
+- **Paneles oscuros de marca:** `aiden-forest-deep` en modo claro y `verde-900` en modo oscuro (`bg-aiden-forest-deep`), con acentos en `aiden-lime`. No se usa `slate-950` (negro azulado ajeno a la paleta) ni el menta `emerald-300` como acento sobre ellos.
+- **Itálica sobre crema:** en las secciones de fondo crema de la landing, la itálica serif usa `aiden-moss-oscuro` (3,5:1); el moss de marca queda en 2,99:1.
+- **Gráficas:** ingresos en verde (`verde-700`) y gastos en neutro (`texto-3`), nunca dos verdes para series opuestas. Los colores viven en `useColoresGrafica`.
+- **Utilidades de Tailwind:** la paleta está expuesta en `@theme` (`bg-aiden-lime`, `text-verde-700`…). Se prefieren a los hex sueltos.
 - **Modo oscuro obligatorio:** clase `aiden-dark` en `<html>` (`src/estilos/modo-oscuro.css`). Fondo `dark-bg`, superficies `dark-surface`/`dark-surface-2`, bordes `dark-border`. Todo componente nuevo se verifica en los dos modos.
 - **Contraste:** texto de lectura con 4.5:1 como mínimo en ambos modos.
 
 ## Typography
 
-DM Sans en toda la interfaz (400, 500, 600 y 700). Instrument Serif (normal e itálica) solo como acento editorial en la landing y en titulares puntuales, nunca en la interfaz operativa. Se cargan desde Google Fonts en `src/estilos/index.css`.
+DM Sans en toda la interfaz (variable, rango 400–700). Instrument Serif (normal e itálica) solo como acento editorial en la landing y en titulares puntuales, nunca en la interfaz operativa. Las dos se sirven desde el propio sitio (`public/fuentes`, licencia OFL), se declaran en `src/estilos/index.css` y las que pintan primero se precargan en `index.html`. No se usa Google Fonts: evita una cadena bloqueante, no entrega la IP de la visita a terceros y funciona sin conexión.
+
+- **Piso de tamaño:** 11 px para rótulos y metadatos; el texto de lectura de la app, 14–15 px.
+- **Títulos:** tracking no menor a −0,045 em e interlineado de al menos 0,98, para que la itálica serif no choque con la línea de arriba. El titular del hero tiene tope de 5 rem.
+- **Números:** cifras, tablas y lecturas con `tabular-nums`.
 
 ### Hierarchy
 
@@ -89,7 +101,11 @@ Títulos de página con `EncabezadoPagina` y una barra de acento por rol (`::aft
 
 ## Layout
 
-Plantilla con barra lateral, barra superior y contenido con scroll propio (`src/plantillas/PlantillaPrincipal.jsx`), con enlace «Saltar al contenido». El supervisor tiene una vista propia (`aiden-supervisor-shell`, `aiden-supervisor-main`). Contenido con `p-4` en móvil y `p-6` desde `sm`.
+Plantilla con barra lateral, barra superior y contenido con scroll propio (`src/plantillas/PlantillaPrincipal.jsx`), con enlace «Saltar al contenido». El supervisor tiene una vista propia (`aiden-supervisor-shell`, `aiden-supervisor-main`). Contenido con `p-4` en móvil y `p-6` desde `sm`. El fondo de la app es papel con un brillo lima suave, sin cuadrícula decorativa.
+
+- **Operario en el celular:** el trabajo va primero (tareas antes que cifras) y las acciones rápidas en una barra fija abajo, al alcance del pulgar.
+- **Objetivos táctiles:** 44 px como mínimo en las acciones de campo.
+- **Landing:** composición móvil de una columna bajo 900 px (capa final de `landing-aiden-redesign.css`). Sus tarjetas editoriales usan radios de 20–28 px, una excepción propia de la landing.
 
 ## Elevation & Depth
 
@@ -114,7 +130,13 @@ Símbolo oficial desde 2026-10-05: una **A** abstracta con una **hoja** y un **p
 
 ## Components
 
-Reutilizar los de `src/components/ui/` antes de crear otros: `Boton` (clases en `clasesBoton.js`), `Campo`, `Modal`, `Panel`, `Pestanas`, `Filtros`, `Insignia` (tonos en `tonos.js`), `Avatar`, `EncabezadoPagina`, `EstadoVacio`, `AlertaFormulario`, `Cifras`, `CargandoVista` y `LimiteError`. Tablas con `tabla.js`.
+Reutilizar los de `src/components/ui/` antes de crear otros: `Boton` (clases en `clasesBoton.js`), `Campo`, `Modal`, `Panel`, `Pestanas`, `Filtros`, `Insignia` (tonos en `tonos.js`), `Avatar`, `EncabezadoPagina`, `EstadoVacio`, `AlertaFormulario`, `Cifras`, `BarraRango`, `EstadoConexion`, `CargandoVista` y `LimiteError`. Tablas con `tabla.js`.
+
+- **Cifras:** etiqueta, ícono discreto en `aiden-moss` y valor tabular. El tono solo se marca con un punto ámbar o rojo cuando pide atención; sin cuadros de ícono de colores.
+- **BarraRango:** una lectura contra su rango objetivo: banda `verde-100`, rango reciente en moss y punto en la lectura actual (rojo fuera de rango). El desvío siempre va en texto.
+- **LineaTiempo** (`components/lote`): eventos agrupados por día, con un ícono de lucide por tipo; los hitos (registro, etapa, despacho) en bosque y las incidencias en ámbar.
+- **PasosEtapa:** pista de cuatro tramos; lo hecho en moss con check, la etapa en curso en bosque con «Día N».
+- **PulsoSemana** (`components/dashboard`): registros de los últimos 7 días con etiquetas directas y una tabla equivalente para lectores de pantalla.
 
 ### Navigation
 
@@ -133,5 +155,7 @@ Reutilizar los de `src/components/ui/` antes de crear otros: `Boton` (clases en 
 
 - Paletas o tipografías nuevas sin aprobación de David.
 - Gradientes morado o rosa, neones o estilos genéricos de plantilla SaaS.
+- Cuadrícula decorativa de fondo, numerales fantasma de sección o barras laterales de color en tarjetas.
+- Textos de menos de 11 px.
 - Emojis como íconos.
 - Lenguaje de «demo» en la interfaz.
