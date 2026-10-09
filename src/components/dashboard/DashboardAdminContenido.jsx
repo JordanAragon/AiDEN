@@ -1,5 +1,6 @@
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { CircleDollarSign, ClipboardCheck, Settings, ShieldCheck, Sprout, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 import { BotonEnlace } from "../ui/Boton";
 import Cifras from "../ui/Cifras";
 import EncabezadoPagina from "../ui/EncabezadoPagina";
@@ -37,11 +38,14 @@ export default function DashboardAdminContenido() {
   const incidenciasAbiertas = datos.calidad.filter((i) => estadoIncidencia(i) !== "Cerrada").length;
   const bajoMinimo = datos.inventario.filter((i) => Number(i.stock) <= Number(i.minimo)).length;
 
+  // Las cuentas por revisar van primero: solo el administrador puede resolverlas y no
+  // aparecen en el centro de supervisión, a donde se envía el resto de la lista.
   const decisiones = [
-    ...criticas.map((a) => ({ id: a.id, tipo: a.tipo, texto: a.titulo, detalle: a.detalle, to: a.ruta })),
     ...porRevisar.map((u) => ({ id: u.id, tipo: "Accesos", texto: `Cuenta nueva: ${u.name}`, detalle: `Registrada el ${fechaCorta(u.creado)} como operario. Confirma su rol.`, to: "/configuracion?vista=usuarios" })),
+    ...criticas.map((a) => ({ id: a.id, tipo: a.tipo, texto: a.titulo, detalle: a.detalle, to: a.ruta })),
     ...atrasados.map(({ lote, r }) => ({ id: `atr-${lote.id}`, tipo: "Producción", texto: `${lote.lote} superó la salida estimada`, detalle: `Debía salir hace ${-r.diasParaSalida} días; sigue en ${lote.etapa}.`, to: "/produccion" })),
   ];
+  const visibles = Math.max(5, porRevisar.length);
 
   return (
     <article className="aiden-modulo-vista aiden-admin-vista aiden-rol-admin space-y-6">
@@ -90,11 +94,15 @@ export default function DashboardAdminContenido() {
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-300">Prioridad</p>
           <h2 className="mt-2 text-lg font-semibold">Alertas que requieren decisión</h2>
           <section className="mt-4 space-y-2">
-            {decisiones.slice(0, 5).map((d) => (
+            {decisiones.slice(0, visibles).map((d) => (
               <ItemOscuro key={d.id} tipo={d.tipo} texto={d.texto} detalle={d.detalle} to={d.to} />
             ))}
             {!decisiones.length && <p className="text-sm text-white/70">No hay alertas pendientes.</p>}
-            {decisiones.length > 5 && <p className="pt-1 text-xs text-white/70">Y {plural(decisiones.length - 5, "asunto más", "asuntos más")} en el centro de supervisión.</p>}
+            {decisiones.length > visibles && (
+              <Link to="/dashboard-supervisor" className="inline-block pt-1 text-xs font-semibold text-emerald-200 underline-offset-4 hover:underline">
+                Ver {plural(decisiones.length - visibles, "asunto más", "asuntos más")} en el centro de supervisión
+              </Link>
+            )}
           </section>
         </article>
       </section>
@@ -167,9 +175,9 @@ export default function DashboardAdminContenido() {
             ))}
           </section>
           {porRevisar.length > 0 && (
-            <p className="mt-4 rounded-xl bg-amber-50 px-3 py-2.5 text-xs text-amber-700">
-              {plural(porRevisar.length, "cuenta nueva espera", "cuentas nuevas esperan")} confirmación de rol en Personal.
-            </p>
+            <Link to="/configuracion?vista=usuarios" className="mt-4 block rounded-xl bg-amber-50 px-3 py-2.5 text-xs font-medium text-amber-800 hover:bg-amber-100">
+              {plural(porRevisar.length, "cuenta nueva espera", "cuentas nuevas esperan")} confirmación de rol en Configuración › Usuarios.
+            </Link>
           )}
         </article>
         <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">

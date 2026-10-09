@@ -4197,10 +4197,10 @@
   box-shadow: 0 24px 50px rgba(18,37,27,.09);
 }
 .aiden-intent-card > span {
-  color: #69756d;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: .12em;
+  color: #526057;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
 }
 .aiden-intent-card strong {
   margin-top: auto;
@@ -4239,10 +4239,10 @@
   background: var(--cream);
 }
 .aiden-intent-readout > span {
-  color: #6a766e;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: .13em;
+  color: #526057;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
 }
 .aiden-intent-readout strong {
   font-size: 14px;

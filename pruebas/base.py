@@ -13,9 +13,15 @@ class H(http.server.SimpleHTTPRequestHandler):
             self.path = "/index.html"
         return super().send_head()
 
+class Servidor(socketserver.ThreadingTCPServer):
+    # La cola por defecto (5) se desborda cuando el navegador pide muchos módulos a la vez
+    # y algunas conexiones terminan en ERR_CONNECTION_RESET al cargar vistas diferidas.
+    allow_reuse_address = True
+    daemon_threads = True
+    request_queue_size = 128
+
 def servir():
-    socketserver.TCPServer.allow_reuse_address = True
-    s = socketserver.ThreadingTCPServer(("127.0.0.1", 4173), H)
+    s = Servidor(("127.0.0.1", 4173), H)
     threading.Thread(target=s.serve_forever, daemon=True).start()
     return s
 
