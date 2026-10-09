@@ -175,7 +175,7 @@ function Formulario({ cfg }) {
           </section>
           <label className="mt-5 block text-sm font-medium text-white/80">
             Notificaciones
-            <select value={f.notificaciones} onChange={(e) => setF((a) => ({ ...a, notificaciones: e.target.value }))} className="mt-1 w-full rounded-xl border border-white/10 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none">
+            <select value={f.notificaciones} onChange={(e) => setF((a) => ({ ...a, notificaciones: e.target.value }))} className="aiden-select-oscuro mt-1 w-full rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 text-sm font-medium text-white outline-none focus:border-aiden-lime [&>option]:text-slate-900">
               <option>Activadas</option>
               <option>Desactivadas</option>
             </select>
@@ -222,8 +222,8 @@ export default function ConfiguracionOperativo() {
 
   return (
     <section className="aiden-modulo-vista aiden-modulo-config space-y-6">
-      <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-100 px-4 pt-4">
+      <section>
+        <div className="mb-6 border-b border-slate-200">
           <Pestanas
             etiqueta="Secciones de configuración"
             activa={vista}
@@ -233,13 +233,12 @@ export default function ConfiguracionOperativo() {
               { id: "usuarios", etiqueta: "Usuarios" },
             ]}
           />
-          <div className="h-4" />
         </div>
-        <div className="p-0" role="tabpanel" id={`panel-${vista}`} aria-labelledby={`pestana-${vista}`}>
+        <div role="tabpanel" id={`panel-${vista}`} aria-labelledby={`pestana-${vista}`}>
           {vista === "general" ? (
             <div className="space-y-6">
               <Formulario key={`cfg-${version}-${cfg.tempMin}-${cfg.tempMax}-${cfg.humMin}-${cfg.humMax}-${cfg.notificaciones}`} cfg={cfg} />
-              <section className="grid gap-4 px-0 xl:grid-cols-2">
+              <section className="grid gap-4 xl:grid-cols-2">
                 <Zonas />
                 <Panel icono={Database} titulo="Respaldo de datos" descripcion="Protege la información registrada con copias de respaldo que puedes exportar o importar cuando sea necesario.">
                   <section className="space-y-3">

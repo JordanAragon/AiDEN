@@ -11,8 +11,8 @@ import { TONO_ESTADO_TAREA } from "../ui/tonos";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import { useDatos } from "../../datos/almacen";
 import { CARGO_A_ROL, DEPARTAMENTOS, ROLES } from "../../datos/catalogos";
-import { cambiarEstadoPersona, crearPersona, editarPersona } from "../../datos/acciones";
-import { lotesActivos, ordenarTareas } from "../../datos/selectores";
+import { cambiarEstadoPersona, crearPersona, editarPersona, pendientesDePersona, reasignarYDesactivar } from "../../datos/acciones";
+import { lotesActivos, ordenarTareas, personasActivas } from "../../datos/selectores";
 import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion, useUsuarios } from "../../hooks/useSesion";
 import { plural, vencimiento } from "../../utilidades/formato";
@@ -64,8 +64,16 @@ export function PanelPersona({ persona, onCerrar, onEditar, onTarea }) {
   const lotes = lotesActivos(datos.lotes).filter((l) => l.responsableId === persona.id);
   const cuenta = usuarios.find((u) => u.personaId === persona.id);
   const inactivo = persona.estado === "Inactivo";
+  const [reasignando, setReasignando] = useState(false);
+
+  const pendientes = pendientesDePersona(persona.id);
+  const totalPendiente = pendientes.tareas.length + pendientes.lotes.length + pendientes.incidencias.length;
 
   const alternarEstado = async () => {
+    if (!inactivo && totalPendiente) {
+      setReasignando(true);
+      return;
+    }
     if (!inactivo) {
       const ok = await confirmar({
         titulo: `Desactivar a ${persona.nombre}`,
@@ -79,6 +87,7 @@ export function PanelPersona({ persona, onCerrar, onEditar, onTarea }) {
   };
 
   return (
+    <>
     <Modal
       abierto
       onCerrar={onCerrar}
@@ -154,6 +163,71 @@ export function PanelPersona({ persona, onCerrar, onEditar, onTarea }) {
           )}
           {tareas.length > abiertas.length && <p className="mt-2 text-xs text-slate-500">{plural(tareas.length - abiertas.length, "tarea completada", "tareas completadas")} en total.</p>}
         </section>
+      </div>
+    </Modal>
+    {reasignando && <ModalReasignar persona={persona} pendientes={pendientes} onCerrar={() => setReasignando(false)} />}
+    </>
+  );
+}
+
+function ModalReasignar({ persona, pendientes, onCerrar }) {
+  const datos = useDatos();
+  const sesion = useSesion();
+  const candidatas = personasActivas(datos.personas).filter((p) => p.id !== persona.id);
+  const [destino, setDestino] = useState(candidatas[0]?.id || "");
+  const { error, enviar } = useEnvio(onCerrar);
+  const partes = [
+    pendientes.tareas.length && plural(pendientes.tareas.length, "tarea abierta", "tareas abiertas"),
+    pendientes.lotes.length && plural(pendientes.lotes.length, "lote activo", "lotes activos"),
+    pendientes.incidencias.length && plural(pendientes.incidencias.length, "incidencia abierta", "incidencias abiertas"),
+  ].filter(Boolean);
+  return (
+    <Modal
+      abierto
+      onCerrar={onCerrar}
+      titulo={`Desactivar a ${persona.nombre}`}
+      descripcion={`Tiene ${partes.join(", ").replace(/, ([^,]*)$/, " y $1")}. Elige quién los recibe y se desactiva en un solo paso.`}
+      ancho="sm"
+      pie={
+        <>
+          <Boton variante="secundario" onClick={onCerrar}>Cancelar</Boton>
+          <Boton
+            variante="peligro"
+            disabled={!destino}
+            onClick={() =>
+              enviar(
+                () => reasignarYDesactivar(persona.id, destino, sesion),
+                (r) => ({ titulo: `${persona.nombre} desactivado`, detalle: `Su trabajo abierto pasó a ${r.destino.nombre}.` }),
+              )
+            }
+          >
+            Reasignar y desactivar
+          </Boton>
+        </>
+      }
+    >
+      <div className="space-y-4">
+        <AlertaFormulario mensaje={error} />
+        <Seleccion etiqueta="Pasar el trabajo a" value={destino} onChange={(e) => setDestino(e.target.value)}>
+          {candidatas.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.nombre} · {p.cargo}
+            </option>
+          ))}
+        </Seleccion>
+        <ul className="space-y-1.5 rounded-xl bg-slate-50 p-3 text-sm text-slate-700">
+          {pendientes.tareas.map((t) => (
+            <li key={t.id}>Tarea · {t.titulo}</li>
+          ))}
+          {pendientes.lotes.map((l) => (
+            <li key={l.lote}>
+              Lote · <EtiquetaLote codigo={l.lote} /> {l.cultivo}
+            </li>
+          ))}
+          {pendientes.incidencias.map((i) => (
+            <li key={i.id}>Incidencia · {i.codigo} en {i.lote}</li>
+          ))}
+        </ul>
       </div>
     </Modal>
   );

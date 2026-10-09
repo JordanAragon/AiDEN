@@ -1,5 +1,6 @@
 import { fechaHora } from "../../utilidades/formato";
 import EtiquetaLote from "./EtiquetaLote";
+import { NOMBRE_ORIGEN } from "../../datos/catalogos";
 
 export default function LineaTiempo({ eventos, mostrarLote = false, limite }) {
   const lista = limite ? eventos.slice(0, limite) : eventos;
@@ -27,7 +28,7 @@ export default function LineaTiempo({ eventos, mostrarLote = false, limite }) {
               {evento.origen && evento.origen !== "Manual" && (
                 <>
                   <span aria-hidden="true">·</span>
-                  <span>desde {evento.origen}</span>
+                  <span>desde {NOMBRE_ORIGEN[evento.origen] || evento.origen}</span>
                 </>
               )}
             </footer>

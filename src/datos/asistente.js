@@ -12,7 +12,7 @@ import {
   resumenMensual,
   ultimasLecturas,
 } from "./selectores";
-import { dinero, diasEntre, fechaCorta, haceTiempo, hoyISO, normalizar, numero, plural } from "../utilidades/formato";
+import { dinero, diasEntre, fechaCorta, haceTiempo, hoyISO, normalizar, numero, plural, cantidadConUnidad } from "../utilidades/formato";
 
 /*
   Asistente por reglas. No genera texto con un modelo de lenguaje: identifica la
@@ -128,7 +128,7 @@ function insumos(datos) {
       const sugerido = Math.max(1, Number(i.minimo) * 2 - Number(i.stock));
       return {
         ruta: `/inventario?insumo=${i.id}`,
-        texto: `${i.nombre}: quedan ${numero(i.stock)} ${i.unidad} (mínimo ${numero(i.minimo)}). Comprar ${numero(sugerido)} ≈ ${dinero(sugerido * Number(i.precio || 0))}.${consumo.get(i.id) ? ` Este mes se han usado ${numero(consumo.get(i.id))}.` : ""}`,
+        texto: `${i.nombre}: quedan ${cantidadConUnidad(i.stock, i.unidad)} (mínimo ${numero(i.minimo)}). Comprar ${numero(sugerido)} ≈ ${dinero(sugerido * Number(i.precio || 0))}.${consumo.get(i.id) ? ` Este mes se han usado ${numero(consumo.get(i.id))}.` : ""}`,
       };
     }),
     fuente: "Inventario (stock, mínimo y precio unitario)",
@@ -205,7 +205,7 @@ function lote(datos, codigo) {
   ];
   if (ultimo) items.push({ texto: `Último registro: ${ultimo.evento.toLowerCase()} ${haceTiempo(ultimo.fecha)} por ${ultimo.responsable}.`, ruta: `/trazabilidad?lote=${encodeURIComponent(l.lote)}` });
   return {
-    texto: `${l.lote} es ${l.cultivo.toLowerCase()} en ${l.estado === "Cerrado" ? `estado cerrado (${(l.motivoCierre || "").toLowerCase()})` : `${l.etapa} (etapa ${ETAPAS.indexOf(l.etapa) + 1} de 4)`}, en ${l.ubicacion}, a cargo de ${nombrePersona(datos.personas, l.responsableId)}.`,
+    texto: `${l.lote} es ${l.cultivo} en ${l.estado === "Cerrado" ? `estado cerrado (${(l.motivoCierre || "").toLowerCase()})` : `${l.etapa} (etapa ${ETAPAS.indexOf(l.etapa) + 1} de 4)`}, en ${l.ubicacion}, a cargo de ${nombrePersona(datos.personas, l.responsableId)}.`,
     items,
     lote: l.lote,
     fuente: "Ficha del lote: Producción, Costos, Calidad, Personal y Trazabilidad",

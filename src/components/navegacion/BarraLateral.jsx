@@ -120,13 +120,14 @@ export default function BarraLateral() {
                 {(mobile || !colapsado) && <span className="flex-1">{item.label}</span>}
                 {conteos[item.path] > 0 &&
                   (!mobile && colapsado ? (
-                    <span className="absolute right-2 top-1.5 h-2 w-2 rounded-full bg-red-500">
-                      <span className="sr-only">{conteos[item.path]} alertas</span>
+                    <span className="absolute right-2 top-1.5 h-2 w-2 rounded-full bg-red-600">
+                      <span className="sr-only">, {conteos[item.path]} {conteos[item.path] === 1 ? "alerta" : "alertas"}</span>
                     </span>
                   ) : (
-                    <span className="min-w-4 rounded-full bg-red-500 px-1.5 text-center text-[10px] font-bold leading-4 text-white">
+                    <span className="min-w-5 rounded-full bg-red-600 px-1.5 text-center text-[11px] font-bold leading-5 text-white tabular-nums">
+                      <span className="sr-only">, </span>
                       {conteos[item.path]}
-                      <span className="sr-only"> alertas</span>
+                      <span className="sr-only"> {conteos[item.path] === 1 ? "alerta" : "alertas"}</span>
                     </span>
                   ))}
               </NavLink>

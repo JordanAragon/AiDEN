@@ -8,7 +8,7 @@ import { crearInsumo, editarInsumo, registrarMovimiento } from "../../datos/acci
 import { lotesActivos } from "../../datos/selectores";
 import { useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion } from "../../hooks/useSesion";
-import { dinero, hoyISO, numero } from "../../utilidades/formato";
+import { dinero, hoyISO, numero, cantidadConUnidad } from "../../utilidades/formato";
 
 export function FormularioMovimiento({ id, inicial, onListo }) {
   const datos = useDatos();
@@ -83,7 +83,7 @@ export function FormularioMovimiento({ id, inicial, onListo }) {
           onChange={cambiar("cantidad")}
           data-autofocus
           ayuda={insumo ? `Disponible: ${numero(insumo.stock)}${cantidad ? ` · quedarían ${numero(quedaria)}` : ""}` : undefined}
-          error={f.tipo === "salida" && insumo && cantidad > Number(insumo.stock) ? `Solo hay ${numero(insumo.stock)} ${insumo.unidad}.` : undefined}
+          error={f.tipo === "salida" && insumo && cantidad > Number(insumo.stock) ? `Solo hay ${cantidadConUnidad(insumo.stock, insumo.unidad)}.` : undefined}
         />
         <Entrada etiqueta="Fecha" type="date" value={f.fecha} max={hoyISO()} onChange={cambiar("fecha")} />
       </div>
@@ -143,7 +143,7 @@ export function FormularioInsumo({ id, insumo, onListo }) {
         <Entrada etiqueta="Stock mínimo" type="number" min="0" inputMode="numeric" value={f.minimo} onChange={cambiar("minimo")} ayuda="Por debajo, se alerta." />
         <Entrada etiqueta="Precio unitario (COP)" type="number" min="0" inputMode="numeric" value={f.precio} onChange={cambiar("precio")} />
         {insumo ? (
-          <Entrada etiqueta="Stock actual" value={`${numero(insumo.stock)} ${insumo.unidad}`} readOnly ayuda="Cambia con movimientos." />
+          <Entrada etiqueta="Stock actual" value={`${cantidadConUnidad(insumo.stock, insumo.unidad)}`} readOnly ayuda="Cambia con movimientos." />
         ) : (
           <Entrada etiqueta="Stock inicial" type="number" min="0" inputMode="numeric" value={f.stock} onChange={cambiar("stock")} />
         )}

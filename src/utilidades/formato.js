@@ -69,9 +69,12 @@ export function diasEntre(desde, hasta = hoyISO()) {
   return Math.round((b - a) / 86_400_000);
 }
 
+// El año solo aparece cuando no es el actual: «8 de mar» este año, «8 de mar de 2025» si no.
 export function fechaCorta(valor) {
   if (!valor) return "—";
-  return aFecha(valor).toLocaleDateString(LOCALE, { day: "numeric", month: "short" }).replace(".", "");
+  const fecha = aFecha(valor);
+  const opciones = fecha.getFullYear() === new Date().getFullYear() ? { day: "numeric", month: "short" } : { day: "numeric", month: "short", year: "numeric" };
+  return fecha.toLocaleDateString(LOCALE, opciones).replace(".", "");
 }
 
 export function fechaLarga(valor) {
@@ -119,6 +122,14 @@ export function saludo() {
 
 export function plural(n, singular, pluralTexto = `${singular}s`) {
   return `${numero(n)} ${Number(n) === 1 ? singular : pluralTexto}`;
+}
+
+const UNIDAD_SINGULAR = { unidades: "unidad", bultos: "bulto", litros: "litro", kilogramos: "kilogramo", sobres: "sobre" };
+
+// «1 litro», «3 litros»: las unidades del inventario se guardan en plural.
+export function cantidadConUnidad(n, unidad) {
+  const singular = UNIDAD_SINGULAR[unidad] || String(unidad || "").replace(/s$/, "");
+  return `${numero(n)} ${Number(n) === 1 ? singular : unidad}`;
 }
 
 export function normalizar(texto) {

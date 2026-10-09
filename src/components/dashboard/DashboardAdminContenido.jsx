@@ -67,7 +67,7 @@ export default function DashboardAdminContenido() {
 
       <Cifras
         items={[
-          { icono: Users, etiqueta: "Usuarios", valor: usuarios.length, detalle: `${roles.supervisor} supervisores · ${roles.operario} operarios${porRevisar.length ? ` · ${porRevisar.length} por revisar` : ""}`, tono: porRevisar.length ? "alerta" : "exito", to: "/configuracion?vista=usuarios" },
+          { icono: Users, etiqueta: "Usuarios", valor: usuarios.length, detalle: `${plural(roles.supervisor, "supervisor", "supervisores")} · ${plural(roles.operario, "operario")}${porRevisar.length ? ` · ${porRevisar.length} por revisar` : ""}`, tono: porRevisar.length ? "alerta" : "exito", to: "/configuracion?vista=usuarios" },
           { icono: Sprout, etiqueta: "Lotes activos", valor: resumenes.length, detalle: `${numero(plantas)} plantas · ${dineroOGuion(costoPromedio)} por planta`, to: "/produccion" },
           { icono: CircleDollarSign, etiqueta: `Balance de ${mes.mes}`, valor: dinero(mes.balance), detalle: `${dinero(mes.ingresos)} ingresos · ${dinero(mes.gastos)} gastos`, tono: "info", to: "/costos" },
           { icono: ShieldCheck, etiqueta: "Alertas operativas", valor: lista.length, detalle: criticas.length ? `${plural(criticas.length, "crítica", "críticas")} · requieren seguimiento` : "Sin alertas críticas", tono: criticas.length ? "critico" : "exito", to: "/dashboard-supervisor" },

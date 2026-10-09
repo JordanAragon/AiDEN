@@ -78,3 +78,6 @@ export function indiceEtapa(etapa) {
 export function colorEtapa(etapa) {
   return `var(--etapa-${indiceEtapa(etapa) + 1})`;
 }
+
+// Nombre visible del módulo que originó cada evento de trazabilidad.
+export const NOMBRE_ORIGEN = { Producción: "Producción", Manual: "Campo", Calidad: "Calidad", Inventario: "Inventario", Personal: "Tareas" };

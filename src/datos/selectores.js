@@ -1,5 +1,5 @@
 import { indiceEtapa } from "./catalogos";
-import { aFecha, diasEntre, fechaCorta, hoyISO, numero } from "../utilidades/formato";
+import { aFecha, diasEntre, fechaCorta, hoyISO, numero, cantidadConUnidad } from "../utilidades/formato";
 
 export const estadoIncidencia = (incidencia) => incidencia?.estado ?? incidencia?.estadoManual ?? "Abierta";
 
@@ -259,7 +259,7 @@ export function alertas(datos, sesion) {
         tipo: "Inventario",
         severidad: stock <= 0 ? "critico" : "alerta",
         titulo: stock <= 0 ? `${insumo.nombre} agotado` : stock === minimo ? `${insumo.nombre} en el mínimo` : `${insumo.nombre} bajo el mínimo`,
-        detalle: `Quedan ${numero(insumo.stock)} ${insumo.unidad}; el mínimo es ${numero(insumo.minimo)}.`,
+        detalle: `Quedan ${cantidadConUnidad(insumo.stock, insumo.unidad)}; el mínimo es ${numero(insumo.minimo)}.`,
         ruta: `/inventario?insumo=${insumo.id}`,
       });
     }

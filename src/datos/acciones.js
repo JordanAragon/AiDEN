@@ -2,7 +2,7 @@ import { crearId, guardar, importarRespaldo, inicializarDatos, obtener } from ".
 import { CARGO_A_ROL, ETAPAS, EVENTOS_MANUALES, PRIORIDADES, ROLES, indiceEtapa } from "./catalogos";
 import { estadoIncidencia, siguienteCodigo } from "./selectores";
 import { actualizarUsuario, asignarContrasena, cambiarContrasena, listarUsuarios, register } from "../utilidades/autenticacion";
-import { ahoraLocal, aFecha, dinero, hoyISO, numero } from "../utilidades/formato";
+import { ahoraLocal, aFecha, dinero, hoyISO, numero, cantidadConUnidad } from "../utilidades/formato";
 
 /*
   Reglas de negocio de AiDEN. Cada función valida su entrada, lanza un Error con
@@ -36,6 +36,14 @@ function decimal(valor, campo, minimo, maximo) {
 
 function fechaValida(valor, campo) {
   if (!valor || Number.isNaN(aFecha(valor).getTime())) fallo(`Elige ${campo}.`);
+  return valor;
+}
+
+// Lo que ya ocurrió (siembra, gasto, movimiento) no puede tener fecha futura: deja la
+// historia del lote en desorden y la ficha mostraría días negativos.
+function fechaPasada(valor, campo) {
+  fechaValida(valor, campo);
+  if (String(valor).slice(0, 10) > hoyISO()) fallo(`${campo[0].toUpperCase()}${campo.slice(1)} no puede ser posterior a hoy.`);
   return valor;
 }
 
@@ -128,7 +136,7 @@ export function crearLote(formulario, sesion) {
   const cantidad = entero(formulario.cantidad, "La cantidad de plantas", 1);
   const responsable = responsableActivo(formulario.responsableId);
   if (!obtener("zonas").some((z) => z.nombre === formulario.ubicacion)) fallo("Elige la zona donde estará el lote.");
-  const fecha = fechaValida(formulario.fecha, "la fecha de siembra");
+  const fecha = fechaPasada(formulario.fecha, "la fecha de siembra");
   if (formulario.fechaEstimada && formulario.fechaEstimada < fecha) fallo("La salida estimada no puede ser anterior a la siembra.");
   const etapa = ETAPAS.includes(formulario.etapa) ? formulario.etapa : ETAPAS[0];
 
@@ -424,6 +432,44 @@ export function cambiarEstadoPersona(id, estado, sesion) {
   guardar({ personas: obtener("personas").map((p) => (p.id === id ? { ...p, estado } : p)) });
 }
 
+export function pendientesDePersona(id) {
+  return {
+    tareas: obtener("tareas").filter((t) => t.responsableId === id && t.estado !== "Completada"),
+    lotes: obtener("lotes").filter((l) => l.responsableId === id && l.estado !== "Cerrado"),
+    incidencias: obtener("calidad").filter((i) => i.responsableId === id && estadoIncidencia(i) !== "Cerrada"),
+  };
+}
+
+// Pasa todo el trabajo abierto de una persona a otra y la desactiva en una sola operación.
+export function reasignarYDesactivar(id, destinoId, sesion) {
+  exigirGestor(sesion);
+  const actual = persona(id);
+  if (!actual) fallo("La persona ya no existe.");
+  if (id === sesion.personaId) fallo("No puedes desactivar tu propio perfil.");
+  if (cuentaDePersona(id)?.role === "admin" && sesion.role !== "admin") fallo("Solo administración puede cambiar el estado de una persona administradora.");
+  if (destinoId === id) fallo("Elige a otra persona para recibir el trabajo.");
+  const destino = responsableActivo(destinoId);
+  const { tareas, lotes, incidencias } = pendientesDePersona(id);
+  const idsTareas = new Set(tareas.map((t) => t.id));
+  const idsLotes = new Set(lotes.map((l) => l.lote));
+  const idsIncidencias = new Set(incidencias.map((i) => i.id));
+  const eventos = lotes.map((l) =>
+    evento({ lote: l.lote, tipo: "Observación", detalle: `Responsable cambia de ${actual.nombre} a ${destino.nombre} al desactivar a ${actual.nombre}.`, sesion, origen: "Personal" }),
+  );
+  guardar(
+    conEventos(
+      {
+        tareas: obtener("tareas").map((t) => (idsTareas.has(t.id) ? { ...t, responsableId: destino.id } : t)),
+        lotes: obtener("lotes").map((l) => (idsLotes.has(l.lote) ? { ...l, responsableId: destino.id } : l)),
+        calidad: obtener("calidad").map((i) => (idsIncidencias.has(i.id) ? { ...i, responsableId: destino.id } : i)),
+        personas: obtener("personas").map((p) => (p.id === id ? { ...p, estado: "Inactivo" } : p)),
+      },
+      eventos,
+    ),
+  );
+  return { tareas: tareas.length, lotes: lotes.length, incidencias: incidencias.length, destino };
+}
+
 export function cambiarRolUsuario(usuarioId, rol, sesion) {
   if (sesion?.role !== "admin") fallo("Solo administración puede cambiar accesos.");
   if (usuarioId === sesion.id) fallo("No puedes cambiar tu propio rol.");
@@ -525,7 +571,7 @@ export function crearCuentaAdministrativa(formulario, sesion) {
   if (sesion?.role !== "admin") fallo("Solo administración puede crear cuentas.");
   if (!ROLES[formulario.role]) fallo("Elige un rol válido.");
   const resultado = register(formulario);
-  if (!resultado.ok) return resultado;
+  if (!resultado.ok) fallo(resultado.message);
   asegurarPersonasDeUsuarios({ vincularPorNombre: [resultado.user.id] });
   const usuario = listarUsuarios().find((u) => u.id === resultado.user.id);
   if (!usuario) fallo("La cuenta se creó, pero no se pudo recuperar.");
@@ -583,9 +629,9 @@ export function registrarMovimiento(formulario, sesion) {
   if (!["entrada", "salida"].includes(formulario.tipo)) fallo("Elige si es entrada o salida.");
   const cantidad = entero(formulario.cantidad, "La cantidad", 1);
   if (formulario.tipo === "salida" && cantidad > Number(insumo.stock)) {
-    fallo(`Solo hay ${numero(insumo.stock)} ${insumo.unidad} de ${insumo.nombre}.`);
+    fallo(`Solo hay ${cantidadConUnidad(insumo.stock, insumo.unidad)} de ${insumo.nombre}.`);
   }
-  const fecha = fechaValida(formulario.fecha, "la fecha");
+  const fecha = fechaPasada(formulario.fecha, "la fecha");
   if (formulario.lote) exigirLoteActivo(buscarLote(formulario.lote));
   const valor = cantidad * Number(insumo.precio || 0);
   const movimiento = {
@@ -611,7 +657,7 @@ export function registrarMovimiento(formulario, sesion) {
       evento({
         lote: formulario.lote,
         tipo: "Consumo de insumo",
-        detalle: `Salida de ${numero(cantidad)} ${insumo.unidad} de ${insumo.nombre}${formulario.cargarCosto ? ` (${dinero(valor)} cargados al lote)` : ""}.`,
+        detalle: `Salida de ${cantidadConUnidad(cantidad, insumo.unidad)} de ${insumo.nombre}${formulario.cargarCosto ? ` (${dinero(valor)} cargados al lote)` : ""}.`,
         sesion,
         origen: "Inventario",
         fecha: `${fecha}T${ahoraLocal().slice(11)}`,
@@ -622,7 +668,7 @@ export function registrarMovimiento(formulario, sesion) {
         {
           id: crearId("CST"),
           tipo: "gasto",
-          concepto: `${insumo.nombre} (${numero(cantidad)} ${insumo.unidad})`,
+          concepto: `${insumo.nombre} (${cantidadConUnidad(cantidad, insumo.unidad)})`,
           categoria: "Insumos",
           valor,
           fecha,
@@ -654,7 +700,7 @@ export function anularMovimiento(id, sesion) {
   const cantidad = Number(original.cantidad) || 0;
   const delta = original.tipo === "entrada" ? -cantidad : cantidad;
   if (Number(insumo.stock) + delta < 0) {
-    fallo(`No se puede anular la entrada: solo quedan ${numero(insumo.stock)} ${insumo.unidad} de ${insumo.nombre} y ya se usaron.`);
+    fallo(`No se puede anular la entrada: solo quedan ${cantidadConUnidad(insumo.stock, insumo.unidad)} de ${insumo.nombre} y ya se usaron.`);
   }
   const inverso = {
     id: crearId("MOV"),
@@ -681,7 +727,7 @@ export function anularMovimiento(id, sesion) {
       evento({
         lote: original.lote,
         tipo: "Observación",
-        detalle: `Se anula la ${original.tipo} de ${numero(cantidad)} ${insumo.unidad} de ${insumo.nombre}${costo ? ` y se retiran ${dinero(costo.valor)} del costo del lote` : ""}.`,
+        detalle: `Se anula la ${original.tipo} de ${cantidadConUnidad(cantidad, insumo.unidad)} de ${insumo.nombre}${costo ? ` y se retiran ${dinero(costo.valor)} del costo del lote` : ""}.`,
         sesion,
         origen: "Inventario",
       }),
@@ -698,7 +744,8 @@ function validarCosto(formulario) {
   if (concepto.length < 3) fallo("Describe el concepto del movimiento.");
   if (!["gasto", "ingreso"].includes(formulario.tipo)) fallo("Elige si es gasto o ingreso.");
   const valor = entero(formulario.valor, "El valor", 1);
-  const fecha = fechaValida(formulario.fecha, "la fecha");
+  if (valor > 10_000_000_000) fallo("El valor supera los 10.000 millones de pesos. Revisa que no sobren ceros.");
+  const fecha = fechaPasada(formulario.fecha, "la fecha");
   if (formulario.lote) buscarLote(formulario.lote);
   return { tipo: formulario.tipo, concepto, categoria: formulario.categoria, valor, fecha, lote: formulario.lote || "" };
 }

@@ -90,7 +90,7 @@ function FormularioLote({ id, lote, onListo }) {
         </Seleccion>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Entrada etiqueta="Fecha de siembra" type="date" value={f.fecha} onChange={cambiar("fecha")} readOnly={Boolean(lote)} />
+        <Entrada etiqueta="Fecha de siembra" type="date" value={f.fecha} max={hoyISO()} onChange={cambiar("fecha")} readOnly={Boolean(lote)} />
         <Entrada etiqueta="Salida estimada" opcional type="date" value={f.fechaEstimada} min={f.fecha} onChange={cambiar("fechaEstimada")} />
       </div>
       <AreaTexto etiqueta="Notas" opcional value={f.notas} onChange={cambiar("notas")} placeholder="Cliente, pedido o condición especial" />
@@ -125,6 +125,8 @@ export default function ModalLote({ abierto, onCerrar, lote }) {
 
 function FormularioCierre({ id, lote, onListo }) {
   const sesion = useSesion();
+  const datos = useDatos();
+  const tareasAbiertas = datos.tareas.filter((t) => t.lote === lote.lote && t.estado !== "Completada");
   const enCosecha = lote.etapa === "Cosecha";
   const [motivo, setMotivo] = useState(enCosecha ? "Despachado" : "Descartado");
   const [detalle, setDetalle] = useState("");
@@ -140,6 +142,16 @@ function FormularioCierre({ id, lote, onListo }) {
       }}
     >
       <AlertaFormulario mensaje={error} />
+      {tareasAbiertas.length > 0 && (
+        <div role="status" className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <p className="font-semibold">Antes de cerrarlo, completa o elimina sus tareas abiertas:</p>
+          <ul className="mt-1.5 list-disc space-y-0.5 pl-5">
+            {tareasAbiertas.map((t) => (
+              <li key={t.id}>{t.titulo}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <p className="text-sm text-slate-600">
         {lote.lote} saldrá de la producción activa con {numero(lote.cantidad)} plantas. Su historia, costos e incidencias se conservan para reportes.
         {motivo === "Descartado" ? " Sus incidencias abiertas se cerrarán con el descarte como acción." : ""}

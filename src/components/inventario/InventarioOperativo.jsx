@@ -17,7 +17,7 @@ import { nombrePersona } from "../../datos/selectores";
 import { useAccion, useConfirmar } from "../../contexto/retroalimentacion";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
-import { coincide, dinero, fechaCorta, hoyISO, numero, plural } from "../../utilidades/formato";
+import { coincide, dinero, fechaCorta, hoyISO, numero, plural, cantidadConUnidad } from "../../utilidades/formato";
 import { descargarCSV } from "../../utilidades/exportar";
 
 const bajo = (i) => Number(i.stock) <= Number(i.minimo);
@@ -104,7 +104,7 @@ export default function InventarioOperativo() {
     }
     const ok = await confirmar({
       titulo: `Eliminar ${insumo.nombre}`,
-      mensaje: `Se quitará del inventario con ${numero(insumo.stock)} ${insumo.unidad} en existencia. Esta acción solo está disponible mientras no tenga movimientos registrados.`,
+      mensaje: `Se quitará del inventario con ${cantidadConUnidad(insumo.stock, insumo.unidad)} en existencia. Esta acción solo está disponible mientras no tenga movimientos registrados.`,
       confirmar: "Eliminar insumo",
       peligro: true,
     });
@@ -254,7 +254,7 @@ export default function InventarioOperativo() {
                     <td className={TD}>{numero(i.minimo)}</td>
                     <td className="px-4 py-3 text-xs font-semibold text-slate-700">{dinero(Number(i.stock) * Number(i.precio || 0))}</td>
                     <td className="px-4 py-3">
-                      <button type="button" onClick={() => setModal({ tipo: "movimiento", itemId: i.id })} className="inline-flex items-center gap-1 rounded-lg bg-slate-100 px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-emerald-50 hover:text-emerald-700">
+                      <button type="button" aria-label={`Mover ${i.nombre}`} onClick={() => setModal({ tipo: "movimiento", itemId: i.id })} className="inline-flex items-center gap-1 rounded-lg bg-slate-100 px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-emerald-50 hover:text-emerald-700">
                         <ArrowLeftRight size={13} aria-hidden="true" />
                         Mover
                       </button>
@@ -352,8 +352,8 @@ export default function InventarioOperativo() {
           <div className="space-y-5">
             <section className="grid grid-cols-3 gap-3">
               {[
-                ["Stock", `${numero(detalle.stock)} ${detalle.unidad}`, bajo(detalle)],
-                ["Mínimo", `${numero(detalle.minimo)} ${detalle.unidad}`, false],
+                ["Stock", `${cantidadConUnidad(detalle.stock, detalle.unidad)}`, bajo(detalle)],
+                ["Mínimo", `${cantidadConUnidad(detalle.minimo, detalle.unidad)}`, false],
                 ["Valor", dinero(Number(detalle.stock) * Number(detalle.precio || 0)), false],
               ].map(([k, v, alerta]) => (
                 <section key={k} className={`rounded-xl p-3 ${alerta ? "bg-amber-50" : "bg-slate-50"}`}>

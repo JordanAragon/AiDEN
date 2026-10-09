@@ -23,7 +23,7 @@ const CAMPOS = [
 function FormularioCuenta({ id, onListo }) {
   const sesion = useSesion();
   const [f, setF] = useState({ name: "", email: "", password: "", role: "operario" });
-  const { error, enviar } = useEnvio();
+  const { error, enviar } = useEnvio(onListo);
 
   const cambiar = (campo) => (e) => setF((actual) => ({ ...actual, [campo]: e.target.value }));
 
@@ -34,10 +34,7 @@ function FormularioCuenta({ id, onListo }) {
       className="space-y-4"
       onSubmit={(e) => {
         e.preventDefault();
-        enviar(
-          () => crearCuentaAdministrativa(f, sesion),
-          () => onListo(),
-        );
+        enviar(() => crearCuentaAdministrativa(f, sesion), (cuenta) => `Cuenta de ${cuenta.name} creada como ${ROLES[cuenta.role].toLowerCase()}`);
       }}
     >
       <div className="space-y-4">

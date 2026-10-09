@@ -168,7 +168,7 @@ export default function CostosOperativo() {
           { icono: TrendingDown, etiqueta: "Gastos", valor: dinero(gastos), detalle: `${plural(gastosLista.length, "movimiento")} · ${nombrePeriodo}`, tono: "critico" },
           { icono: TrendingUp, etiqueta: "Ingresos", valor: dinero(ingresos), detalle: `${plural(ingresosLista.length, "movimiento")} · ${nombrePeriodo}` },
           { icono: CircleDollarSign, etiqueta: "Balance", valor: dinero(ingresos - gastos), detalle: ingresos - gastos < 0 ? "Gastos superiores a ingresos" : "Ingresos cubren los gastos", tono: ingresos - gastos < 0 ? "critico" : "exito" },
-          { icono: BarChart3, etiqueta: "Costo/planta ponderado", valor: dineroOGuion(costoPlanta), detalle: `${plantas.toLocaleString("es-CO")} plantas con gastos asociados`, tono: "info" },
+          { icono: BarChart3, etiqueta: "Costo/planta ponderado", valor: dineroOGuion(costoPlanta), detalle: `Gastos de lotes activos ÷ ${plantas.toLocaleString("es-CO")} plantas vivas`, tono: "info" },
         ]}
       />
 

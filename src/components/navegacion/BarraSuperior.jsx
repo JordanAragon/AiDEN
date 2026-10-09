@@ -237,9 +237,9 @@ export default function BarraSuperior() {
                   <span className="text-[10px] text-slate-500">Abrir</span>
                 </button>
               ))
-            ) : (
-              <p className="px-3 py-3 text-center text-xs text-slate-500">No se encontró un módulo disponible para tu rol.</p>
-            )}
+            ) : !resultadosRegistros.length ? (
+              <p className="px-3 py-3 text-center text-xs text-slate-500">Nada coincide con «{search}». Prueba con el código de un lote, un cultivo o un insumo.</p>
+            ) : null}
             {resultadosRegistros.length > 0 && (
               <>
                 <p className="mt-1 px-3 pb-1 pt-2 text-[10px] font-bold uppercase tracking-wider text-slate-500">Registros</p>
@@ -281,7 +281,7 @@ export default function BarraSuperior() {
             aria-expanded={showNotifs}
           >
             <Bell size={18} className="text-slate-500" aria-hidden="true" />
-            {noLeidas > 0 && <span className="absolute right-0.5 top-0.5 min-w-4 rounded-full bg-red-500 px-1 text-[9px] font-bold leading-4 text-white">{noLeidas}</span>}
+            {noLeidas > 0 && <span className="absolute right-0.5 top-0.5 min-w-4 rounded-full bg-red-600 px-1 text-[9px] font-bold leading-4 text-white">{noLeidas}</span>}
           </button>
           {showNotifs && (
             <section className="absolute right-0 top-12 z-30 w-[min(20rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl" role="dialog" aria-label="Notificaciones">
@@ -310,7 +310,7 @@ export default function BarraSuperior() {
                       <li key={n.id}>
                         <button type="button" onClick={() => marcarLeida(n)} className={`w-full px-4 py-3 text-left hover:bg-slate-50 ${leida ? "opacity-50" : ""}`}>
                           <span className="flex gap-3">
-                            <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${leida ? "bg-slate-300" : n.severidad === "critico" ? "bg-red-500" : "bg-emerald-500"}`} />
+                            <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${leida ? "bg-slate-300" : n.severidad === "critico" ? "bg-red-600" : "bg-emerald-500"}`} />
                             <span className="text-sm leading-5 text-slate-700">
                               {n.titulo}
                               <span className="mt-0.5 block text-xs text-slate-500">{n.detalle}</span>

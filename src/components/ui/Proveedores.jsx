@@ -43,10 +43,11 @@ export default function ProveedorRetroalimentacion({ children }) {
           ancho="sm"
           pie={
             <>
-              <Boton variante="secundario" onClick={() => responder(false)}>
+              {/* En acciones destructivas el foco empieza en Cancelar: un Enter no borra nada. */}
+              <Boton variante="secundario" onClick={() => responder(false)} data-autofocus={confirmacion?.peligro ? true : undefined}>
                 {confirmacion?.cancelar || "Cancelar"}
               </Boton>
-              <Boton variante={confirmacion?.peligro ? "peligro" : "primario"} onClick={() => responder(true)} data-autofocus>
+              <Boton variante={confirmacion?.peligro ? "peligro" : "primario"} onClick={() => responder(true)} data-autofocus={confirmacion?.peligro ? undefined : true}>
                 {confirmacion?.confirmar || "Confirmar"}
               </Boton>
             </>

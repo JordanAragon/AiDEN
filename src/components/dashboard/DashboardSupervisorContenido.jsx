@@ -92,7 +92,7 @@ export default function DashboardSupervisorContenido() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Trabajo abierto</p>
               <div>
                 <p className="text-3xl font-semibold tracking-tight">{abiertas.length}</p>
-                <p className="mt-1 text-xs text-white/55">{vencidas ? plural(vencidas, "vencida", "vencidas") : "sin vencidas"} · {completadasHoy} hoy</p>
+                <p className="mt-1 text-xs text-white/55">{vencidas ? plural(vencidas, "vencida", "vencidas") : "sin vencidas"} · {plural(completadasHoy, "completada hoy", "completadas hoy")}</p>
               </div>
             </article>
             <article className="flex min-h-32 flex-col justify-between p-5 sm:p-6">

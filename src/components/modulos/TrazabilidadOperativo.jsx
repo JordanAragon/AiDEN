@@ -14,9 +14,10 @@ import { useFichaLote } from "../../contexto/ficha";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
 import { aFecha, coincide, fechaCorta, numero, plural } from "../../utilidades/formato";
+import { NOMBRE_ORIGEN } from "../../datos/catalogos";
 import { descargarCSV } from "../../utilidades/exportar";
 
-const ORIGENES = { Todos: "Todos", Producción: "Producción", Manual: "Campo", Calidad: "Calidad", Inventario: "Inventario", Personal: "Tareas" };
+const ORIGENES = { Todos: "Todos", ...NOMBRE_ORIGEN };
 const SELECT = "mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none focus:border-emerald-500";
 
 export default function TrazabilidadOperativo() {
@@ -33,7 +34,9 @@ export default function TrazabilidadOperativo() {
 
   const lotes = lotesVisibles(datos, sesion);
   const codigos = codigosVisibles(datos, sesion);
-  const lot = codigos.has(parametros.get("lote")) ? parametros.get("lote") : "Todos";
+  const pedido = parametros.get("lote");
+  const lot = codigos.has(pedido) ? pedido : "Todos";
+  const loteDesconocido = pedido && !codigos.has(pedido) ? pedido : null;
   const lote = lotes.find((l) => l.lote === lot);
   const visibles = datos.trazabilidad.filter((e) => codigos.has(e.lote)).sort((a, b) => aFecha(b.fecha) - aFecha(a.fecha));
   const delLote = lot === "Todos" ? visibles : visibles.filter((e) => e.lote === lot);
@@ -50,12 +53,17 @@ export default function TrazabilidadOperativo() {
 
   const exportar = () =>
     ejecutar(
-      () => descargarCSV(`aiden-trazabilidad-${lot === "Todos" ? "todos" : lot}`, filtered.map((e) => ({ Fecha: String(e.fecha).replace("T", " "), Lote: e.lote, Evento: e.evento, Detalle: e.detalle, Responsable: e.responsable, Origen: e.origen }))),
+      () => descargarCSV(`aiden-trazabilidad-${lot === "Todos" ? "todos" : lot}`, filtered.map((e) => ({ Fecha: String(e.fecha).replace("T", " "), Lote: e.lote, Evento: e.evento, Detalle: e.detalle, Responsable: e.responsable, Origen: NOMBRE_ORIGEN[e.origen] || e.origen }))),
       (n) => plural(n, "evento exportado", "eventos exportados"),
     );
 
   return (
     <section className="aiden-modulo-vista aiden-operario-vista aiden-modulo-trazabilidad space-y-7">
+      {loteDesconocido && (
+        <p role="status" className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          No encontramos el lote {loteDesconocido} entre los que puedes ver. Se muestran todos los eventos.
+        </p>
+      )}
       <EncabezadoPagina
         rotulo="AiDEN / seguimiento"
         titulo="Trazabilidad"

@@ -52,7 +52,7 @@ function FormularioTarea({ id, tarea, inicial, onListo }) {
             </option>
           ))}
         </Seleccion>
-        <Entrada etiqueta="Fecha límite" type="date" value={f.fecha} onChange={cambiar("fecha")} />
+        <Entrada etiqueta="Fecha límite" type="date" value={f.fecha} onChange={cambiar("fecha")} ayuda={f.fecha && f.fecha < hoyISO() ? "Esta fecha ya pasó: la tarea quedará vencida desde que la crees." : undefined} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <Seleccion etiqueta="Prioridad" value={f.prioridad} onChange={cambiar("prioridad")}>

@@ -27,7 +27,10 @@ html { scroll-padding-top: 1.25rem; }
   box-shadow: 0 0 0 3px rgba(180,35,24,.12) !important;
 }
 .aiden-app-shell main table { font-variant-numeric: tabular-nums; }
-.aiden-app-shell main :is(th,td) { vertical-align: middle; overflow-wrap: anywhere; }
+/* break-word solo parte una palabra si no cabe sola en la línea; «anywhere» partía
+   encabezados como «SEMBRADAS» en «SEMB RADA S». Los encabezados no se parten. */
+.aiden-app-shell main :is(th,td) { vertical-align: middle; overflow-wrap: break-word; }
+.aiden-app-shell main th { white-space: nowrap; }
 .aiden-app-shell main :is(.overflow-x-auto,[role="region"]) {
   -webkit-overflow-scrolling: touch;
 }
@@ -207,3 +210,29 @@ html:not(.aiden-dark) .aiden-app-shell .text-slate-500,
 html:not(.aiden-dark) .aiden-app-shell .text-slate-400 {
   color: #475569 !important;
 }
+
+/* Select sobre panel oscuro: la regla global de los módulos le ponía fondo claro. */
+.aiden-modulo-vista select.aiden-select-oscuro {
+  border-color: rgba(255, 255, 255, .22) !important;
+  background-color: rgba(255, 255, 255, .08) !important;
+  color: #fffdf8;
+  box-shadow: none;
+}
+
+/* Impresión de reportes: solo el contenido. La clase no-imprimir se usaba en la barra
+   lateral, la barra superior y los controles, pero no tenía estilos. */
+@media print {
+  @page { margin: 14mm 12mm; }
+  .no-imprimir,
+  [aria-live="polite"].fixed { display: none !important; }
+  html, body { background: #fff !important; }
+  .aiden-app-shell { display: block !important; height: auto !important; overflow: visible !important; background: #fff !important; }
+  .aiden-app-shell main { overflow: visible !important; padding: 0 !important; }
+  .aiden-app-shell section { box-shadow: none !important; }
+  table { break-inside: auto; }
+  tr { break-inside: avoid; }
+}
+
+/* Texto escrito por las personas (descripciones, notas, acciones): una palabra muy
+   larga se parte antes que desbordar la tarjeta. */
+.aiden-app-shell main :is(p, li, h3, dd, blockquote) { overflow-wrap: break-word; }

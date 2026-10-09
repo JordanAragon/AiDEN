@@ -34,11 +34,15 @@ function aria(id, ayuda, error) {
   };
 }
 
+// Tope de longitud por defecto: un texto pegado sin control no debe romper tarjetas ni el almacenamiento.
+const TIPOS_TEXTO = new Set([undefined, "text", "search", "email", "tel", "password"]);
+
 export function Entrada({ etiqueta, ayuda, error, opcional, className, ...props }) {
   const id = useId();
+  const maxLength = props.maxLength ?? (TIPOS_TEXTO.has(props.type) ? 200 : undefined);
   return (
     <Envoltura id={id} etiqueta={etiqueta} ayuda={ayuda} error={error} opcional={opcional} className={className}>
-      <input className={CONTROL} {...aria(id, ayuda, error)} {...props} />
+      <input className={CONTROL} {...aria(id, ayuda, error)} {...props} maxLength={maxLength} />
     </Envoltura>
   );
 }
@@ -58,7 +62,7 @@ export function AreaTexto({ etiqueta, ayuda, error, opcional, className, rows = 
   const id = useId();
   return (
     <Envoltura id={id} etiqueta={etiqueta} ayuda={ayuda} error={error} opcional={opcional} className={className}>
-      <textarea rows={rows} className={`${CONTROL} resize-y`} {...aria(id, ayuda, error)} {...props} />
+      <textarea rows={rows} className={`${CONTROL} resize-y`} {...aria(id, ayuda, error)} maxLength={2000} {...props} />
     </Envoltura>
   );
 }
