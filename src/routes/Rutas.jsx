@@ -1,30 +1,31 @@
-import { lazy, Suspense, useLayoutEffect } from "react";
+import { Suspense, useLayoutEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import PlantillaPrincipal from "../plantillas/PlantillaPrincipal";
 import RutaProtegida from "../components/autenticacion/RutaProtegida";
 import CargandoVista from "../components/ui/CargandoVista";
 import { PERMISOS } from "./permisos";
+import { diferida } from "../utilidades/cargaDiferida";
 
-const Home = lazy(() => import("../pages/Home"));
-const Login = lazy(() => import("../pages/Login"));
-const Signup = lazy(() => import("../pages/Signup"));
-const ForgotPassword = lazy(() => import("../pages/ForgotPassword"));
-const InformacionLegal = lazy(() => import("../pages/InformacionLegal"));
-const NoEncontrada = lazy(() => import("../pages/NoEncontrada"));
-const Perfil = lazy(() => import("../pages/Perfil"));
-const DashboardAdmin = lazy(() => import("../pages/DashboardAdmin"));
-const DashboardSupervisor = lazy(() => import("../pages/DashboardSupervisor"));
-const DashboardOperario = lazy(() => import("../pages/DashboardOperario"));
-const InteligenciaArtificial = lazy(() => import("../pages/InteligenciaArtificial"));
-const InventarioOperativo = lazy(() => import("../components/inventario/InventarioOperativo"));
-const ProduccionOperativo = lazy(() => import("../components/produccion/ProduccionOperativo"));
-const PersonalOperativo = lazy(() => import("../components/modulos/PersonalOperativo"));
-const CostosOperativo = lazy(() => import("../components/modulos/CostosOperativo"));
-const CalidadOperativo = lazy(() => import("../components/modulos/CalidadOperativo"));
-const AmbientalOperativo = lazy(() => import("../components/modulos/AmbientalOperativo"));
-const TrazabilidadOperativo = lazy(() => import("../components/modulos/TrazabilidadOperativo"));
-const ConfiguracionOperativo = lazy(() => import("../components/modulos/ConfiguracionOperativo"));
-const ReportesOperativo = lazy(() => import("../components/reportes/ReportesOperativo"));
+const Home = diferida(() => import("../pages/Home"));
+const Login = diferida(() => import("../pages/Login"));
+const Signup = diferida(() => import("../pages/Signup"));
+const ForgotPassword = diferida(() => import("../pages/ForgotPassword"));
+const InformacionLegal = diferida(() => import("../pages/InformacionLegal"));
+const NoEncontrada = diferida(() => import("../pages/NoEncontrada"));
+const Perfil = diferida(() => import("../pages/Perfil"));
+const DashboardAdmin = diferida(() => import("../pages/DashboardAdmin"));
+const DashboardSupervisor = diferida(() => import("../pages/DashboardSupervisor"));
+const DashboardOperario = diferida(() => import("../pages/DashboardOperario"));
+const InteligenciaArtificial = diferida(() => import("../pages/InteligenciaArtificial"));
+const InventarioOperativo = diferida(() => import("../components/inventario/InventarioOperativo"));
+const ProduccionOperativo = diferida(() => import("../components/produccion/ProduccionOperativo"));
+const PersonalOperativo = diferida(() => import("../components/modulos/PersonalOperativo"));
+const CostosOperativo = diferida(() => import("../components/modulos/CostosOperativo"));
+const CalidadOperativo = diferida(() => import("../components/modulos/CalidadOperativo"));
+const AmbientalOperativo = diferida(() => import("../components/modulos/AmbientalOperativo"));
+const TrazabilidadOperativo = diferida(() => import("../components/modulos/TrazabilidadOperativo"));
+const ConfiguracionOperativo = diferida(() => import("../components/modulos/ConfiguracionOperativo"));
+const ReportesOperativo = diferida(() => import("../components/reportes/ReportesOperativo"));
 
 const VISTAS = {
   "/perfil": Perfil,
