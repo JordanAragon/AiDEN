@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import BarraLateral from "../components/navegacion/BarraLateral";
 import BarraSuperior from "../components/navegacion/BarraSuperior";
@@ -6,11 +6,16 @@ import ProveedorFicha from "../components/lote/ProveedorFicha";
 import LimiteError from "../components/ui/LimiteError";
 import { useSesion } from "../hooks/useSesion";
 import CargandoVista from "../components/ui/CargandoVista";
+import { registrarTrabajador } from "../pwa/registrar";
 
 export default function PlantillaPrincipal() {
   const { pathname } = useLocation();
   const sesion = useSesion();
   const esSupervisor = sesion?.role === "supervisor";
+
+  useEffect(() => {
+    registrarTrabajador();
+  }, []);
 
   return (
     <ProveedorFicha>

@@ -1,17 +1,19 @@
 export const EVENTO_VERSION_NUEVA = "aiden-version-nueva";
 
 let actualizacionPedida = false;
+let registrado = false;
 
+// Se llama desde la app autenticada: quien solo visita la landing no descarga la
+// precarga completa.
 export function registrarTrabajador() {
-  if (!import.meta.env.PROD || !("serviceWorker" in navigator)) return;
+  if (registrado || !import.meta.env.PROD || !("serviceWorker" in navigator)) return;
+  registrado = true;
 
-  // clients.claim() también cambia el controlador en la primera visita: solo se recarga
-  // cuando la persona pidió la versión nueva.
   navigator.serviceWorker.addEventListener("controllerchange", () => {
     if (actualizacionPedida) window.location.reload();
   });
 
-  window.addEventListener("load", () => {
+  const registrar = () => {
     navigator.serviceWorker
       .register("/sw.js")
       .then((registro) => {
@@ -25,7 +27,9 @@ export function registrarTrabajador() {
         });
       })
       .catch((error) => console.warn("AiDEN no pudo activar el modo sin conexión", error));
-  });
+  };
+  if (document.readyState === "complete") registrar();
+  else window.addEventListener("load", registrar, { once: true });
 }
 
 export function activarVersionNueva(trabajador) {

@@ -13,12 +13,12 @@ self.addEventListener("install", (evento) => {
   evento.waitUntil(caches.open(CACHE_APP).then((cache) => cache.addAll(PRECARGA)));
 });
 
+// Sin clients.claim(): tomar control a mitad de la carga deja huérfanas las precargas
+// de módulos. La app queda controlada desde la siguiente visita, y una versión nueva
+// activada con skipWaiting cambia el controlador de las páginas abiertas igual.
 self.addEventListener("activate", (evento) => {
   evento.waitUntil(
-    caches
-      .keys()
-      .then((claves) => Promise.all(claves.filter((clave) => clave.startsWith("aiden-app-") && clave !== CACHE_APP).map((clave) => caches.delete(clave))))
-      .then(() => self.clients.claim()),
+    caches.keys().then((claves) => Promise.all(claves.filter((clave) => clave.startsWith("aiden-app-") && clave !== CACHE_APP).map((clave) => caches.delete(clave)))),
   );
 });
 
@@ -39,9 +39,6 @@ self.addEventListener("fetch", (evento) => {
     return;
   }
 
-  if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
-    evento.respondWith(recursoExterno(request));
-  }
 });
 
 // Red primero para recibir versiones nuevas; sin señal, el index.html de esta misma
@@ -66,16 +63,4 @@ async function recurso(request) {
     cache.put(request, respuesta.clone());
   }
   return respuesta;
-}
-
-async function recursoExterno(request) {
-  const cache = await caches.open(CACHE_EXTRA);
-  const guardado = await cache.match(request, { ignoreVary: true });
-  const red = fetch(request)
-    .then((respuesta) => {
-      if (respuesta.ok || respuesta.type === "opaque") cache.put(request, respuesta.clone());
-      return respuesta;
-    })
-    .catch(() => guardado || Response.error());
-  return guardado || red;
 }

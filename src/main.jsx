@@ -10,7 +10,6 @@ import App from "./App.jsx";
 import { inicializarDatos } from "./datos/almacen";
 import { asegurarPersonasDeUsuarios } from "./datos/acciones";
 import { ensureInitialUser } from "./utilidades/autenticacion";
-import { registrarTrabajador } from "./pwa/registrar";
 
 let temaGuardado = "light";
 try {
@@ -27,8 +26,6 @@ try {
 } catch (error) {
   console.error("No se pudieron preparar los datos locales de AiDEN", error);
 }
-
-registrarTrabajador();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
