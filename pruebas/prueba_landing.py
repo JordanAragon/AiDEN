@@ -49,13 +49,20 @@ try:
         pagina.set_viewport_size({"width": 1440, "height": 900})
         pagina.get_by_role("button", name=re.compile("Entender costos")).click()
         registro.check(
-            pagina.locator(".aiden-demo-readout strong").inner_text() == "Costo y trazabilidad",
-            "la ruta de costos actualiza el recorrido interactivo",
+            pagina.locator(".aiden-demo-readout strong").inner_text() == "Costo por planta viva"
+            and "$" in pagina.locator(".aiden-demo-dato b").inner_text(),
+            "la ruta de costos abre el paso de costo con un valor real",
         )
-        pagina.get_by_role("button", name=re.compile("Acción registrada")).click()
+        pagina.get_by_role("button", name=re.compile("Alerta ambiental")).click()
         registro.check(
-            pagina.locator(".aiden-demo-readout strong").inner_text() == "Acción registrada",
-            "el recorrido refleja el paso seleccionado",
+            "fuera de rango" in pagina.locator(".aiden-demo-readout strong").inner_text()
+            and "°C" in pagina.locator(".aiden-demo-dato b").inner_text(),
+            "el recorrido muestra la zona fuera de rango de los datos de ejemplo",
+        )
+        pagina.get_by_role("button", name=re.compile("Lote afectado")).click()
+        registro.check(
+            re.match(r"LT-\d{4}-\d{3}", pagina.locator(".aiden-demo-dato b").inner_text()) is not None,
+            "el recorrido muestra el lote de esa zona",
         )
 
         solicitud = {}

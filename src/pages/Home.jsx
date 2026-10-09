@@ -14,9 +14,12 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardHeroPreview from "../components/dashboard/DashboardHeroPreview";
+import { useDatos } from "../datos/almacen";
+import { evaluarLectura, lotesActivos, nombrePersona, resumenLote, ultimasLecturas } from "../datos/selectores";
+import { dinero, dineroOGuion, fechaCorta, numero } from "../utilidades/formato";
 import { useTitulo } from "../hooks/useTitulo";
 import "../estilos/landing-aiden-redesign.css";
 import { LogotipoAiden } from "../components/ui/MarcaAiden";
@@ -48,21 +51,59 @@ const connections = [
   ["Costos", "Los gastos dejan de estar aislados", "Los registros de costo se leen junto al trabajo que los originó."],
 ];
 
+// Cada intención abre el paso del recorrido que la responde.
 const intenciones = [
-  ["01", "Controlar producción", "Ver lotes, etapas y actividades sin perder el estado de cada proceso.", 0],
-  ["02", "Seguir un lote", "Reconstruir qué pasó, qué se usó, quién intervino y qué continúa.", 1],
-  ["03", "Detectar incidencias", "Relacionar señales ambientales o de calidad con la operación afectada.", 2],
-  ["04", "Entender costos", "Leer los gastos junto al trabajo que los originó, no como cifras aisladas.", 4],
-  ["05", "Coordinar el equipo", "Dar a cada persona la información y responsabilidad que necesita.", 3],
+  ["01", "Detectar a tiempo", "Ver qué zona salió de rango y qué lotes están ahí.", 0],
+  ["02", "Controlar producción", "Saber en qué etapa va cada lote y cuántas plantas siguen vivas.", 1],
+  ["03", "Coordinar el equipo", "Asignar el siguiente paso a una persona, con fecha y prioridad.", 2],
+  ["04", "Seguir un lote", "Reconstruir qué pasó, qué se usó y quién intervino.", 3],
+  ["05", "Entender costos", "Leer el costo por planta junto al trabajo que lo produjo.", 4],
 ];
 
 const demoPasos = [
-  ["01", "Alerta ambiental", "Una condición requiere atención.", "La señal entra al contexto operativo."],
-  ["02", "Lote afectado", "La señal queda vinculada al contexto.", "Ya no es una alerta aislada."],
-  ["03", "Tarea asignada", "El responsable recibe el siguiente paso.", "La operación define quién debe actuar."],
-  ["04", "Acción registrada", "El resultado queda en la historia del lote.", "El sistema conserva qué ocurrió."],
-  ["05", "Costo y trazabilidad", "La operación conserva sus consecuencias.", "El equipo puede reconstruir la decisión."],
+  ["01", "Alerta ambiental", "Una zona sale del rango configurado."],
+  ["02", "Lote afectado", "La alerta llega al lote que está en esa zona."],
+  ["03", "Tarea asignada", "Alguien recibe el siguiente paso."],
+  ["04", "Registro en la historia", "Lo que se hizo queda en la trazabilidad."],
+  ["05", "Costo por planta", "La operación conserva sus consecuencias."],
 ];
+
+/*
+  El recorrido de la demo se arma con los datos de ejemplo del propio sistema: la zona
+  más fuera de rango, el lote que está en ella, su tarea abierta, su último registro y
+  su costo por planta. Nada inventado.
+*/
+function construirRecorrido(datos) {
+  const cfg = datos.configuracion;
+  const ultimas = [...ultimasLecturas(datos.ambiental)];
+  const fuera = ultimas
+    .map(([zona, lectura]) => ({ zona, lectura, e: evaluarLectura(lectura, cfg) }))
+    .filter((x) => x.e.fuera)
+    .sort((a, b) => b.e.desvio - a.e.desvio)[0];
+  const zona = fuera?.zona || ultimas[0]?.[0];
+  const lectura = fuera?.lectura || ultimas[0]?.[1];
+  const activos = lotesActivos(datos.lotes);
+  const lote = activos.find((l) => l.ubicacion === zona) || activos[0];
+  if (!lote || !lectura) return null;
+  const r = resumenLote(lote, datos);
+  const tarea = r.tareasAbiertas[0];
+  const evento = r.eventos[0];
+  return [
+    {
+      valor: `${numero(lectura.temperatura)} °C`,
+      titulo: fuera ? `${zona} fuera de rango` : `${zona} en rango`,
+      detalle: `Rango configurado: ${cfg.tempMin}–${cfg.tempMax} °C. Humedad ${numero(lectura.humedad)} %.`,
+    },
+    { valor: lote.lote, titulo: lote.cultivo, detalle: `${numero(lote.cantidad)} plantas vivas en ${lote.etapa.toLowerCase()}, en ${lote.ubicacion}.` },
+    {
+      valor: nombrePersona(datos.personas, tarea?.responsableId || lote.responsableId),
+      titulo: tarea ? tarea.titulo : "Responsable del lote",
+      detalle: tarea ? `Vence el ${fechaCorta(tarea.fecha)} · prioridad ${tarea.prioridad.toLowerCase()}.` : "Sin tareas abiertas en este lote.",
+    },
+    { valor: evento ? evento.evento : "Sin registros", titulo: evento ? `Por ${evento.responsable}` : lote.lote, detalle: evento ? evento.detalle : "La historia del lote empieza con su primer registro." },
+    { valor: dineroOGuion(r.costoPlanta), titulo: "Costo por planta viva", detalle: `${dinero(r.gasto)} acumulados y ${numero(r.eventos.length)} registros en su historia.` },
+  ];
+}
 
 export default function Inicio() {
   useTitulo(null);
@@ -74,6 +115,8 @@ export default function Inicio() {
   const [conexionActiva, setConexionActiva] = useState(0);
   const [intencionActiva, setIntencionActiva] = useState(0);
   const [pasoActivo, setPasoActivo] = useState(0);
+  const datos = useDatos();
+  const recorrido = useMemo(() => construirRecorrido(datos), [datos]);
   const menuButtonRef = useRef(null);
   const menuPanelRef = useRef(null);
   const formularioMontado = useRef(0);
@@ -165,8 +208,8 @@ export default function Inicio() {
             <a href="#roles">Roles</a>
           </div>
           <div className="aiden-header-actions">
-            <a href="#contacto" className="aiden-header-login">Solicitar demo</a>
-            <Link to="/login" className="aiden-button aiden-button-ghost">Iniciar sesión</Link>
+            <Link to="/login" className="aiden-header-login">Iniciar sesión</Link>
+            <a href="#contacto" className="aiden-button aiden-button-dark">Solicitar demo</a>
           </div>
           <button
             ref={menuButtonRef}
@@ -192,8 +235,8 @@ export default function Inicio() {
           <a href="#sistema" onClick={cerrarMenu}>El sistema</a>
           <a href="#modulos" onClick={cerrarMenu}>Módulos</a>
           <a href="#roles" onClick={cerrarMenu}>Roles</a>
-          <a href="#contacto" className="aiden-button aiden-button-ghost" onClick={cerrarMenu}>Solicitar demo</a>
-          <Link to="/login" className="aiden-button aiden-button-dark" onClick={cerrarMenu}>Iniciar sesión <ArrowRight size={14} /></Link>
+          <a href="#contacto" className="aiden-button aiden-button-dark" onClick={cerrarMenu}>Solicitar demo <ArrowRight size={14} /></a>
+          <Link to="/login" className="aiden-button aiden-button-ghost" onClick={cerrarMenu}>Iniciar sesión</Link>
         </div>
       </header>
 
@@ -211,12 +254,9 @@ export default function Inicio() {
               <div className="aiden-hero-meta"><span>Por lotes</span><i /><span>Por roles</span><i /><span>Con trazabilidad</span></div>
             </article>
             <figure className="aiden-hero-product" aria-label="Vista del dashboard de AiDEN">
-              <div className="aiden-product-frame"><DashboardHeroPreview /><span className="aiden-product-corner">PRODUCT / SYSTEM VIEW</span></div>
-              <figcaption><span>Vista real del producto</span><span>Datos de demostración</span></figcaption>
+              <div className="aiden-product-frame"><DashboardHeroPreview /></div>
+              <figcaption><span>Vista del producto</span><span>Con los datos de ejemplo</span></figcaption>
             </figure>
-          </div>
-          <div className="aiden-shell aiden-trust-strip" aria-label="Resumen del producto">
-            <span>UN SISTEMA ESPECIALIZADO</span><i /><strong>09 módulos</strong><i /><strong>03 roles</strong><i /><strong>1 operación conectada</strong><i /><span>DEMO INTERACTIVA</span>
           </div>
         </section>
 
@@ -241,8 +281,8 @@ export default function Inicio() {
         <section className="aiden-intents" id="necesidades">
           <div className="aiden-shell">
             <header className="aiden-section-header">
-              <div><p className="aiden-index">¿QUÉ NECESITAS RESOLVER?</p><h2>Entra por el problema.<br /><em>Nosotros mostramos el sistema.</em></h2></div>
-              <p>Empieza desde una necesidad concreta del vivero. Selecciona una ruta y AiDEN te lleva al recorrido operativo que la explica.</p>
+              <div><p className="aiden-index">¿QUÉ NECESITAS RESOLVER?</p><h2>Empieza por lo que hoy <em>te cuesta ver.</em></h2></div>
+              <p>Elige una necesidad del vivero y mira, con datos de ejemplo, cómo la resuelve AiDEN paso a paso.</p>
             </header>
             <div className="aiden-intent-grid">
               {intenciones.map(([number, title, description], index) => (
@@ -255,7 +295,7 @@ export default function Inicio() {
               <span>RUTA SELECCIONADA</span>
               <strong>{intenciones[intencionActiva][1]}</strong>
               <p>{intenciones[intencionActiva][2]}</p>
-              <a href="#demostracion" onClick={() => setPasoActivo(intenciones[intencionActiva][3])}>Ir al recorrido <ArrowRight size={14} /></a>
+              <a href="#demostracion" onClick={() => setPasoActivo(intenciones[intencionActiva][3])}>Ver este paso en el recorrido <ArrowRight size={14} /></a>
             </div>
           </div>
         </section>
@@ -296,11 +336,11 @@ export default function Inicio() {
         <section className="aiden-demo-flow" id="demostracion">
           <div className="aiden-shell">
             <header className="aiden-section-header aiden-section-header-dark">
-              <div><p className="aiden-index">DEMO / CASO OPERATIVO</p><h2>De una alerta a una decisión. <em>Sin perder el contexto.</em></h2></div>
-              <p>Selecciona cada etapa para ver cómo cambia la lectura. Este recorrido convierte una situación concreta en una historia operativa visible.</p>
+              <div><p className="aiden-index">RECORRIDO</p><h2>De una alerta a una decisión. <em>Sin perder el contexto.</em></h2></div>
+              <p>Un caso tomado de los datos de ejemplo de AiDEN. Elige cada paso para ver qué muestra el sistema.</p>
             </header>
             <div className="aiden-flow">
-              {demoPasos.map(([number, title, description, detail], index) => (
+              {demoPasos.map(([number, title, description], index) => (
                 <div className="aiden-flow-step" key={title}>
                   <button type="button" className={`aiden-flow-card ${pasoActivo === index ? "is-active" : ""}`} onClick={() => setPasoActivo(index)} aria-pressed={pasoActivo === index}>
                     <span>{number}</span><strong>{title}</strong><p>{description}</p><ArrowUpRight size={15} />
@@ -310,8 +350,13 @@ export default function Inicio() {
               ))}
             </div>
             <div className="aiden-demo-readout" aria-live="polite" aria-atomic="true">
-              <div><span>PASO {demoPasos[pasoActivo][0]}</span><strong>{demoPasos[pasoActivo][1]}</strong></div>
-              <p>{demoPasos[pasoActivo][3]}</p>
+              <div><span>PASO {demoPasos[pasoActivo][0]} · {demoPasos[pasoActivo][1]}</span><strong>{recorrido ? recorrido[pasoActivo].titulo : demoPasos[pasoActivo][1]}</strong></div>
+              {recorrido && (
+                <div className="aiden-demo-dato">
+                  <b>{recorrido[pasoActivo].valor}</b>
+                  <p>{recorrido[pasoActivo].detalle}</p>
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -319,7 +364,7 @@ export default function Inicio() {
         <section className="aiden-evidence">
           <div className="aiden-shell aiden-evidence-grid">
             <p className="aiden-index">PRUEBA DE PRODUCTO</p>
-            <header><h2>No se trata de mostrar más. <em>Se trata de entender mejor.</em></h2><p>Mientras AiDEN evoluciona hacia una plataforma comercial, la evidencia más honesta es el producto: sus relaciones, sus vistas y la forma en que organiza una operación real.</p></header>
+            <header><h2>No se trata de mostrar más. <em>Se trata de entender mejor.</em></h2><p>Cada pantalla de AiDEN responde cuatro preguntas sobre la operación del vivero.</p></header>
             <div className="aiden-evidence-cards">
               <article><span>01</span><h3>Estado</h3><p>Qué está activo, qué está pendiente y qué necesita atención.</p><div className="aiden-evidence-detail"><b>Lectura inmediata</b><span>Activos · pendientes · alertas</span></div></article>
               <article><span>02</span><h3>Relación</h3><p>Qué registro pertenece a qué lote, etapa, responsable o evento.</p><div className="aiden-evidence-detail"><b>Contexto conectado</b><span>Lote · etapa · actividad · responsable</span></div></article>
@@ -335,7 +380,6 @@ export default function Inicio() {
             <div>
               <h2>Menos registros. <em>Más control.</em></h2>
               <p>Una sola operación puede producir decenas de registros. AiDEN los organiza alrededor del contexto que les da sentido.</p>
-              <div className="aiden-complexity-metrics"><div><strong>01</strong><span>operación</span></div><div><strong>09</strong><span>áreas conectadas</span></div><div><strong>03</strong><span>perspectivas</span></div></div>
             </div>
             <div className="aiden-complexity-line"><span>Producción</span><i /><span>Inventario</span><i /><span>Calidad</span><i /><span>Costos</span><i /><span>Trazabilidad</span></div>
           </div>
@@ -345,7 +389,7 @@ export default function Inicio() {
           <div className="aiden-shell">
             <header className="aiden-section-header">
               <div><p className="aiden-index">MÓDULOS</p><h2>Todo el sistema.<br /><em>Cada pieza tiene trabajo.</em></h2></div>
-              <p>Las nueve áreas forman una misma operación. El objetivo no es llenar la interfaz de funciones, sino poner cada una donde aporta contexto.</p>
+              <p>Nueve áreas que comparten los mismos lotes, personas y zonas: lo que registras en una aparece donde se necesita en las demás.</p>
             </header>
             <div className="aiden-bento">{modulos.map(([Icon, nombre, subtitulo, descripcion, ruta, number], index) => <Link to={ruta} key={nombre} className={`aiden-bento-card bento-${index + 1}`}><span className="aiden-bento-number">{number}</span><span className="aiden-bento-icon"><Icon size={18} /></span><span className="aiden-bento-kind">{subtitulo}</span><h3>{nombre}</h3><p>{descripcion}</p><ArrowUpRight size={16} className="aiden-bento-arrow" /></Link>)}</div>
           </div>
@@ -364,13 +408,13 @@ export default function Inicio() {
         <section className="aiden-clarity">
           <div className="aiden-shell aiden-clarity-grid">
             <p className="aiden-index">ANTES DE ENTRAR</p>
-            <header><h2>Las preguntas importantes deberían responderse <em>antes del botón.</em></h2></header>
+            <header><h2>Lo que conviene saber <em>antes de pedir la demo.</em></h2></header>
             <div className="aiden-clarity-list">
               <article><span>¿Qué es AiDEN?</span><p>Una plataforma de gestión operativa para organizar y seguir la actividad de un vivero.</p></article>
               <article><span>¿Para quién está pensada?</span><p>Para equipos que participan en la operación y necesitan distintas vistas según su responsabilidad.</p></article>
               <article><span>¿Qué conecta?</span><p>Producción, inventario, trazabilidad, ambiente, calidad, costos, personal, reportes y configuración.</p></article>
               <article><span>¿Qué se ve primero?</span><p>El estado de la operación y las señales que requieren seguimiento, usando los registros existentes del sistema.</p></article>
-              <article><span>¿Qué no estamos prometiendo todavía?</span><p>Integraciones, automatizaciones, métricas comerciales o capacidades de backend que todavía no forman parte del producto validado.</p></article>
+              <article><span>¿Qué incluye hoy?</span><p>Los nueve módulos funcionan en el navegador y guardan los datos en ese equipo. La conexión con sensores, la sincronización entre equipos y las integraciones todavía no están disponibles.</p></article>
             </div>
           </div>
         </section>
@@ -408,7 +452,7 @@ export default function Inicio() {
               <p>Explora el producto o prepara una conversación para revisar cómo AiDEN encaja en la operación de tu vivero.</p>
               <div className="aiden-final-actions"><a href="#contacto" className="aiden-button aiden-button-light aiden-button-large">Solicitar una demo <ArrowRight size={15} /></a><a href="#demostracion" className="aiden-final-link">Ver el recorrido operativo <ArrowUpRight size={14} /></a></div>
             </div>
-            <aside className="aiden-final-stamp" aria-label="Resumen de AiDEN"><span>AiDEN</span><strong>09</strong><small>módulos conectados</small><i /><strong>03</strong><small>roles operativos</small><i /><b>01</b><small>experiencia de operación</small></aside>
+            <aside className="aiden-final-stamp" aria-label="Resumen de AiDEN"><span>AiDEN</span><strong>09</strong><small>módulos conectados</small><i /><strong>03</strong><small>roles operativos</small></aside>
           </div>
         </section>
       </main>
