@@ -3933,3 +3933,89 @@
 .aiden-connection-item.is-active > span:first-child { color:#d9ea73; }
 .aiden-map-node { transition: transform .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease; }
 .aiden-map-node.is-active { color:#d9ea73; border-color:rgba(217,234,115,.75); box-shadow:0 0 0 7px rgba(217,234,115,.045); transform:translateY(-2px); }
+
+/* Conversion sections */
+.aiden-hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 25px 0 0;
+  padding: 0;
+  color: #526057;
+  list-style: none;
+  font-size: 10px;
+  font-weight: 700;
+}
+.aiden-hero-proof li { display: inline-flex; align-items: center; gap: 7px; }
+.aiden-hero-proof li::before { width: 5px; height: 5px; border-radius: 50%; background: var(--moss); content: ''; }
+.aiden-role-demo { color: var(--moss); font-size: 10px; font-weight: 800; white-space: nowrap; }
+.aiden-role-row { grid-template-columns: 60px minmax(150px,.55fr) minmax(100px,.3fr) minmax(220px,1fr) 100px 22px; }
+
+.aiden-contact {
+  padding: 126px 0;
+  background: var(--cream);
+}
+.aiden-contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(420px, .8fr);
+  gap: clamp(42px, 8vw, 120px);
+  align-items: start;
+}
+.aiden-contact h2 { max-width: 620px; margin-top: 18px; font-size: clamp(42px, 5vw, 68px); line-height: .92; }
+.aiden-contact h2 em { color: var(--moss); font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+.aiden-contact header > p:not(.aiden-index) { max-width: 500px; margin-top: 26px; color: var(--muted); font-size: 15px; line-height: 1.75; }
+.aiden-contact-points { display: grid; gap: 10px; margin-top: 29px; color: #455249; font-size: 11px; font-weight: 700; }
+.aiden-lead-form {
+  display: grid;
+  gap: 15px;
+  padding: clamp(24px, 3.1vw, 38px);
+  border: 1px solid rgba(18,37,27,.12);
+  border-radius: 22px;
+  background: var(--white);
+  box-shadow: 0 22px 54px rgba(18,37,27,.075);
+}
+.aiden-lead-form-title { padding-bottom: 6px; }
+.aiden-lead-form-title p { font-size: 19px; font-weight: 700; letter-spacing: -.04em; }
+.aiden-lead-form-title span { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.aiden-lead-form label { display: grid; gap: 7px; color: #344238; font-size: 10px; font-weight: 800; letter-spacing: .02em; }
+.aiden-lead-form input,
+.aiden-lead-form select {
+  width: 100%;
+  min-height: 45px;
+  padding: 0 13px;
+  border: 1px solid rgba(18,37,27,.16);
+  border-radius: 10px;
+  outline: 0;
+  background: #fffefa;
+  color: var(--ink);
+  font: 500 12px 'DM Sans', sans-serif;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.aiden-lead-form input::placeholder { color: #89938c; }
+.aiden-lead-form input:focus,
+.aiden-lead-form select:focus { border-color: var(--moss); box-shadow: 0 0 0 3px rgba(113,139,88,.15); }
+.aiden-lead-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.aiden-lead-consent { grid-template-columns: 15px minmax(0,1fr); align-items: start; gap: 9px !important; color: var(--muted) !important; font-size: 10px !important; font-weight: 500 !important; letter-spacing: 0 !important; line-height: 1.55; }
+.aiden-lead-consent input { width: 15px; min-height: 15px; margin-top: 1px; accent-color: var(--forest); }
+.aiden-lead-consent a { color: var(--forest); text-decoration: underline; text-underline-offset: 2px; }
+.aiden-lead-form .aiden-button { width: 100%; margin-top: 3px; cursor: pointer; }
+.aiden-lead-form .aiden-button:disabled { cursor: wait; opacity: .72; }
+.aiden-lead-status { margin: 0; padding: 10px 12px; border-radius: 9px; font-size: 11px; line-height: 1.45; }
+.aiden-lead-status.is-exito { border: 1px solid #bbdbbb; background: #edf8ed; color: #1f5b30; }
+.aiden-lead-status.is-error { border: 1px solid #ebc4bd; background: #fff2ef; color: #843529; }
+
+@media (max-width: 900px) {
+  .aiden-contact { padding: 90px 0; }
+  .aiden-contact-grid { grid-template-columns: 1fr; gap: 42px; }
+  .aiden-contact h2 { max-width: 680px; }
+  .aiden-role-row { grid-template-columns: 48px minmax(130px,.55fr) minmax(90px,.3fr) minmax(180px,1fr) 22px; }
+  .aiden-role-demo { display: none; }
+}
+@media (max-width: 600px) {
+  .aiden-hero-proof { gap: 9px 14px; margin-top: 22px; }
+  .aiden-contact { padding: 74px 0; }
+  .aiden-contact h2 { font-size: clamp(40px, 12vw, 54px); }
+  .aiden-lead-form { padding: 22px 18px; border-radius: 16px; }
+  .aiden-lead-form-row { grid-template-columns: 1fr; }
+  .aiden-role-demo { display: none; }
+}
