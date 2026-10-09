@@ -108,6 +108,21 @@ html { scroll-padding-top: 1.25rem; }
   color: #46564b;
   font-size: .9375rem;
 }
+.aiden-legal-section ul {
+  display: grid;
+  gap: .4rem;
+  margin: .55rem 0 0;
+  padding-left: 1.15rem;
+  color: #46564b;
+  font-size: .9375rem;
+  list-style: disc;
+}
+.aiden-legal-section li::marker { color: var(--aiden-moss); }
+.aiden-legal-vigencia {
+  margin: 1.25rem 0 0;
+  color: #526057;
+  font-size: .8125rem;
+}
 .aiden-public-related {
   margin: 1.5rem 0 0;
   padding-top: 1.5rem;

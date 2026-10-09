@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Save, ShieldCheck, UserCircle2 } from "lucide-react";
+import { KeyRound, Save, ShieldCheck, UserCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getDashboardPath } from "../utilidades/autenticacion";
 import { Boton } from "../components/ui/Boton";
@@ -9,11 +9,41 @@ import EncabezadoPagina from "../components/ui/EncabezadoPagina";
 import Panel from "../components/ui/Panel";
 import AlertaFormulario from "../components/ui/AlertaFormulario";
 import { useDatos } from "../datos/almacen";
-import { actualizarMiPerfil } from "../datos/acciones";
+import { actualizarMiPerfil, cambiarMiContrasena } from "../datos/acciones";
 import { useEnvio } from "../contexto/retroalimentacion";
 import { useSesion } from "../hooks/useSesion";
 import { useTitulo } from "../hooks/useTitulo";
 import { ROLES } from "../datos/catalogos";
+
+const CLAVES_VACIAS = { actual: "", nueva: "", confirmacion: "" };
+
+function CambiarContrasena({ sesion }) {
+  const [c, setC] = useState(CLAVES_VACIAS);
+  const { error, enviar } = useEnvio(() => setC(CLAVES_VACIAS));
+  const cambiar = (campo) => (e) => setC((v) => ({ ...v, [campo]: e.target.value }));
+  return (
+    <Panel icono={KeyRound} titulo="Contraseña" descripcion="Cámbiala si alguien más pudo verla o si usas este equipo con otras personas.">
+      <form
+        className="space-y-5"
+        noValidate
+        onSubmit={(e) => {
+          e.preventDefault();
+          enviar(() => cambiarMiContrasena(c, sesion), "Contraseña actualizada");
+        }}
+      >
+        <AlertaFormulario mensaje={error} />
+        <div className="grid gap-4 sm:grid-cols-3">
+          <Entrada etiqueta="Contraseña actual" type="password" autoComplete="current-password" value={c.actual} onChange={cambiar("actual")} required />
+          <Entrada etiqueta="Contraseña nueva" type="password" autoComplete="new-password" minLength={8} ayuda="Mínimo 8 caracteres" value={c.nueva} onChange={cambiar("nueva")} required />
+          <Entrada etiqueta="Confirmar contraseña" type="password" autoComplete="new-password" minLength={8} value={c.confirmacion} onChange={cambiar("confirmacion")} required />
+        </div>
+        <div className="flex justify-end">
+          <Boton variante="secundario" type="submit" icono={KeyRound}>Cambiar contraseña</Boton>
+        </div>
+      </form>
+    </Panel>
+  );
+}
 
 export default function Perfil() {
   const sesion = useSesion();
@@ -71,7 +101,7 @@ export default function Perfil() {
           </form>
         </Panel>
 
-        <Panel icono={ShieldCheck} titulo="Acceso actual" descripcion="Información que no puedes modificar desde el perfil.">
+        <Panel className="lg:col-start-2 lg:row-span-2 lg:row-start-1" icono={ShieldCheck} titulo="Acceso actual" descripcion="Información que no puedes modificar desde el perfil.">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <Avatar nombre={sesion?.name || "Usuario"} tamano="lg" />
@@ -92,6 +122,8 @@ export default function Perfil() {
             )}
           </div>
         </Panel>
+
+        <CambiarContrasena sesion={sesion} />
       </section>
     </section>
   );

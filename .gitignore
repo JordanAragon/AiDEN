@@ -63,3 +63,9 @@ __pycache__/
 
 # axe-core para las pruebas de accesibilidad (se descarga; ver pruebas/README.md)
 pruebas/axe.min.js
+
+# Variables de entorno y enlace local de Vercel (vercel dev / vercel link)
+.env
+.env.*
+!.env.example
+.vercel

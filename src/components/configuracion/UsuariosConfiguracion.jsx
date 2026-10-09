@@ -1,6 +1,6 @@
 import { useId, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowUpRight, ShieldCheck, UserPlus, Users } from "lucide-react";
+import { ArrowUpRight, KeyRound, ShieldCheck, UserPlus, Users } from "lucide-react";
 import { Boton, BotonIcono } from "../ui/Boton";
 import { Entrada, Seleccion } from "../ui/Campo";
 import Avatar from "../ui/Avatar";
@@ -8,7 +8,8 @@ import EstadoVacio from "../ui/EstadoVacio";
 import Insignia from "../ui/Insignia";
 import Modal from "../ui/Modal";
 import { ROLES } from "../../datos/catalogos";
-import { crearCuentaAdministrativa, cambiarRolUsuario, marcarCuentaRevisada } from "../../datos/acciones";
+import { crearCuentaAdministrativa, cambiarRolUsuario, marcarCuentaRevisada, restablecerContrasenaUsuario } from "../../datos/acciones";
+import AlertaFormulario from "../ui/AlertaFormulario";
 import { useDatos } from "../../datos/almacen";
 import { useAccion, useConfirmar, useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion, useUsuarios } from "../../hooks/useSesion";
@@ -69,6 +70,27 @@ function FormularioCuenta({ id, onListo }) {
   );
 }
 
+function FormularioContrasena({ id, usuario, onListo }) {
+  const sesion = useSesion();
+  const [c, setC] = useState({ nueva: "", confirmacion: "" });
+  const { error, enviar } = useEnvio(onListo);
+  return (
+    <form
+      id={id}
+      noValidate
+      className="space-y-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+        enviar(() => restablecerContrasenaUsuario(usuario.id, c, sesion), `Contraseña de ${usuario.name} restablecida`);
+      }}
+    >
+      <AlertaFormulario mensaje={error} />
+      <Entrada etiqueta="Contraseña nueva" type="password" autoComplete="new-password" minLength={8} ayuda="Mínimo 8 caracteres. Compártela con la persona por un canal privado." value={c.nueva} onChange={(e) => setC((v) => ({ ...v, nueva: e.target.value }))} required />
+      <Entrada etiqueta="Confirmar contraseña" type="password" autoComplete="new-password" minLength={8} value={c.confirmacion} onChange={(e) => setC((v) => ({ ...v, confirmacion: e.target.value }))} required />
+    </form>
+  );
+}
+
 export default function UsuariosConfiguracion() {
   const datos = useDatos();
   const sesion = useSesion();
@@ -78,6 +100,7 @@ export default function UsuariosConfiguracion() {
   const navigate = useNavigate();
   const [modal, setModal] = useState(null);
   const idForm = useId();
+  const idClave = useId();
   const pendientes = usuarios.filter((u) => !u.revisado).length;
 
   const cambiarRol = async (u, rol) => {
@@ -169,6 +192,9 @@ export default function UsuariosConfiguracion() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex justify-end gap-1">
+                          {!propia && (
+                            <BotonIcono icono={KeyRound} etiqueta={`Restablecer la contraseña de ${u.name}`} tamano="sm" onClick={() => setModal({ tipo: "clave", usuario: u })} className="hover:!bg-emerald-50 hover:!text-emerald-700" />
+                          )}
                           {u.personaId && (
                             <BotonIcono icono={ArrowUpRight} etiqueta={`Ver ficha de ${u.name}`} tamano="sm" onClick={() => navigate(`/personal?persona=${u.personaId}`)} className="hover:!bg-emerald-50 hover:!text-emerald-700" />
                           )}
@@ -198,6 +224,22 @@ export default function UsuariosConfiguracion() {
         }
       >
         <FormularioCuenta id={idForm} onListo={() => setModal(null)} />
+      </Modal>
+
+      <Modal
+        abierto={modal?.tipo === "clave"}
+        onCerrar={() => setModal(null)}
+        titulo={modal?.usuario ? `Restablecer la contraseña de ${modal.usuario.name}` : "Restablecer contraseña"}
+        descripcion="La contraseña anterior deja de funcionar de inmediato."
+        ancho="sm"
+        pie={
+          <>
+            <Boton variante="secundario" onClick={() => setModal(null)}>Cancelar</Boton>
+            <Boton variante="primario" type="submit" form={idClave}>Restablecer</Boton>
+          </>
+        }
+      >
+        {modal?.tipo === "clave" && <FormularioContrasena id={idClave} usuario={modal.usuario} onListo={() => setModal(null)} />}
       </Modal>
     </section>
   );

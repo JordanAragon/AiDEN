@@ -76,6 +76,7 @@ export default function Inicio() {
   const [pasoActivo, setPasoActivo] = useState(0);
   const menuButtonRef = useRef(null);
   const menuPanelRef = useRef(null);
+  const formularioMontado = useRef(0);
   const cerrarMenu = () => setMenuAbierto(false);
 
   const seleccionarIntencion = (index) => {
@@ -91,7 +92,8 @@ export default function Inicio() {
   const prepararSolicitud = async (event) => {
     event.preventDefault();
     const formulario = event.currentTarget;
-    const datos = Object.fromEntries(new FormData(formulario).entries());
+    const campos = Object.fromEntries(new FormData(formulario).entries());
+    const datos = { ...campos, consentimiento: campos.consentimiento === "si", transcurrido: Date.now() - formularioMontado.current };
     setEnviandoSolicitud(true);
     setSolicitudEnviada(false);
     setErrorSolicitud("");
@@ -378,17 +380,21 @@ export default function Inicio() {
             <div>
               <p className="aiden-index">SOLICITAR DEMO</p>
               <h2 id="contacto-titulo">Cuéntanos qué necesitas <em>ordenar en tu vivero.</em></h2>
-              <p className="aiden-contact-lead">Cuéntanos qué quieres mejorar y prepara una conversación comercial. La landing entrega la solicitud al receptor configurado mediante un webhook seguro en el despliegue.</p>
+              <p className="aiden-contact-lead">Cuéntanos cómo trabaja tu vivero y qué quieres mejorar. Te contactamos al correo que dejes para mostrarte AiDEN con ejemplos de tu propia operación.</p>
               <div className="aiden-contact-points"><span>01 <b>Conversación orientada</b></span><span>02 <b>Necesidad concreta</b></span><span>03 <b>Demo del producto</b></span></div>
             </div>
-            <form className="aiden-lead-form" onSubmit={prepararSolicitud} aria-label="Solicitud de demostración de AiDEN" aria-busy={enviandoSolicitud}>
+            <form className="aiden-lead-form" onSubmit={prepararSolicitud} onFocus={() => { if (!formularioMontado.current) formularioMontado.current = Date.now(); }} aria-label="Solicitud de demostración de AiDEN" aria-busy={enviandoSolicitud}>
               <label>Nombre<input name="nombre" required minLength="2" maxLength="120" autoComplete="name" placeholder="Tu nombre" /></label>
               <label>Empresa o vivero<input name="empresa" required minLength="2" maxLength="160" autoComplete="organization" placeholder="Nombre de la organización" /></label>
               <label>Correo electrónico<input name="email" type="email" required maxLength="254" autoComplete="email" placeholder="correo@empresa.com" /></label>
               <label>¿Qué quieres resolver?<textarea name="mensaje" rows="4" maxLength="2000" placeholder="Producción, trazabilidad, inventario, costos..." /></label>
+              <label className="aiden-campo-trampa" aria-hidden="true">Sitio web<input name="sitio_web" tabIndex={-1} autoComplete="off" /></label>
+              <label className="aiden-lead-consent">
+                <input type="checkbox" name="consentimiento" value="si" required />
+                <span>Autorizo el tratamiento de mis datos para responder esta solicitud, según la <Link to="/privacidad">Política de privacidad</Link>.</span>
+              </label>
               <button type="submit" className="aiden-button aiden-button-dark aiden-button-large" disabled={enviandoSolicitud}>{enviandoSolicitud ? "Enviando..." : "Solicitar demo"} <ArrowRight size={15} /></button>
-              <p className="aiden-lead-privacy">Al enviar estos datos, solicitas que el equipo te contacte. Consulta la <Link to="/privacidad">Política de privacidad</Link>.</p>
-              {solicitudEnviada && <p className="aiden-form-status is-success" role="status" aria-live="polite">Solicitud recibida. El equipo puede continuar la conversación.</p>}
+              {solicitudEnviada && <p className="aiden-form-status is-success" role="status" aria-live="polite">Solicitud recibida. Te escribiremos al correo que dejaste para coordinar la demostración.</p>}
               {errorSolicitud && <p className="aiden-form-status" role="alert">{errorSolicitud}</p>}
             </form>
           </div>

@@ -74,6 +74,13 @@ try:
         pagina.locator('.aiden-lead-form input[name="email"]').fill("maria@vivero.co")
         pagina.locator('.aiden-lead-form textarea[name="mensaje"]').fill("Seguimiento de lotes")
         pagina.locator(".aiden-lead-form button[type=submit]").click()
+        pagina.wait_for_timeout(300)
+        registro.check(
+            solicitud.get("interceptada") is not True,
+            "el formulario exige autorizar el tratamiento de datos antes de enviar",
+        )
+        pagina.locator('.aiden-lead-form input[name="consentimiento"]').check()
+        pagina.locator(".aiden-lead-form button[type=submit]").click()
         estado_exito = pagina.locator(".aiden-form-status.is-success")
         estado_exito.wait_for()
         registro.check(
@@ -89,6 +96,11 @@ try:
             and solicitud.get("payload", {}).get("empresa") == "Vivero del Sur"
             and solicitud.get("payload", {}).get("email") == "maria@vivero.co",
             "el formulario envía los campos de captación como JSON",
+        )
+        registro.check(
+            solicitud.get("payload", {}).get("consentimiento") is True
+            and solicitud.get("payload", {}).get("sitio_web") == "",
+            "el formulario envía la autorización y el campo trampa vacío",
         )
         registro.check(
             pagina.locator('.aiden-lead-form input[name="nombre"]').input_value() == "",
@@ -112,6 +124,7 @@ try:
         pagina.locator('.aiden-lead-form input[name="nombre"]').fill("María González")
         pagina.locator('.aiden-lead-form input[name="empresa"]').fill("Vivero del Sur")
         pagina.locator('.aiden-lead-form input[name="email"]').fill("maria@vivero.co")
+        pagina.locator('.aiden-lead-form input[name="consentimiento"]').check()
         pagina.locator(".aiden-lead-form button[type=submit]").click()
         estado_error = pagina.locator('.aiden-form-status[role="alert"]')
         estado_error.wait_for()

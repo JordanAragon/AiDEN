@@ -39,6 +39,8 @@ export const CUENTAS_INICIALES = [
 ];
 
 const VALID_ROLES = new Set(["admin", "supervisor", "operario"]);
+const DURACION_SESION = 12 * 3_600_000;
+const DURACION_RECORDADA = 30 * 24 * 3_600_000;
 
 function emitir(nombre) {
   window.dispatchEvent(new Event(nombre));
@@ -121,7 +123,8 @@ export function login(email, password, remember = false) {
   if (!user) return { ok: false, message: "El correo o la contraseña no coinciden con ninguna cuenta." };
   if (!VALID_ROLES.has(user.role)) return { ok: false, message: "La cuenta no tiene un rol válido. Pide al administrador que la revise." };
 
-  const session = { id: user.id };
+  // La sesión vence: en un equipo compartido del vivero no queda abierta para siempre.
+  const session = { id: user.id, exp: Date.now() + (remember ? DURACION_RECORDADA : DURACION_SESION) };
   clearSession();
   sessionStorage.removeItem(SALIDA_VOLUNTARIA);
   const targetStorage = remember ? localStorage : sessionStorage;
@@ -166,8 +169,36 @@ export function resetPassword(email, newPassword) {
   const index = users.findIndex((user) => String(user.email || "").toLowerCase() === normalizedEmail);
 
   if (index === -1) return { ok: false, message: "No hay ninguna cuenta con ese correo en este navegador." };
+  // Sin correo de verificación, cualquiera con acceso al equipo podría tomar una cuenta
+  // con permisos: esas las restablece administración.
+  if (users[index].role === "admin" || users[index].role === "supervisor") {
+    return { ok: false, message: "Por seguridad, la contraseña de una cuenta de administración o supervisión la restablece una persona administradora en Configuración › Usuarios." };
+  }
   if (password.length < 8) return { ok: false, message: "La contraseña debe tener al menos 8 caracteres." };
 
+  const siguiente = [...users];
+  siguiente[index] = { ...users[index], password };
+  writeUsers(siguiente);
+  return { ok: true };
+}
+
+export function cambiarContrasena(id, actual, nueva) {
+  const users = ensureInitialUser();
+  const index = users.findIndex((user) => user.id === id);
+  if (index === -1) return { ok: false, message: "La cuenta ya no existe." };
+  if (String(users[index].password ?? users[index].clave ?? "") !== String(actual || "")) {
+    return { ok: false, message: "La contraseña actual no es correcta." };
+  }
+  return asignarContrasena(id, nueva, actual);
+}
+
+export function asignarContrasena(id, nueva, anterior) {
+  const users = ensureInitialUser();
+  const index = users.findIndex((user) => user.id === id);
+  if (index === -1) return { ok: false, message: "La cuenta ya no existe." };
+  const password = String(nueva || "");
+  if (password.length < 8) return { ok: false, message: "La contraseña nueva debe tener al menos 8 caracteres." };
+  if (anterior !== undefined && password === String(anterior)) return { ok: false, message: "La contraseña nueva debe ser distinta de la actual." };
   const siguiente = [...users];
   siguiente[index] = { ...users[index], password };
   writeUsers(siguiente);
@@ -178,7 +209,12 @@ function readSessionId() {
   try {
     const raw = localStorage.getItem(STORAGE_SESSION) || sessionStorage.getItem(STORAGE_SESSION);
     const value = raw ? JSON.parse(raw) : null;
-    return value && typeof value === "object" && value.id ? String(value.id) : null;
+    if (!value || typeof value !== "object" || !value.id) return null;
+    if (typeof value.exp === "number" && value.exp < Date.now()) {
+      clearSession();
+      return null;
+    }
+    return String(value.id);
   } catch (error) {
     console.warn("La sesión guardada está dañada", error);
     return null;
@@ -204,6 +240,7 @@ export function getSession() {
 export function logout() {
   sessionStorage.setItem(SALIDA_VOLUNTARIA, "1");
   clearSession();
+  sessionStorage.removeItem("aiden-asistente");
   localStorage.removeItem(STORAGE_REMEMBER);
   emitir(EVENTO_SESION);
 }
