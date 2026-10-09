@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "instrument serif",
+        "createdAt": "2026-10-09T21:05:20.566Z",
+        "reason": "DESIGN.md (Typography) la fija como acento editorial oficial de la marca AiDEN"
+      }
+    ]
+  }
+}
