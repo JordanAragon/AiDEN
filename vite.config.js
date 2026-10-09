@@ -48,4 +48,22 @@ function trabajadorSinConexion() {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), trabajadorSinConexion()],
+  build: {
+    rolldownOptions: {
+      output: {
+        // Librerías en chunks propios y estables: un cambio en la app no invalida React
+        // ni los ~100 KB de las gráficas en la caché de quien ya entró.
+        codeSplitting: {
+          groups: [
+            { name: "react", test: /[\\/]node_modules[\\/](react|react-dom|scheduler|react-router|react-router-dom)[\\/]/, priority: 20 },
+            {
+              name: "graficas",
+              test: /[\\/]node_modules[\\/](recharts|d3-[^\\/]+|victory-vendor|@reduxjs|redux|react-redux|immer|reselect|es-toolkit|decimal\.js|eventemitter3|use-sync-external-store|tiny-invariant|clsx)[\\/]/,
+              priority: 10,
+            },
+          ],
+        },
+      },
+    },
+  },
 });
