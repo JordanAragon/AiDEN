@@ -167,41 +167,63 @@ html:has(.aiden-landing) {
   transform: translateY(1px);
 }
 
-.aiden-enlace-claro {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--sobre-noche-2);
-  text-underline-offset: 4px;
+.aiden-boton-fantasma {
+  border-color: rgba(243, 246, 239, 0.35);
+  color: var(--sobre-noche);
 }
 
-.aiden-enlace-claro:hover {
+.aiden-boton-fantasma:hover {
+  border-color: var(--vivo);
   color: var(--vivo);
+}
+
+/* Marcador de capítulo, como los de la referencia: un punto y el nombre. */
+.aiden-capitulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  margin-bottom: 14px;
+}
+
+.aiden-capitulo i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-verde-700);
 }
 
 /* ---------- Header ---------- */
 
+/* La navegación vive en una cápsula que se despega al scrollear, como la referencia. */
 .aiden-header {
   position: fixed;
   inset-inline: 0;
   top: 0;
   z-index: 50;
-  transition: background-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.aiden-header.is-compact {
-  background: color-mix(in srgb, var(--dia) 92%, transparent);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 1px 0 var(--color-borde);
+  padding-top: 10px;
 }
 
 .aiden-header-inner {
   display: flex;
   align-items: center;
   gap: 28px;
-  padding-block: 14px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-borde) 80%, transparent);
+  background: color-mix(in srgb, var(--papel) 55%, transparent);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.aiden-header.is-compact .aiden-header-inner {
+  background: color-mix(in srgb, var(--papel) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-color: var(--color-borde);
+  box-shadow: 0 14px 40px rgba(11, 47, 32, 0.1);
 }
 
 .aiden-brand {
@@ -276,17 +298,20 @@ body.aiden-menu-open {
   padding-block: 96px 64px;
 }
 
+/* La palabra del hero es el dibujo del logo (manual de marca: el lettering
+   nunca se reescribe con una fuente). */
 .aiden-marca-monumental {
-  font-size: clamp(88px, 15.5vw, 230px);
-  font-weight: 700;
-  line-height: 0.88;
-  letter-spacing: -0.045em;
-  text-align: center;
-  color: var(--color-aiden-forest);
-  margin-bottom: -0.085em;
+  display: flex;
+  justify-content: center;
+  margin: 0 0 clamp(-26px, -2vw, -14px);
   position: relative;
   z-index: 1;
   user-select: none;
+}
+
+.aiden-marca-monumental img {
+  width: min(86%, 880px);
+  height: auto;
 }
 
 /* El marco de la escena: el bloque verde profundo sobre el lienzo claro. */
@@ -611,10 +636,77 @@ body.aiden-menu-open {
 }
 
 .aiden-riel-linea {
+  position: relative;
+  display: block;
   height: 120px;
   border-left: 1px dashed var(--color-borde-fuerte);
   margin-left: 4px;
   margin-top: 10px;
+}
+
+/* La línea se llena conforme la historia se rebobina (scroll-driven). */
+.aiden-riel-progreso {
+  position: absolute;
+  left: -2px;
+  top: 0;
+  width: 3px;
+  /* Respaldo universal: el rAF del riel escribe --avance; donde existe
+     animation-timeline, la animación scroll-driven toma el mando. */
+  height: calc(var(--avance, 0) * 100%);
+  border-radius: 999px;
+  background: var(--color-verde-700);
+}
+
+.aiden-rebobinado-grid {
+  timeline-scope: --historia;
+}
+
+.aiden-estaciones {
+  view-timeline: --historia block;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aiden-riel-progreso {
+      animation: aiden-llenar linear both;
+      animation-timeline: --historia;
+      animation-range: cover 5% cover 95%;
+    }
+
+    .aiden-marca-monumental {
+      animation: aiden-marca-se-hunde linear both;
+      animation-timeline: view(block);
+      animation-range: exit 0% exit 100%;
+    }
+
+    .aiden-guia-sello {
+      animation: aiden-sello-gira linear both;
+      animation-timeline: view(block);
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+
+@keyframes aiden-llenar {
+  to {
+    height: 100%;
+  }
+}
+
+@keyframes aiden-marca-se-hunde {
+  to {
+    transform: translateY(44px);
+    opacity: 0.55;
+  }
+}
+
+@keyframes aiden-sello-gira {
+  from {
+    transform: rotate(-13deg);
+  }
+  to {
+    transform: rotate(-2deg);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -742,63 +834,59 @@ body.aiden-menu-open {
   max-width: 64ch;
 }
 
-.aiden-registro {
-  display: grid;
-  gap: 3px;
-  justify-items: start;
-  background: var(--color-verde-50);
-  border: 1px solid color-mix(in srgb, var(--color-verde-300) 60%, transparent);
-  border-radius: 12px;
-  padding: 13px 16px;
+/* La ventana del módulo: la anatomía real de una pantalla de AiDEN,
+   con barra de ventana, ruta del módulo y el componente del sistema dentro. */
+.aiden-ventana {
+  border: 1px solid var(--color-borde-fuerte);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--aiden-app-bg, #f5f7f4);
+  box-shadow: 0 14px 36px rgba(11, 47, 32, 0.07);
 }
 
-.aiden-registro-campo {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-verde-700);
-}
-
-.aiden-registro strong {
-  font-size: 17px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
-}
-
-.aiden-registro small {
-  font-size: 12.5px;
-  color: var(--tinta-suave);
-}
-
-.aiden-agenda {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 8px;
-}
-
-.aiden-agenda li {
+.aiden-ventana-barra {
   display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  font-size: 14px;
-  line-height: 1.5;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  background: var(--color-fondo, #fff);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.aiden-ventana-puntos {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.aiden-ventana-puntos i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d7ded9;
+}
+
+.aiden-ventana-marca {
+  display: inline-flex;
+  margin-left: 2px;
+}
+
+.aiden-ventana-ruta {
+  font-size: 11.5px;
+  font-weight: 650;
   color: var(--color-texto);
+  letter-spacing: 0.01em;
 }
 
-.aiden-agenda li svg {
-  flex: none;
-  margin-top: 4px;
-  color: var(--color-aiden-moss-oscuro);
-}
-
-.aiden-estacion-modulos {
-  font-size: 12.5px;
+.aiden-ventana-meta {
+  margin-left: auto;
+  font-size: 11px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   color: var(--tinta-suave);
+}
+
+.aiden-ventana-cuerpo {
+  padding: 14px;
 }
 
 /* Revelado sobrio, una sola vez, solo si el movimiento está permitido. */
@@ -1063,7 +1151,9 @@ body.aiden-menu-open {
 }
 
 .aiden-roles-pie {
-  margin-top: 40px;
+  margin-top: 36px;
+  border-top: 1px solid var(--color-borde-fuerte);
+  padding-top: 18px;
   font-size: 15.5px;
   color: var(--tinta-suave);
 }
@@ -1087,6 +1177,12 @@ body.aiden-menu-open {
   grid-template-columns: 0.9fr 1.1fr;
   gap: clamp(32px, 5vw, 80px);
   align-items: start;
+}
+
+/* El título acompaña la lectura de las respuestas en vez de dejar la columna muerta. */
+.aiden-preguntas-grid > div:first-child {
+  position: sticky;
+  top: 96px;
 }
 
 .aiden-preguntas dl {
@@ -1272,41 +1368,110 @@ body.aiden-menu-open {
   color: var(--color-verde-700);
 }
 
-/* ---------- Footer ---------- */
+/* ---------- Footer: la marca cierra la página como la abrió ---------- */
 
 .aiden-footer {
   background: var(--noche);
   color: var(--sobre-noche-2);
-  border-top: 1px solid rgba(243, 246, 239, 0.1);
-  padding-block: 26px;
+  padding-block: 64px 24px;
+  overflow: hidden;
 }
 
-.aiden-footer-inner {
+.aiden-footer-cierre {
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: space-between;
+  gap: 24px;
   flex-wrap: wrap;
+  padding-bottom: 44px;
+  border-bottom: 1px solid rgba(243, 246, 239, 0.12);
 }
 
-.aiden-footer-inner > span {
+.aiden-footer-cierre p {
+  font-size: clamp(22px, 2.6vw, 33px);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--papel);
+  max-width: 26ch;
+  text-wrap: balance;
+}
+
+.aiden-footer-cierre em {
+  font-family: var(--font-serif, "Instrument Serif", Georgia, serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--vivo);
+}
+
+.aiden-footer-columnas {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: clamp(24px, 4vw, 56px);
+  padding-block: 44px 20px;
+}
+
+.aiden-footer-firma {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  justify-items: start;
+}
+
+.aiden-footer-firma p {
   font-size: 13.5px;
+  line-height: 1.6;
+  max-width: 30ch;
 }
 
-.aiden-footer-inner > div {
-  margin-left: auto;
-  display: flex;
-  gap: 20px;
+.aiden-footer-columnas nav {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  justify-items: start;
 }
 
-.aiden-footer-inner a {
-  font-size: 13.5px;
-  font-weight: 600;
+.aiden-footer-columnas strong {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sobre-noche-2);
+  margin-bottom: 4px;
+}
+
+.aiden-footer-columnas a {
+  font-size: 14.5px;
+  font-weight: 550;
   color: var(--sobre-noche);
   text-underline-offset: 4px;
 }
 
-.aiden-footer-inner a:hover {
+.aiden-footer-columnas a:hover {
   color: var(--vivo);
+}
+
+/* El wordmark monumental del cierre: el dibujo del logo en moss. */
+.aiden-footer-marca {
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 26px;
+  user-select: none;
+}
+
+.aiden-footer-marca img {
+  width: min(82%, 840px);
+  height: auto;
+}
+
+.aiden-footer-banda {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(243, 246, 239, 0.12);
+  padding-top: 18px;
+  font-size: 12.5px;
 }
 
 /* ---------- Tablet ---------- */
@@ -1344,7 +1509,7 @@ body.aiden-menu-open {
 
   .aiden-riel {
     position: sticky;
-    top: 58px;
+    top: 80px;
     z-index: 5;
   }
 
@@ -1395,7 +1560,7 @@ body.aiden-menu-open {
 
 /* ---------- Móvil ---------- */
 
-@media (max-width: 760px) {
+@media (max-width: 860px) {
   .aiden-shell {
     width: min(1180px, 100% - 32px);
   }
@@ -1528,13 +1693,43 @@ body.aiden-menu-open {
     padding: 22px;
   }
 
-  .aiden-footer-inner {
-    justify-content: center;
-    text-align: center;
+  .aiden-header {
+    padding-top: 8px;
   }
 
-  .aiden-footer-inner > div {
-    margin-left: 0;
+  .aiden-header-inner {
+    padding: 8px 12px;
+  }
+
+  .aiden-footer-columnas {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .aiden-footer-firma {
+    grid-column: 1 / -1;
+  }
+
+  .aiden-footer-cierre {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .aiden-footer-banda {
+    flex-direction: column;
+    gap: 6px;
   }
 }
 
+
+@media (max-width: 480px) {
+  /* La barra de la ventana se pliega en dos renglones deliberados. */
+  .aiden-ventana-barra {
+    flex-wrap: wrap;
+    row-gap: 3px;
+  }
+
+  .aiden-ventana-meta {
+    flex-basis: 100%;
+    margin-left: 25px;
+  }
+}

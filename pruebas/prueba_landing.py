@@ -70,8 +70,12 @@ try:
             "las estaciones van hacia atrás y terminan en el día 0",
         )
         registro.check(
-            pagina.locator(".aiden-registro").count() == 7,
-            "cada estación muestra el registro crudo del sistema",
+            pagina.locator(".aiden-ventana").count() == 7,
+            "cada estación muestra la ventana del módulo real del sistema",
+        )
+        registro.check(
+            pagina.locator(".aiden-ventana-ruta").first.inner_text().startswith("Calidad"),
+            "la primera ventana pertenece al módulo de Calidad",
         )
         pagina.locator(".aiden-estacion").last.scroll_into_view_if_needed()
         pagina.wait_for_timeout(700)

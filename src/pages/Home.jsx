@@ -2,18 +2,26 @@ import { ArrowDown, ArrowRight, Menu, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { generarSemilla } from "../datos/semilla";
-import { resumenLote } from "../datos/selectores";
+import { resumenLote, ultimasLecturas } from "../datos/selectores";
 import { ETAPAS } from "../datos/catalogos";
 import { dinero, dineroOGuion, fechaCorta, hoyISO, numero } from "../utilidades/formato";
 import { useTitulo } from "../hooks/useTitulo";
 import { IsotipoAiden, LogotipoAiden } from "../components/ui/MarcaAiden";
+import palabraMarca from "../assets/marca/aiden-palabra.svg";
+import palabraMarcaMoss from "../assets/marca/aiden-palabra-moss.svg";
+import Insignia from "../components/ui/Insignia";
+import BarraRango from "../components/ui/BarraRango";
+import PasosEtapa from "../components/lote/PasosEtapa";
+import LineaTiempo from "../components/lote/LineaTiempo";
+import { TONO_INCIDENCIA, TONO_PRIORIDAD } from "../components/ui/tonos";
 import "../estilos/landing.css";
 
 /*
   La landing rebobina la historia real del lote de tomate de los datos de ejemplo:
-  del despacho (día 68) a la siembra (día 0). Todo valor mostrado sale de la semilla
-  del sistema (generarSemilla es pura y determinista respecto a hoy); el texto
-  narrativo es editorial, los números no se inventan.
+  del despacho (día 68) a la siembra (día 0). Cada estación muestra una ventana del
+  módulo real del sistema que escribió ese registro, con los mismos componentes de
+  la app (Insignia, PasosEtapa, LineaTiempo, BarraRango). Nada se inventa:
+  generarSemilla es pura y determinista respecto a hoy.
 */
 
 const diasEntre = (isoA, isoB) => {
@@ -27,8 +35,7 @@ const diasEntre = (isoA, isoB) => {
 const hora = (fecha) => {
   if (!fecha.includes("T")) return "";
   const [h, m] = fecha.split("T")[1].slice(0, 5).split(":").map(Number);
-  const sufijo = h < 12 ? "a. m." : "p. m.";
-  return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${sufijo}`;
+  return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "a. m." : "p. m."}`;
 };
 
 function construirHistoria() {
@@ -51,73 +58,71 @@ function construirHistoria() {
   const aDesarrollo = evento("TRZ-013");
   const fertilizacion = evento("TRZ-014");
   const aCosecha = evento("TRZ-015");
-  const incidencia = evento("TRZ-016");
+  const incidencia = datos.calidad.find((i) => i.lote === lote.id && i.estado === "Abierta");
   const anticipo = costoDe("CST-018");
   const deshoje = tarea("TSK-001");
   const validacion = tarea("TSK-010");
   const despacho = tarea("TSK-004");
+  const lecturasZona = datos.ambiental.filter((l) => l.zona === lote.ubicacion);
+  const ultimaLectura = [...ultimasLecturas(datos.ambiental)].find(([zona]) => zona === lote.ubicacion)?.[1];
+  const movimientosDia0 = datos.movimientos.filter((m) => m.lote === lote.id && m.fecha === lote.fecha);
 
   const estaciones = [
     incidencia && {
       dia: dia(incidencia.fecha) + 1,
       etapa: "Cosecha",
-      modulos: ["Calidad", "Personal"],
       titulo: "La víspera no está limpia.",
-      cuerpo: `Ayer a las ${hora(incidencia.fecha)}, ${incidencia.responsable} reportó hojas amarillas en el tercio inferior de las plantas. Quedó como incidencia de prioridad alta, con el deshoje asignado y ya vencido.`,
-      registro: { campo: "Incidencia INC-031 · abierta", valor: "Prioridad alta", detalle: `Reportada por ${incidencia.responsable} · ${fechaCorta(incidencia.fecha)}` },
-      agenda: [
-        validacion && `Mañana: ${validacion.titulo.toLowerCase()} — ${validacion.descripcion} (${nombreCorto(datos, validacion.responsableId)})`,
-        despacho && `En dos días: ${despacho.descripcion.toLowerCase().replace(/\.$/, "")} (${nombreCorto(datos, despacho.responsableId)})`,
-        deshoje && `Vencida: ${deshoje.titulo.toLowerCase()} — sigue abierta y el sistema no la deja pasar`,
-      ].filter(Boolean),
+      cuerpo: `Ayer a las 8:45 a. m., Andrés Rojas reportó hojas amarillas en el tercio inferior de las plantas. Quedó como incidencia de prioridad alta, y el sistema ya tiene agendado lo que sigue: mañana la validación, pasado mañana las canastillas.`,
+      ventana: { ruta: "Calidad / Incidencias", meta: lote.lote, tipo: "incidencia", incidencia, tareas: [deshoje, validacion, despacho].filter(Boolean) },
     },
     aCosecha && {
       dia: dia(aCosecha.fecha),
       etapa: "Cosecha",
-      modulos: ["Producción"],
       titulo: `${numero(lote.cantidad)} de ${numero(lote.cantidadInicial)}.`,
-      cuerpo: `El lote pasó a Cosecha con ${numero(lote.cantidadInicial - lote.cantidad)} plantas menos de las que empezaron. La merma no se maquilla: queda contada, con fecha y responsable.`,
-      registro: { campo: aCosecha.evento, valor: "Desarrollo → Cosecha", detalle: `${aCosecha.responsable} · ${hora(aCosecha.fecha)}` },
+      cuerpo: "El lote pasó a Cosecha con 30 plantas menos de las que empezaron. La merma no se maquilla: queda contada, con fecha y responsable, y la ficha cambió para todo el equipo a la vez.",
+      ventana: { ruta: "Producción / Lotes", meta: `${aCosecha.responsable} · ${hora(aCosecha.fecha)}`, tipo: "etapa", lote, vivas: lote.cantidad, iniciales: lote.cantidadInicial },
     },
     anticipo && {
       dia: dia(anticipo.fecha),
       etapa: "Cosecha",
-      modulos: ["Costos"],
       titulo: "El pedido llegó con anticipo.",
       cuerpo: "La Asociación Campesina de Timbío apartó su pedido. El ingreso quedó escrito en Costos, junto al lote que lo gana: ni en un bolsillo, ni en otra planilla.",
-      registro: { campo: anticipo.concepto, valor: dinero(anticipo.valor), detalle: `Ingreso · ${fechaCorta(anticipo.fecha)}` },
+      ventana: { ruta: "Costos / Movimientos", meta: fechaCorta(anticipo.fecha), tipo: "costo", costo: anticipo },
     },
     fertilizacion && {
       dia: dia(fertilizacion.fecha),
       etapa: "Desarrollo",
-      modulos: ["Trazabilidad"],
       titulo: "Fertilización, 7:30 de la mañana.",
       cuerpo: `${fertilizacion.responsable} aplicó NPK en todas las camas y lo dejó en la historia del lote antes de guardar la bomba. Sin cuaderno, sin pasar en limpio por la noche.`,
-      registro: { campo: fertilizacion.evento, valor: "NPK edáfico", detalle: `${fertilizacion.responsable} · ${hora(fertilizacion.fecha)}` },
+      ventana: { ruta: "Trazabilidad / Historia del lote", meta: lote.lote, tipo: "eventos", eventos: [fertilizacion] },
     },
     aDesarrollo && {
       dia: dia(aDesarrollo.fecha),
       etapa: "Desarrollo",
-      modulos: ["Producción"],
       titulo: "Cambio de etapa, visible para todos.",
-      cuerpo: "Laura movió el lote a Desarrollo y la ficha cambió para todo el equipo a la vez: el operario ve sus tareas, el administrador ve el costo acumulado del mismo lote.",
-      registro: { campo: aDesarrollo.evento, valor: "Adaptación → Desarrollo", detalle: `${aDesarrollo.responsable} · ${fechaCorta(aDesarrollo.fecha)}` },
+      cuerpo: "Laura movió el lote a Desarrollo: el operario ve sus tareas del lote, el administrador ve el costo acumulado, y la línea de tiempo lo guarda con hora y responsable.",
+      ventana: { ruta: "Trazabilidad / Historia del lote", meta: lote.lote, tipo: "eventos", eventos: [aDesarrollo, aAdaptacion].filter(Boolean) },
     },
-    aAdaptacion && {
-      dia: dia(aAdaptacion.fecha),
+    ultimaLectura && {
+      dia: dia(aAdaptacion ? aAdaptacion.fecha : lote.fecha),
       etapa: "Adaptación",
-      modulos: ["Ambiental"],
       titulo: "Las lecturas siguieron entrando.",
       cuerpo: "Primer cambio de etapa. Mientras tanto, el Invernadero 1 registró temperatura, humedad y luz cada cuatro horas; si una zona sale del rango configurado, la alerta señala los lotes que están en ella.",
-      registro: { campo: aAdaptacion.evento, valor: "Germinación → Adaptación", detalle: `${aAdaptacion.responsable} · ${fechaCorta(aAdaptacion.fecha)}` },
+      ventana: {
+        ruta: "Ambiental / Zonas",
+        meta: lote.ubicacion,
+        tipo: "lectura",
+        lectura: ultimaLectura,
+        historico: lecturasZona.map((l) => l.temperatura),
+        cfg: datos.configuracion,
+      },
     },
     registro && {
       dia: 0,
       etapa: "Germinación",
-      modulos: ["Producción", "Inventario", "Costos"],
       titulo: `${numero(lote.cantidadInicial)} plantas, ${hora(registro.fecha)}`,
       cuerpo: `${registro.responsable} registró el lote. Cincuenta minutos después, ${consumo ? consumo.responsable : "el operario"} sacó dos bultos de sustrato y cuatro bandejas: el inventario los descontó y el costo quedó escrito solo, sin una segunda planilla.`,
-      registro: { campo: registro.evento, valor: `${numero(lote.cantidadInicial)} plantas`, detalle: `${registro.responsable} · ${hora(registro.fecha)}` },
+      ventana: { ruta: "Producción / Lotes", meta: fechaCorta(lote.fecha), tipo: "registro", lote, movimientos: movimientosDia0 },
     },
   ].filter(Boolean);
 
@@ -134,6 +139,7 @@ function construirHistoria() {
     lotesActivos: datos.lotes.filter((l) => l.estado === "Activo"),
     registros: datos.trazabilidad.filter((e) => e.lote === lote.id).length,
     validadora: validacion ? nombreCorto(datos, validacion.responsableId) : "",
+    personas: datos.personas,
   };
 }
 
@@ -153,6 +159,128 @@ function PistaEtapas({ etapa }) {
   );
 }
 
+/* La ventana del módulo: la misma anatomía con la que la app muestra sus pantallas. */
+function VentanaModulo({ ruta, meta, children }) {
+  return (
+    <div className="aiden-ventana">
+      <div className="aiden-ventana-barra">
+        <span className="aiden-ventana-puntos" aria-hidden="true"><i /><i /><i /></span>
+        <span className="aiden-ventana-marca" aria-hidden="true"><IsotipoAiden tamano={15} /></span>
+        <span className="aiden-ventana-ruta">{ruta}</span>
+        <span className="aiden-ventana-meta">{meta}</span>
+      </div>
+      <div className="aiden-ventana-cuerpo">{children}</div>
+    </div>
+  );
+}
+
+function ContenidoVentana({ ventana, historia }) {
+  const { tipo } = ventana;
+  if (tipo === "incidencia") {
+    const inc = ventana.incidencia;
+    return (
+      <div className="grid gap-3">
+        <div className="flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3">
+          <div className="min-w-0">
+            <p className="text-[13px] font-semibold text-slate-900">{inc.descripcion}</p>
+            <p className="mt-0.5 text-[11px] text-slate-500">{inc.codigo} · Reportada por Andrés Rojas · {fechaCorta(inc.fecha)}</p>
+          </div>
+          <div className="flex shrink-0 gap-1.5">
+            <Insignia tono={TONO_INCIDENCIA[inc.estado]}>{inc.estado.toUpperCase()}</Insignia>
+            <Insignia tono={TONO_PRIORIDAD[inc.prioridad]}>{inc.prioridad.toUpperCase()}</Insignia>
+          </div>
+        </div>
+        <ul className="grid gap-1.5">
+          {ventana.tareas.map((t) => (
+            <li key={t.id} className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2">
+              <span className="min-w-0 truncate text-[12.5px] font-medium text-slate-800">{t.titulo}</span>
+              <span className="flex shrink-0 items-center gap-2 text-[11px] text-slate-500">
+                <span className="tabular-nums">{fechaCorta(t.fecha)}</span>
+                <Insignia tono={TONO_PRIORIDAD[t.prioridad]}>{t.prioridad.toUpperCase()}</Insignia>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+  if (tipo === "etapa") {
+    return (
+      <div className="grid gap-4">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-[13px] font-bold text-slate-900">{ventana.lote.lote} · {ventana.lote.cultivo}</p>
+            <p className="text-[11px] text-slate-500">{ventana.lote.ubicacion}</p>
+          </div>
+          <Insignia tono="exito">ACTIVO</Insignia>
+        </div>
+        <PasosEtapa etapa="Cosecha" fechas={{}} compacto />
+        <div className="flex gap-6 border-t border-slate-100 pt-3">
+          <div><p className="text-[11px] font-semibold text-slate-500">Plantas vivas</p><p className="text-lg font-bold tabular-nums text-slate-900">{numero(ventana.vivas)}</p></div>
+          <div><p className="text-[11px] font-semibold text-slate-500">Iniciales</p><p className="text-lg font-bold tabular-nums text-slate-900">{numero(ventana.iniciales)}</p></div>
+          <div><p className="text-[11px] font-semibold text-slate-500">Merma contada</p><p className="text-lg font-bold tabular-nums text-amber-700">{numero(ventana.iniciales - ventana.vivas)}</p></div>
+        </div>
+      </div>
+    );
+  }
+  if (tipo === "costo") {
+    const c = ventana.costo;
+    return (
+      <div className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3">
+        <div className="min-w-0">
+          <p className="text-[13px] font-semibold text-slate-900">{c.concepto}</p>
+          <p className="mt-0.5 text-[11px] text-slate-500">{historia.lote.lote} · {fechaCorta(c.fecha)}</p>
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
+          <Insignia tono="neutral">{c.categoria.toUpperCase()}</Insignia>
+          <span className="text-[15px] font-bold tabular-nums text-emerald-700">+{dinero(c.valor)}</span>
+        </div>
+      </div>
+    );
+  }
+  if (tipo === "eventos") {
+    return <LineaTiempo eventos={ventana.eventos} />;
+  }
+  if (tipo === "lectura") {
+    return (
+      <div className="grid gap-3">
+        <BarraRango
+          etiqueta={`${historia.lote.ubicacion} · Temperatura`}
+          unidad="°C"
+          valor={ventana.lectura.temperatura}
+          minimo={ventana.cfg.tempMin}
+          maximo={ventana.cfg.tempMax}
+          historico={ventana.historico}
+        />
+        <p className="text-[11px] text-slate-500">Última lectura: {numero(ventana.lectura.humedad)} % de humedad · registrada por {ventana.lectura.registradoPor}.</p>
+      </div>
+    );
+  }
+  if (tipo === "registro") {
+    return (
+      <div className="grid gap-3">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-[13px] font-bold text-slate-900">{ventana.lote.lote} · {ventana.lote.cultivo}</p>
+            <p className="text-[11px] text-slate-500">{numero(ventana.lote.cantidadInicial)} plantas · {ventana.lote.ubicacion}</p>
+          </div>
+          <Insignia tono="exito">ACTIVO</Insignia>
+        </div>
+        <PasosEtapa etapa="Germinación" fechas={{}} compacto />
+        <ul className="grid gap-1.5 border-t border-slate-100 pt-3">
+          {ventana.movimientos.map((m) => (
+            <li key={m.id} className="flex items-center justify-between gap-3 text-[12px]">
+              <span className="min-w-0 truncate font-medium text-slate-800">{m.item} · {numero(m.cantidad)}</span>
+              <span className="shrink-0 tabular-nums font-semibold text-slate-600">−{dinero(m.valor)}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+  return null;
+}
+
 export default function Inicio() {
   useTitulo(null);
   const historia = useMemo(() => construirHistoria(), []);
@@ -167,6 +295,7 @@ export default function Inicio() {
   const menuButtonRef = useRef(null);
   const menuPanelRef = useRef(null);
   const estacionesRef = useRef([]);
+  const rielRef = useRef(null);
   const formularioMontado = useRef(0);
   const cerrarMenu = () => setMenuAbierto(false);
 
@@ -195,7 +324,7 @@ export default function Inicio() {
     return () => window.removeEventListener("keydown", manejarTecla);
   }, [menuAbierto]);
 
-  // El riel marca la estación centrada y las fichas se revelan una sola vez.
+  // El riel marca la estación centrada y las ventanas se revelan una sola vez.
   useEffect(() => {
     const nodos = estacionesRef.current.filter(Boolean);
     if (!nodos.length) return undefined;
@@ -251,11 +380,23 @@ export default function Inicio() {
         const caja = nodo.getBoundingClientRect();
         return caja.top + caja.height / 2;
       });
-      if (centro <= centros[0]) return setDiaRiel(dias[0]);
-      if (centro >= centros[centros.length - 1]) return setDiaRiel(dias[dias.length - 1]);
+      // El progreso también se escribe como variable CSS: es el respaldo de la
+      // línea que se llena donde animation-timeline no existe (Safari, Firefox).
+      const pintarAvance = (fraccion) => {
+        rielRef.current?.style.setProperty("--avance", String(Math.min(1, Math.max(0, fraccion))));
+      };
+      if (centro <= centros[0]) {
+        pintarAvance(0);
+        return setDiaRiel(dias[0]);
+      }
+      if (centro >= centros[centros.length - 1]) {
+        pintarAvance(1);
+        return setDiaRiel(dias[dias.length - 1]);
+      }
       for (let i = 0; i < centros.length - 1; i += 1) {
         if (centro >= centros[i] && centro <= centros[i + 1]) {
           const avance = (centro - centros[i]) / (centros[i + 1] - centros[i] || 1);
+          pintarAvance((i + avance) / (centros.length - 1));
           return setDiaRiel(Math.round(dias[i] + (dias[i + 1] - dias[i]) * avance));
         }
       }
@@ -310,29 +451,31 @@ export default function Inicio() {
     <div className="aiden-landing">
       <a className="aiden-skip-link" href="#contenido">Saltar al contenido principal</a>
       <header className={`aiden-header ${headerCompacto ? "is-compact" : ""}`}>
-        <nav className="aiden-shell aiden-header-inner" aria-label="Navegación principal">
-          <Link to="/" className="aiden-brand" onClick={cerrarMenu} aria-label="AiDEN, ir al inicio"><LogotipoAiden alto={32} /></Link>
-          <div className="aiden-header-links">
-            <a href="#historia">La historia</a>
-            <a href="#vivero">El vivero</a>
-            <a href="#roles">Roles</a>
-            <a href="#preguntas">Preguntas</a>
+        <nav className="aiden-shell" aria-label="Navegación principal">
+          <div className="aiden-header-inner">
+            <Link to="/" className="aiden-brand" onClick={cerrarMenu} aria-label="AiDEN, ir al inicio"><LogotipoAiden alto={30} /></Link>
+            <div className="aiden-header-links">
+              <a href="#historia">La historia</a>
+              <a href="#vivero">El vivero</a>
+              <a href="#roles">Roles</a>
+              <a href="#preguntas">Preguntas</a>
+            </div>
+            <div className="aiden-header-actions">
+              <Link to="/login" className="aiden-header-login">Iniciar sesión</Link>
+              <a href="#contacto" className="aiden-boton aiden-boton-lima">Solicitar demo</a>
+            </div>
+            <button
+              ref={menuButtonRef}
+              type="button"
+              className="aiden-menu"
+              aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
+              aria-controls="aiden-mobile-panel"
+              aria-expanded={menuAbierto}
+              onClick={() => setMenuAbierto((abierto) => !abierto)}
+            >
+              {menuAbierto ? <X size={19} /> : <Menu size={19} />}
+            </button>
           </div>
-          <div className="aiden-header-actions">
-            <Link to="/login" className="aiden-header-login">Iniciar sesión</Link>
-            <a href="#contacto" className="aiden-boton aiden-boton-lima">Solicitar demo</a>
-          </div>
-          <button
-            ref={menuButtonRef}
-            type="button"
-            className="aiden-menu"
-            aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
-            aria-controls="aiden-mobile-panel"
-            aria-expanded={menuAbierto}
-            onClick={() => setMenuAbierto((abierto) => !abierto)}
-          >
-            {menuAbierto ? <X size={19} /> : <Menu size={19} />}
-          </button>
         </nav>
         <div
           id="aiden-mobile-panel"
@@ -354,7 +497,7 @@ export default function Inicio() {
         {/* Día 66: la marca corona el marco y la escena abre en la víspera del despacho. */}
         <section className="aiden-despacho" aria-labelledby="titulo-despacho">
           <div className="aiden-shell">
-            <p className="aiden-marca-monumental" aria-hidden="true">AiDEN</p>
+            <p className="aiden-marca-monumental" aria-hidden="true"><img src={palabraMarca} alt="" /></p>
             <div className="aiden-escena">
               <a href="#historia" className="aiden-circulo" aria-label="Bajar a la historia del lote"><ArrowDown size={20} /></a>
               <div className="aiden-escena-copy">
@@ -367,7 +510,7 @@ export default function Inicio() {
                 </p>
                 <div className="aiden-despacho-acciones">
                   <a href="#contacto" className="aiden-boton aiden-boton-lima aiden-boton-grande">Solicitar una demo <ArrowRight size={15} /></a>
-                  <a href="#historia" className="aiden-enlace-claro">Rebobinar la historia</a>
+                  <a href="#historia" className="aiden-boton aiden-boton-fantasma aiden-boton-grande">Rebobinar la historia</a>
                 </div>
               </div>
               <figure className="aiden-guia" aria-label="Guía de despacho del lote de ejemplo">
@@ -418,21 +561,22 @@ export default function Inicio() {
           </div></div>
         </section>
 
-        {/* El rebobinado: cada evento clavado a su día, el riel lleva la cuenta. */}
+        {/* El rebobinado: cada evento clavado a su día, en la ventana del módulo que lo escribió. */}
         <section className="aiden-rebobinado" id="historia" aria-labelledby="titulo-historia">
           <div className="aiden-shell">
             <header className="aiden-rebobinado-cabecera">
+              <p className="aiden-capitulo"><i aria-hidden="true" />La historia</p>
               <h2 id="titulo-historia">Rebobinemos el <span className="aiden-sin-corte">{lote.lote}</span>, <em>del camión a la semilla.</em></h2>
-              <p>Lo que sigue no es un guion: son los registros del lote en los datos de ejemplo, leídos de atrás hacia adelante.</p>
+              <p>Lo que sigue no es un guion: son los registros del lote en los datos de ejemplo, leídos de atrás hacia adelante en el módulo que los escribió.</p>
             </header>
             <div className="aiden-rebobinado-grid">
               <aside className="aiden-riel" aria-hidden="true">
-                <div className="aiden-riel-interno">
+                <div className="aiden-riel-interno" ref={rielRef}>
                   <span className="aiden-riel-rotulo">Día</span>
                   <strong className="aiden-riel-dia">{numero(diaRiel ?? activa.dia)}</strong>
                   <span className="aiden-riel-etapa">{activa.etapa}</span>
                   <PistaEtapas etapa={activa.etapa} />
-                  <i className="aiden-riel-linea" />
+                  <i className="aiden-riel-linea"><b className="aiden-riel-progreso" /></i>
                 </div>
               </aside>
               <ol className="aiden-estaciones">
@@ -450,21 +594,9 @@ export default function Inicio() {
                     <article>
                       <h3>{estacion.titulo}</h3>
                       <p>{estacion.cuerpo}</p>
-                      <div className="aiden-registro" role="group" aria-label="Registro del sistema">
-                        <span className="aiden-registro-campo">{estacion.registro.campo}</span>
-                        <strong>{estacion.registro.valor}</strong>
-                        <small>{estacion.registro.detalle}</small>
-                      </div>
-                      {estacion.agenda && (
-                        <ul className="aiden-agenda">
-                          {estacion.agenda.map((linea) => (
-                            <li key={linea}><ArrowRight size={13} aria-hidden="true" /><span>{linea}</span></li>
-                          ))}
-                        </ul>
-                      )}
-                      <p className="aiden-estacion-modulos">
-                        Escrito desde {estacion.modulos.join(" · ")}
-                      </p>
+                      <VentanaModulo ruta={estacion.ventana.ruta} meta={estacion.ventana.meta}>
+                        <ContenidoVentana ventana={estacion.ventana} historia={historia} />
+                      </VentanaModulo>
                     </article>
                   </li>
                 ))}
@@ -516,6 +648,7 @@ export default function Inicio() {
         <section className="aiden-vivero" id="vivero" aria-labelledby="titulo-vivero">
           <div className="aiden-shell">
             <header className="aiden-vivero-cabecera">
+              <p className="aiden-capitulo"><i aria-hidden="true" />El vivero</p>
               <h2 id="titulo-vivero">El resto del vivero, <em>de un barrido.</em></h2>
               <p>Siete lotes a la vez en los datos de ejemplo. La fila se lee entera: cultivo, etapa, plantas vivas y zona, sin abrir ficha por ficha.</p>
             </header>
@@ -542,6 +675,7 @@ export default function Inicio() {
         {/* Los roles, contados por lo que hicieron en la historia. */}
         <section className="aiden-roles" id="roles" aria-labelledby="titulo-roles">
           <div className="aiden-shell">
+            <p className="aiden-capitulo"><i aria-hidden="true" />Roles</p>
             <h2 id="titulo-roles">La misma historia, <em>tres lecturas.</em></h2>
             <div className="aiden-roles-lista">
               <article>
@@ -564,7 +698,10 @@ export default function Inicio() {
         {/* Respuestas directas antes del formulario. */}
         <section className="aiden-preguntas" id="preguntas" aria-labelledby="titulo-preguntas">
           <div className="aiden-shell aiden-preguntas-grid">
-            <h2 id="titulo-preguntas">Preguntas directas, <em>respuestas directas.</em></h2>
+            <div>
+              <p className="aiden-capitulo"><i aria-hidden="true" />Preguntas</p>
+              <h2 id="titulo-preguntas">Preguntas directas, <em>respuestas directas.</em></h2>
+            </div>
             <dl>
               <div>
                 <dt>¿Qué es AiDEN?</dt>
@@ -628,11 +765,41 @@ export default function Inicio() {
         </section>
       </main>
 
+      {/* El pie: la marca cierra la página como la abrió. */}
       <footer className="aiden-footer">
-        <div className="aiden-shell aiden-footer-inner">
-          <Link to="/" className="aiden-brand" aria-label="AiDEN, ir al inicio"><IsotipoAiden tamano={30} placa /><span className="aiden-brand-palabra">AiDEN</span></Link>
-          <span>Registro y seguimiento para viveros</span>
-          <div><Link to="/terminos">Términos</Link><Link to="/privacidad">Privacidad</Link><Link to="/login">Ingresar</Link></div>
+        <div className="aiden-shell">
+          <div className="aiden-footer-cierre">
+            <p>El lote de cilantro va por el día {joven ? numero(diasEntre(hoyISO(), joven.fecha)) : "6"}. <em>Su historia apenas empieza.</em></p>
+            <a href="#contacto" className="aiden-boton aiden-boton-lima">Solicitar demo <ArrowRight size={14} /></a>
+          </div>
+          <div className="aiden-footer-columnas">
+            <div className="aiden-footer-firma">
+              <span className="aiden-footer-isotipo"><IsotipoAiden tamano={34} placa /></span>
+              <p>Registro y seguimiento para viveros e invernaderos. Hecho para el campo colombiano.</p>
+            </div>
+            <nav aria-label="Recorrido">
+              <strong>Recorrido</strong>
+              <a href="#historia">La historia</a>
+              <a href="#vivero">El vivero</a>
+              <a href="#roles">Roles</a>
+              <a href="#preguntas">Preguntas</a>
+            </nav>
+            <nav aria-label="Cuenta">
+              <strong>Cuenta</strong>
+              <Link to="/login">Ingresar</Link>
+              <a href="#contacto">Solicitar demo</a>
+            </nav>
+            <nav aria-label="Legal">
+              <strong>Legal</strong>
+              <Link to="/terminos">Términos</Link>
+              <Link to="/privacidad">Privacidad</Link>
+            </nav>
+          </div>
+          <p className="aiden-footer-marca" aria-hidden="true"><img src={palabraMarcaMoss} alt="" loading="lazy" /></p>
+          <div className="aiden-footer-banda">
+            <span>AiDEN · Vivero en el Cauca, Colombia</span>
+            <span>Los datos de esta página son los de ejemplo del sistema.</span>
+          </div>
         </div>
       </footer>
     </div>
