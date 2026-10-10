@@ -15,7 +15,9 @@
   --amanecer: var(--color-aiden-cream);
   --papel: var(--color-aiden-white);
   --tinta: var(--color-aiden-ink);
-  --tinta-suave: var(--color-aiden-muted);
+  /* Valor del frontmatter de DESIGN.md: el :root transversal de index.css
+     pisa --aiden-muted con #647169, que baja de 4,5:1 sobre crema. */
+  --tinta-suave: #526057;
   --sobre-noche: #f3f6ef;
   --sobre-noche-2: #b9c8ba;
   --vivo: var(--color-aiden-lime);
