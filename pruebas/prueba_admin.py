@@ -9,16 +9,15 @@ with sync_playwright() as p:
     ctx = b.new_context(viewport={"width": 1440, "height": 900}, accept_downloads=True)
     pg = ctx.new_page(); r.conectar(pg, "admin")
 
-    print("Landing original")
+    print("Landing del despacho")
     pg.goto(BASE + "/"); pg.wait_for_timeout(600)
-    r.check(" ".join(pg.get_by_role("heading", level=1).inner_text().split()) == "Gestiona cada lote con toda la operación conectada.", "landing actual con su titular")
-    boton = pg.locator(".aiden-hero-actions .aiden-button-dark").first
-    r.check(boton.evaluate("e => getComputedStyle(e).color") == "rgb(255, 253, 248)", "botón oscuro del hero con el texto crema de la paleta (antes heredaba el oscuro)")
-    r.check(pg.locator(".aiden-roles .aiden-section-header > p").evaluate("e => getComputedStyle(e).color") != "rgba(255, 253, 248, 0.64)", "párrafo de Roles visible sobre fondo claro")
-    activos = pg.locator(".aiden-product-frame strong").first.inner_text()
-    r.check(activos not in ("00", "0"), f"vista previa del hero con datos reales ({activos} lotes activos)")
-    pg.get_by_role("link", name="Supervisor:").click(); pg.wait_for_url("**/login")
-    r.check(pg.locator("input[type=email]").input_value() == "", "fila de Roles lleva al acceso sin precargar credenciales")
+    r.check("Timbío" in " ".join(pg.get_by_role("heading", level=1).inner_text().split()), "la landing abre con la historia del despacho")
+    boton = pg.locator(".aiden-despacho-acciones .aiden-boton-lima").first
+    r.check(boton.evaluate("e => getComputedStyle(e).color") == "rgb(7, 27, 17)", "el botón lima del hero usa la tinta oscura de la paleta")
+    sello = pg.locator(".aiden-guia-sello strong").inner_text()
+    r.check(sello.isdigit() and int(sello) > 0, f"el sello de la guía marca el día real del lote ({sello})")
+    pg.locator(".aiden-footer").get_by_role("link", name="Ingresar").click(); pg.wait_for_url("**/login")
+    r.check(pg.locator("input[type=email]").input_value() == "", "el acceso llega sin credenciales precargadas")
 
     print("Login admin")
     entrar(pg, "admin")

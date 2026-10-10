@@ -105,7 +105,11 @@ Plantilla con barra lateral, barra superior y contenido con scroll propio (`src/
 
 - **Operario en el celular:** el trabajo va primero (tareas antes que cifras) y las acciones rápidas en una barra fija abajo, al alcance del pulgar.
 - **Objetivos táctiles:** 44 px como mínimo en las acciones de campo.
-- **Landing:** composición móvil de una columna bajo 900 px (capa final de `landing-aiden-redesign.css`). Sus tarjetas editoriales usan radios de 20–28 px, una excepción propia de la landing.
+- **Landing «El despacho, hacia atrás»** (`src/pages/Home.jsx` + `src/estilos/landing.css`): la página rebobina el despacho de un lote. Abre y cierra de noche (`aiden-forest-deep` con brillos radiales suaves en lima y moss) y la historia se rebobina a plena luz (`aiden-cream` → `aiden-paper`). Lime solo para lo vivo y lo pendiente; moss para lo cumplido. La voz narrativa es Instrument Serif itálica en los `em` de los titulares: lima sobre las secciones nocturnas, `aiden-moss-oscuro` sobre las claras.
+  - **Riel de días:** columna sticky con el número del día monumental (clamp 64–92 px, tabular) que rebobina de forma continua con el scroll (rAF interpolando entre estaciones); la estación activa se marca con IntersectionObserver y con `prefers-reduced-motion: reduce` el contador queda estático por estación. Bajo 980 px el riel se vuelve una barra sticky superior y la composición pasa a una columna; ajustes móviles bajo 760 px.
+  - **Artefactos documentales:** la guía de despacho como placa-remisión (línea discontinua de corte, sello circular rotado −7° con el día en tabular) y la liquidación del lote con líneas de cuenta y puntos conductores. Sus títulos en mayúsculas («GUÍA DE DESPACHO», «LIQUIDACIÓN DEL LOTE») son nombres de documento dentro del artefacto dibujado, no eyebrows de sección; fuera de ellos la landing no usa kickers.
+  - **Fila de lotes de un barrido:** una línea por lote con columnas alineadas (código tabular, cultivo, etapa, vivas, zona), nunca tarjetas sueltas; el lote protagonista se marca con fondo `verde-50`. La pista de etapas pinta lo cumplido sólido en moss, la etapa en curso sólida y más larga en bosque, y el resto punteado.
+  - **Detalles tematizados:** `::selection` lima sobre noche, caret del formulario en `verde-700`, scrollbar en moss/forest sobre papel. Radios de 20–28 px propios de la landing (20–24 px en las fichas construidas), una excepción que no sale de ella. Las cifras del sector siempre con fuente citada (Resolución ICA 780006 de 2020, Colviveros).
 
 ## Elevation & Depth
 

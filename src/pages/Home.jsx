@@ -1,173 +1,174 @@
-import {
-  ArrowRight,
-  ArrowUpRight,
-  BarChart3,
-  Check,
-  CircleDollarSign,
-  ClipboardList,
-  GitBranch,
-  Menu,
-  Package,
-  ShieldCheck,
-  Sprout,
-  Thermometer,
-  Users,
-  X,
-} from "lucide-react";
+import { ArrowDown, ArrowRight, Menu, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import DashboardHeroPreview from "../components/dashboard/DashboardHeroPreview";
-import { useDatos } from "../datos/almacen";
-import { evaluarLectura, lotesActivos, nombrePersona, resumenLote, ultimasLecturas } from "../datos/selectores";
-import { dinero, dineroOGuion, fechaCorta, numero } from "../utilidades/formato";
+import { generarSemilla } from "../datos/semilla";
+import { resumenLote } from "../datos/selectores";
+import { ETAPAS } from "../datos/catalogos";
+import { dinero, dineroOGuion, fechaCorta, hoyISO, numero } from "../utilidades/formato";
 import { useTitulo } from "../hooks/useTitulo";
-import "../estilos/landing-aiden-redesign.css";
-import { LogotipoAiden } from "../components/ui/MarcaAiden";
-
-const modulos = [
-  [Sprout, "Producción", "Lotes, etapas y actividades", "Controla qué está ocurriendo con cada lote y en qué punto del proceso se encuentra.", "/produccion", "01"],
-  [Package, "Inventario", "Existencias y movimientos", "Mantén visibles entradas, consumos y niveles mínimos antes de que se conviertan en un problema.", "/inventario", "02"],
-  [GitBranch, "Trazabilidad", "Historia de cada lote", "Reconstruye el recorrido de un lote y relaciona los eventos que forman parte de su operación.", "/trazabilidad", "03"],
-  [Thermometer, "Ambiental", "Condiciones de cultivo", "Registra las variables ambientales que aportan contexto al seguimiento del vivero.", "/ambiental", "04"],
-  [ShieldCheck, "Calidad", "Incidencias y seguimiento", "Detecta, registra y da seguimiento a situaciones que requieren atención.", "/calidad", "05"],
-  [CircleDollarSign, "Costos", "Gastos operativos", "Lee los costos junto al trabajo que los originó para entender mejor la operación.", "/costos", "06"],
-  [Users, "Personal", "Equipo y responsabilidades", "Organiza personas, responsabilidades y carga de trabajo dentro de la operación.", "/personal", "07"],
-  [BarChart3, "Reportes", "Lectura operativa", "Convierte los registros del sistema en información útil para el seguimiento.", "/reportes", "08"],
-  [ClipboardList, "Configuración", "Contexto del sistema", "Ajusta usuarios y parámetros para que AiDEN responda a la operación real.", "/configuracion", "09"],
-];
-
-const roles = [
-  ["01", "Administrador", "Visión global", "Usuarios, configuración y control integral del sistema."],
-  ["02", "Supervisor", "Seguimiento", "Coordinación, incidencias y lectura de la operación."],
-  ["03", "Operario", "Ejecución", "Tareas y registros que forman parte del trabajo diario."],
-];
-
-const connections = [
-  ["Producción", "El lote define el contexto", "Etapa, actividad y avance se leen desde el mismo lote."],
-  ["Inventario", "Los insumos acompañan el proceso", "Entradas, consumos y existencias quedan vinculados al trabajo."],
-  ["Ambiental", "El entorno queda registrado", "Las condiciones de cultivo aportan contexto al seguimiento."],
-  ["Calidad", "Las incidencias tienen seguimiento", "Cada hallazgo mantiene estado, responsable y relación con la operación."],
-  ["Trazabilidad", "Los eventos conservan su historia", "Los cambios forman una secuencia que puede revisarse después."],
-  ["Costos", "Los gastos dejan de estar aislados", "Los registros de costo se leen junto al trabajo que los originó."],
-];
-
-// Cada intención abre el paso del recorrido que la responde.
-const intenciones = [
-  ["01", "Detectar a tiempo", "Ver qué zona salió de rango y qué lotes están ahí.", 0],
-  ["02", "Controlar producción", "Saber en qué etapa va cada lote y cuántas plantas siguen vivas.", 1],
-  ["03", "Coordinar el equipo", "Asignar el siguiente paso a una persona, con fecha y prioridad.", 2],
-  ["04", "Seguir un lote", "Reconstruir qué pasó, qué se usó y quién intervino.", 3],
-  ["05", "Entender costos", "Leer el costo por planta junto al trabajo que lo produjo.", 4],
-];
-
-const demoPasos = [
-  ["01", "Alerta ambiental", "Una zona sale del rango configurado."],
-  ["02", "Lote afectado", "La alerta llega al lote que está en esa zona."],
-  ["03", "Tarea asignada", "Alguien recibe el siguiente paso."],
-  ["04", "Registro en la historia", "Lo que se hizo queda en la trazabilidad."],
-  ["05", "Costo por planta", "La operación conserva sus consecuencias."],
-];
+import { IsotipoAiden } from "../components/ui/MarcaAiden";
+import "../estilos/landing.css";
 
 /*
-  El recorrido de la demo se arma con los datos de ejemplo del propio sistema: la zona
-  más fuera de rango, el lote que está en ella, su tarea abierta, su último registro y
-  su costo por planta. Nada inventado.
+  La landing rebobina la historia real del lote de tomate de los datos de ejemplo:
+  del despacho (día 68) a la siembra (día 0). Todo valor mostrado sale de la semilla
+  del sistema (generarSemilla es pura y determinista respecto a hoy); el texto
+  narrativo es editorial, los números no se inventan.
 */
-function construirRecorrido(datos) {
-  const cfg = datos.configuracion;
-  const ultimas = [...ultimasLecturas(datos.ambiental)];
-  const fuera = ultimas
-    .map(([zona, lectura]) => ({ zona, lectura, e: evaluarLectura(lectura, cfg) }))
-    .filter((x) => x.e.fuera)
-    .sort((a, b) => b.e.desvio - a.e.desvio)[0];
-  const zona = fuera?.zona || ultimas[0]?.[0];
-  const lectura = fuera?.lectura || ultimas[0]?.[1];
-  const activos = lotesActivos(datos.lotes);
-  const lote = activos.find((l) => l.ubicacion === zona) || activos[0];
-  if (!lote || !lectura) return null;
-  const r = resumenLote(lote, datos);
-  const tarea = r.tareasAbiertas[0];
-  const evento = r.eventos[0];
-  return [
-    {
-      valor: `${numero(lectura.temperatura)} °C`,
-      titulo: fuera ? `${zona} fuera de rango` : `${zona} en rango`,
-      detalle: `Rango configurado: ${cfg.tempMin}–${cfg.tempMax} °C. Humedad ${numero(lectura.humedad)} %.`,
+
+const diasEntre = (isoA, isoB) => {
+  const [a, b] = [isoA, isoB].map((iso) => {
+    const [y, m, d] = iso.slice(0, 10).split("-").map(Number);
+    return new Date(y, m - 1, d).getTime();
+  });
+  return Math.round((a - b) / 86_400_000);
+};
+
+const hora = (fecha) => {
+  if (!fecha.includes("T")) return "";
+  const [h, m] = fecha.split("T")[1].slice(0, 5).split(":").map(Number);
+  const sufijo = h < 12 ? "a. m." : "p. m.";
+  return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${sufijo}`;
+};
+
+function construirHistoria() {
+  const datos = generarSemilla();
+  const lote = datos.lotes.find((l) => l.id === "LT-2026-011") || datos.lotes.find((l) => l.estado === "Activo");
+  if (!lote) return null;
+  const dia = (fecha) => diasEntre(fecha, lote.fecha);
+  const evento = (id) => datos.trazabilidad.find((e) => e.id === id);
+  const tarea = (id) => datos.tareas.find((t) => t.id === id);
+  const costoDe = (id) => datos.costos.find((c) => c.id === id);
+  const resumen = resumenLote(lote, datos);
+  const cerrado = datos.lotes.find((l) => l.estado === "Cerrado");
+  const eventoCierre = cerrado && datos.trazabilidad.find((e) => e.lote === cerrado.id && e.evento === "Despacho");
+  const joven = [...datos.lotes].filter((l) => l.estado === "Activo").sort((a, b) => (a.fecha < b.fecha ? 1 : -1))[0];
+  const incidenciaJoven = joven && datos.calidad.find((i) => i.lote === joven.id && i.estado !== "Cerrada");
+
+  const registro = evento("TRZ-010");
+  const consumo = evento("TRZ-011");
+  const aAdaptacion = evento("TRZ-012");
+  const aDesarrollo = evento("TRZ-013");
+  const fertilizacion = evento("TRZ-014");
+  const aCosecha = evento("TRZ-015");
+  const incidencia = evento("TRZ-016");
+  const anticipo = costoDe("CST-018");
+  const deshoje = tarea("TSK-001");
+  const validacion = tarea("TSK-010");
+  const despacho = tarea("TSK-004");
+
+  const estaciones = [
+    incidencia && {
+      dia: dia(incidencia.fecha) + 1,
+      etapa: "Cosecha",
+      modulos: ["Calidad", "Personal"],
+      titulo: "La víspera no está limpia.",
+      cuerpo: `Ayer a las ${hora(incidencia.fecha)}, ${incidencia.responsable} reportó hojas amarillas en el tercio inferior de las plantas. Quedó como incidencia de prioridad alta, con el deshoje asignado y ya vencido.`,
+      registro: { campo: "Incidencia INC-031 · abierta", valor: "Prioridad alta", detalle: `Reportada por ${incidencia.responsable} · ${fechaCorta(incidencia.fecha)}` },
+      agenda: [
+        validacion && `Mañana: ${validacion.titulo.toLowerCase()} — ${validacion.descripcion} (${nombreCorto(datos, validacion.responsableId)})`,
+        despacho && `En dos días: ${despacho.descripcion.toLowerCase().replace(/\.$/, "")} (${nombreCorto(datos, despacho.responsableId)})`,
+        deshoje && `Vencida: ${deshoje.titulo.toLowerCase()} — sigue abierta y el sistema no la deja pasar`,
+      ].filter(Boolean),
     },
-    { valor: lote.lote, titulo: lote.cultivo, detalle: `${numero(lote.cantidad)} plantas vivas en ${lote.etapa.toLowerCase()}, en ${lote.ubicacion}.` },
-    {
-      valor: nombrePersona(datos.personas, tarea?.responsableId || lote.responsableId),
-      titulo: tarea ? tarea.titulo : "Responsable del lote",
-      detalle: tarea ? `Vence el ${fechaCorta(tarea.fecha)} · prioridad ${tarea.prioridad.toLowerCase()}.` : "Sin tareas abiertas en este lote.",
+    aCosecha && {
+      dia: dia(aCosecha.fecha),
+      etapa: "Cosecha",
+      modulos: ["Producción"],
+      titulo: `${numero(lote.cantidad)} de ${numero(lote.cantidadInicial)}.`,
+      cuerpo: `El lote pasó a Cosecha con ${numero(lote.cantidadInicial - lote.cantidad)} plantas menos de las que empezaron. La merma no se maquilla: queda contada, con fecha y responsable.`,
+      registro: { campo: aCosecha.evento, valor: "Desarrollo → Cosecha", detalle: `${aCosecha.responsable} · ${hora(aCosecha.fecha)}` },
     },
-    { valor: evento ? evento.evento : "Sin registros", titulo: evento ? `Por ${evento.responsable}` : lote.lote, detalle: evento ? evento.detalle : "La historia del lote empieza con su primer registro." },
-    { valor: dineroOGuion(r.costoPlanta), titulo: "Costo por planta viva", detalle: `${dinero(r.gasto)} acumulados y ${numero(r.eventos.length)} registros en su historia.` },
-  ];
+    anticipo && {
+      dia: dia(anticipo.fecha),
+      etapa: "Cosecha",
+      modulos: ["Costos"],
+      titulo: "El pedido llegó con anticipo.",
+      cuerpo: "La Asociación Campesina de Timbío apartó su pedido. El ingreso quedó escrito en Costos, junto al lote que lo gana: ni en un bolsillo, ni en otra planilla.",
+      registro: { campo: anticipo.concepto, valor: dinero(anticipo.valor), detalle: `Ingreso · ${fechaCorta(anticipo.fecha)}` },
+    },
+    fertilizacion && {
+      dia: dia(fertilizacion.fecha),
+      etapa: "Desarrollo",
+      modulos: ["Trazabilidad"],
+      titulo: "Fertilización, 7:30 de la mañana.",
+      cuerpo: `${fertilizacion.responsable} aplicó NPK en todas las camas y lo dejó en la historia del lote antes de guardar la bomba. Sin cuaderno, sin pasar en limpio por la noche.`,
+      registro: { campo: fertilizacion.evento, valor: "NPK edáfico", detalle: `${fertilizacion.responsable} · ${hora(fertilizacion.fecha)}` },
+    },
+    aDesarrollo && {
+      dia: dia(aDesarrollo.fecha),
+      etapa: "Desarrollo",
+      modulos: ["Producción"],
+      titulo: "Cambio de etapa, visible para todos.",
+      cuerpo: "Laura movió el lote a Desarrollo y la ficha cambió para todo el equipo a la vez: el operario ve sus tareas, el administrador ve el costo acumulado del mismo lote.",
+      registro: { campo: aDesarrollo.evento, valor: "Adaptación → Desarrollo", detalle: `${aDesarrollo.responsable} · ${fechaCorta(aDesarrollo.fecha)}` },
+    },
+    aAdaptacion && {
+      dia: dia(aAdaptacion.fecha),
+      etapa: "Adaptación",
+      modulos: ["Ambiental"],
+      titulo: "Las lecturas siguieron entrando.",
+      cuerpo: "Primer cambio de etapa. Mientras tanto, el Invernadero 1 registró temperatura, humedad y luz cada cuatro horas; si una zona sale del rango configurado, la alerta señala los lotes que están en ella.",
+      registro: { campo: aAdaptacion.evento, valor: "Germinación → Adaptación", detalle: `${aAdaptacion.responsable} · ${fechaCorta(aAdaptacion.fecha)}` },
+    },
+    registro && {
+      dia: 0,
+      etapa: "Germinación",
+      modulos: ["Producción", "Inventario", "Costos"],
+      titulo: `${numero(lote.cantidadInicial)} plantas, ${hora(registro.fecha)}`,
+      cuerpo: `${registro.responsable} registró el lote. Cincuenta minutos después, ${consumo ? consumo.responsable : "el operario"} sacó dos bultos de sustrato y cuatro bandejas: el inventario los descontó y el costo quedó escrito solo, sin una segunda planilla.`,
+      registro: { campo: registro.evento, valor: `${numero(lote.cantidadInicial)} plantas`, detalle: `${registro.responsable} · ${hora(registro.fecha)}` },
+    },
+  ].filter(Boolean);
+
+  return {
+    lote,
+    resumen,
+    estaciones,
+    totalDias: diasEntre(lote.fechaEstimada, lote.fecha),
+    hoyDia: dia(hoyISO()),
+    cerrado,
+    eventoCierre,
+    joven,
+    incidenciaJoven,
+    lotesActivos: datos.lotes.filter((l) => l.estado === "Activo"),
+    registros: datos.trazabilidad.filter((e) => e.lote === lote.id).length,
+    validadora: validacion ? nombreCorto(datos, validacion.responsableId) : "",
+  };
+}
+
+function nombreCorto(datos, personaId) {
+  const persona = datos.personas.find((p) => p.id === personaId);
+  return persona ? persona.nombre : "";
+}
+
+function PistaEtapas({ etapa }) {
+  const indice = Math.max(0, ETAPAS.indexOf(etapa));
+  return (
+    <span className="aiden-pista" role="img" aria-label={`Etapa ${etapa}, ${indice + 1} de ${ETAPAS.length}`}>
+      {ETAPAS.map((nombre, i) => (
+        <i key={nombre} className={i < indice ? "is-hecha" : i === indice ? "is-actual" : ""} />
+      ))}
+    </span>
+  );
 }
 
 export default function Inicio() {
   useTitulo(null);
+  const historia = useMemo(() => construirHistoria(), []);
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [headerCompacto, setHeaderCompacto] = useState(false);
+  const [estacionActiva, setEstacionActiva] = useState(0);
+  const [diaRiel, setDiaRiel] = useState(null);
+  const [vistas, setVistas] = useState(() => new Set());
   const [solicitudEnviada, setSolicitudEnviada] = useState(false);
   const [errorSolicitud, setErrorSolicitud] = useState("");
   const [enviandoSolicitud, setEnviandoSolicitud] = useState(false);
-  const [headerCompacto, setHeaderCompacto] = useState(false);
-  const [conexionActiva, setConexionActiva] = useState(0);
-  const [intencionActiva, setIntencionActiva] = useState(0);
-  const [pasoActivo, setPasoActivo] = useState(0);
-  const datos = useDatos();
-  const recorrido = useMemo(() => construirRecorrido(datos), [datos]);
   const menuButtonRef = useRef(null);
   const menuPanelRef = useRef(null);
+  const estacionesRef = useRef([]);
   const formularioMontado = useRef(0);
   const cerrarMenu = () => setMenuAbierto(false);
-
-  const seleccionarIntencion = (index) => {
-    setIntencionActiva(index);
-    setPasoActivo(intenciones[index][3]);
-    const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    document.getElementById("demostracion")?.scrollIntoView({
-      behavior: movimientoReducido ? "auto" : "smooth",
-      block: "start",
-    });
-  };
-
-  const prepararSolicitud = async (event) => {
-    event.preventDefault();
-    const formulario = event.currentTarget;
-    const campos = Object.fromEntries(new FormData(formulario).entries());
-    const datos = { ...campos, consentimiento: campos.consentimiento === "si", transcurrido: Date.now() - formularioMontado.current };
-    setEnviandoSolicitud(true);
-    setSolicitudEnviada(false);
-    setErrorSolicitud("");
-
-    try {
-      const response = await fetch("/api/contacto", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(datos),
-      });
-
-      if (response.status === 503) {
-        throw new Error("FORMULARIO_NO_DISPONIBLE");
-      }
-      if (!response.ok) throw new Error("ENVIO_NO_CONFIRMADO");
-
-      formulario.reset();
-      setSolicitudEnviada(true);
-    } catch (error) {
-      setErrorSolicitud(
-        error?.message === "FORMULARIO_NO_DISPONIBLE"
-          ? "El formulario no está disponible temporalmente. Inténtalo de nuevo más tarde."
-          : "No fue posible enviar la solicitud. Inténtalo de nuevo más tarde.",
-      );
-    } finally {
-      setEnviandoSolicitud(false);
-    }
-  };
 
   useEffect(() => {
     const actualizar = () => setHeaderCompacto(window.scrollY > 18);
@@ -194,22 +195,132 @@ export default function Inicio() {
     return () => window.removeEventListener("keydown", manejarTecla);
   }, [menuAbierto]);
 
+  // El riel marca la estación centrada y las fichas se revelan una sola vez.
+  useEffect(() => {
+    const nodos = estacionesRef.current.filter(Boolean);
+    if (!nodos.length) return undefined;
+    if (!("IntersectionObserver" in window)) {
+      setVistas(new Set(nodos.map((_, i) => i)));
+      return undefined;
+    }
+    const revelador = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) {
+          if (!entrada.isIntersecting) continue;
+          const indice = Number(entrada.target.dataset.indice);
+          setVistas((previas) => (previas.has(indice) ? previas : new Set(previas).add(indice)));
+          revelador.unobserve(entrada.target);
+        }
+      },
+      { threshold: 0.2 },
+    );
+    const marcador = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) {
+          if (entrada.isIntersecting) setEstacionActiva(Number(entrada.target.dataset.indice));
+        }
+      },
+      { rootMargin: "-42% 0px -42% 0px" },
+    );
+    nodos.forEach((nodo) => {
+      revelador.observe(nodo);
+      marcador.observe(nodo);
+    });
+    return () => {
+      revelador.disconnect();
+      marcador.disconnect();
+    };
+  }, []);
+
+  /*
+    La interacción firma: el día del riel rebobina de forma continua con el scroll,
+    interpolando entre los días de las estaciones vecinas al centro del viewport.
+    Con movimiento reducido no corre: el riel queda estático por estación (IO).
+  */
+  useEffect(() => {
+    if (!historia) return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+    const dias = historia.estaciones.map((e) => e.dia);
+    let cuadro = 0;
+    const recalcular = () => {
+      cuadro = 0;
+      const nodos = estacionesRef.current.filter(Boolean);
+      if (!nodos.length) return;
+      const centro = window.innerHeight / 2;
+      const centros = nodos.map((nodo) => {
+        const caja = nodo.getBoundingClientRect();
+        return caja.top + caja.height / 2;
+      });
+      if (centro <= centros[0]) return setDiaRiel(dias[0]);
+      if (centro >= centros[centros.length - 1]) return setDiaRiel(dias[dias.length - 1]);
+      for (let i = 0; i < centros.length - 1; i += 1) {
+        if (centro >= centros[i] && centro <= centros[i + 1]) {
+          const avance = (centro - centros[i]) / (centros[i + 1] - centros[i] || 1);
+          return setDiaRiel(Math.round(dias[i] + (dias[i + 1] - dias[i]) * avance));
+        }
+      }
+    };
+    const alScroll = () => {
+      if (!cuadro) cuadro = window.requestAnimationFrame(recalcular);
+    };
+    recalcular();
+    window.addEventListener("scroll", alScroll, { passive: true });
+    window.addEventListener("resize", alScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", alScroll);
+      window.removeEventListener("resize", alScroll);
+      if (cuadro) window.cancelAnimationFrame(cuadro);
+    };
+  }, [historia]);
+
+  const prepararSolicitud = async (event) => {
+    event.preventDefault();
+    const formulario = event.currentTarget;
+    const campos = Object.fromEntries(new FormData(formulario).entries());
+    const cuerpo = { ...campos, consentimiento: campos.consentimiento === "si", transcurrido: Date.now() - formularioMontado.current };
+    setEnviandoSolicitud(true);
+    setSolicitudEnviada(false);
+    setErrorSolicitud("");
+    try {
+      const respuesta = await fetch("/api/contacto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(cuerpo),
+      });
+      if (respuesta.status === 503) throw new Error("FORMULARIO_NO_DISPONIBLE");
+      if (!respuesta.ok) throw new Error("ENVIO_NO_CONFIRMADO");
+      formulario.reset();
+      setSolicitudEnviada(true);
+    } catch (error) {
+      setErrorSolicitud(
+        error?.message === "FORMULARIO_NO_DISPONIBLE"
+          ? "El formulario no está disponible temporalmente. Inténtalo de nuevo más tarde."
+          : "No fue posible enviar la solicitud. Inténtalo de nuevo más tarde.",
+      );
+    } finally {
+      setEnviandoSolicitud(false);
+    }
+  };
+
+  if (!historia) return null;
+  const { lote, resumen, estaciones, totalDias, hoyDia, cerrado, eventoCierre, joven, incidenciaJoven, lotesActivos, registros, validadora } = historia;
+  const activa = estaciones[estacionActiva] || estaciones[0];
+
   return (
-    <div className="aiden-redesign">
+    <div className="aiden-landing">
       <a className="aiden-skip-link" href="#contenido">Saltar al contenido principal</a>
       <header className={`aiden-header ${headerCompacto ? "is-compact" : ""}`}>
         <nav className="aiden-shell aiden-header-inner" aria-label="Navegación principal">
-          <Link to="/" className="aiden-brand" onClick={cerrarMenu} aria-label="AiDEN, ir al inicio"><LogotipoAiden alto={34} /></Link>
+          <Link to="/" className="aiden-brand" onClick={cerrarMenu} aria-label="AiDEN, ir al inicio"><IsotipoAiden tamano={36} placa /><span className="aiden-brand-palabra">AiDEN</span></Link>
           <div className="aiden-header-links">
-            <a href="#operacion">La operación</a>
-            <a href="#necesidades">Necesidades</a>
-            <a href="#sistema">El sistema</a>
-            <a href="#modulos">Módulos</a>
+            <a href="#historia">La historia</a>
+            <a href="#vivero">El vivero</a>
             <a href="#roles">Roles</a>
+            <a href="#preguntas">Preguntas</a>
           </div>
           <div className="aiden-header-actions">
             <Link to="/login" className="aiden-header-login">Iniciar sesión</Link>
-            <a href="#contacto" className="aiden-button aiden-button-dark">Solicitar demo</a>
+            <a href="#contacto" className="aiden-boton aiden-boton-lima">Solicitar demo</a>
           </div>
           <button
             ref={menuButtonRef}
@@ -218,7 +329,7 @@ export default function Inicio() {
             aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
             aria-controls="aiden-mobile-panel"
             aria-expanded={menuAbierto}
-            onClick={() => setMenuAbierto((open) => !open)}
+            onClick={() => setMenuAbierto((abierto) => !abierto)}
           >
             {menuAbierto ? <X size={19} /> : <Menu size={19} />}
           </button>
@@ -230,237 +341,295 @@ export default function Inicio() {
           aria-hidden={!menuAbierto}
           inert={!menuAbierto}
         >
-          <a href="#operacion" onClick={cerrarMenu}>La operación</a>
-          <a href="#necesidades" onClick={cerrarMenu}>Necesidades</a>
-          <a href="#sistema" onClick={cerrarMenu}>El sistema</a>
-          <a href="#modulos" onClick={cerrarMenu}>Módulos</a>
+          <a href="#historia" onClick={cerrarMenu}>La historia</a>
+          <a href="#vivero" onClick={cerrarMenu}>El vivero</a>
           <a href="#roles" onClick={cerrarMenu}>Roles</a>
-          <a href="#contacto" className="aiden-button aiden-button-dark" onClick={cerrarMenu}>Solicitar demo <ArrowRight size={14} /></a>
-          <Link to="/login" className="aiden-button aiden-button-ghost" onClick={cerrarMenu}>Iniciar sesión</Link>
+          <a href="#preguntas" onClick={cerrarMenu}>Preguntas</a>
+          <a href="#contacto" className="aiden-boton aiden-boton-lima" onClick={cerrarMenu}>Solicitar demo <ArrowRight size={14} /></a>
+          <Link to="/login" className="aiden-boton aiden-boton-borde" onClick={cerrarMenu}>Iniciar sesión</Link>
         </div>
       </header>
 
       <main id="contenido" tabIndex={-1}>
-        <section className="aiden-hero" id="inicio">
-          <div className="aiden-shell aiden-hero-grid">
-            <article className="aiden-hero-copy">
-              <p className="aiden-label"><span className="aiden-live-dot" /> Plataforma operativa para viveros</p>
-              <h1>Gestiona cada lote con <em>toda la operación conectada.</em></h1>
-              <p className="aiden-hero-lead">Producción, inventario, trazabilidad, ambiente, calidad, costos y personal en un mismo sistema para entender qué está pasando y dónde actuar.</p>
-              <div className="aiden-hero-actions">
-                <a href="#contacto" className="aiden-button aiden-button-dark aiden-button-large">Solicitar una demo <ArrowRight size={15} /></a>
-                <a href="#demostracion" className="aiden-text-link"><span>01</span> Ver AiDEN en acción</a>
+        {/* Día 66: la página abre en la víspera del despacho. */}
+        <section className="aiden-despacho" aria-labelledby="titulo-despacho">
+          <div className="aiden-shell aiden-despacho-grid">
+            <div className="aiden-despacho-copy">
+              <h1 id="titulo-despacho">
+                Pasado mañana salen 400 plantas de tomate <em>hacia Timbío.</em>
+              </h1>
+              <p className="aiden-despacho-lead">
+                AiDEN, el sistema de registro del vivero, escribió los {numero(totalDias)} días que las trajeron
+                hasta el camión. Esta página rebobina esa historia.
+              </p>
+              <div className="aiden-despacho-acciones">
+                <a href="#contacto" className="aiden-boton aiden-boton-lima aiden-boton-grande">Solicitar una demo <ArrowRight size={15} /></a>
+                <a href="#historia" className="aiden-enlace-claro">Rebobinar la historia <ArrowDown size={14} /></a>
               </div>
-              <div className="aiden-hero-meta"><span>Por lotes</span><i /><span>Por roles</span><i /><span>Con trazabilidad</span></div>
-            </article>
-            <figure className="aiden-hero-product" aria-label="Vista del dashboard de AiDEN">
-              <div className="aiden-product-frame"><DashboardHeroPreview /></div>
-              <figcaption><span>Vista del producto</span><span>Con los datos de ejemplo</span></figcaption>
+            </div>
+            <figure className="aiden-guia" aria-label="Guía de despacho del lote de ejemplo">
+              <div className="aiden-guia-papel">
+                <header>
+                  <span className="aiden-guia-doc">Guía de despacho</span>
+                  <span className="aiden-guia-folio">{lote.lote}</span>
+                </header>
+                <dl>
+                  <div><dt>Cultivo</dt><dd>{lote.cultivo}</dd></div>
+                  <div><dt>Origen</dt><dd>{lote.ubicacion} · vivero en el Cauca</dd></div>
+                  <div><dt>Destino</dt><dd>Asociación Campesina de Timbío</dd></div>
+                  <div><dt>Cantidad</dt><dd>400 de {numero(lote.cantidad)} plantas vivas</dd></div>
+                  <div><dt>Sale</dt><dd>{fechaCorta(lote.fechaEstimada)}</dd></div>
+                  <div><dt>Validación</dt><dd>Pendiente · {validadora || "Supervisión"}</dd></div>
+                </dl>
+                <div className="aiden-guia-sello" aria-label={`Día ${numero(hoyDia)} de ${numero(totalDias)} del lote`}>
+                  <span>Día</span>
+                  <strong>{numero(hoyDia)}</strong>
+                  <span>de {numero(totalDias)}</span>
+                </div>
+              </div>
+              <figcaption>Historia tomada de los datos de ejemplo del sistema.</figcaption>
             </figure>
           </div>
         </section>
 
-        <section className="aiden-problem" id="operacion">
-          <div className="aiden-shell aiden-problem-grid">
-            <header><p className="aiden-index">LA OPERACIÓN</p><h2>El problema no es tener datos. <em>Es tenerlos separados.</em></h2></header>
-            <div className="aiden-problem-copy">
-              <p className="aiden-kicker">El contexto importa</p>
-              <p>Un lote cambia de etapa. Consume insumos. Tiene unas condiciones. Puede generar una incidencia. Una persona registra lo sucedido. Y alguien necesita entender todo eso después.</p>
-              <p>AiDEN conecta esas piezas para que la información conserve la historia de la operación y no termine convertida en registros aislados.</p>
-              <a href="#sistema" className="aiden-text-link"><span>02</span> Ver cómo se conecta</a>
+        {/* La pregunta que el ICA y el comprador hacen igual. */}
+        <section className="aiden-pregunta" aria-labelledby="titulo-pregunta">
+          <div className="aiden-shell aiden-pregunta-inner">
+            <h2 id="titulo-pregunta">¿Podría tu vivero reconstruir la historia <em>de cada planta que vende?</em></h2>
+            <div className="aiden-pregunta-copy">
+              <p>
+                El ICA lo exige desde 2020: la Resolución 780006 obliga a registrar el vivero y a que su capacidad
+                anual cuadre con las compras de semilla y de material. Y el que compra pregunta lo mismo con otras
+                palabras: de qué lote salió, qué se le aplicó, quién lo revisó.
+              </p>
+              <p>
+                Según Colviveros, en Colombia unas 35.000 familias viven de producir y vender plantas, y solo una de
+                cada diez lo hace desde una empresa formalmente constituida. En la mayoría de los viveros la respuesta
+                está repartida entre cuadernos, planillas y la memoria de quien hizo el trabajo.
+              </p>
+              <p className="aiden-fuentes">
+                Fuentes: <a href="https://www.ica.gov.co/normatividad/normas-ica/resoluciones-oficinas-nacionales" target="_blank" rel="noopener noreferrer">Resolución ICA 780006 de 2020</a> ·{" "}
+                <a href="https://www.agronegocios.co/agricultura/productores-viveristas-mueven-180-000-millones-al-ano-con-apoyo-de-minagricultura-2920306" target="_blank" rel="noopener noreferrer">Colviveros / Agronegocios</a> ·{" "}
+                <a href="https://www.elespectador.com/la-huerta/mirelo-sin-compromiso-el-negocio-detras-de-los-viveros/" target="_blank" rel="noopener noreferrer">El Espectador</a>
+              </p>
             </div>
-          </div>
-          <div className="aiden-shell aiden-problem-strip">
-            <article><span>01</span><strong>Registrar</strong><p>Lo que sucede queda documentado.</p></article>
-            <article><span>02</span><strong>Conectar</strong><p>Cada registro conserva su contexto.</p></article>
-            <article><span>03</span><strong>Seguir</strong><p>Las señales relevantes pueden revisarse.</p></article>
-            <article><span>04</span><strong>Decidir</strong><p>La información llega con una historia detrás.</p></article>
           </div>
         </section>
 
-        <section className="aiden-intents" id="necesidades">
+        {/* El rebobinado: cada evento clavado a su día, el riel lleva la cuenta. */}
+        <section className="aiden-rebobinado" id="historia" aria-labelledby="titulo-historia">
           <div className="aiden-shell">
-            <header className="aiden-section-header">
-              <div><p className="aiden-index">¿QUÉ NECESITAS RESOLVER?</p><h2>Empieza por lo que hoy <em>te cuesta ver.</em></h2></div>
-              <p>Elige una necesidad del vivero y mira, con datos de ejemplo, cómo la resuelve AiDEN paso a paso.</p>
+            <header className="aiden-rebobinado-cabecera">
+              <h2 id="titulo-historia">Rebobinemos el <span className="aiden-sin-corte">{lote.lote}</span>, <em>del camión a la semilla.</em></h2>
+              <p>Lo que sigue no es un guion: son los registros del lote en los datos de ejemplo, leídos de atrás hacia adelante.</p>
             </header>
-            <div className="aiden-intent-grid">
-              {intenciones.map(([number, title, description], index) => (
-                <button key={title} type="button" className={`aiden-intent-card ${intencionActiva === index ? "is-active" : ""}`} onClick={() => seleccionarIntencion(index)} aria-pressed={intencionActiva === index}>
-                  <span>{number}</span><strong>{title}</strong><p>{description}</p><ArrowUpRight size={16} />
-                </button>
+            <div className="aiden-rebobinado-grid">
+              <aside className="aiden-riel" aria-hidden="true">
+                <div className="aiden-riel-interno">
+                  <span className="aiden-riel-rotulo">Día</span>
+                  <strong className="aiden-riel-dia">{numero(diaRiel ?? activa.dia)}</strong>
+                  <span className="aiden-riel-etapa">{activa.etapa}</span>
+                  <PistaEtapas etapa={activa.etapa} />
+                  <i className="aiden-riel-linea" />
+                </div>
+              </aside>
+              <ol className="aiden-estaciones">
+                {estaciones.map((estacion, indice) => (
+                  <li
+                    key={estacion.titulo}
+                    data-indice={indice}
+                    ref={(nodo) => { estacionesRef.current[indice] = nodo; }}
+                    className={`aiden-estacion ${vistas.has(indice) ? "is-vista" : ""} ${indice === estacionActiva ? "is-actual" : ""}`}
+                  >
+                    <div className="aiden-estacion-dia">
+                      <span>Día {numero(estacion.dia)}</span>
+                      <PistaEtapas etapa={estacion.etapa} />
+                    </div>
+                    <article>
+                      <h3>{estacion.titulo}</h3>
+                      <p>{estacion.cuerpo}</p>
+                      <div className="aiden-registro" role="group" aria-label="Registro del sistema">
+                        <span className="aiden-registro-campo">{estacion.registro.campo}</span>
+                        <strong>{estacion.registro.valor}</strong>
+                        <small>{estacion.registro.detalle}</small>
+                      </div>
+                      {estacion.agenda && (
+                        <ul className="aiden-agenda">
+                          {estacion.agenda.map((linea) => (
+                            <li key={linea}><ArrowRight size={13} aria-hidden="true" /><span>{linea}</span></li>
+                          ))}
+                        </ul>
+                      )}
+                      <p className="aiden-estacion-modulos">
+                        Escrito desde {estacion.modulos.join(" · ")}
+                      </p>
+                    </article>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        {/* El saldo de la historia y la prueba de que no es la primera. */}
+        <section className="aiden-saldo" aria-labelledby="titulo-saldo">
+          <div className="aiden-shell aiden-saldo-grid">
+            <h2 id="titulo-saldo">{numero(totalDias)} días, {numero(registros)} registros, <em>un costo por planta.</em></h2>
+            <div className="aiden-liquidacion" role="group" aria-label={`Liquidación del lote ${lote.lote}`}>
+              <header>
+                <span className="aiden-guia-doc">Liquidación del lote</span>
+                <span className="aiden-guia-folio">{lote.lote}</span>
+              </header>
+              <dl>
+                <div>
+                  <dt>Plantas vivas al despacho</dt>
+                  <dd>{numero(lote.cantidad)} de {numero(lote.cantidadInicial)}</dd>
+                </div>
+                <div>
+                  <dt>Eventos en su historia</dt>
+                  <dd>{numero(registros)}</dd>
+                </div>
+                <div>
+                  <dt>Gasto acumulado</dt>
+                  <dd>{dinero(resumen.gasto)}</dd>
+                </div>
+                <div className="aiden-liquidacion-total">
+                  <dt>Costo por planta viva</dt>
+                  <dd>{dineroOGuion(resumen.costoPlanta)}</dd>
+                </div>
+              </dl>
+              <small>Cada línea con fecha, hora y responsable; la merma quedó contada.</small>
+            </div>
+            {cerrado && eventoCierre && (
+              <p className="aiden-saldo-antecedente">
+                Y no es la primera: la lechuga del Invernadero 2 ya hizo este viaje. {eventoCierre.detalle.replace("Lote cerrado: ", "")}{" "}
+                Su historia quedó cerrada y se puede releer completa en Trazabilidad.
+              </p>
+            )}
+            <a href="#contacto" className="aiden-boton aiden-boton-oscuro aiden-boton-grande">Quiero esto para mi vivero <ArrowRight size={15} /></a>
+          </div>
+        </section>
+
+        {/* El vivero completo, leído de un barrido. */}
+        <section className="aiden-vivero" id="vivero" aria-labelledby="titulo-vivero">
+          <div className="aiden-shell">
+            <header className="aiden-vivero-cabecera">
+              <h2 id="titulo-vivero">El resto del vivero, <em>de un barrido.</em></h2>
+              <p>Siete lotes a la vez en los datos de ejemplo. La fila se lee entera: cultivo, etapa, plantas vivas y zona, sin abrir ficha por ficha.</p>
+            </header>
+            <ul className="aiden-fila-lotes">
+              {lotesActivos.map((l) => (
+                <li key={l.id} className={l.id === lote.id ? "is-protagonista" : ""}>
+                  <span className="aiden-lote-codigo">{l.lote}</span>
+                  <strong className="aiden-lote-cultivo">{l.cultivo}</strong>
+                  <span className="aiden-lote-etapa"><PistaEtapas etapa={l.etapa} />{l.etapa}</span>
+                  <span className="aiden-lote-vivas">{numero(l.cantidad)} vivas</span>
+                  <span className="aiden-lote-zona">{l.ubicacion}</span>
+                </li>
               ))}
-            </div>
-            <div className="aiden-intent-readout" aria-live="polite">
-              <span>RUTA SELECCIONADA</span>
-              <strong>{intenciones[intencionActiva][1]}</strong>
-              <p>{intenciones[intencionActiva][2]}</p>
-              <a href="#demostracion" onClick={() => setPasoActivo(intenciones[intencionActiva][3])}>Ver este paso en el recorrido <ArrowRight size={14} /></a>
-            </div>
+            </ul>
+            <p className="aiden-modulos-indice">
+              Nueve módulos comparten estos mismos lotes, personas y zonas: <strong>Producción</strong>, <strong>Inventario</strong>,{" "}
+              <strong>Trazabilidad</strong>, <strong>Ambiental</strong>, <strong>Calidad</strong>, <strong>Costos</strong>,{" "}
+              <strong>Personal</strong>, <strong>Reportes</strong> y <strong>Configuración</strong>. Lo que se escribe en uno
+              aparece donde hace falta en los demás.
+            </p>
           </div>
         </section>
 
-        <section className="aiden-system" id="sistema">
+        {/* Los roles, contados por lo que hicieron en la historia. */}
+        <section className="aiden-roles" id="roles" aria-labelledby="titulo-roles">
           <div className="aiden-shell">
-            <header className="aiden-section-header aiden-section-header-dark">
-              <div><p className="aiden-index">EL SISTEMA</p><h2>Una operación.<br /><em>Un contexto.</em></h2></div>
-              <p>El lote funciona como punto de lectura para conectar eventos que, de otra forma, aparecen como registros aislados.</p>
-            </header>
-            <article className="aiden-operation-map">
-              <div className="aiden-map-visual" role="img" aria-label="Relaciones de AiDEN: producción, inventario, ambiente, calidad, trazabilidad y costos conectados alrededor del lote">
-                <span className="aiden-map-eyebrow">RELACIONES DEL SISTEMA</span>
-                <span className="aiden-map-ring aiden-map-ring-one" /><span className="aiden-map-ring aiden-map-ring-two" />
-                {connections.map(([name], index) => <span className={`aiden-map-node aiden-map-node-${index + 1} ${conexionActiva === index ? "is-active" : ""}`} key={name}>{name}</span>)}
-                <span className="aiden-map-core"><Sprout size={22} /><small>CONTEXTO</small><strong>Lote</strong><b>Activo</b></span>
-              </div>
-              <div className="aiden-map-copy">
-                <p className="aiden-kicker aiden-kicker-light">Cómo se relaciona la información</p>
-                <div className="aiden-connection-list">
-                  {connections.map(([name, text, detail], index) => (
-                    <button key={name} type="button" aria-pressed={conexionActiva === index} onMouseEnter={() => setConexionActiva(index)} onFocus={() => setConexionActiva(index)} onClick={() => setConexionActiva(index)} className={`aiden-connection-item ${conexionActiva === index ? "is-active" : ""}`}>
-                      <span>0{index + 1}</span><span><strong>{name}</strong><p>{text}</p><small>{detail}</small></span><ArrowUpRight size={14} aria-hidden="true" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </article>
-            <div className="aiden-system-readout" aria-label="Capacidades que conecta AiDEN">
-              <div><span>Contexto</span><strong>Por lote</strong><small>La operación mantiene su referencia</small></div>
-              <div><span>Relación</span><strong>Conectada</strong><small>Registros vinculados al proceso</small></div>
-              <div><span>Seguimiento</span><strong>Continuo</strong><small>Cambios y señales quedan visibles</small></div>
-              <div><span>Acción</span><strong>Orientada</strong><small>La información apunta al siguiente paso</small></div>
+            <h2 id="titulo-roles">La misma historia, <em>tres lecturas.</em></h2>
+            <div className="aiden-roles-lista">
+              <article>
+                <h3>Laura, supervisora</h3>
+                <p>Registró el lote, movió las etapas y mañana valida sanidad y altura antes de autorizar la salida. Su vista ordena el día por lo que requiere decisión.</p>
+              </article>
+              <article>
+                <h3>Andrés, operario</h3>
+                <p>Regó, fertilizó y reportó las hojas amarillas desde el celular, entre mesas. Su vista pone las tareas primero y las acciones al alcance del pulgar.</p>
+              </article>
+              <article>
+                <h3>Jordan, administrador</h3>
+                <p>Lee el costo por planta y el saldo del mes sin pedirle la planilla a nadie. Su vista junta costos, accesos y el pulso de la semana.</p>
+              </article>
             </div>
+            <p className="aiden-roles-pie">Cada rol entra a su propia vista con su propia cuenta. <Link to="/login">Iniciar sesión</Link></p>
           </div>
         </section>
 
-        <section className="aiden-demo-flow" id="demostracion">
-          <div className="aiden-shell">
-            <header className="aiden-section-header aiden-section-header-dark">
-              <div><p className="aiden-index">RECORRIDO</p><h2>De una alerta a una decisión. <em>Sin perder el contexto.</em></h2></div>
-              <p>Un caso tomado de los datos de ejemplo de AiDEN. Elige cada paso para ver qué muestra el sistema.</p>
-            </header>
-            <div className="aiden-flow">
-              {demoPasos.map(([number, title, description], index) => (
-                <div className="aiden-flow-step" key={title}>
-                  <button type="button" className={`aiden-flow-card ${pasoActivo === index ? "is-active" : ""}`} onClick={() => setPasoActivo(index)} aria-pressed={pasoActivo === index}>
-                    <span>{number}</span><strong>{title}</strong><p>{description}</p><ArrowUpRight size={15} />
-                  </button>
-                  {index < demoPasos.length - 1 && <i aria-hidden="true">→</i>}
-                </div>
-              ))}
-            </div>
-            <div className="aiden-demo-readout" aria-live="polite" aria-atomic="true">
-              <div><span>PASO {demoPasos[pasoActivo][0]} · {demoPasos[pasoActivo][1]}</span><strong>{recorrido ? recorrido[pasoActivo].titulo : demoPasos[pasoActivo][1]}</strong></div>
-              {recorrido && (
-                <div className="aiden-demo-dato">
-                  <b>{recorrido[pasoActivo].valor}</b>
-                  <p>{recorrido[pasoActivo].detalle}</p>
-                </div>
+        {/* Respuestas directas antes del formulario. */}
+        <section className="aiden-preguntas" id="preguntas" aria-labelledby="titulo-preguntas">
+          <div className="aiden-shell aiden-preguntas-grid">
+            <h2 id="titulo-preguntas">Preguntas directas, <em>respuestas directas.</em></h2>
+            <dl>
+              <div>
+                <dt>¿Qué es AiDEN?</dt>
+                <dd>Un sistema de registro y seguimiento para viveros e invernaderos: lotes por etapas, tareas, inventario, lecturas ambientales, incidencias, costos y personal, con la historia de cada lote escrita de principio a fin.</dd>
+              </div>
+              <div>
+                <dt>¿Qué incluye hoy?</dt>
+                <dd>Los nueve módulos funcionan en el navegador y guardan los datos en ese equipo, también sin conexión. Sensores, sincronización entre equipos e integraciones todavía no están disponibles.</dd>
+              </div>
+              <div>
+                <dt>¿La historia de esta página es real?</dt>
+                <dd>Son los datos de ejemplo que trae el sistema: un vivero del Cauca con siete lotes, cuatro zonas y cinco personas. Sin clientes inventados ni cifras de humo; lo que ves es lo que el producto registra.</dd>
+              </div>
+              <div>
+                <dt>¿Qué pasa con los datos que dejo aquí?</dt>
+                <dd>El formulario pide lo mínimo para responderte y el tratamiento sigue la Ley 1581 de 2012. Los detalles están en la <Link to="/privacidad">política de privacidad</Link>.</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+
+        {/* Solicitar demo: el formulario es la acción, no un adorno. */}
+        <section className="aiden-contacto" id="contacto" aria-labelledby="titulo-contacto">
+          <div className="aiden-shell aiden-contacto-grid">
+            <div className="aiden-contacto-copy">
+              <h2 id="titulo-contacto">Muéstranos <em>tu vivero.</em></h2>
+              <p>
+                Cuéntanos cómo llevas hoy los registros —cuaderno, planilla, memoria— y qué quieres poder responder.
+                Te escribimos al correo que dejes para mostrarte AiDEN sobre una operación como la tuya.
+              </p>
+              {joven && incidenciaJoven && (
+                <p className="aiden-contacto-guino">
+                  Mientras tanto, en el vivero de ejemplo: el {joven.cultivo.toLowerCase()} va por el día {numero(diasEntre(hoyISO(), joven.fecha))} y
+                  esta mañana reportaron volcamiento en tres bandejas. Esa historia también quedará escrita.
+                </p>
               )}
             </div>
-          </div>
-        </section>
-
-        <section className="aiden-evidence">
-          <div className="aiden-shell aiden-evidence-grid">
-            <p className="aiden-index">PRUEBA DE PRODUCTO</p>
-            <header><h2>No se trata de mostrar más. <em>Se trata de entender mejor.</em></h2><p>Cada pantalla de AiDEN responde cuatro preguntas sobre la operación del vivero.</p></header>
-            <div className="aiden-evidence-cards">
-              <article><span>01</span><h3>Estado</h3><p>Qué está activo, qué está pendiente y qué necesita atención.</p><div className="aiden-evidence-detail"><b>Lectura inmediata</b><span>Activos · pendientes · alertas</span></div></article>
-              <article><span>02</span><h3>Relación</h3><p>Qué registro pertenece a qué lote, etapa, responsable o evento.</p><div className="aiden-evidence-detail"><b>Contexto conectado</b><span>Lote · etapa · actividad · responsable</span></div></article>
-              <article><span>03</span><h3>Seguimiento</h3><p>Qué cambió, qué sigue y qué información necesita revisión.</p><div className="aiden-evidence-detail"><b>Continuidad operativa</b><span>Último registro · próxima actividad · incidencia</span></div></article>
-              <article><span>04</span><h3>Acción</h3><p>Dónde intervenir y qué parte de la operación necesita atención.</p><div className="aiden-evidence-detail"><b>Siguiente paso</b><span>Qué revisar · quién responde · qué continúa</span></div></article>
-            </div>
-          </div>
-        </section>
-
-        <section className="aiden-complexity">
-          <div className="aiden-shell aiden-complexity-grid">
-            <p className="aiden-index aiden-index-light">MENOS FRICCIÓN</p>
-            <div>
-              <h2>Menos registros. <em>Más control.</em></h2>
-              <p>Una sola operación puede producir decenas de registros. AiDEN los organiza alrededor del contexto que les da sentido.</p>
-            </div>
-            <div className="aiden-complexity-line"><span>Producción</span><i /><span>Inventario</span><i /><span>Calidad</span><i /><span>Costos</span><i /><span>Trazabilidad</span></div>
-          </div>
-        </section>
-
-        <section className="aiden-modules" id="modulos">
-          <div className="aiden-shell">
-            <header className="aiden-section-header">
-              <div><p className="aiden-index">MÓDULOS</p><h2>Todo el sistema.<br /><em>Cada pieza tiene trabajo.</em></h2></div>
-              <p>Nueve áreas que comparten los mismos lotes, personas y zonas: lo que registras en una aparece donde se necesita en las demás.</p>
-            </header>
-            <div className="aiden-bento">{modulos.map(([Icon, nombre, subtitulo, descripcion, ruta, number], index) => <Link to={ruta} key={nombre} className={`aiden-bento-card bento-${index + 1}`}><span className="aiden-bento-number">{number}</span><span className="aiden-bento-icon"><Icon size={18} /></span><span className="aiden-bento-kind">{subtitulo}</span><h3>{nombre}</h3><p>{descripcion}</p><ArrowUpRight size={16} className="aiden-bento-arrow" /></Link>)}</div>
-          </div>
-        </section>
-
-        <section className="aiden-roles" id="roles">
-          <div className="aiden-shell">
-            <header className="aiden-section-header aiden-section-header-compact">
-              <div><p className="aiden-index">ROLES</p><h2>La misma operación.<br /><em>La vista que corresponde.</em></h2></div>
-              <p>La experiencia cambia según la responsabilidad dentro del vivero, evitando cargar a cada perfil con el mismo nivel de información.</p>
-            </header>
-            <div className="aiden-role-table">{roles.map(([number, role, focus, description]) => <Link key={role} to="/login" className="aiden-role-row" aria-label={`${role}: ${description} Ver opciones de acceso.`}><span className="aiden-role-number">{number}</span><h3>{role}</h3><strong>{focus}</strong><p>{description}</p><Check size={15} aria-hidden="true" /></Link>)}</div>
-          </div>
-        </section>
-
-        <section className="aiden-clarity">
-          <div className="aiden-shell aiden-clarity-grid">
-            <p className="aiden-index">ANTES DE ENTRAR</p>
-            <header><h2>Lo que conviene saber <em>antes de pedir la demo.</em></h2></header>
-            <div className="aiden-clarity-list">
-              <article><span>¿Qué es AiDEN?</span><p>Una plataforma de gestión operativa para organizar y seguir la actividad de un vivero.</p></article>
-              <article><span>¿Para quién está pensada?</span><p>Para equipos que participan en la operación y necesitan distintas vistas según su responsabilidad.</p></article>
-              <article><span>¿Qué conecta?</span><p>Producción, inventario, trazabilidad, ambiente, calidad, costos, personal, reportes y configuración.</p></article>
-              <article><span>¿Qué se ve primero?</span><p>El estado de la operación y las señales que requieren seguimiento, usando los registros existentes del sistema.</p></article>
-              <article><span>¿Qué incluye hoy?</span><p>Los nueve módulos funcionan en el navegador y guardan los datos en ese equipo. La conexión con sensores, la sincronización entre equipos y las integraciones todavía no están disponibles.</p></article>
-            </div>
-          </div>
-        </section>
-
-        <section className="aiden-contact" id="contacto">
-          <div className="aiden-shell aiden-contact-grid">
-            <div>
-              <p className="aiden-index">SOLICITAR DEMO</p>
-              <h2 id="contacto-titulo">Cuéntanos qué necesitas <em>ordenar en tu vivero.</em></h2>
-              <p className="aiden-contact-lead">Cuéntanos cómo trabaja tu vivero y qué quieres mejorar. Te contactamos al correo que dejes para mostrarte AiDEN con ejemplos de tu propia operación.</p>
-              <div className="aiden-contact-points"><span>01 <b>Conversación orientada</b></span><span>02 <b>Necesidad concreta</b></span><span>03 <b>Demo del producto</b></span></div>
-            </div>
-            <form className="aiden-lead-form" onSubmit={prepararSolicitud} onFocus={() => { if (!formularioMontado.current) formularioMontado.current = Date.now(); }} aria-label="Solicitud de demostración de AiDEN" aria-busy={enviandoSolicitud}>
+            <form
+              className="aiden-formulario"
+              onSubmit={prepararSolicitud}
+              onFocus={() => { if (!formularioMontado.current) formularioMontado.current = Date.now(); }}
+              aria-label="Solicitud de demostración de AiDEN"
+              aria-busy={enviandoSolicitud}
+            >
               <label>Nombre<input name="nombre" required minLength="2" maxLength="120" autoComplete="name" placeholder="Tu nombre" /></label>
-              <label>Empresa o vivero<input name="empresa" required minLength="2" maxLength="160" autoComplete="organization" placeholder="Nombre de la organización" /></label>
-              <label>Correo electrónico<input name="email" type="email" required maxLength="254" autoComplete="email" placeholder="correo@empresa.com" /></label>
-              <label>¿Qué quieres resolver?<textarea name="mensaje" rows="4" maxLength="2000" placeholder="Producción, trazabilidad, inventario, costos..." /></label>
+              <label>Empresa o vivero<input name="empresa" required minLength="2" maxLength="160" autoComplete="organization" placeholder="Nombre del vivero" /></label>
+              <label>Correo electrónico<input name="email" type="email" required maxLength="254" autoComplete="email" placeholder="correo@vivero.com" /></label>
+              <label>¿Qué quieres poder responder?<textarea name="mensaje" rows="4" maxLength="2000" placeholder="De qué lote salió, cuánto costó, qué se le aplicó..." /></label>
               <label className="aiden-campo-trampa" aria-hidden="true">Sitio web<input name="sitio_web" tabIndex={-1} autoComplete="off" /></label>
-              <label className="aiden-lead-consent">
+              <label className="aiden-consentimiento">
                 <input type="checkbox" name="consentimiento" value="si" required />
                 <span>Autorizo el tratamiento de mis datos para responder esta solicitud, según la <Link to="/privacidad">Política de privacidad</Link>.</span>
               </label>
-              <button type="submit" className="aiden-button aiden-button-dark aiden-button-large" disabled={enviandoSolicitud}>{enviandoSolicitud ? "Enviando..." : "Solicitar demo"} <ArrowRight size={15} /></button>
-              {solicitudEnviada && <p className="aiden-form-status is-success" role="status" aria-live="polite">Solicitud recibida. Te escribiremos al correo que dejaste para coordinar la demostración.</p>}
-              {errorSolicitud && <p className="aiden-form-status" role="alert">{errorSolicitud}</p>}
+              <button type="submit" className="aiden-boton aiden-boton-oscuro aiden-boton-grande" disabled={enviandoSolicitud}>
+                {enviandoSolicitud ? "Enviando..." : "Solicitar demo"} <ArrowRight size={15} />
+              </button>
+              {solicitudEnviada && <p className="aiden-form-estado is-exito" role="status" aria-live="polite">Solicitud recibida. Te escribiremos al correo que dejaste para coordinar la demostración.</p>}
+              {errorSolicitud && <p className="aiden-form-estado" role="alert">{errorSolicitud}</p>}
             </form>
-          </div>
-        </section>
-
-        <section className="aiden-final">
-          <div className="aiden-shell aiden-final-inner">
-            <div className="aiden-final-copy">
-              <p className="aiden-index aiden-index-light">ENTRAR</p>
-              <h2>Cuando el vivero se entiende como un sistema, <em>la interfaz deja de ser un laberinto.</em></h2>
-              <p>Explora el producto o prepara una conversación para revisar cómo AiDEN encaja en la operación de tu vivero.</p>
-              <div className="aiden-final-actions"><a href="#contacto" className="aiden-button aiden-button-light aiden-button-large">Solicitar una demo <ArrowRight size={15} /></a><a href="#demostracion" className="aiden-final-link">Ver el recorrido operativo <ArrowUpRight size={14} /></a></div>
-            </div>
-            <aside className="aiden-final-stamp" aria-label="Resumen de AiDEN"><span>AiDEN</span><strong>09</strong><small>módulos conectados</small><i /><strong>03</strong><small>roles operativos</small></aside>
           </div>
         </section>
       </main>
 
       <footer className="aiden-footer">
         <div className="aiden-shell aiden-footer-inner">
-          <Link to="/" className="aiden-brand" aria-label="AiDEN, ir al inicio"><LogotipoAiden alto={28} /></Link>
-          <span>Gestión operativa para viveros</span>
+          <Link to="/" className="aiden-brand" aria-label="AiDEN, ir al inicio"><IsotipoAiden tamano={30} placa /><span className="aiden-brand-palabra">AiDEN</span></Link>
+          <span>Registro y seguimiento para viveros</span>
           <div><Link to="/terminos">Términos</Link><Link to="/privacidad">Privacidad</Link><Link to="/login">Ingresar</Link></div>
         </div>
       </footer>
