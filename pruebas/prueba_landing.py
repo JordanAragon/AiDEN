@@ -37,8 +37,8 @@ try:
             "la guía de despacho muestra el lote real de los datos de ejemplo",
         )
         registro.check(
-            "datos de ejemplo" in pagina.locator(".aiden-guia figcaption").inner_text(),
-            "la guía declara que la historia sale de los datos de ejemplo",
+            "datos de ejemplo" in pagina.locator(".aiden-escena-nota").inner_text(),
+            "la escena declara que la historia sale de los datos de ejemplo",
         )
 
         boton_menu = pagina.get_by_role("button", name="Abrir menú")

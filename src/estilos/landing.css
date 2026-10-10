@@ -46,12 +46,10 @@ html:has(.aiden-landing) {
   border-radius: 8px;
 }
 
-.aiden-despacho :focus-visible,
-.aiden-pregunta :focus-visible,
-.aiden-contacto :focus-visible,
-.aiden-header :focus-visible,
-.aiden-footer :focus-visible,
-.aiden-mobile-panel :focus-visible {
+.aiden-escena :focus-visible,
+.aiden-pregunta-marco :focus-visible,
+.aiden-contacto-marco :focus-visible,
+.aiden-footer :focus-visible {
   outline-color: var(--vivo);
 }
 
@@ -80,6 +78,17 @@ html:has(.aiden-landing) {
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.01em;
+}
+
+/* Registro de la referencia: títulos de sección en caja alta grotesca,
+   con el remate serif itálico en minúscula como firma de AiDEN. */
+.aiden-landing h2 {
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+}
+
+.aiden-landing h2 em {
+  text-transform: none;
 }
 
 .aiden-landing p {
@@ -145,13 +154,13 @@ html:has(.aiden-landing) {
 }
 
 .aiden-boton-borde {
-  border-color: rgba(243, 246, 239, 0.35);
-  color: var(--sobre-noche);
+  border-color: var(--color-borde-fuerte);
+  color: var(--tinta);
 }
 
 .aiden-boton-borde:hover {
-  border-color: var(--vivo);
-  color: var(--vivo);
+  border-color: var(--color-verde-700);
+  color: var(--color-verde-700);
 }
 
 .aiden-boton:active {
@@ -183,9 +192,9 @@ html:has(.aiden-landing) {
 }
 
 .aiden-header.is-compact {
-  background: color-mix(in srgb, var(--noche) 92%, transparent);
+  background: color-mix(in srgb, var(--dia) 92%, transparent);
   backdrop-filter: blur(14px);
-  box-shadow: 0 1px 0 rgba(243, 246, 239, 0.09);
+  box-shadow: 0 1px 0 var(--color-borde);
 }
 
 .aiden-header-inner {
@@ -217,12 +226,12 @@ html:has(.aiden-landing) {
 .aiden-header-links a {
   font-size: 14.5px;
   font-weight: 550;
-  color: var(--sobre-noche-2);
+  color: var(--tinta-suave);
   transition: color 0.15s ease;
 }
 
 .aiden-header-links a:hover {
-  color: var(--sobre-noche);
+  color: var(--tinta);
 }
 
 .aiden-header-actions {
@@ -234,12 +243,12 @@ html:has(.aiden-landing) {
 .aiden-header-login {
   font-size: 14.5px;
   font-weight: 600;
-  color: var(--sobre-noche);
+  color: var(--tinta);
   text-underline-offset: 4px;
 }
 
 .aiden-header-login:hover {
-  color: var(--vivo);
+  color: var(--color-verde-700);
 }
 
 .aiden-menu {
@@ -249,8 +258,8 @@ html:has(.aiden-landing) {
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  color: var(--sobre-noche);
-  border: 1px solid rgba(243, 246, 239, 0.25);
+  color: var(--tinta);
+  border: 1px solid var(--color-borde-fuerte);
 }
 
 .aiden-mobile-panel {
@@ -261,26 +270,72 @@ body.aiden-menu-open {
   overflow: hidden;
 }
 
-/* ---------- Hero: la víspera del despacho ---------- */
+/* ---------- Hero: la marca corona el marco de la víspera ---------- */
 
 .aiden-despacho {
+  padding-block: 96px 64px;
+}
+
+.aiden-marca-monumental {
+  font-size: clamp(88px, 15.5vw, 230px);
+  font-weight: 700;
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+  text-align: center;
+  color: var(--color-aiden-forest);
+  margin-bottom: -0.085em;
+  position: relative;
+  z-index: 1;
+  user-select: none;
+}
+
+/* El marco de la escena: el bloque verde profundo sobre el lienzo claro. */
+.aiden-escena {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: clamp(32px, 4.5vw, 64px);
+  align-items: center;
   background:
     radial-gradient(900px 480px at 85% -10%, rgba(217, 234, 115, 0.1), transparent 60%),
     radial-gradient(700px 420px at -10% 110%, rgba(113, 139, 88, 0.22), transparent 65%),
     var(--noche);
   color: var(--sobre-noche);
-  padding-block: 158px 104px;
+  border-radius: 28px;
+  padding: clamp(32px, 4.5vw, 68px);
+  margin-bottom: 56px;
+  box-shadow: var(--sombra-marca);
 }
 
-.aiden-despacho-grid {
+.aiden-circulo {
+  position: absolute;
+  top: 22px;
+  right: 22px;
   display: grid;
-  grid-template-columns: 1.04fr 0.96fr;
-  gap: clamp(36px, 5vw, 76px);
-  align-items: center;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1px solid rgba(243, 246, 239, 0.35);
+  color: var(--sobre-noche);
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.aiden-circulo:hover {
+  background: var(--vivo);
+  border-color: var(--vivo);
+  color: var(--noche);
+  transform: translateY(2px);
+}
+
+.aiden-escena-nota {
+  margin-top: -36px;
+  font-size: 12.5px;
+  color: var(--tinta-suave);
 }
 
 .aiden-despacho h1 {
-  font-size: clamp(42px, 4.7vw + 0.55rem, 78px);
+  font-size: clamp(34px, 2.6vw + 0.6rem, 52px);
   color: var(--papel);
 }
 
@@ -304,12 +359,14 @@ body.aiden-menu-open {
   margin-top: 34px;
 }
 
-/* La guía de despacho: el documento que viaja con el camión. */
+/* La guía de despacho: el documento que viaja con el camión,
+   colgado del borde del marco como la tarjeta de la referencia. */
 
 .aiden-guia {
-  margin: 0;
+  margin: 0 0 calc(-1 * clamp(32px, 4.5vw, 68px) - 34px);
   justify-self: end;
-  width: min(430px, 100%);
+  align-self: end;
+  width: min(400px, 100%);
 }
 
 .aiden-guia-papel {
@@ -379,6 +436,11 @@ body.aiden-menu-open {
   font-variant-numeric: tabular-nums;
 }
 
+/* Las últimas filas dejan sitio al sello que cuelga de la esquina. */
+.aiden-guia-papel dl div:nth-last-child(-n + 2) dd {
+  padding-right: 84px;
+}
+
 .aiden-guia-sello {
   position: absolute;
   right: -14px;
@@ -412,18 +474,18 @@ body.aiden-menu-open {
   letter-spacing: -0.03em;
 }
 
-.aiden-guia figcaption {
-  margin-top: 30px;
-  font-size: 12.5px;
-  color: var(--sobre-noche-2);
-}
-
 /* ---------- La pregunta ---------- */
 
 .aiden-pregunta {
+  padding-block: 28px 64px;
+}
+
+.aiden-pregunta-marco {
   background: var(--noche-suave);
   color: var(--sobre-noche);
-  padding-block: 96px;
+  border-radius: 28px;
+  padding: clamp(36px, 5vw, 72px);
+  box-shadow: var(--sombra-marca);
 }
 
 .aiden-pregunta-inner {
@@ -1064,14 +1126,20 @@ body.aiden-menu-open {
   text-underline-offset: 3px;
 }
 
-/* ---------- Contacto: vuelve la noche ---------- */
+/* ---------- Contacto: vuelve la noche, dentro de su marco ---------- */
 
 .aiden-contacto {
+  padding-block: 32px 84px;
+}
+
+.aiden-contacto-marco {
   background:
     radial-gradient(760px 420px at 12% -8%, rgba(217, 234, 115, 0.09), transparent 60%),
     var(--noche);
   color: var(--sobre-noche);
-  padding-block: 100px;
+  border-radius: 28px;
+  padding: clamp(36px, 5vw, 72px);
+  box-shadow: var(--sombra-marca);
 }
 
 .aiden-contacto-grid {
@@ -1244,7 +1312,7 @@ body.aiden-menu-open {
 /* ---------- Tablet ---------- */
 
 @media (max-width: 980px) {
-  .aiden-despacho-grid,
+  .aiden-escena,
   .aiden-pregunta-inner,
   .aiden-preguntas-grid,
   .aiden-contacto-grid {
@@ -1253,11 +1321,19 @@ body.aiden-menu-open {
 
   .aiden-guia {
     justify-self: start;
-    margin-top: 8px;
+    margin: 8px 0 calc(-1 * clamp(32px, 4.5vw, 68px) - 26px);
   }
 
   .aiden-despacho {
-    padding-block: 128px 96px;
+    padding-block: 86px 56px;
+  }
+
+  .aiden-escena {
+    margin-bottom: 48px;
+  }
+
+  .aiden-escena-nota {
+    margin-top: -22px;
   }
 
   /* En una columna el riel se vuelve una barra que acompaña todo el recorrido:
@@ -1339,7 +1415,7 @@ body.aiden-menu-open {
     position: fixed;
     inset: 0;
     z-index: 40;
-    background: var(--noche);
+    background: var(--dia);
     padding: 96px 24px 32px;
     gap: 6px;
     align-content: start;
@@ -1356,7 +1432,7 @@ body.aiden-menu-open {
   .aiden-mobile-panel > a {
     font-size: 22px;
     font-weight: 650;
-    color: var(--sobre-noche);
+    color: var(--tinta);
     padding-block: 12px;
   }
 
@@ -1366,23 +1442,51 @@ body.aiden-menu-open {
     margin-top: 10px;
   }
 
+  .aiden-mobile-panel > a.aiden-boton-lima {
+    color: var(--noche);
+  }
+
   .aiden-despacho {
-    padding-block: 112px 72px;
+    padding-block: 78px 48px;
   }
 
   .aiden-despacho h1 {
-    font-size: clamp(36px, 10.5vw, 46px);
+    font-size: clamp(29px, 7.6vw, 36px);
+  }
+
+  .aiden-escena {
+    padding: 24px 20px;
+  }
+
+  .aiden-circulo {
+    width: 44px;
+    height: 44px;
+    top: 14px;
+    right: 14px;
   }
 
   .aiden-guia-sello {
     right: -6px;
-    bottom: -16px;
-    width: 96px;
-    height: 96px;
+    bottom: -14px;
+    width: 86px;
+    height: 86px;
   }
 
   .aiden-guia-sello strong {
-    font-size: 32px;
+    font-size: 28px;
+  }
+
+  .aiden-guia-papel {
+    padding: 20px 20px 26px;
+  }
+
+  .aiden-guia-papel dl div {
+    grid-template-columns: 76px 1fr;
+    gap: 10px;
+  }
+
+  .aiden-guia-papel dl div:nth-last-child(-n + 2) dd {
+    padding-right: 56px;
   }
 
   .aiden-pregunta,

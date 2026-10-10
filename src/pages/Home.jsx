@@ -6,7 +6,7 @@ import { resumenLote } from "../datos/selectores";
 import { ETAPAS } from "../datos/catalogos";
 import { dinero, dineroOGuion, fechaCorta, hoyISO, numero } from "../utilidades/formato";
 import { useTitulo } from "../hooks/useTitulo";
-import { IsotipoAiden } from "../components/ui/MarcaAiden";
+import { IsotipoAiden, LogotipoAiden } from "../components/ui/MarcaAiden";
 import "../estilos/landing.css";
 
 /*
@@ -311,7 +311,7 @@ export default function Inicio() {
       <a className="aiden-skip-link" href="#contenido">Saltar al contenido principal</a>
       <header className={`aiden-header ${headerCompacto ? "is-compact" : ""}`}>
         <nav className="aiden-shell aiden-header-inner" aria-label="Navegación principal">
-          <Link to="/" className="aiden-brand" onClick={cerrarMenu} aria-label="AiDEN, ir al inicio"><IsotipoAiden tamano={36} placa /><span className="aiden-brand-palabra">AiDEN</span></Link>
+          <Link to="/" className="aiden-brand" onClick={cerrarMenu} aria-label="AiDEN, ir al inicio"><LogotipoAiden alto={32} /></Link>
           <div className="aiden-header-links">
             <a href="#historia">La historia</a>
             <a href="#vivero">El vivero</a>
@@ -351,50 +351,52 @@ export default function Inicio() {
       </header>
 
       <main id="contenido" tabIndex={-1}>
-        {/* Día 66: la página abre en la víspera del despacho. */}
+        {/* Día 66: la marca corona el marco y la escena abre en la víspera del despacho. */}
         <section className="aiden-despacho" aria-labelledby="titulo-despacho">
-          <div className="aiden-shell aiden-despacho-grid">
-            <div className="aiden-despacho-copy">
-              <h1 id="titulo-despacho">
-                Pasado mañana salen 400 plantas de tomate <em>hacia Timbío.</em>
-              </h1>
-              <p className="aiden-despacho-lead">
-                AiDEN, el sistema de registro del vivero, escribió los {numero(totalDias)} días que las trajeron
-                hasta el camión. Esta página rebobina esa historia.
-              </p>
-              <div className="aiden-despacho-acciones">
-                <a href="#contacto" className="aiden-boton aiden-boton-lima aiden-boton-grande">Solicitar una demo <ArrowRight size={15} /></a>
-                <a href="#historia" className="aiden-enlace-claro">Rebobinar la historia <ArrowDown size={14} /></a>
-              </div>
-            </div>
-            <figure className="aiden-guia" aria-label="Guía de despacho del lote de ejemplo">
-              <div className="aiden-guia-papel">
-                <header>
-                  <span className="aiden-guia-doc">Guía de despacho</span>
-                  <span className="aiden-guia-folio">{lote.lote}</span>
-                </header>
-                <dl>
-                  <div><dt>Cultivo</dt><dd>{lote.cultivo}</dd></div>
-                  <div><dt>Origen</dt><dd>{lote.ubicacion} · vivero en el Cauca</dd></div>
-                  <div><dt>Destino</dt><dd>Asociación Campesina de Timbío</dd></div>
-                  <div><dt>Cantidad</dt><dd>400 de {numero(lote.cantidad)} plantas vivas</dd></div>
-                  <div><dt>Sale</dt><dd>{fechaCorta(lote.fechaEstimada)}</dd></div>
-                  <div><dt>Validación</dt><dd>Pendiente · {validadora || "Supervisión"}</dd></div>
-                </dl>
-                <div className="aiden-guia-sello" aria-label={`Día ${numero(hoyDia)} de ${numero(totalDias)} del lote`}>
-                  <span>Día</span>
-                  <strong>{numero(hoyDia)}</strong>
-                  <span>de {numero(totalDias)}</span>
+          <div className="aiden-shell">
+            <p className="aiden-marca-monumental" aria-hidden="true">AiDEN</p>
+            <div className="aiden-escena">
+              <a href="#historia" className="aiden-circulo" aria-label="Bajar a la historia del lote"><ArrowDown size={20} /></a>
+              <div className="aiden-escena-copy">
+                <h1 id="titulo-despacho">
+                  Pasado mañana salen 400 plantas de tomate <em>hacia Timbío.</em>
+                </h1>
+                <p className="aiden-despacho-lead">
+                  AiDEN, el sistema de registro del vivero, escribió los {numero(totalDias)} días que las trajeron
+                  hasta el camión. Esta página rebobina esa historia.
+                </p>
+                <div className="aiden-despacho-acciones">
+                  <a href="#contacto" className="aiden-boton aiden-boton-lima aiden-boton-grande">Solicitar una demo <ArrowRight size={15} /></a>
+                  <a href="#historia" className="aiden-enlace-claro">Rebobinar la historia</a>
                 </div>
               </div>
-              <figcaption>Historia tomada de los datos de ejemplo del sistema.</figcaption>
-            </figure>
+              <figure className="aiden-guia" aria-label="Guía de despacho del lote de ejemplo">
+                <div className="aiden-guia-papel">
+                  <header>
+                    <span className="aiden-guia-doc">Guía de despacho</span>
+                    <span className="aiden-guia-folio">{lote.lote}</span>
+                  </header>
+                  <dl>
+                    <div><dt>Cultivo</dt><dd>{lote.cultivo}</dd></div>
+                    <div><dt>Destino</dt><dd>Asociación Campesina de Timbío</dd></div>
+                    <div><dt>Cantidad</dt><dd>400 de {numero(lote.cantidad)} vivas</dd></div>
+                    <div><dt>Sale</dt><dd>{fechaCorta(lote.fechaEstimada)} · valida {validadora || "Supervisión"}</dd></div>
+                  </dl>
+                  <div className="aiden-guia-sello" aria-label={`Día ${numero(hoyDia)} de ${numero(totalDias)} del lote`}>
+                    <span>Día</span>
+                    <strong>{numero(hoyDia)}</strong>
+                    <span>de {numero(totalDias)}</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+            <p className="aiden-escena-nota">Historia tomada de los datos de ejemplo del sistema.</p>
           </div>
         </section>
 
         {/* La pregunta que el ICA y el comprador hacen igual. */}
         <section className="aiden-pregunta" aria-labelledby="titulo-pregunta">
-          <div className="aiden-shell aiden-pregunta-inner">
+          <div className="aiden-shell aiden-pregunta-marco"><div className="aiden-pregunta-inner">
             <h2 id="titulo-pregunta">¿Podría tu vivero reconstruir la historia <em>de cada planta que vende?</em></h2>
             <div className="aiden-pregunta-copy">
               <p>
@@ -413,7 +415,7 @@ export default function Inicio() {
                 <a href="https://www.elespectador.com/la-huerta/mirelo-sin-compromiso-el-negocio-detras-de-los-viveros/" target="_blank" rel="noopener noreferrer">El Espectador</a>
               </p>
             </div>
-          </div>
+          </div></div>
         </section>
 
         {/* El rebobinado: cada evento clavado a su día, el riel lleva la cuenta. */}
@@ -586,7 +588,7 @@ export default function Inicio() {
 
         {/* Solicitar demo: el formulario es la acción, no un adorno. */}
         <section className="aiden-contacto" id="contacto" aria-labelledby="titulo-contacto">
-          <div className="aiden-shell aiden-contacto-grid">
+          <div className="aiden-shell aiden-contacto-marco"><div className="aiden-contacto-grid">
             <div className="aiden-contacto-copy">
               <h2 id="titulo-contacto">Muéstranos <em>tu vivero.</em></h2>
               <p>
@@ -622,7 +624,7 @@ export default function Inicio() {
               {solicitudEnviada && <p className="aiden-form-estado is-exito" role="status" aria-live="polite">Solicitud recibida. Te escribiremos al correo que dejaste para coordinar la demostración.</p>}
               {errorSolicitud && <p className="aiden-form-estado" role="alert">{errorSolicitud}</p>}
             </form>
-          </div>
+          </div></div>
         </section>
       </main>
 
