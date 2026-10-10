@@ -795,7 +795,7 @@ export default function Inicio() {
               <Link to="/privacidad">Privacidad</Link>
             </nav>
           </div>
-          <p className="aiden-footer-marca" aria-hidden="true"><img src={palabraMarcaMoss} alt="" loading="lazy" /></p>
+          <p className="aiden-footer-marca" aria-hidden="true"><img src={palabraMarcaMoss} alt="" /></p>
           <div className="aiden-footer-banda">
             <span>AiDEN · Vivero en el Cauca, Colombia</span>
             <span>Los datos de esta página son los de ejemplo del sistema.</span>
