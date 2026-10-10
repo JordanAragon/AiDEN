@@ -78,8 +78,8 @@ try:
             "cada estación muestra la ventana del módulo real del sistema",
         )
         registro.check(
-            pagina.locator(".aiden-ventana-ruta").first.inner_text().startswith("Calidad"),
-            "la primera ventana pertenece al módulo de Calidad",
+            pagina.locator(".aiden-estaciones .aiden-ventana-ruta").first.inner_text().startswith("Calidad"),
+            "la primera estación pertenece al módulo de Calidad",
         )
         pagina.locator(".aiden-estacion").last.scroll_into_view_if_needed()
         pagina.wait_for_timeout(700)

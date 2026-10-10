@@ -570,7 +570,7 @@ export default function Inicio() {
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="text-[14px] font-bold text-slate-900">{lote.cultivo}</p>
-                        <p className="text-[11px] text-slate-500">{lote.ubicacion} · {numero(lote.cantidadInicial)} sembradas</p>
+                        <p className="text-[11px] text-slate-600">{lote.ubicacion} · {numero(lote.cantidadInicial)} sembradas</p>
                       </div>
                       <Insignia tono="exito">ACTIVO</Insignia>
                     </div>
