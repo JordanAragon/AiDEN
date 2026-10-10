@@ -214,7 +214,7 @@ function ContenidoVentana({ ventana, historia }) {
           </div>
           <Insignia tono="exito">ACTIVO</Insignia>
         </div>
-        <PasosEtapa etapa="Cosecha" fechas={{}} compacto />
+        <div className="rounded-xl border border-slate-200 bg-white p-3"><PasosEtapa etapa="Cosecha" fechas={{}} compacto /></div>
         <div className="flex gap-6 border-t border-slate-100 pt-3">
           <div><p className="text-[11px] font-semibold text-slate-500">Plantas vivas</p><p className="text-lg font-bold tabular-nums text-slate-900">{numero(ventana.vivas)}</p></div>
           <div><p className="text-[11px] font-semibold text-slate-500">Iniciales</p><p className="text-lg font-bold tabular-nums text-slate-900">{numero(ventana.iniciales)}</p></div>
@@ -266,7 +266,7 @@ function ContenidoVentana({ ventana, historia }) {
           </div>
           <Insignia tono="exito">ACTIVO</Insignia>
         </div>
-        <PasosEtapa etapa="Germinación" fechas={{}} compacto />
+        <div className="rounded-xl border border-slate-200 bg-white p-3"><PasosEtapa etapa="Germinación" fechas={{}} compacto /></div>
         <ul className="grid gap-1.5 border-t border-slate-100 pt-3">
           {ventana.movimientos.map((m) => (
             <li key={m.id} className="flex items-center justify-between gap-3 text-[12px]">
@@ -574,7 +574,7 @@ export default function Inicio() {
                       </div>
                       <Insignia tono="exito">ACTIVO</Insignia>
                     </div>
-                    <PasosEtapa etapa={lote.etapa} fechas={{}} compacto />
+                    <div className="rounded-xl border border-slate-200 bg-white p-3"><PasosEtapa etapa={lote.etapa} fechas={{}} compacto /></div>
                     <dl className="aiden-ficha-lineas">
                       <div><dt>Plantas vivas</dt><dd>{numero(lote.cantidad)} de {numero(lote.cantidadInicial)}</dd></div>
                       <div><dt>Pedido</dt><dd>400 · Asociación de Timbío</dd></div>
