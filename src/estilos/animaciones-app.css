@@ -74,3 +74,103 @@ main button:not(:disabled):active {
     transform: none;
   }
 }
+
+/* Navegación entre módulos con View Transitions (enlaces con viewTransition):
+   la pastilla del módulo activo viaja de un ítem al otro, el módulo anterior se
+   apaga y el nuevo entra con aidenEntradaModulo. Sin soporte, todo cambia al
+   instante como antes. */
+.aiden-nav-pastilla {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 0.75rem;
+  view-transition-name: aiden-nav-pastilla;
+}
+
+.aiden-app-shell main {
+  view-transition-name: aiden-modulo;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-group(aiden-nav-pastilla) {
+    animation-duration: 420ms;
+    animation-timing-function: cubic-bezier(0.2, 0.9, 0.25, 1);
+  }
+
+  ::view-transition-old(aiden-modulo) {
+    animation: aidenSalidaModulo 170ms ease-in both;
+  }
+
+  ::view-transition-new(aiden-modulo) {
+    animation: none;
+  }
+
+  html:has(.aiden-app-shell)::view-transition-old(root),
+  html:has(.aiden-app-shell)::view-transition-new(root) {
+    animation-duration: 200ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+@keyframes aidenSalidaModulo {
+  to {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.995);
+    filter: blur(2px);
+  }
+}
+
+/* Desplegables de la barra superior (búsqueda ⌘K, notificaciones, cuenta): nacen
+   del control que los abre, con su origen en esa esquina, y sus filas entran en
+   una cascada corta. */
+.aiden-desplegable {
+  transform-origin: 1.5rem -0.5rem;
+}
+
+.aiden-desplegable-derecha {
+  transform-origin: calc(100% - 1.25rem) -0.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-desplegable {
+    transition:
+      opacity 180ms ease-out,
+      transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+      filter 220ms ease-out;
+  }
+
+  @starting-style {
+    .aiden-desplegable {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.96);
+      filter: blur(4px);
+    }
+  }
+
+  .aiden-desplegable > button,
+  .aiden-desplegable li,
+  .aiden-desplegable > a {
+    animation: aidenFilaDesplegable 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .aiden-desplegable > :nth-child(2) { animation-delay: 20ms; }
+  .aiden-desplegable > :nth-child(3) { animation-delay: 40ms; }
+  .aiden-desplegable > :nth-child(4) { animation-delay: 60ms; }
+  .aiden-desplegable > :nth-child(5) { animation-delay: 80ms; }
+  .aiden-desplegable > :nth-child(6) { animation-delay: 100ms; }
+  .aiden-desplegable > :nth-child(n + 7) { animation-delay: 120ms; }
+}
+
+@keyframes aidenFilaDesplegable {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

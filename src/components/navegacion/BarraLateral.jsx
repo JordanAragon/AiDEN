@@ -112,10 +112,13 @@ export default function BarraLateral() {
             <li key={item.label}>
               <NavLink
                 to={targetPath}
+                viewTransition
                 title={!mobile && colapsado ? item.label : undefined}
                 onClick={() => mobile && setMovilAbierto(false)}
-                className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${!mobile && colapsado ? "justify-center" : "justify-start"} ${isActive ? "bg-emerald-50 font-semibold text-emerald-800" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"}`}
+                className={`relative isolate flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${!mobile && colapsado ? "justify-center" : "justify-start"} ${isActive ? "font-semibold text-emerald-800" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"}`}
               >
+                {/* La pastilla del módulo activo se desliza al siguiente con View Transitions. */}
+                {isActive && <span className="aiden-nav-pastilla bg-emerald-50" aria-hidden="true" />}
                 {item.icon}
                 {(mobile || !colapsado) && <span className="flex-1">{item.label}</span>}
                 {conteos[item.path] > 0 &&

@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { ClipboardList, Clock3, Plus, Sprout, Thermometer } from "lucide-react";
 import { Boton } from "../ui/Boton";
 import EncabezadoPagina from "../ui/EncabezadoPagina";
+import CifraRodante from "../ui/CifraRodante";
+import LienzoVivo from "../vivo/LienzoVivo";
+import { diferida } from "../../utilidades/cargaDiferida";
 import Insignia from "../ui/Insignia";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import LineaTiempo from "../lote/LineaTiempo";
@@ -14,6 +17,8 @@ import { alertas as calcularAlertas, cargaPorPersona, evaluarLectura, lotesActiv
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
 import { aFecha, haceTiempo, hoyISO, numero, plural } from "../../utilidades/formato";
+
+const EscenaPulso = diferida(() => import("../vivo/escenas/EscenaPulso"));
 
 function accionRapida(alerta, datos) {
   if (alerta.tipo === "Ambiental") {
@@ -68,8 +73,9 @@ export default function DashboardSupervisorContenido() {
         }
       />
 
-      <section aria-label="Resumen del estado de la operación" aria-live="polite" data-vista="supervisor" className="aiden-supervisor-pulso overflow-hidden rounded-[28px] bg-[#0b2b1b] text-white shadow-[0_24px_70px_rgba(11,43,27,0.16)]">
-        <section className="grid lg:grid-cols-[1.15fr_.85fr]">
+      <section aria-label="Resumen del estado de la operación" aria-live="polite" data-vista="supervisor" className="aiden-supervisor-pulso relative isolate overflow-hidden rounded-[28px] bg-[#0b2b1b] text-white shadow-[0_24px_70px_rgba(11,43,27,0.16)]">
+        <LienzoVivo escena={EscenaPulso} datos={{ riesgos: lista.length }} />
+        <section className="relative grid lg:grid-cols-[1.15fr_.85fr]">
           <section className="p-6 sm:p-8 lg:p-10">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-aiden-lime">Pulso de la operación</p>
             <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
@@ -91,28 +97,28 @@ export default function DashboardSupervisorContenido() {
             <article className="flex min-h-32 flex-col justify-between border-r border-white/10 p-5 sm:p-6">
               <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Trabajo abierto</p>
               <div>
-                <p className="text-3xl font-semibold tracking-tight">{abiertas.length}</p>
+                <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={abiertas.length} desdeCero /></p>
                 <p className="mt-1 text-xs text-white/55">{vencidas ? plural(vencidas, "vencida", "vencidas") : "sin vencidas"} · {plural(completadasHoy, "completada hoy", "completadas hoy")}</p>
               </div>
             </article>
             <article className="flex min-h-32 flex-col justify-between p-5 sm:p-6">
               <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Lotes activos</p>
               <div>
-                <p className="text-3xl font-semibold tracking-tight">{activos.length}</p>
+                <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={activos.length} desdeCero /></p>
                 <p className="mt-1 text-xs text-white/55">{activos.filter((l) => l.etapa === "Cosecha").length} en cosecha · {numero(activos.reduce((s, l) => s + Number(l.cantidad || 0), 0))} plantas</p>
               </div>
             </article>
             <article className="flex min-h-32 flex-col justify-between border-r border-t border-white/10 p-5 sm:p-6">
               <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Riesgos</p>
               <div>
-                <p className="text-3xl font-semibold tracking-tight">{lista.length}</p>
+                <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={lista.length} desdeCero /></p>
                 <p className="mt-1 text-xs text-white/55">operación, ambiente y calidad</p>
               </div>
             </article>
             <article className="flex min-h-32 flex-col justify-between border-t border-white/10 p-5 sm:p-6">
               <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Inventario</p>
               <div>
-                <p className="text-3xl font-semibold tracking-tight">{bajoMinimo}</p>
+                <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={bajoMinimo} desdeCero /></p>
                 <p className="mt-1 text-xs text-white/55">{bajoMinimo ? "insumos por reponer" : "stock en rango"}</p>
               </div>
             </article>

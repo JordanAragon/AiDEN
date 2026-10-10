@@ -14,6 +14,10 @@ import { useColoresGrafica } from "../../hooks/useColoresGrafica";
 import { useSesion, useUsuarios } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
 import { dinero, dineroCorto, dineroOGuion, fechaCorta, numero, plural } from "../../utilidades/formato";
+import LienzoVivo from "../vivo/LienzoVivo";
+import { diferida } from "../../utilidades/cargaDiferida";
+
+const EscenaPulso = diferida(() => import("../vivo/escenas/EscenaPulso"));
 
 export default function DashboardAdminContenido() {
   const datos = useDatos();
@@ -90,10 +94,11 @@ export default function DashboardAdminContenido() {
             <PulsoSemana datos={datos} />
           </div>
         </article>
-        <article className="rounded-2xl bg-aiden-forest-deep p-5 text-white">
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-aiden-lime">Prioridad</p>
-          <h2 className="mt-2 text-lg font-semibold">Alertas que requieren decisión</h2>
-          <section className="mt-4 space-y-2">
+        <article className="relative isolate overflow-hidden rounded-2xl bg-aiden-forest-deep p-5 text-white">
+          <LienzoVivo escena={EscenaPulso} datos={{ riesgos: decisiones.length }} />
+          <p className="relative text-[11px] font-bold uppercase tracking-[0.16em] text-aiden-lime">Prioridad</p>
+          <h2 className="relative mt-2 text-lg font-semibold">Alertas que requieren decisión</h2>
+          <section className="relative mt-4 space-y-2">
             {decisiones.slice(0, visibles).map((d) => (
               <ItemOscuro key={d.id} tipo={d.tipo} texto={d.texto} detalle={d.detalle} to={d.to} />
             ))}

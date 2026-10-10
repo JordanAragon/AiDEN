@@ -217,7 +217,7 @@ export default function BarraSuperior() {
           </kbd>
         </form>
         {showPalette && (
-          <section id="resultados-busqueda" className="absolute left-0 top-12 w-[min(24rem,calc(100vw-5rem))] rounded-2xl border border-slate-200 bg-white p-2 shadow-xl" role="dialog" aria-label="Resultados de búsqueda">
+          <section id="resultados-busqueda" className="aiden-desplegable absolute left-0 top-12 w-[min(24rem,calc(100vw-5rem))] rounded-2xl border border-slate-200 bg-white p-2 shadow-xl" role="dialog" aria-label="Resultados de búsqueda">
             <header className="flex items-center justify-between px-2 pb-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Módulos disponibles</span>
               <button type="button" onClick={cerrarBusqueda} className="rounded-md p-1 text-slate-400 hover:bg-slate-100" aria-label="Cerrar búsqueda">
@@ -284,7 +284,7 @@ export default function BarraSuperior() {
             {noLeidas > 0 && <span className="absolute right-0.5 top-0.5 min-w-4 rounded-full bg-red-600 px-1 text-[9px] font-bold leading-4 text-white">{noLeidas}</span>}
           </button>
           {showNotifs && (
-            <section className="absolute right-0 top-12 z-30 w-[min(20rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl" role="dialog" aria-label="Notificaciones">
+            <section className="aiden-desplegable aiden-desplegable-derecha absolute right-0 top-12 z-30 w-[min(20rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl" role="dialog" aria-label="Notificaciones">
               <header className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Notificaciones</p>
                 {noLeidas > 0 && (
@@ -349,7 +349,7 @@ export default function BarraSuperior() {
             <ChevronDown size={14} className="text-slate-400" aria-hidden="true" />
           </button>
           {showProfile && (
-            <section className="absolute right-0 top-12 z-30 w-56 rounded-2xl border border-slate-200 bg-white py-2 shadow-xl" role="dialog" aria-label="Cuenta">
+            <section className="aiden-desplegable aiden-desplegable-derecha absolute right-0 top-12 z-30 w-56 rounded-2xl border border-slate-200 bg-white py-2 shadow-xl" role="dialog" aria-label="Cuenta">
               <section className="border-b border-slate-100 px-4 py-3">
                 <p className="text-sm font-medium text-slate-800">{nombre}</p>
                 <p className="mt-1 text-xs text-slate-500">{session?.email}</p>
