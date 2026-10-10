@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://aidencol.vercel.app/</loc></url>
+  <url><loc>https://aidencol.vercel.app/planes</loc></url>
+  <url><loc>https://aidencol.vercel.app/preguntas</loc></url>
   <url><loc>https://aidencol.vercel.app/privacidad</loc></url>
   <url><loc>https://aidencol.vercel.app/terminos</loc></url>
 </urlset>

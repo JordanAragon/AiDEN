@@ -70,7 +70,7 @@ try:
             "las estaciones van hacia atrás y terminan en el día 0",
         )
         registro.check(
-            pagina.locator(".aiden-ventana").count() == 7,
+            pagina.locator(".aiden-estaciones .aiden-ventana").count() == 7,
             "cada estación muestra la ventana del módulo real del sistema",
         )
         registro.check(
@@ -98,21 +98,64 @@ try:
             pagina.locator(".aiden-fila-lotes li.is-protagonista").count() == 1,
             "el lote de la historia queda señalado en la fila",
         )
-        modulos = pagina.locator(".aiden-modulos-indice").inner_text()
+        modulos = pagina.locator(".aiden-marquee ul").first.inner_text()
         registro.check(
-            all(nombre in modulos for nombre in ["Producción", "Inventario", "Trazabilidad", "Ambiental", "Calidad", "Costos", "Personal", "Reportes", "Configuración"]),
-            "el índice nombra los nueve módulos",
+            all(nombre.upper() in modulos.upper() for nombre in ["Producción", "Inventario", "Trazabilidad", "Ambiental", "Calidad", "Costos", "Personal", "Reportes", "Configuración"]),
+            "la cinta nombra los nueve módulos",
         )
 
-        # Honestidad: la página dice qué incluye hoy.
-        preguntas = pagina.locator(".aiden-preguntas").inner_text()
+        # El asistente real responde en la página, con fuente verificable.
+        pagina.locator(".aiden-chat-chips button").first.click()
+        pagina.locator(".aiden-chat-respuesta").first.wait_for()
         registro.check(
-            "todavía no están disponibles" in preguntas,
-            "las preguntas directas aclaran qué no está disponible todavía",
+            "Verificable en" in pagina.locator(".aiden-chat-respuesta").first.inner_text(),
+            "el chip del asistente produce una respuesta real con su fuente",
         )
+        entrada_chat = pagina.locator("#pregunta-asistente")
+        entrada_chat.fill("LT-2026-012")
+        entrada_chat.press("Enter")
+        pagina.wait_for_timeout(300)
+        registro.check(
+            "Café" in pagina.locator(".aiden-chat-respuesta").last.inner_text(),
+            "el asistente responde una pregunta libre por código de lote",
+        )
+
+        # La pila de roles y la cinta de módulos dan vida a la mitad de la página.
+        registro.check(pagina.locator(".aiden-roles-pila .aiden-rol").count() == 3, "los tres roles se apilan en tarjetas propias")
+
+        # Planes vive en su propia página, sin precios inventados.
+        pagina.goto(BASE + "/planes")
+        pagina.locator(".aiden-planes-fila").wait_for()
+        registro.check(pagina.locator(".aiden-planes-fila article").count() == 3, "la página de planes ofrece tres formas de adoptar AiDEN")
+        registro.check(
+            "$" not in pagina.locator(".aiden-planes-fila").inner_text(),
+            "los planes no muestran precios inventados",
+        )
+        registro.check(
+            "se define contigo" in pagina.locator(".aiden-planes-banda").inner_text(),
+            "la banda de planes declara que el precio se define en la demo",
+        )
+        pagina.locator(".aiden-plan-selector").nth(1).click()
+        registro.check(
+            "Licencia" in pagina.locator(".aiden-plan-detalle").inner_text(),
+            "elegir un plan actualiza el detalle y el llamado a la acción",
+        )
+
+        # Preguntas vive en su propia página, como acordeón honesto.
+        pagina.goto(BASE + "/preguntas")
+        pagina.locator(".aiden-acordeon").wait_for()
+        registro.check(pagina.locator(".aiden-acordeon-item").count() >= 6, "la página de preguntas responde al menos seis dudas")
+        boton_incluye = pagina.get_by_role("button", name="¿Qué incluye hoy?")
+        boton_incluye.click()
+        registro.check(
+            "todavía no están disponibles" in pagina.locator(".aiden-acordeon-item.is-abierta").inner_text(),
+            "el acordeón aclara qué no está disponible todavía",
+        )
+        pagina.goto(BASE + "/")
+        pagina.locator(".aiden-landing").wait_for()
 
         # Fuentes externas citadas de forma segura.
-        fuentes = pagina.locator(".aiden-fuentes a")
+        fuentes = pagina.locator(".aiden-datos-sector a")
         registro.check(fuentes.count() >= 2, "la sección de contexto cita sus fuentes")
         seguras = all(
             "noopener" in (fuentes.nth(i).get_attribute("rel") or "")

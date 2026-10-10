@@ -23,9 +23,11 @@
   --vivo: var(--color-aiden-lime);
   --cumplido: var(--color-aiden-moss);
   --radio-ficha: 22px;
+  --curva-entrada: var(--curva-entrada);
+  --curva-micro: var(--curva-micro);
   --sombra-marca: 0 30px 90px rgba(11, 47, 32, 0.11);
   --sombra-noche: 0 20px 54px rgba(7, 27, 17, 0.4);
-  font-family: var(--font-sans, "DM Sans", ui-sans-serif, system-ui, sans-serif);
+  font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   color: var(--tinta);
   background: var(--dia);
   overflow-x: clip;
@@ -74,7 +76,7 @@ html:has(.aiden-landing) {
 
 .aiden-landing h1 em,
 .aiden-landing h2 em {
-  font-family: var(--font-serif, "Instrument Serif", Georgia, serif);
+  font-family: "Instrument Serif", Georgia, serif;
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.01em;
@@ -154,7 +156,7 @@ html:has(.aiden-landing) {
 }
 
 .aiden-boton-borde {
-  border-color: var(--color-borde-fuerte);
+  border-color: var(--borde-fuerte);
   color: var(--tinta);
 }
 
@@ -214,7 +216,7 @@ html:has(.aiden-landing) {
   gap: 28px;
   padding: 10px 18px;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--color-borde) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--borde) 80%, transparent);
   background: color-mix(in srgb, var(--papel) 55%, transparent);
   transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
@@ -222,7 +224,7 @@ html:has(.aiden-landing) {
 .aiden-header.is-compact .aiden-header-inner {
   background: color-mix(in srgb, var(--papel) 88%, transparent);
   backdrop-filter: blur(14px);
-  border-color: var(--color-borde);
+  border-color: var(--borde);
   box-shadow: 0 14px 40px rgba(11, 47, 32, 0.1);
 }
 
@@ -281,7 +283,7 @@ html:has(.aiden-landing) {
   justify-content: center;
   border-radius: 12px;
   color: var(--tinta);
-  border: 1px solid var(--color-borde-fuerte);
+  border: 1px solid var(--borde-fuerte);
 }
 
 .aiden-mobile-panel {
@@ -303,9 +305,8 @@ body.aiden-menu-open {
 .aiden-marca-monumental {
   display: flex;
   justify-content: center;
-  margin: 0 0 clamp(-26px, -2vw, -14px);
   position: relative;
-  z-index: 1;
+  z-index: 0;
   user-select: none;
 }
 
@@ -314,9 +315,11 @@ body.aiden-menu-open {
   height: auto;
 }
 
-/* El marco de la escena: el bloque verde profundo sobre el lienzo claro. */
+/* El marco de la escena: el bloque verde profundo sobre el lienzo claro.
+   La palabra de marca pasa por detrás y el marco recorta su base: el 3D de la referencia. */
 .aiden-escena {
   position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1.08fr 0.92fr;
   gap: clamp(32px, 4.5vw, 64px);
@@ -328,6 +331,9 @@ body.aiden-menu-open {
   color: var(--sobre-noche);
   border-radius: 28px;
   padding: clamp(32px, 4.5vw, 68px);
+  padding-top: clamp(56px, 7vw, 108px);
+  /* El marco recorta la base de la palabra: la superposición de la referencia. */
+  margin-top: clamp(-78px, -5.4vw, -22px);
   margin-bottom: 56px;
   box-shadow: var(--sombra-marca);
 }
@@ -408,7 +414,7 @@ body.aiden-menu-open {
   position: absolute;
   inset-inline: 22px;
   top: 58px;
-  border-top: 1px dashed var(--color-borde-fuerte);
+  border-top: 1px dashed var(--borde-fuerte);
 }
 
 .aiden-guia-papel header {
@@ -529,31 +535,51 @@ body.aiden-menu-open {
   color: var(--vivo);
 }
 
-.aiden-pregunta-copy {
+.aiden-pregunta-bajada {
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 1.62;
+  color: var(--sobre-noche-2);
+  max-width: 52ch;
+}
+
+/* Los datos del sector como fichas, no como párrafos. */
+.aiden-datos-sector {
   display: grid;
-  gap: 18px;
-  font-size: 16.5px;
-  line-height: 1.65;
+  gap: 14px;
+  margin: 0;
+}
+
+.aiden-datos-sector div {
+  display: grid;
+  gap: 4px;
+  border-top: 1px solid rgba(243, 246, 239, 0.16);
+  padding-top: 14px;
+}
+
+.aiden-datos-sector dt {
+  font-size: clamp(26px, 2.4vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--vivo);
+}
+
+.aiden-datos-sector dd {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
   color: var(--sobre-noche-2);
-  max-width: 58ch;
 }
 
-.aiden-pregunta-copy p:first-child {
-  color: var(--sobre-noche);
-}
-
-.aiden-fuentes {
-  font-size: 12.5px;
-  color: var(--sobre-noche-2);
-}
-
-.aiden-fuentes a {
+.aiden-datos-sector a {
   color: var(--color-verde-300);
   text-decoration: underline;
   text-underline-offset: 3px;
+  font-weight: 650;
 }
 
-.aiden-fuentes a:hover {
+.aiden-datos-sector a:hover {
   color: var(--vivo);
 }
 
@@ -639,7 +665,7 @@ body.aiden-menu-open {
   position: relative;
   display: block;
   height: 120px;
-  border-left: 1px dashed var(--color-borde-fuerte);
+  border-left: 1px dashed var(--borde-fuerte);
   margin-left: 4px;
   margin-top: 10px;
 }
@@ -711,7 +737,7 @@ body.aiden-menu-open {
 
 @media (prefers-reduced-motion: no-preference) {
   .aiden-riel-dia {
-    animation: aiden-dia-entra 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+    animation: aiden-dia-entra 0.3s var(--curva-micro);
   }
 }
 
@@ -732,7 +758,7 @@ body.aiden-menu-open {
 
 .aiden-pista i {
   width: 16px;
-  border-top: 2px dashed var(--color-borde-fuerte);
+  border-top: 2px dashed var(--borde-fuerte);
 }
 
 .aiden-pista i.is-hecha {
@@ -761,7 +787,7 @@ body.aiden-menu-open {
   top: 10px;
   bottom: 10px;
   left: 57px;
-  border-left: 1px dashed var(--color-borde-fuerte);
+  border-left: 1px dashed var(--borde-fuerte);
 }
 
 .aiden-estacion {
@@ -809,7 +835,7 @@ body.aiden-menu-open {
 
 .aiden-estacion article {
   background: var(--papel);
-  border: 1px solid var(--color-borde);
+  border: 1px solid var(--borde);
   border-radius: var(--radio-ficha);
   padding: 26px 28px;
   box-shadow: 0 10px 34px rgba(11, 47, 32, 0.05);
@@ -830,14 +856,15 @@ body.aiden-menu-open {
 .aiden-estacion article > p {
   font-size: 15.5px;
   line-height: 1.62;
-  color: var(--color-texto);
+  color: var(--texto);
   max-width: 64ch;
 }
 
 /* La ventana del módulo: la anatomía real de una pantalla de AiDEN,
    con barra de ventana, ruta del módulo y el componente del sistema dentro. */
 .aiden-ventana {
-  border: 1px solid var(--color-borde-fuerte);
+  color: var(--texto);
+  border: 1px solid var(--borde-fuerte);
   border-radius: 16px;
   overflow: hidden;
   background: var(--aiden-app-bg, #f5f7f4);
@@ -849,8 +876,8 @@ body.aiden-menu-open {
   align-items: center;
   gap: 10px;
   padding: 9px 14px;
-  background: var(--color-fondo, #fff);
-  border-bottom: 1px solid var(--color-borde);
+  background: var(--fondo, #fff);
+  border-bottom: 1px solid var(--borde);
 }
 
 .aiden-ventana-puntos {
@@ -873,7 +900,7 @@ body.aiden-menu-open {
 .aiden-ventana-ruta {
   font-size: 11.5px;
   font-weight: 650;
-  color: var(--color-texto);
+  color: var(--texto);
   letter-spacing: 0.01em;
 }
 
@@ -895,7 +922,7 @@ body.aiden-menu-open {
   .aiden-estacion {
     opacity: 0;
     transform: translateY(18px);
-    transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 0.84, 0.28, 1);
+    transition: opacity 0.55s ease, transform 0.55s var(--curva-entrada);
   }
 
   .aiden-estacion.is-vista {
@@ -915,7 +942,7 @@ body.aiden-menu-open {
   display: grid;
   gap: 36px;
   justify-items: start;
-  border-top: 1px solid var(--color-borde);
+  border-top: 1px solid var(--borde);
   padding-top: 72px;
 }
 
@@ -929,7 +956,7 @@ body.aiden-menu-open {
 .aiden-liquidacion {
   width: min(560px, 100%);
   background: var(--papel);
-  border: 1px solid var(--color-borde);
+  border: 1px solid var(--borde);
   border-radius: 20px;
   padding: 26px 28px;
   box-shadow: var(--sombra-marca);
@@ -939,7 +966,7 @@ body.aiden-menu-open {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  border-bottom: 1px dashed var(--color-borde-fuerte);
+  border-bottom: 1px dashed var(--borde-fuerte);
   padding-bottom: 14px;
 }
 
@@ -959,7 +986,7 @@ body.aiden-menu-open {
 .aiden-liquidacion dl div::after {
   content: "";
   order: 2;
-  border-bottom: 2px dotted var(--color-borde-fuerte);
+  border-bottom: 2px dotted var(--borde-fuerte);
   transform: translateY(-4px);
 }
 
@@ -967,7 +994,7 @@ body.aiden-menu-open {
   order: 1;
   font-size: 14.5px;
   font-weight: 550;
-  color: var(--color-texto);
+  color: var(--texto);
 }
 
 .aiden-liquidacion dd {
@@ -980,7 +1007,7 @@ body.aiden-menu-open {
 }
 
 .aiden-liquidacion-total {
-  border-top: 1px dashed var(--color-borde-fuerte);
+  border-top: 1px dashed var(--borde-fuerte);
   padding-top: 14px;
   margin-top: 4px;
 }
@@ -1004,7 +1031,7 @@ body.aiden-menu-open {
 .aiden-saldo-antecedente {
   font-size: 15.5px;
   line-height: 1.6;
-  color: var(--color-texto);
+  color: var(--texto);
   max-width: 68ch;
 }
 
@@ -1043,7 +1070,7 @@ body.aiden-menu-open {
   margin: 0;
   padding: 0;
   background: var(--papel);
-  border: 1px solid var(--color-borde);
+  border: 1px solid var(--borde);
   border-radius: 20px;
   overflow: hidden;
 }
@@ -1057,7 +1084,7 @@ body.aiden-menu-open {
 }
 
 .aiden-fila-lotes li + li {
-  border-top: 1px solid var(--color-borde);
+  border-top: 1px solid var(--borde);
 }
 
 .aiden-fila-lotes li.is-protagonista {
@@ -1089,7 +1116,7 @@ body.aiden-menu-open {
   gap: 10px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-texto);
+  color: var(--texto);
 }
 
 .aiden-lote-vivas {
@@ -1125,34 +1152,96 @@ body.aiden-menu-open {
   padding-block: 96px;
 }
 
-.aiden-roles-lista {
+/* La pila de roles: cada tarjeta se pega y la siguiente la tapa al bajar. */
+.aiden-roles-pila {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(20px, 3vw, 44px);
-  margin-top: 44px;
+  gap: 18px;
+  margin-top: 40px;
 }
 
-.aiden-roles-lista article {
+.aiden-rol {
+  position: sticky;
+  top: calc(104px + var(--indice, 0) * 18px);
   display: grid;
-  gap: 10px;
+  grid-template-columns: 1.35fr 1fr;
+  gap: clamp(20px, 4vw, 56px);
+  align-items: start;
+  border-radius: 24px;
+  padding: clamp(26px, 3.5vw, 44px);
+  min-height: 250px;
+  box-shadow: var(--sombra-marca);
+}
+
+.aiden-rol-noche {
+  background:
+    radial-gradient(600px 300px at 90% -20%, rgba(217, 234, 115, 0.1), transparent 60%),
+    var(--noche);
+  color: var(--sobre-noche);
+}
+
+.aiden-rol-noche .aiden-rol-detalle,
+.aiden-rol-noche .aiden-rol-hizo li {
+  color: var(--sobre-noche-2);
+}
+
+.aiden-rol-noche .aiden-rol-hizo li {
+  border-color: rgba(243, 246, 239, 0.18);
+}
+
+.aiden-rol-lima {
+  background: var(--vivo);
+  color: var(--noche);
+}
+
+.aiden-rol-lima .aiden-rol-hizo li {
+  border-color: rgba(7, 27, 17, 0.25);
+}
+
+.aiden-rol-papel {
+  background: var(--papel);
+  border: 1px solid var(--borde);
+}
+
+.aiden-rol h3 {
+  font-size: clamp(22px, 2vw, 28px);
+}
+
+.aiden-rol-frase {
+  margin-top: 12px;
+  font-size: clamp(16px, 1.4vw, 19px);
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  max-width: 34ch;
+}
+
+.aiden-rol-detalle {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--tinta-suave);
+  max-width: 38ch;
+}
+
+.aiden-rol-hizo {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
   align-content: start;
-  border-top: 1px solid var(--color-borde-fuerte);
-  padding-top: 18px;
 }
 
-.aiden-roles-lista h3 {
-  font-size: 19px;
-}
-
-.aiden-roles-lista p {
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--color-texto);
+.aiden-rol-hizo li {
+  font-size: 13.5px;
+  font-weight: 600;
+  padding-block: 10px;
+  border-top: 1px dashed var(--borde-fuerte);
+  color: var(--texto);
 }
 
 .aiden-roles-pie {
   margin-top: 36px;
-  border-top: 1px solid var(--color-borde-fuerte);
+  border-top: 1px solid var(--borde-fuerte);
   padding-top: 18px;
   font-size: 15.5px;
   color: var(--tinta-suave);
@@ -1167,10 +1256,6 @@ body.aiden-menu-open {
 
 /* ---------- Preguntas directas ---------- */
 
-.aiden-preguntas {
-  background: var(--amanecer);
-  padding-block: 96px;
-}
 
 .aiden-preguntas-grid {
   display: grid;
@@ -1195,11 +1280,11 @@ body.aiden-menu-open {
   display: grid;
   gap: 8px;
   padding-block: 22px;
-  border-top: 1px solid var(--color-borde-fuerte);
+  border-top: 1px solid var(--borde-fuerte);
 }
 
 .aiden-preguntas dl div:last-child {
-  border-bottom: 1px solid var(--color-borde-fuerte);
+  border-bottom: 1px solid var(--borde-fuerte);
 }
 
 .aiden-preguntas dt {
@@ -1212,7 +1297,7 @@ body.aiden-menu-open {
   margin: 0;
   font-size: 15px;
   line-height: 1.62;
-  color: var(--color-texto);
+  color: var(--texto);
 }
 
 .aiden-preguntas dd a {
@@ -1297,8 +1382,8 @@ body.aiden-menu-open {
   font-size: 15px;
   padding: 11px 14px;
   border-radius: 12px;
-  border: 1px solid var(--color-borde-fuerte);
-  background: var(--color-fondo);
+  border: 1px solid var(--borde-fuerte);
+  background: var(--fondo);
   caret-color: var(--color-verde-700);
   transition: border-color 0.15s ease;
 }
@@ -1398,7 +1483,7 @@ body.aiden-menu-open {
 }
 
 .aiden-footer-cierre em {
-  font-family: var(--font-serif, "Instrument Serif", Georgia, serif);
+  font-family: "Instrument Serif", Georgia, serif;
   font-style: italic;
   font-weight: 400;
   color: var(--vivo);
@@ -1524,7 +1609,7 @@ body.aiden-menu-open {
     gap: 14px;
     background: color-mix(in srgb, var(--amanecer) 94%, transparent);
     backdrop-filter: blur(10px);
-    border-block: 1px solid var(--color-borde);
+    border-block: 1px solid var(--borde);
     padding: 10px 4px;
   }
 
@@ -1732,4 +1817,852 @@ body.aiden-menu-open {
     flex-basis: 100%;
     margin-left: 25px;
   }
+}
+
+/* ---------- El asistente en vivo ---------- */
+
+.aiden-ia {
+  padding-block: 32px 64px;
+}
+
+.aiden-ia-marco {
+  background: var(--noche-suave);
+  color: var(--sobre-noche);
+  border-radius: 28px;
+  padding: clamp(32px, 5vw, 64px);
+  box-shadow: var(--sombra-marca);
+}
+
+.aiden-ia-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(28px, 4.5vw, 72px);
+  align-items: start;
+}
+
+.aiden-ia-copy {
+  display: grid;
+  gap: 16px;
+}
+
+.aiden-ia-copy h2 {
+  color: var(--papel);
+}
+
+.aiden-ia-copy h2 em {
+  color: var(--vivo);
+}
+
+.aiden-ia-copy > p {
+  font-size: 16px;
+  line-height: 1.62;
+  color: var(--sobre-noche-2);
+  max-width: 48ch;
+}
+
+.aiden-ia-pista {
+  font-size: 13.5px !important;
+  background: rgba(217, 234, 115, 0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+/* El chat del asistente, dentro de la ventana del módulo. */
+
+.aiden-chat {
+  display: grid;
+  gap: 12px;
+}
+
+.aiden-chat-historial {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-height: 190px;
+  max-height: 330px;
+  overflow-y: auto;
+  padding: 4px 2px;
+  scrollbar-width: thin;
+}
+
+.aiden-chat-vacio {
+  font-size: 13px;
+  color: var(--tinta-suave);
+  background: var(--fondo);
+  border: 1px dashed var(--borde-fuerte);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.aiden-chat-turno {
+  display: grid;
+  gap: 8px;
+}
+
+.aiden-chat-pregunta {
+  justify-self: end;
+  max-width: 85%;
+  background: var(--color-aiden-forest);
+  color: var(--sobre-noche);
+  font-size: 13.5px;
+  font-weight: 550;
+  padding: 9px 14px;
+  border-radius: 16px 16px 4px 16px;
+}
+
+.aiden-chat-respuesta {
+  justify-self: start;
+  max-width: 94%;
+  display: grid;
+  gap: 8px;
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: 4px 16px 16px 16px;
+  padding: 12px 14px;
+}
+
+.aiden-chat-respuesta p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--texto);
+}
+
+.aiden-chat-respuesta ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.aiden-chat-respuesta li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--texto);
+  border-top: 1px dashed var(--borde);
+  padding-top: 6px;
+}
+
+.aiden-chat-respuesta small {
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--color-verde-700);
+}
+
+.aiden-chat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.aiden-chat-chips button {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--texto);
+  background: var(--fondo);
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 999px;
+  padding: 7px 13px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.aiden-chat-chips button:hover {
+  border-color: var(--color-verde-500);
+  background: var(--color-verde-50);
+}
+
+.aiden-chat-entrada {
+  display: flex;
+  gap: 8px;
+}
+
+.aiden-chat-entrada input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 13.5px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--borde-fuerte);
+  background: var(--fondo);
+  caret-color: var(--color-verde-700);
+}
+
+.aiden-chat-entrada input:focus-visible {
+  outline: 2px solid var(--color-verde-500);
+  outline-offset: 1px;
+  border-color: var(--color-verde-500);
+}
+
+.aiden-chat-entrada .aiden-boton {
+  padding: 10px 16px;
+}
+
+/* ---------- Fortalezas, en la lengua del documento ---------- */
+
+.aiden-fuertes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 36px);
+  margin: 44px 0 0;
+}
+
+.aiden-fuertes div {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  border-top: 1px solid var(--borde-fuerte);
+  padding-top: 16px;
+}
+
+.aiden-fuertes dt {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.aiden-fuertes dd {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--tinta-suave);
+}
+
+/* ---------- Planes ---------- */
+
+.aiden-pagina-planes {
+  background: var(--dia);
+  padding-block: 148px 96px;
+}
+
+.aiden-titulo-pagina {
+  font-size: clamp(34px, 3.6vw + 0.5rem, 54px);
+}
+
+.aiden-planes-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.aiden-planes-cabecera > div {
+  display: grid;
+  gap: 14px;
+  max-width: 640px;
+}
+
+.aiden-planes-cabecera p:not(.aiden-capitulo) {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--tinta-suave);
+}
+
+/* El anillo de texto que gira, guiño a la referencia. */
+.aiden-anillo {
+  flex: none;
+  width: 118px;
+  height: 118px;
+}
+
+.aiden-anillo svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.aiden-anillo text {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  fill: var(--color-aiden-moss-oscuro);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-anillo svg {
+    animation: aiden-anillo-gira 28s linear infinite;
+  }
+}
+
+@keyframes aiden-anillo-gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.aiden-planes-fila {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.aiden-planes-fila article {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  background: var(--papel);
+  border: 1px solid var(--borde);
+  border-radius: 20px;
+  padding: 26px 28px;
+}
+
+.aiden-planes-fila article:first-child {
+  border: 2px solid var(--color-verde-500);
+}
+
+.aiden-planes-fila header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.aiden-planes-fila h3 {
+  font-size: 21px;
+}
+
+.aiden-planes-fila article > p {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--tinta-suave);
+}
+
+.aiden-planes-fila ul {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: grid;
+}
+
+.aiden-planes-fila li {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--texto);
+  padding-block: 9px;
+  border-top: 1px dashed var(--borde-fuerte);
+}
+
+.aiden-planes-banda {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--borde);
+  margin-top: 28px;
+  padding-top: 24px;
+}
+
+.aiden-planes-banda p {
+  font-size: 15px;
+  font-weight: 550;
+  color: var(--texto);
+  max-width: 56ch;
+}
+
+@media (max-width: 980px) {
+  .aiden-ia-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .aiden-fuertes {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .aiden-planes-fila {
+    grid-template-columns: 1fr;
+  }
+
+  .aiden-planes-cabecera {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 860px) {
+  .aiden-anillo {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .aiden-fuertes {
+    grid-template-columns: 1fr;
+  }
+
+  .aiden-chat-historial {
+    max-height: 280px;
+  }
+}
+
+/* ---------- CTA flotante (acompaña la lectura) ---------- */
+
+.aiden-flotante {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 45;
+  transform: translate(-50%, 110px);
+  opacity: 0;
+  transition: transform 0.35s var(--curva-micro), opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.aiden-flotante.is-visible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.aiden-flotante .aiden-boton {
+  box-shadow: 0 18px 50px rgba(7, 27, 17, 0.35);
+}
+
+/* ---------- La cinta de módulos ---------- */
+
+.aiden-marquee {
+  overflow: hidden;
+  background: var(--noche-suave);
+  margin-block: 48px;
+  padding-block: 16px;
+}
+
+.aiden-marquee-pista {
+  display: flex;
+  width: max-content;
+}
+
+.aiden-marquee ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  padding-inline: 17px;
+}
+
+.aiden-marquee li {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--sobre-noche);
+  white-space: nowrap;
+}
+
+.aiden-marquee li i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--vivo);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-marquee-pista {
+    animation: aiden-cinta 36s linear infinite;
+  }
+
+  .aiden-marquee:hover .aiden-marquee-pista,
+  .aiden-marquee:focus-within .aiden-marquee-pista {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-marquee-pista {
+    width: auto;
+  }
+
+  .aiden-marquee ul {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .aiden-marquee ul[aria-hidden="true"] {
+    display: none;
+  }
+}
+
+@keyframes aiden-cinta {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Página de planes: selector y detalle ---------- */
+
+.aiden-plan-selector {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+  width: 100%;
+}
+
+.aiden-plan-selector header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.aiden-plan-selector h2 {
+  font-size: 21px;
+  text-transform: none;
+}
+
+.aiden-plan-selector > p {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--tinta-suave);
+}
+
+.aiden-planes-fila article {
+  transition: transform 0.25s var(--curva-micro), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.aiden-planes-fila article.is-elegido {
+  border: 2px solid var(--color-verde-500);
+  background: var(--color-verde-50);
+  transform: translateY(-4px);
+  box-shadow: var(--sombra-marca);
+}
+
+.aiden-planes-fila article.is-elegido .aiden-plan-selector h2 {
+  color: var(--color-verde-700);
+}
+
+.aiden-plan-detalle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  background: var(--papel);
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  padding: 20px 24px;
+  margin-top: 22px;
+}
+
+.aiden-plan-detalle p {
+  font-size: 15.5px;
+  line-height: 1.5;
+  max-width: 52ch;
+}
+
+.aiden-planes-nota {
+  font-size: 13px !important;
+  font-weight: 450 !important;
+  color: var(--tinta-suave) !important;
+}
+
+.aiden-planes-nota a {
+  font-weight: 650;
+  color: var(--color-verde-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Página de preguntas: acordeón ---------- */
+
+.aiden-pagina-preguntas {
+  background: var(--dia);
+  padding-block: 148px 96px;
+}
+
+.aiden-preguntas-intro {
+  margin-top: 16px;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--tinta-suave);
+  max-width: 34ch;
+}
+
+.aiden-preguntas-intro a {
+  font-weight: 650;
+  color: var(--color-verde-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.aiden-acordeon {
+  display: grid;
+}
+
+.aiden-acordeon-item {
+  border-top: 1px solid var(--borde-fuerte);
+}
+
+.aiden-acordeon-item:last-child {
+  border-bottom: 1px solid var(--borde-fuerte);
+}
+
+.aiden-acordeon h2 {
+  font-size: inherit;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.aiden-acordeon button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  text-align: left;
+  padding-block: 20px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--tinta);
+  transition: color 0.15s ease;
+}
+
+.aiden-acordeon button:hover {
+  color: var(--color-verde-700);
+}
+
+.aiden-acordeon button svg {
+  flex: none;
+  transition: transform 0.25s var(--curva-micro);
+  color: var(--tinta-suave);
+}
+
+.aiden-acordeon-item.is-abierta button svg {
+  transform: rotate(180deg);
+}
+
+.aiden-acordeon-cuerpo {
+  padding: 0 0 22px;
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+
+.aiden-acordeon-cuerpo p {
+  font-size: 15px;
+  line-height: 1.62;
+  color: var(--texto);
+  max-width: 64ch;
+}
+
+.aiden-acordeon-cuerpo a {
+  font-weight: 650;
+  font-size: 14px;
+  color: var(--color-verde-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Micro-movimiento global ---------- */
+
+.aiden-boton svg {
+  transition: transform 0.22s var(--curva-micro);
+}
+
+.aiden-boton:hover svg {
+  transform: translateX(3px);
+}
+
+.aiden-circulo svg {
+  transition: transform 0.22s var(--curva-micro);
+}
+
+.aiden-circulo:hover svg {
+  transform: translateY(3px);
+}
+
+.aiden-ventana {
+  transition: transform 0.3s var(--curva-micro), box-shadow 0.3s ease;
+}
+
+.aiden-estacion article:hover .aiden-ventana,
+.aiden-ia-grid .aiden-ventana:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 54px rgba(11, 47, 32, 0.12);
+}
+
+/* Los títulos de las secciones claras se encienden al entrar. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aiden-rebobinado h2,
+    .aiden-saldo h2,
+    .aiden-vivero h2,
+    .aiden-roles h2 {
+      animation: aiden-enciende linear both;
+      animation-timeline: view(block);
+      animation-range: entry 5% entry 45%;
+    }
+  }
+}
+
+@keyframes aiden-enciende {
+  from {
+    color: var(--tinta-suave);
+  }
+  to {
+    color: var(--tinta);
+  }
+}
+
+@media (max-width: 980px) {
+  .aiden-rol {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .aiden-pregunta-inner .aiden-datos-sector {
+    margin-top: 6px;
+  }
+}
+
+/* ---------- Motion: una sola gramática, siempre respetuosa ---------- */
+
+/* Entrada del hero al cargar: la palabra se asienta y el marco la recorta. */
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-marca-monumental {
+    animation: aiden-palabra-llega 0.8s var(--curva-entrada) both;
+  }
+
+  .aiden-escena {
+    animation: aiden-escena-llega 0.8s 0.12s var(--curva-entrada) both;
+  }
+
+  .aiden-guia-papel {
+    transition: transform 0.35s var(--curva-micro), box-shadow 0.35s ease;
+  }
+
+  .aiden-guia-papel:hover {
+    transform: rotate(-0.6deg) translateY(-4px);
+    box-shadow: 0 26px 70px rgba(7, 27, 17, 0.5);
+  }
+
+  .aiden-chat-turno {
+    animation: aiden-turno-entra 0.3s var(--curva-micro);
+  }
+
+  .aiden-acordeon-cuerpo:not([hidden]) {
+    animation: aiden-turno-entra 0.28s var(--curva-micro);
+  }
+
+  .aiden-estacion.is-actual .aiden-estacion-dia::before {
+    animation: aiden-pulso 2.4s ease-out infinite;
+  }
+}
+
+@keyframes aiden-palabra-llega {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+}
+
+@keyframes aiden-escena-llega {
+  from {
+    opacity: 0;
+    transform: translateY(34px) scale(0.985);
+  }
+}
+
+@keyframes aiden-turno-entra {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes aiden-pulso {
+  0% {
+    box-shadow: 0 0 0 0 rgba(23, 107, 69, 0.35);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 11px rgba(23, 107, 69, 0);
+  }
+}
+
+/* Reveals scroll-driven por pieza: cada bloque entra desde su propio timeline. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aiden-liquidacion,
+    .aiden-fila-lotes li,
+    .aiden-fuertes div,
+    .aiden-plan-detalle,
+    .aiden-acordeon-item {
+      animation: aiden-aparece linear both;
+      animation-timeline: view(block);
+      animation-range: entry 0% entry 38%;
+    }
+
+    /* Los bloques oscuros entran solo con desplazamiento: su texto claro
+       necesita el fondo propio desde el primer fotograma. */
+    .aiden-pregunta-marco,
+    .aiden-ia-marco,
+    .aiden-footer-cierre,
+    .aiden-footer-columnas nav {
+      animation: aiden-aparece-solido linear both;
+      animation-timeline: view(block);
+      animation-range: entry 0% entry 38%;
+    }
+
+    .aiden-datos-sector div {
+      animation: aiden-aparece-lateral linear both;
+      animation-timeline: view(block);
+      animation-range: entry 0% entry 45%;
+    }
+  }
+}
+
+@keyframes aiden-aparece-solido {
+  from {
+    transform: translateY(28px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes aiden-aparece {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes aiden-aparece-lateral {
+  from {
+    opacity: 0;
+    transform: translateX(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* La placa esencial de la página de preguntas. */
+.aiden-esencial {
+  margin-top: 30px;
+  width: 100%;
+  box-shadow: 0 10px 34px rgba(11, 47, 32, 0.07);
+}
+
+.aiden-esencial small a {
+  font-weight: 650;
+  color: var(--color-verde-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

@@ -8,6 +8,8 @@ import { diferida } from "../utilidades/cargaDiferida";
 
 const Home = diferida(() => import("../pages/Home"));
 const Login = diferida(() => import("../pages/Login"));
+const Planes = diferida(() => import("../pages/Planes"));
+const PreguntasLanding = diferida(() => import("../pages/PreguntasLanding"));
 const Signup = diferida(() => import("../pages/Signup"));
 const ForgotPassword = diferida(() => import("../pages/ForgotPassword"));
 const InformacionLegal = diferida(() => import("../pages/InformacionLegal"));
@@ -80,6 +82,8 @@ export default function Rutas() {
       <Suspense fallback={<CargandoPagina />}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/planes" element={<Planes />} />
+          <Route path="/preguntas" element={<PreguntasLanding />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

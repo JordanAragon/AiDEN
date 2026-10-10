@@ -1,27 +1,26 @@
-import { ArrowDown, ArrowRight, Menu, X } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { generarSemilla } from "../datos/semilla";
+import { SUGERENCIAS, responder } from "../datos/asistente";
 import { resumenLote, ultimasLecturas } from "../datos/selectores";
 import { ETAPAS } from "../datos/catalogos";
 import { dinero, dineroOGuion, fechaCorta, hoyISO, numero } from "../utilidades/formato";
 import { useTitulo } from "../hooks/useTitulo";
-import { IsotipoAiden, LogotipoAiden } from "../components/ui/MarcaAiden";
-import palabraMarca from "../assets/marca/aiden-palabra.svg";
-import palabraMarcaMoss from "../assets/marca/aiden-palabra-moss.svg";
+import MarcoPublico from "../components/landing/MarcoPublico";
+import { IsotipoAiden } from "../components/ui/MarcaAiden";
 import Insignia from "../components/ui/Insignia";
 import BarraRango from "../components/ui/BarraRango";
 import PasosEtapa from "../components/lote/PasosEtapa";
 import LineaTiempo from "../components/lote/LineaTiempo";
 import { TONO_INCIDENCIA, TONO_PRIORIDAD } from "../components/ui/tonos";
-import "../estilos/landing.css";
+import palabraMarca from "../assets/marca/aiden-palabra.svg";
 
 /*
   La landing rebobina la historia real del lote de tomate de los datos de ejemplo:
   del despacho (día 68) a la siembra (día 0). Cada estación muestra una ventana del
-  módulo real del sistema que escribió ese registro, con los mismos componentes de
-  la app (Insignia, PasosEtapa, LineaTiempo, BarraRango). Nada se inventa:
-  generarSemilla es pura y determinista respecto a hoy.
+  módulo real del sistema, y el asistente del producto responde en vivo. Nada se
+  inventa: generarSemilla es pura y determinista respecto a hoy.
 */
 
 const diasEntre = (isoA, isoB) => {
@@ -38,6 +37,8 @@ const hora = (fecha) => {
   return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "a. m." : "p. m."}`;
 };
 
+const MODULOS = ["Producción", "Inventario", "Trazabilidad", "Ambiental", "Calidad", "Costos", "Personal", "Reportes", "Configuración"];
+
 function construirHistoria() {
   const datos = generarSemilla();
   const lote = datos.lotes.find((l) => l.id === "LT-2026-011") || datos.lotes.find((l) => l.estado === "Activo");
@@ -53,7 +54,6 @@ function construirHistoria() {
   const incidenciaJoven = joven && datos.calidad.find((i) => i.lote === joven.id && i.estado !== "Cerrada");
 
   const registro = evento("TRZ-010");
-  const consumo = evento("TRZ-011");
   const aAdaptacion = evento("TRZ-012");
   const aDesarrollo = evento("TRZ-013");
   const fertilizacion = evento("TRZ-014");
@@ -72,42 +72,42 @@ function construirHistoria() {
       dia: dia(incidencia.fecha) + 1,
       etapa: "Cosecha",
       titulo: "La víspera no está limpia.",
-      cuerpo: `Ayer a las 8:45 a. m., Andrés Rojas reportó hojas amarillas en el tercio inferior de las plantas. Quedó como incidencia de prioridad alta, y el sistema ya tiene agendado lo que sigue: mañana la validación, pasado mañana las canastillas.`,
+      cuerpo: "Ayer, hojas amarillas en el tercio inferior: incidencia de prioridad alta. El sistema ya agendó lo que sigue.",
       ventana: { ruta: "Calidad / Incidencias", meta: lote.lote, tipo: "incidencia", incidencia, tareas: [deshoje, validacion, despacho].filter(Boolean) },
     },
     aCosecha && {
       dia: dia(aCosecha.fecha),
       etapa: "Cosecha",
       titulo: `${numero(lote.cantidad)} de ${numero(lote.cantidadInicial)}.`,
-      cuerpo: "El lote pasó a Cosecha con 30 plantas menos de las que empezaron. La merma no se maquilla: queda contada, con fecha y responsable, y la ficha cambió para todo el equipo a la vez.",
+      cuerpo: "El lote pasó a Cosecha con 30 plantas menos. La merma no se maquilla: queda contada, con fecha y responsable.",
       ventana: { ruta: "Producción / Lotes", meta: `${aCosecha.responsable} · ${hora(aCosecha.fecha)}`, tipo: "etapa", lote, vivas: lote.cantidad, iniciales: lote.cantidadInicial },
     },
     anticipo && {
       dia: dia(anticipo.fecha),
       etapa: "Cosecha",
       titulo: "El pedido llegó con anticipo.",
-      cuerpo: "La Asociación Campesina de Timbío apartó su pedido. El ingreso quedó escrito en Costos, junto al lote que lo gana: ni en un bolsillo, ni en otra planilla.",
+      cuerpo: "El ingreso quedó escrito junto al lote que lo gana: ni en un bolsillo, ni en otra planilla.",
       ventana: { ruta: "Costos / Movimientos", meta: fechaCorta(anticipo.fecha), tipo: "costo", costo: anticipo },
     },
     fertilizacion && {
       dia: dia(fertilizacion.fecha),
       etapa: "Desarrollo",
       titulo: "Fertilización, 7:30 de la mañana.",
-      cuerpo: `${fertilizacion.responsable} aplicó NPK en todas las camas y lo dejó en la historia del lote antes de guardar la bomba. Sin cuaderno, sin pasar en limpio por la noche.`,
+      cuerpo: `${fertilizacion.responsable} la dejó en la historia del lote antes de guardar la bomba. Sin pasar en limpio por la noche.`,
       ventana: { ruta: "Trazabilidad / Historia del lote", meta: lote.lote, tipo: "eventos", eventos: [fertilizacion] },
     },
     aDesarrollo && {
       dia: dia(aDesarrollo.fecha),
       etapa: "Desarrollo",
       titulo: "Cambio de etapa, visible para todos.",
-      cuerpo: "Laura movió el lote a Desarrollo: el operario ve sus tareas del lote, el administrador ve el costo acumulado, y la línea de tiempo lo guarda con hora y responsable.",
+      cuerpo: "Laura movió la etapa y la ficha cambió para todo el equipo a la vez: tareas para el operario, costo para el administrador.",
       ventana: { ruta: "Trazabilidad / Historia del lote", meta: lote.lote, tipo: "eventos", eventos: [aDesarrollo, aAdaptacion].filter(Boolean) },
     },
     ultimaLectura && {
       dia: dia(aAdaptacion ? aAdaptacion.fecha : lote.fecha),
       etapa: "Adaptación",
       titulo: "Las lecturas siguieron entrando.",
-      cuerpo: "Primer cambio de etapa. Mientras tanto, el Invernadero 1 registró temperatura, humedad y luz cada cuatro horas; si una zona sale del rango configurado, la alerta señala los lotes que están en ella.",
+      cuerpo: "Temperatura, humedad y luz cada cuatro horas; si una zona sale del rango, la alerta señala los lotes que están en ella.",
       ventana: {
         ruta: "Ambiental / Zonas",
         meta: lote.ubicacion,
@@ -121,12 +121,13 @@ function construirHistoria() {
       dia: 0,
       etapa: "Germinación",
       titulo: `${numero(lote.cantidadInicial)} plantas, ${hora(registro.fecha)}`,
-      cuerpo: `${registro.responsable} registró el lote. Cincuenta minutos después, ${consumo ? consumo.responsable : "el operario"} sacó dos bultos de sustrato y cuatro bandejas: el inventario los descontó y el costo quedó escrito solo, sin una segunda planilla.`,
+      cuerpo: `${registro.responsable} registró el lote; el sustrato y las bandejas salieron del inventario y el costo quedó escrito solo.`,
       ventana: { ruta: "Producción / Lotes", meta: fechaCorta(lote.fecha), tipo: "registro", lote, movimientos: movimientosDia0 },
     },
   ].filter(Boolean);
 
   return {
+    datos,
     lote,
     resumen,
     estaciones,
@@ -139,7 +140,6 @@ function construirHistoria() {
     lotesActivos: datos.lotes.filter((l) => l.estado === "Activo"),
     registros: datos.trazabilidad.filter((e) => e.lote === lote.id).length,
     validadora: validacion ? nombreCorto(datos, validacion.responsableId) : "",
-    personas: datos.personas,
   };
 }
 
@@ -281,48 +281,145 @@ function ContenidoVentana({ ventana, historia }) {
   return null;
 }
 
+/* Una cifra que cuenta hasta su valor al entrar en pantalla (y queda quieta
+   con movimiento reducido o sin IntersectionObserver). */
+function CifraViva({ hasta, formatear = numero, sufijo = "" }) {
+  const [valor, setValor] = useState(hasta);
+  const nodoRef = useRef(null);
+  const corrido = useRef(false);
+
+  useEffect(() => {
+    const nodo = nodoRef.current;
+    if (!nodo || corrido.current) return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+    if (!("IntersectionObserver" in window)) return undefined;
+    const observador = new IntersectionObserver((entradas) => {
+      if (!entradas.some((e) => e.isIntersecting) || corrido.current) return;
+      corrido.current = true;
+      observador.disconnect();
+      const inicio = performance.now();
+      const durar = 850;
+      const paso = (ahora) => {
+        const t = Math.min(1, (ahora - inicio) / durar);
+        const suavizado = 1 - (1 - t) ** 3;
+        setValor(Math.round(hasta * suavizado));
+        if (t < 1) window.requestAnimationFrame(paso);
+      };
+      setValor(0);
+      window.requestAnimationFrame(paso);
+    }, { threshold: 0.6 });
+    observador.observe(nodo);
+    return () => observador.disconnect();
+  }, [hasta]);
+
+  return <span ref={nodoRef}>{formatear(valor)}{sufijo}</span>;
+}
+
+/* La demo del asistente: el módulo de IA real respondiendo en el navegador. */
+function DemoAsistente({ datos }) {
+  const [charla, setCharla] = useState([]);
+  const [pregunta, setPregunta] = useState("");
+  const charlaRef = useRef(null);
+
+  const preguntar = (texto) => {
+    const limpio = texto.trim();
+    if (!limpio) return;
+    setCharla((previa) => [...previa.slice(-5), { pregunta: limpio, respuesta: responder(limpio, datos, null) }]);
+    setPregunta("");
+    window.requestAnimationFrame(() => {
+      charlaRef.current?.scrollTo({ top: charlaRef.current.scrollHeight, behavior: "smooth" });
+    });
+  };
+
+  return (
+    <div className="aiden-chat">
+      <div className="aiden-chat-historial" ref={charlaRef} aria-live="polite">
+        {charla.length === 0 && (
+          <p className="aiden-chat-vacio">Elige una pregunta o escribe la tuya. El asistente responde con los registros del vivero de ejemplo.</p>
+        )}
+        {charla.map((turno, indice) => (
+          <div key={`${turno.pregunta}-${indice}`} className="aiden-chat-turno">
+            <p className="aiden-chat-pregunta">{turno.pregunta}</p>
+            <div className="aiden-chat-respuesta">
+              <p>{turno.respuesta.texto}</p>
+              {turno.respuesta.items?.length > 0 && (
+                <ul>
+                  {turno.respuesta.items.slice(0, 5).map((item) => (
+                    <li key={item.texto}>
+                      {item.etiqueta && <Insignia tono="neutral">{String(item.etiqueta).toUpperCase()}</Insignia>}
+                      <span>{item.texto}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {turno.respuesta.fuente && <small>Verificable en: {turno.respuesta.fuente}</small>}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="aiden-chat-chips" role="group" aria-label="Preguntas sugeridas">
+        {SUGERENCIAS.slice(0, 4).map((sugerencia) => (
+          <button key={sugerencia} type="button" onClick={() => preguntar(sugerencia)}>{sugerencia}</button>
+        ))}
+      </div>
+      <form
+        className="aiden-chat-entrada"
+        onSubmit={(evento) => {
+          evento.preventDefault();
+          preguntar(pregunta);
+        }}
+      >
+        <label className="sr-only" htmlFor="pregunta-asistente">Escribe tu pregunta para el asistente</label>
+        <input
+          id="pregunta-asistente"
+          value={pregunta}
+          onChange={(evento) => setPregunta(evento.target.value)}
+          placeholder="Escribe tu pregunta… por ejemplo, LT-2026-012"
+          maxLength={160}
+          autoComplete="off"
+        />
+        <button type="submit" className="aiden-boton aiden-boton-oscuro" aria-label="Preguntar al asistente"><ArrowRight size={15} /></button>
+      </form>
+    </div>
+  );
+}
+
+const ROLES = [
+  {
+    nombre: "Laura, supervisora",
+    tono: "noche",
+    frase: "Registró el lote, movió las etapas y mañana valida el despacho.",
+    detalle: "Su vista ordena el día por lo que requiere decisión.",
+    hizo: ["Registro del lote", "Cambios de etapa", "Validación de salida"],
+  },
+  {
+    nombre: "Andrés, operario",
+    tono: "lima",
+    frase: "Regó, fertilizó y reportó las hojas amarillas desde el celular.",
+    detalle: "Su vista pone las tareas primero, al alcance del pulgar.",
+    hizo: ["Riego y fertilización", "Reporte de incidencia", "Tareas del día"],
+  },
+  {
+    nombre: "Jordan, administrador",
+    tono: "papel",
+    frase: "Lee el costo por planta sin pedirle la planilla a nadie.",
+    detalle: "Su vista junta costos, accesos y el pulso de la semana.",
+    hizo: ["Costo por planta", "Saldo del mes", "Cuentas y accesos"],
+  },
+];
+
 export default function Inicio() {
   useTitulo(null);
   const historia = useMemo(() => construirHistoria(), []);
-  const [menuAbierto, setMenuAbierto] = useState(false);
-  const [headerCompacto, setHeaderCompacto] = useState(false);
   const [estacionActiva, setEstacionActiva] = useState(0);
   const [diaRiel, setDiaRiel] = useState(null);
   const [vistas, setVistas] = useState(() => new Set());
   const [solicitudEnviada, setSolicitudEnviada] = useState(false);
   const [errorSolicitud, setErrorSolicitud] = useState("");
   const [enviandoSolicitud, setEnviandoSolicitud] = useState(false);
-  const menuButtonRef = useRef(null);
-  const menuPanelRef = useRef(null);
   const estacionesRef = useRef([]);
   const rielRef = useRef(null);
   const formularioMontado = useRef(0);
-  const cerrarMenu = () => setMenuAbierto(false);
-
-  useEffect(() => {
-    const actualizar = () => setHeaderCompacto(window.scrollY > 18);
-    actualizar();
-    window.addEventListener("scroll", actualizar, { passive: true });
-    return () => window.removeEventListener("scroll", actualizar);
-  }, []);
-
-  useEffect(() => {
-    document.body.classList.toggle("aiden-menu-open", menuAbierto);
-    return () => document.body.classList.remove("aiden-menu-open");
-  }, [menuAbierto]);
-
-  useEffect(() => {
-    if (!menuAbierto) return undefined;
-    const manejarTecla = (event) => {
-      if (event.key === "Escape") {
-        setMenuAbierto(false);
-        menuButtonRef.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", manejarTecla);
-    menuPanelRef.current?.querySelector("a")?.focus();
-    return () => window.removeEventListener("keydown", manejarTecla);
-  }, [menuAbierto]);
 
   // El riel marca la estación centrada y las ventanas se revelan una sola vez.
   useEffect(() => {
@@ -380,8 +477,6 @@ export default function Inicio() {
         const caja = nodo.getBoundingClientRect();
         return caja.top + caja.height / 2;
       });
-      // El progreso también se escribe como variable CSS: es el respaldo de la
-      // línea que se llena donde animation-timeline no existe (Safari, Firefox).
       const pintarAvance = (fraccion) => {
         rielRef.current?.style.setProperty("--avance", String(Math.min(1, Math.max(0, fraccion))));
       };
@@ -444,56 +539,12 @@ export default function Inicio() {
   };
 
   if (!historia) return null;
-  const { lote, resumen, estaciones, totalDias, hoyDia, cerrado, eventoCierre, joven, incidenciaJoven, lotesActivos, registros, validadora } = historia;
+  const { datos, lote, resumen, estaciones, totalDias, hoyDia, cerrado, eventoCierre, joven, incidenciaJoven, lotesActivos, registros, validadora } = historia;
   const activa = estaciones[estacionActiva] || estaciones[0];
+  const diaCilantro = joven ? numero(diasEntre(hoyISO(), joven.fecha)) : null;
 
   return (
-    <div className="aiden-landing">
-      <a className="aiden-skip-link" href="#contenido">Saltar al contenido principal</a>
-      <header className={`aiden-header ${headerCompacto ? "is-compact" : ""}`}>
-        <nav className="aiden-shell" aria-label="Navegación principal">
-          <div className="aiden-header-inner">
-            <Link to="/" className="aiden-brand" onClick={cerrarMenu} aria-label="AiDEN, ir al inicio"><LogotipoAiden alto={30} /></Link>
-            <div className="aiden-header-links">
-              <a href="#historia">La historia</a>
-              <a href="#vivero">El vivero</a>
-              <a href="#roles">Roles</a>
-              <a href="#preguntas">Preguntas</a>
-            </div>
-            <div className="aiden-header-actions">
-              <Link to="/login" className="aiden-header-login">Iniciar sesión</Link>
-              <a href="#contacto" className="aiden-boton aiden-boton-lima">Solicitar demo</a>
-            </div>
-            <button
-              ref={menuButtonRef}
-              type="button"
-              className="aiden-menu"
-              aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
-              aria-controls="aiden-mobile-panel"
-              aria-expanded={menuAbierto}
-              onClick={() => setMenuAbierto((abierto) => !abierto)}
-            >
-              {menuAbierto ? <X size={19} /> : <Menu size={19} />}
-            </button>
-          </div>
-        </nav>
-        <div
-          id="aiden-mobile-panel"
-          ref={menuPanelRef}
-          className={`aiden-mobile-panel ${menuAbierto ? "is-visible" : ""}`}
-          aria-hidden={!menuAbierto}
-          inert={!menuAbierto}
-        >
-          <a href="#historia" onClick={cerrarMenu}>La historia</a>
-          <a href="#vivero" onClick={cerrarMenu}>El vivero</a>
-          <a href="#roles" onClick={cerrarMenu}>Roles</a>
-          <a href="#preguntas" onClick={cerrarMenu}>Preguntas</a>
-          <a href="#contacto" className="aiden-boton aiden-boton-lima" onClick={cerrarMenu}>Solicitar demo <ArrowRight size={14} /></a>
-          <Link to="/login" className="aiden-boton aiden-boton-borde" onClick={cerrarMenu}>Iniciar sesión</Link>
-        </div>
-      </header>
-
-      <main id="contenido" tabIndex={-1}>
+    <MarcoPublico diaCilantro={diaCilantro}>
         {/* Día 66: la marca corona el marco y la escena abre en la víspera del despacho. */}
         <section className="aiden-despacho" aria-labelledby="titulo-despacho">
           <div className="aiden-shell">
@@ -537,27 +588,30 @@ export default function Inicio() {
           </div>
         </section>
 
-        {/* La pregunta que el ICA y el comprador hacen igual. */}
+        {/* La pregunta que el ICA y el comprador hacen igual, en tres datos. */}
         <section className="aiden-pregunta" aria-labelledby="titulo-pregunta">
           <div className="aiden-shell aiden-pregunta-marco"><div className="aiden-pregunta-inner">
-            <h2 id="titulo-pregunta">¿Podría tu vivero reconstruir la historia <em>de cada planta que vende?</em></h2>
-            <div className="aiden-pregunta-copy">
-              <p>
-                El ICA lo exige desde 2020: la Resolución 780006 obliga a registrar el vivero y a que su capacidad
-                anual cuadre con las compras de semilla y de material. Y el que compra pregunta lo mismo con otras
-                palabras: de qué lote salió, qué se le aplicó, quién lo revisó.
-              </p>
-              <p>
-                Según Colviveros, en Colombia unas 35.000 familias viven de producir y vender plantas, y solo una de
-                cada diez lo hace desde una empresa formalmente constituida. En la mayoría de los viveros la respuesta
-                está repartida entre cuadernos, planillas y la memoria de quien hizo el trabajo.
-              </p>
-              <p className="aiden-fuentes">
-                Fuentes: <a href="https://www.ica.gov.co/normatividad/normas-ica/resoluciones-oficinas-nacionales" target="_blank" rel="noopener noreferrer">Resolución ICA 780006 de 2020</a> ·{" "}
-                <a href="https://www.agronegocios.co/agricultura/productores-viveristas-mueven-180-000-millones-al-ano-con-apoyo-de-minagricultura-2920306" target="_blank" rel="noopener noreferrer">Colviveros / Agronegocios</a> ·{" "}
-                <a href="https://www.elespectador.com/la-huerta/mirelo-sin-compromiso-el-negocio-detras-de-los-viveros/" target="_blank" rel="noopener noreferrer">El Espectador</a>
+            <div>
+              <h2 id="titulo-pregunta">¿Podría tu vivero reconstruir la historia <em>de cada planta que vende?</em></h2>
+              <p className="aiden-pregunta-bajada">
+                El ICA lo exige y el que compra lo pregunta con otras palabras: de qué lote salió, qué se le aplicó,
+                quién lo revisó. En la mayoría de los viveros la respuesta vive en cuadernos y en la memoria.
               </p>
             </div>
+            <dl className="aiden-datos-sector">
+              <div>
+                <dt><CifraViva hasta={35000} /></dt>
+                <dd>familias viven de producir y vender plantas en Colombia <a href="https://www.agronegocios.co/agricultura/productores-viveristas-mueven-180-000-millones-al-ano-con-apoyo-de-minagricultura-2920306" target="_blank" rel="noopener noreferrer">Colviveros</a></dd>
+              </div>
+              <div>
+                <dt>1 de 10</dt>
+                <dd>lo hace desde una empresa formalmente constituida <a href="https://www.elespectador.com/la-huerta/mirelo-sin-compromiso-el-negocio-detras-de-los-viveros/" target="_blank" rel="noopener noreferrer">El Espectador</a></dd>
+              </div>
+              <div>
+                <dt>780006</dt>
+                <dd>la resolución del ICA que obliga a registrar el vivero desde 2020 <a href="https://www.ica.gov.co/normatividad/normas-ica/resoluciones-oficinas-nacionales" target="_blank" rel="noopener noreferrer">ICA</a></dd>
+              </div>
+            </dl>
           </div></div>
         </section>
 
@@ -567,7 +621,7 @@ export default function Inicio() {
             <header className="aiden-rebobinado-cabecera">
               <p className="aiden-capitulo"><i aria-hidden="true" />La historia</p>
               <h2 id="titulo-historia">Rebobinemos el <span className="aiden-sin-corte">{lote.lote}</span>, <em>del camión a la semilla.</em></h2>
-              <p>Lo que sigue no es un guion: son los registros del lote en los datos de ejemplo, leídos de atrás hacia adelante en el módulo que los escribió.</p>
+              <p>Registros reales de los datos de ejemplo, leídos de atrás hacia adelante en el módulo que los escribió.</p>
             </header>
             <div className="aiden-rebobinado-grid">
               <aside className="aiden-riel" aria-hidden="true">
@@ -605,7 +659,7 @@ export default function Inicio() {
           </div>
         </section>
 
-        {/* El saldo de la historia y la prueba de que no es la primera. */}
+        {/* El saldo de la historia, contado en vivo. */}
         <section className="aiden-saldo" aria-labelledby="titulo-saldo">
           <div className="aiden-shell aiden-saldo-grid">
             <h2 id="titulo-saldo">{numero(totalDias)} días, {numero(registros)} registros, <em>un costo por planta.</em></h2>
@@ -617,40 +671,38 @@ export default function Inicio() {
               <dl>
                 <div>
                   <dt>Plantas vivas al despacho</dt>
-                  <dd>{numero(lote.cantidad)} de {numero(lote.cantidadInicial)}</dd>
+                  <dd><CifraViva hasta={lote.cantidad} /> de {numero(lote.cantidadInicial)}</dd>
                 </div>
                 <div>
                   <dt>Eventos en su historia</dt>
-                  <dd>{numero(registros)}</dd>
+                  <dd><CifraViva hasta={registros} /></dd>
                 </div>
                 <div>
                   <dt>Gasto acumulado</dt>
-                  <dd>{dinero(resumen.gasto)}</dd>
+                  <dd><CifraViva hasta={resumen.gasto} formatear={dinero} /></dd>
                 </div>
                 <div className="aiden-liquidacion-total">
                   <dt>Costo por planta viva</dt>
-                  <dd>{dineroOGuion(resumen.costoPlanta)}</dd>
+                  <dd>{resumen.costoPlanta == null ? dineroOGuion(resumen.costoPlanta) : <CifraViva hasta={resumen.costoPlanta} formatear={dinero} />}</dd>
                 </div>
               </dl>
               <small>Cada línea con fecha, hora y responsable; la merma quedó contada.</small>
             </div>
             {cerrado && eventoCierre && (
               <p className="aiden-saldo-antecedente">
-                Y no es la primera: la lechuga del Invernadero 2 ya hizo este viaje. {eventoCierre.detalle.replace("Lote cerrado: ", "")}{" "}
-                Su historia quedó cerrada y se puede releer completa en Trazabilidad.
+                Y no es la primera: la lechuga del Invernadero 2 ya hizo este viaje, con su historia cerrada y
+                releíble completa en Trazabilidad.
               </p>
             )}
-            <a href="#contacto" className="aiden-boton aiden-boton-oscuro aiden-boton-grande">Quiero esto para mi vivero <ArrowRight size={15} /></a>
           </div>
         </section>
 
-        {/* El vivero completo, leído de un barrido. */}
+        {/* El vivero completo, leído de un barrido, y los módulos como cinta. */}
         <section className="aiden-vivero" id="vivero" aria-labelledby="titulo-vivero">
           <div className="aiden-shell">
             <header className="aiden-vivero-cabecera">
               <p className="aiden-capitulo"><i aria-hidden="true" />El vivero</p>
               <h2 id="titulo-vivero">El resto del vivero, <em>de un barrido.</em></h2>
-              <p>Siete lotes a la vez en los datos de ejemplo. La fila se lee entera: cultivo, etapa, plantas vivas y zona, sin abrir ficha por ficha.</p>
             </header>
             <ul className="aiden-fila-lotes">
               {lotesActivos.map((l) => (
@@ -663,63 +715,79 @@ export default function Inicio() {
                 </li>
               ))}
             </ul>
-            <p className="aiden-modulos-indice">
-              Nueve módulos comparten estos mismos lotes, personas y zonas: <strong>Producción</strong>, <strong>Inventario</strong>,{" "}
-              <strong>Trazabilidad</strong>, <strong>Ambiental</strong>, <strong>Calidad</strong>, <strong>Costos</strong>,{" "}
-              <strong>Personal</strong>, <strong>Reportes</strong> y <strong>Configuración</strong>. Lo que se escribe en uno
-              aparece donde hace falta en los demás.
-            </p>
+          </div>
+          <div className="aiden-marquee" aria-label="Los nueve módulos de AiDEN">
+            <div className="aiden-marquee-pista">
+              {[false, true].map((copia) => (
+                <ul key={String(copia)} aria-hidden={copia}>
+                  {MODULOS.map((modulo) => (
+                    <li key={modulo}><i aria-hidden="true" />{modulo}</li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          </div>
+          <div className="aiden-shell">
+            <dl className="aiden-fuertes">
+              <div>
+                <dt>La historia completa de cada lote</dt>
+                <dd>Del registro al despacho, con fecha, hora y responsable: lo que el ICA y el comprador preguntan.</dd>
+              </div>
+              <div>
+                <dt>Costo por planta sin planillas</dt>
+                <dd>Cada consumo y cada jornal caen al lote que los gasta; el costo se calcula solo.</dd>
+              </div>
+              <div>
+                <dt>Funciona sin señal, en el campo</dt>
+                <dd>Abre y guarda sin conexión en el equipo del vivero, lista en la pantalla del celular.</dd>
+              </div>
+              <div>
+                <dt>Un asistente que responde con registros</dt>
+                <dd>Pregunta por costos, cargas o incidencias: responde con los datos y cita su fuente.</dd>
+              </div>
+            </dl>
           </div>
         </section>
 
-        {/* Los roles, contados por lo que hicieron en la historia. */}
+        {/* El asistente de IA, respondiendo en vivo con los datos de ejemplo. */}
+        <section className="aiden-ia" id="asistente" aria-labelledby="titulo-ia">
+          <div className="aiden-shell aiden-ia-marco"><div className="aiden-ia-grid">
+            <div className="aiden-ia-copy">
+              <h2 id="titulo-ia">Pregúntale <em>al vivero.</em></h2>
+              <p>
+                El asistente responde con los registros, no con promesas. Esta demostración corre en tu navegador
+                con las mismas reglas del módulo de inteligencia artificial del producto.
+              </p>
+              <p className="aiden-ia-pista">
+                Prueba con un código de lote ({lote.lote}) o con un insumo: «¿cuánto sustrato queda?».
+              </p>
+            </div>
+            <VentanaModulo ruta="Inteligencia artificial / Asistente" meta="Datos de ejemplo">
+              <DemoAsistente datos={datos} />
+            </VentanaModulo>
+          </div></div>
+        </section>
+
+        {/* Los roles, apilados: cada tarjeta tapa a la anterior al bajar. */}
         <section className="aiden-roles" id="roles" aria-labelledby="titulo-roles">
           <div className="aiden-shell">
             <p className="aiden-capitulo"><i aria-hidden="true" />Roles</p>
             <h2 id="titulo-roles">La misma historia, <em>tres lecturas.</em></h2>
-            <div className="aiden-roles-lista">
-              <article>
-                <h3>Laura, supervisora</h3>
-                <p>Registró el lote, movió las etapas y mañana valida sanidad y altura antes de autorizar la salida. Su vista ordena el día por lo que requiere decisión.</p>
-              </article>
-              <article>
-                <h3>Andrés, operario</h3>
-                <p>Regó, fertilizó y reportó las hojas amarillas desde el celular, entre mesas. Su vista pone las tareas primero y las acciones al alcance del pulgar.</p>
-              </article>
-              <article>
-                <h3>Jordan, administrador</h3>
-                <p>Lee el costo por planta y el saldo del mes sin pedirle la planilla a nadie. Su vista junta costos, accesos y el pulso de la semana.</p>
-              </article>
+            <div className="aiden-roles-pila">
+              {ROLES.map((rol, indice) => (
+                <article key={rol.nombre} className={`aiden-rol aiden-rol-${rol.tono}`} style={{ "--indice": indice }}>
+                  <div className="aiden-rol-copy">
+                    <h3>{rol.nombre}</h3>
+                    <p className="aiden-rol-frase">{rol.frase}</p>
+                    <p className="aiden-rol-detalle">{rol.detalle}</p>
+                  </div>
+                  <ul className="aiden-rol-hizo">
+                    {rol.hizo.map((cosa) => <li key={cosa}>{cosa}</li>)}
+                  </ul>
+                </article>
+              ))}
             </div>
             <p className="aiden-roles-pie">Cada rol entra a su propia vista con su propia cuenta. <Link to="/login">Iniciar sesión</Link></p>
-          </div>
-        </section>
-
-        {/* Respuestas directas antes del formulario. */}
-        <section className="aiden-preguntas" id="preguntas" aria-labelledby="titulo-preguntas">
-          <div className="aiden-shell aiden-preguntas-grid">
-            <div>
-              <p className="aiden-capitulo"><i aria-hidden="true" />Preguntas</p>
-              <h2 id="titulo-preguntas">Preguntas directas, <em>respuestas directas.</em></h2>
-            </div>
-            <dl>
-              <div>
-                <dt>¿Qué es AiDEN?</dt>
-                <dd>Un sistema de registro y seguimiento para viveros e invernaderos: lotes por etapas, tareas, inventario, lecturas ambientales, incidencias, costos y personal, con la historia de cada lote escrita de principio a fin.</dd>
-              </div>
-              <div>
-                <dt>¿Qué incluye hoy?</dt>
-                <dd>Los nueve módulos funcionan en el navegador y guardan los datos en ese equipo, también sin conexión. Sensores, sincronización entre equipos e integraciones todavía no están disponibles.</dd>
-              </div>
-              <div>
-                <dt>¿La historia de esta página es real?</dt>
-                <dd>Son los datos de ejemplo que trae el sistema: un vivero del Cauca con siete lotes, cuatro zonas y cinco personas. Sin clientes inventados ni cifras de humo; lo que ves es lo que el producto registra.</dd>
-              </div>
-              <div>
-                <dt>¿Qué pasa con los datos que dejo aquí?</dt>
-                <dd>El formulario pide lo mínimo para responderte y el tratamiento sigue la Ley 1581 de 2012. Los detalles están en la <Link to="/privacidad">política de privacidad</Link>.</dd>
-              </div>
-            </dl>
           </div>
         </section>
 
@@ -734,7 +802,7 @@ export default function Inicio() {
               </p>
               {joven && incidenciaJoven && (
                 <p className="aiden-contacto-guino">
-                  Mientras tanto, en el vivero de ejemplo: el {joven.cultivo.toLowerCase()} va por el día {numero(diasEntre(hoyISO(), joven.fecha))} y
+                  Mientras tanto, en el vivero de ejemplo: el {joven.cultivo.toLowerCase()} va por el día {diaCilantro} y
                   esta mañana reportaron volcamiento en tres bandejas. Esa historia también quedará escrita.
                 </p>
               )}
@@ -763,45 +831,6 @@ export default function Inicio() {
             </form>
           </div></div>
         </section>
-      </main>
-
-      {/* El pie: la marca cierra la página como la abrió. */}
-      <footer className="aiden-footer">
-        <div className="aiden-shell">
-          <div className="aiden-footer-cierre">
-            <p>El lote de cilantro va por el día {joven ? numero(diasEntre(hoyISO(), joven.fecha)) : "6"}. <em>Su historia apenas empieza.</em></p>
-            <a href="#contacto" className="aiden-boton aiden-boton-lima">Solicitar demo <ArrowRight size={14} /></a>
-          </div>
-          <div className="aiden-footer-columnas">
-            <div className="aiden-footer-firma">
-              <span className="aiden-footer-isotipo"><IsotipoAiden tamano={34} placa /></span>
-              <p>Registro y seguimiento para viveros e invernaderos. Hecho para el campo colombiano.</p>
-            </div>
-            <nav aria-label="Recorrido">
-              <strong>Recorrido</strong>
-              <a href="#historia">La historia</a>
-              <a href="#vivero">El vivero</a>
-              <a href="#roles">Roles</a>
-              <a href="#preguntas">Preguntas</a>
-            </nav>
-            <nav aria-label="Cuenta">
-              <strong>Cuenta</strong>
-              <Link to="/login">Ingresar</Link>
-              <a href="#contacto">Solicitar demo</a>
-            </nav>
-            <nav aria-label="Legal">
-              <strong>Legal</strong>
-              <Link to="/terminos">Términos</Link>
-              <Link to="/privacidad">Privacidad</Link>
-            </nav>
-          </div>
-          <p className="aiden-footer-marca" aria-hidden="true"><img src={palabraMarcaMoss} alt="" /></p>
-          <div className="aiden-footer-banda">
-            <span>AiDEN · Vivero en el Cauca, Colombia</span>
-            <span>Los datos de esta página son los de ejemplo del sistema.</span>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </MarcoPublico>
   );
 }

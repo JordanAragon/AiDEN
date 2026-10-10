@@ -18,7 +18,7 @@ with sync_playwright() as p:
         pg = ctx.new_page()
         print("TEMA", "oscuro" if oscuro else "claro")
         pg.goto(BASE + "/"); pg.wait_for_timeout(700); auditar(pg, "landing")
-        for pub in ["/signup", "/forgot-password", "/terminos", "/no-existe"]:
+        for pub in ["/planes", "/preguntas", "/signup", "/forgot-password", "/terminos", "/no-existe"]:
             pg.goto(BASE + pub); pg.wait_for_timeout(400); auditar(pg, pub)
         pg.goto(BASE + "/login"); pg.wait_for_timeout(300); auditar(pg, "login")
         for rol, rutas in {"admin": ["/dashboard-admin","/perfil","/produccion","/inventario","/costos","/personal","/reportes","/ia","/configuracion","/configuracion?vista=usuarios","/calidad?incidencia=INC-031", "/calidad", "/trazabilidad?lote=LT-2026-011", "/ambiental?zona=Invernadero%202"], "supervisor": ["/dashboard-supervisor","/perfil","/ambiental","/trazabilidad"], "operario": ["/dashboard-operario","/perfil"]}.items():
