@@ -1,0 +1,44 @@
+/* Cifra rodante (src/components/ui/CifraRodante.jsx): dígitos de contador mecánico. */
+
+.aiden-rodante {
+  display: inline-flex;
+  font-variant-numeric: tabular-nums;
+}
+
+.aiden-rodante-cifras {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.aiden-rodante-columna {
+  display: inline-block;
+  height: 1.12em;
+  overflow: hidden;
+  line-height: 1.12;
+}
+
+.aiden-rodante-tira {
+  display: block;
+  transform: translateY(calc(var(--digito, 0) * -1.12em));
+}
+
+.aiden-rodante-tira::before {
+  content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9";
+  display: block;
+  white-space: pre;
+  line-height: 1.12;
+  text-align: center;
+}
+
+.aiden-rodante-signo::before {
+  content: attr(data-c);
+  line-height: 1.12;
+  white-space: pre;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-rodante-tira {
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}

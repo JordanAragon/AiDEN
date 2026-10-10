@@ -78,7 +78,7 @@ export default function MarcoPublico({ children, diaCilantro = null, flotanteVis
             <div className="aiden-header-links">{ENLACES.map(enlace)}</div>
             <div className="aiden-header-actions">
               <Link to="/login" className="aiden-header-login">Iniciar sesión</Link>
-              <Link to="/#contacto" className="aiden-boton aiden-boton-lima">Solicitar demo</Link>
+              <Link to="/#contacto" className="aiden-boton aiden-boton-lima">Agendar presentación</Link>
             </div>
             <button
               ref={menuButtonRef}
@@ -101,7 +101,7 @@ export default function MarcoPublico({ children, diaCilantro = null, flotanteVis
           inert={!menuAbierto}
         >
           {ENLACES.map(enlace)}
-          <Link to="/#contacto" className="aiden-boton aiden-boton-lima" onClick={cerrarMenu}>Solicitar demo <ArrowRight size={14} /></Link>
+          <Link to="/#contacto" className="aiden-boton aiden-boton-lima" onClick={cerrarMenu}>Agendar presentación <ArrowRight size={14} /></Link>
           <Link to="/login" className="aiden-boton aiden-boton-borde" onClick={cerrarMenu}>Iniciar sesión</Link>
         </div>
       </header>
@@ -114,7 +114,7 @@ export default function MarcoPublico({ children, diaCilantro = null, flotanteVis
         <div className="aiden-shell">
           <div className="aiden-footer-cierre">
             <p>El lote de cilantro va por el día {diaCilantro ?? "6"}. <em>Su historia apenas empieza.</em></p>
-            <Link to="/#contacto" className="aiden-boton aiden-boton-lima">Solicitar demo <ArrowRight size={14} /></Link>
+            <Link to="/#contacto" className="aiden-boton aiden-boton-lima">Agendar presentación <ArrowRight size={14} /></Link>
           </div>
           <div className="aiden-footer-columnas">
             <div className="aiden-footer-firma">
@@ -143,7 +143,7 @@ export default function MarcoPublico({ children, diaCilantro = null, flotanteVis
           <p className="aiden-footer-marca" aria-hidden="true"><img src={palabraMarcaMoss} alt="" /></p>
           <div className="aiden-footer-banda">
             <span>AiDEN · Vivero en el Cauca, Colombia</span>
-            <span>Los datos de esta página son los de ejemplo del sistema.</span>
+            <span>Lotes, nombres y cifras de producción de esta página son ilustrativos.</span>
           </div>
         </div>
       </footer>
@@ -177,11 +177,11 @@ function CtaFlotante({ pathname }) {
     <div className={`aiden-flotante ${visible ? "is-visible" : ""}`} aria-hidden={!visible}>
       {pathname === "/" ? (
         <a href="#contacto" className="aiden-boton aiden-boton-oscuro aiden-boton-grande" tabIndex={visible ? 0 : -1}>
-          Solicitar demo <ArrowRight size={15} />
+          Agendar presentación <ArrowRight size={15} />
         </a>
       ) : (
         <Link to="/#contacto" className="aiden-boton aiden-boton-oscuro aiden-boton-grande" tabIndex={visible ? 0 : -1}>
-          Solicitar demo <ArrowRight size={15} />
+          Agendar presentación <ArrowRight size={15} />
         </Link>
       )}
     </div>

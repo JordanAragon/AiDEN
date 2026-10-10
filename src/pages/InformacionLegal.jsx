@@ -21,14 +21,14 @@ const PRIVACIDAD = [
     "Qué datos se tratan",
     [
       "En la aplicación: nombre, correo y contraseña de las cuentas, y los registros operativos del vivero (lotes, tareas, lecturas ambientales, incidencias, inventario, costos y personal).",
-      "En el formulario de demostración: nombre, organización, correo electrónico y el mensaje que escribas. No envíes datos sensibles en ese mensaje.",
+      "En el formulario de presentación: nombre, organización, correo electrónico y el mensaje que escribas. No envíes datos sensibles en ese mensaje.",
     ],
   ],
   [
     "Para qué se usan",
     [
       "Los datos de la aplicación, para dar acceso a cada persona según su rol y hacer funcionar los módulos.",
-      "Los datos del formulario, solo para responder tu solicitud y coordinar una demostración. No se usan para publicidad ni se entregan a terceros con fines comerciales sin una nueva autorización tuya.",
+      "Los datos del formulario, solo para responder tu solicitud y coordinar una presentación. No se usan para publicidad ni se entregan a terceros con fines comerciales sin una nueva autorización tuya.",
     ],
   ],
   [

@@ -25,12 +25,12 @@ const PREGUNTAS = [
   {
     pregunta: "¿La historia de la página de inicio es real?",
     respuesta:
-      "Son los datos de ejemplo que trae el sistema: un vivero del Cauca con siete lotes, cuatro zonas y cinco personas. Sin clientes inventados ni cifras de humo; lo que ves es lo que el producto registra.",
+      "Es ilustrativa: el vivero del Cauca con que arranca AiDEN, con siete lotes, cuatro zonas y cinco personas. Sin clientes inventados ni cifras de humo; cada pantalla que ves es la que el producto muestra.",
   },
   {
     pregunta: "¿El asistente de la página es el del producto?",
     respuesta:
-      "Sí: la demostración corre en tu navegador con las mismas reglas del módulo de inteligencia artificial, sobre los datos de ejemplo. Cada respuesta cita el módulo donde se puede verificar.",
+      "Sí: corre en tu navegador con las mismas reglas del módulo de inteligencia artificial, sobre los registros de ese vivero. Cada respuesta cita el módulo donde se puede verificar.",
   },
   {
     pregunta: "¿Necesito internet en el vivero?",
@@ -40,7 +40,7 @@ const PREGUNTAS = [
   {
     pregunta: "¿Cuánto cuesta?",
     respuesta:
-      "El precio de lanzamiento se define contigo en la demo, según el tamaño del vivero y la forma de adopción (suscripción, licencia o acompañado). Sin letra chica.",
+      "El precio de lanzamiento se define contigo en la presentación, según el tamaño del vivero y la forma de adopción (suscripción, licencia o acompañado). Sin letra chica.",
     enlace: ["/planes", "Ver las tres formas de adoptar AiDEN"],
   },
   {
@@ -62,7 +62,7 @@ export default function PreguntasLanding() {
         <div className="aiden-shell aiden-preguntas-grid">
           <div>
             <h1 id="titulo-preguntas" className="aiden-titulo-pagina">Preguntas directas, <em>respuestas directas.</em></h1>
-            <p className="aiden-preguntas-intro">Lo que un vivero pregunta antes de pedir la demo. Si falta la tuya, <Link to="/#contacto">escríbenos</Link>.</p>
+            <p className="aiden-preguntas-intro">Lo que un vivero pregunta antes de agendar la presentación. Si falta la tuya, <Link to="/#contacto">escríbenos</Link>.</p>
             <div className="aiden-liquidacion aiden-esencial" role="group" aria-label="Lo esencial de AiDEN">
               <header>
                 <span className="aiden-guia-doc">Lo esencial</span>

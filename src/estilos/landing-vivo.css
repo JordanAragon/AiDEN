@@ -1,0 +1,1670 @@
+/*
+  Landing · capa «El invernadero vivo» (2026-10-10). Va después de landing.css y
+  solo suma: escenas WebGPU con respaldo, el capítulo de las tres pantallas, el
+  isotipo de vidrio, la escritura del asistente y la coreografía de scroll.
+  Toda animación vive bajo prefers-reduced-motion: no-preference.
+*/
+
+/* ---------- Hero: la ficha cuelga del marco y deja ver el enjambre ---------- */
+
+@media (min-width: 981px) {
+  .aiden-despacho {
+    padding-bottom: 150px;
+  }
+
+  .aiden-escena {
+    min-height: clamp(540px, 62vh, 610px);
+  }
+
+  .aiden-guia {
+    margin-bottom: calc(-1 * clamp(32px, 4.5vw, 68px) - 150px);
+  }
+}
+
+/* El isotipo sembrado: arriba a la derecha del marco, delante del vidrio; la
+   ficha del lote cuelga por debajo y lo tapa apenas, como un documento puesto
+   sobre la mesa del invernadero. */
+.aiden-escena-sembrado {
+  position: absolute;
+  top: 7%;
+  right: 6%;
+  z-index: 0;
+  width: min(34%, 420px);
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+
+@media (max-width: 980px) {
+  .aiden-escena-sembrado {
+    top: auto;
+    right: -6%;
+    bottom: 22%;
+    width: min(62%, 340px);
+    opacity: 0.5;
+  }
+}
+
+/* La leyenda del sembrado: dice qué es cada punto. */
+.aiden-enjambre-leyenda {
+  position: absolute;
+  top: clamp(28px, 3vw, 40px);
+  right: clamp(92px, 9vw, 120px);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--sobre-noche-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.aiden-enjambre-leyenda strong {
+  color: var(--vivo);
+  font-weight: 700;
+}
+
+.aiden-enjambre-leyenda i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--vivo);
+  box-shadow: 0 0 0 4px rgba(217, 234, 115, 0.14);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-enjambre-leyenda i {
+    animation: aiden-latido 2.6s ease-in-out infinite;
+  }
+}
+
+@keyframes aiden-latido {
+  0%, 100% {
+    box-shadow: 0 0 0 4px rgba(217, 234, 115, 0.14);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(217, 234, 115, 0);
+  }
+}
+
+@media (max-width: 980px) {
+  .aiden-enjambre-leyenda {
+    position: relative;
+    top: auto;
+    right: auto;
+    order: -1;
+    margin-bottom: -8px;
+  }
+}
+
+/* ---------- Titulares que emergen ---------- */
+
+.aiden-titulo-palabra {
+  display: inline-block;
+  vertical-align: top;
+  /* El recorte deja respirar la itálica y los descendentes. */
+  overflow: clip;
+  padding: 0.04em 0.08em 0.14em;
+  margin: -0.04em -0.08em -0.14em;
+}
+
+.aiden-titulo-palabra > span {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-titulo-vivo .aiden-titulo-palabra > span {
+    animation: aiden-palabra-emerge 1.05s calc(var(--retraso, 0s) + var(--i) * 0.055s) cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes aiden-palabra-emerge {
+  from {
+    transform: translateY(105%) rotate(4deg);
+    filter: blur(6px);
+    opacity: 0;
+  }
+  55% {
+    opacity: 1;
+  }
+  to {
+    transform: none;
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+/* ---------- Marcos oscuros con escena viva ---------- */
+
+/* Los marcos ponen a sus hijos en relative/z-index 1; el lienzo va debajo de todo. */
+.aiden-escena > .aiden-lienzo,
+.aiden-pregunta-marco > .aiden-lienzo,
+.aiden-manifiesto-marco > .aiden-lienzo,
+.aiden-ia-marco > .aiden-lienzo,
+.aiden-contacto-marco > .aiden-lienzo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.aiden-pregunta-marco {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ---------- Tres pantallas: dispositivos con la app viva ---------- */
+
+.aiden-pantallas {
+  padding-block: clamp(84px, 10vw, 140px) clamp(72px, 9vw, 120px);
+  background:
+    radial-gradient(60% 46% at 50% 58%, rgba(217, 234, 115, 0.16), transparent 70%),
+    linear-gradient(var(--dia), var(--amanecer) 58%, var(--dia));
+  overflow-x: clip;
+}
+
+.aiden-pantallas-cabecera {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: end;
+}
+
+.aiden-pantallas-cabecera h2 {
+  font-size: clamp(34px, 4.2vw, 62px);
+}
+
+.aiden-pantallas-cabecera h2 em {
+  color: var(--color-aiden-moss-oscuro);
+}
+
+.aiden-pantallas-cabecera p {
+  max-width: 46ch;
+  font-size: clamp(15.5px, 1vw + 0.4rem, 17.5px);
+  line-height: 1.6;
+  color: var(--tinta-suave);
+}
+
+/* El escenario: un plano con perspectiva donde se arman los dispositivos. */
+.aiden-pantallas-escenario {
+  --ancho-portatil: 700px;
+  position: relative;
+  width: min(1240px, 100% - 48px);
+  height: 640px;
+  margin: clamp(56px, 6vw, 88px) auto 0;
+  perspective: 2400px;
+  perspective-origin: 50% 30%;
+}
+
+.aiden-pantallas-piso {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: -18px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(11, 43, 27, 0.22), transparent);
+  filter: blur(14px);
+}
+
+.aiden-pantallas-pieza {
+  position: absolute;
+  margin: 0;
+  transform-style: preserve-3d;
+}
+
+.aiden-pantallas-pieza.is-portatil {
+  --reposo: rotateX(3deg);
+  left: 50%;
+  top: 0;
+  width: var(--ancho-portatil);
+  translate: -50% 0;
+  transform: var(--reposo);
+  z-index: 1;
+}
+
+.aiden-pantallas-pieza.is-celular {
+  --reposo: rotateY(13deg) rotateZ(-1.5deg);
+  left: 1%;
+  bottom: 6px;
+  width: 262px;
+  transform: var(--reposo);
+  z-index: 3;
+}
+
+.aiden-pantallas-pieza.is-tableta {
+  --reposo: rotateY(-12deg) rotateZ(1deg);
+  right: 2%;
+  bottom: 20px;
+  width: 392px;
+  transform: var(--reposo);
+  z-index: 2;
+}
+
+/* Cuerpos: grafito verdoso, el mismo oscuro de la app. */
+.aiden-disp-cuerpo {
+  position: relative;
+  background: linear-gradient(145deg, #1c2621, #0b100e 45%, #141b17);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 1px 0 1px rgba(11, 16, 14, 0.5),
+    0 40px 80px -24px rgba(7, 27, 17, 0.45),
+    0 18px 36px -18px rgba(7, 27, 17, 0.35);
+}
+
+.aiden-disp-pantalla {
+  position: relative;
+  overflow: hidden;
+  background: var(--fondo-2);
+  color: var(--texto);
+  container-type: inline-size;
+}
+
+/* Reflejo del vidrio sobre cada pantalla. */
+.aiden-disp-pantalla::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.16), transparent 32%, transparent 70%, rgba(255, 255, 255, 0.05));
+  mix-blend-mode: screen;
+}
+
+.aiden-disp-celular .aiden-disp-cuerpo {
+  padding: 9px;
+  border-radius: 44px;
+}
+
+.aiden-disp-celular .aiden-disp-pantalla {
+  border-radius: 35px;
+  aspect-ratio: 244 / 528;
+}
+
+.aiden-disp-isla {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  z-index: 2;
+  width: 76px;
+  height: 22px;
+  translate: -50% 0;
+  border-radius: 20px;
+  background: #050806;
+}
+
+/* Botones laterales del celular. */
+.aiden-disp-celular .aiden-disp-cuerpo::before,
+.aiden-disp-celular .aiden-disp-cuerpo::after {
+  content: "";
+  position: absolute;
+  width: 3px;
+  border-radius: 3px;
+  background: #1f2a24;
+}
+
+.aiden-disp-celular .aiden-disp-cuerpo::before {
+  left: -3px;
+  top: 112px;
+  height: 52px;
+}
+
+.aiden-disp-celular .aiden-disp-cuerpo::after {
+  right: -3px;
+  top: 150px;
+  height: 74px;
+}
+
+.aiden-disp-portatil .aiden-disp-cuerpo {
+  padding: 14px 14px 18px;
+  border-radius: 20px 20px 8px 8px;
+}
+
+.aiden-disp-portatil .aiden-disp-pantalla {
+  border-radius: 6px;
+  aspect-ratio: 16 / 10;
+}
+
+.aiden-disp-camara {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: #2b3a32;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* La base de aluminio, en el crema del lienzo con su ranura para el pulgar. */
+.aiden-disp-base {
+  position: relative;
+  display: block;
+  width: 116%;
+  height: 16px;
+  margin-left: -8%;
+  border-radius: 2px 2px 16px 16px;
+  background: linear-gradient(var(--color-aiden-white), var(--color-aiden-cream) 45%, #cfc9b9);
+  box-shadow: 0 20px 34px -14px rgba(7, 27, 17, 0.4), inset 0 -2px 3px rgba(18, 37, 27, 0.12);
+}
+
+.aiden-disp-base::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 18%;
+  height: 6px;
+  translate: -50% 0;
+  border-radius: 0 0 10px 10px;
+  background: linear-gradient(#d6d0c1, #e6e1d4);
+}
+
+.aiden-disp-tableta .aiden-disp-cuerpo {
+  padding: 13px;
+  border-radius: 26px;
+}
+
+.aiden-disp-tableta .aiden-disp-pantalla {
+  border-radius: 14px;
+  aspect-ratio: 4 / 3;
+}
+
+.aiden-disp-tableta .aiden-disp-camara {
+  top: 4px;
+}
+
+/* ---------- La interfaz dentro de las pantallas ---------- */
+
+.aiden-app {
+  height: 100%;
+  font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.aiden-app p {
+  margin: 0;
+}
+
+.aiden-app-titulo {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--texto);
+}
+
+.aiden-app-sub {
+  font-size: 11px;
+  color: var(--texto-2);
+}
+
+.aiden-app-seccion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--texto);
+}
+
+.aiden-app-seccion > span {
+  font-weight: 500;
+  color: var(--texto-2);
+}
+
+.aiden-app-avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-verde-50);
+  color: var(--color-verde-700);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.aiden-app-destello {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Celular · Mi jornada */
+.aiden-app-celular {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 14px 16px;
+  background:
+    radial-gradient(120% 40% at 50% 0%, rgba(217, 234, 115, 0.18), transparent 70%),
+    var(--fondo-2);
+}
+
+.aiden-app-estado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 10px 0;
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.aiden-app-estado-iconos {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.aiden-app-celular-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.aiden-app-celular-resumen {
+  display: grid;
+  gap: 7px;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--color-aiden-forest-deep);
+  color: var(--sobre-noche);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.aiden-app-avance {
+  display: block;
+  height: 5px;
+  border-radius: 9px;
+  background: rgba(243, 246, 239, 0.14);
+  overflow: hidden;
+}
+
+.aiden-app-avance i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: var(--vivo);
+  transform: scaleX(var(--avance, 0));
+  transform-origin: left;
+}
+
+.aiden-app-tareas {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aiden-app-tareas li {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 10px 8px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: var(--fondo);
+}
+
+/* El botón es el objetivo táctil (44 px); el círculo visible va dentro. */
+.aiden-app-check {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: -7px -6px -7px -7px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+main .aiden-app .aiden-app-check:active {
+  transform: none;
+}
+
+.aiden-app-check-circulo {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--borde-fuerte);
+  color: transparent;
+  background: var(--fondo);
+}
+
+.aiden-app-check:hover .aiden-app-check-circulo {
+  border-color: var(--color-verde-500);
+}
+
+.aiden-app-check:focus-visible {
+  outline: 2px solid var(--color-verde-500);
+  outline-offset: -2px;
+}
+
+.aiden-app-tareas li.is-hecha {
+  background: var(--color-verde-50);
+  border-color: var(--color-verde-100);
+}
+
+.aiden-app-tareas li.is-hecha .aiden-app-check {
+  cursor: default;
+}
+
+.aiden-app-tareas li.is-hecha .aiden-app-check-circulo {
+  border-color: var(--color-verde-700);
+  background: var(--color-verde-700);
+  color: var(--fondo);
+}
+
+.aiden-app-tarea-titulo {
+  display: -webkit-box;
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1.25;
+  color: var(--texto);
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.is-hecha .aiden-app-tarea-titulo {
+  color: var(--texto-2);
+  text-decoration: line-through;
+  text-decoration-color: var(--color-verde-500);
+}
+
+.aiden-app-tarea-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--texto-2);
+}
+
+.aiden-app-codigo {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-verde-700);
+}
+
+.aiden-app-reiniciar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  margin-top: auto;
+  border: 0;
+  border-radius: 14px;
+  background: var(--color-aiden-forest-deep);
+  color: var(--sobre-noche);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.aiden-app-reiniciar:focus-visible {
+  outline: 2px solid var(--color-verde-500);
+  outline-offset: 2px;
+}
+
+/* Portátil · Centro de supervisión */
+.aiden-app-portatil {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  background:
+    radial-gradient(70% 50% at 100% 0%, rgba(217, 234, 115, 0.14), transparent 70%),
+    var(--fondo-2);
+}
+
+.aiden-app-lateral {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 7px;
+  padding: 12px 0;
+  border-right: 1px solid var(--borde);
+  background: var(--fondo);
+  color: var(--texto-3);
+}
+
+.aiden-app-lateral > :first-child {
+  margin-bottom: 8px;
+}
+
+.aiden-app-lateral span {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 26px;
+  border-radius: 8px;
+}
+
+.aiden-app-lateral span.is-activo {
+  background: var(--color-verde-50);
+  color: var(--color-verde-700);
+}
+
+.aiden-app-cuerpo {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 16px 14px;
+}
+
+.aiden-app-barra {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aiden-app-buscar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  max-width: 220px;
+  padding: 6px 10px;
+  border: 1px solid var(--borde);
+  border-radius: 9px;
+  background: var(--fondo);
+  font-size: 11px;
+  color: var(--texto-3);
+}
+
+.aiden-app-campana {
+  position: relative;
+  margin-left: auto;
+  color: var(--texto-2);
+}
+
+.aiden-app-campana i {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #dc2626;
+  box-shadow: 0 0 0 2px var(--fondo-2);
+}
+
+.aiden-app-pulso {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background:
+    radial-gradient(80% 120% at 0% 0%, rgba(217, 234, 115, 0.12), transparent 60%),
+    var(--color-aiden-forest-deep);
+  color: var(--sobre-noche);
+}
+
+.aiden-app-pulso > div > span {
+  display: block;
+  font-size: 11px;
+  color: var(--sobre-noche-2);
+}
+
+.aiden-app-pulso strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--color-aiden-white);
+}
+
+.aiden-app-pulso > div:first-of-type strong {
+  color: var(--vivo);
+}
+
+.aiden-app-columnas {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 10px;
+}
+
+.aiden-app-columnas section {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  background: var(--fondo);
+}
+
+.aiden-app-carga,
+.aiden-app-feed {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aiden-app-carga li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 8px;
+  font-size: 11px;
+}
+
+.aiden-app-carga strong {
+  font-weight: 700;
+}
+
+.aiden-app-carga i {
+  grid-column: 1 / -1;
+  height: 5px;
+  border-radius: 9px;
+  background:
+    linear-gradient(90deg, var(--color-aiden-moss) calc(var(--carga, 0) * 100%), var(--color-verde-50) 0);
+  transition: background 0.6s ease;
+}
+
+.aiden-app-feed li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr);
+  gap: 8px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+  border-radius: 8px;
+  font-size: 11px;
+}
+
+.aiden-app-feed-punto {
+  width: 7px;
+  height: 7px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: var(--color-aiden-forest);
+}
+
+.aiden-app-feed li.is-nuevo .aiden-app-feed-punto {
+  background: var(--color-verde-500);
+  box-shadow: 0 0 0 3px var(--color-verde-100);
+}
+
+.aiden-app-feed li p:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aiden-app-feed-meta {
+  color: var(--texto-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.aiden-app-despacho {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  background: var(--fondo);
+}
+
+.aiden-app-despacho-lote {
+  margin-top: 2px !important;
+  font-size: 11px;
+  color: var(--texto-2);
+  white-space: nowrap;
+}
+
+.aiden-app-despacho-fecha {
+  font-size: 11px;
+  color: var(--texto-2);
+  white-space: nowrap;
+}
+
+.aiden-app-despacho-fecha b {
+  color: var(--texto);
+}
+
+/* Tableta · Centro de administración */
+.aiden-app-tableta {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 14px 16px;
+  background:
+    radial-gradient(60% 50% at 0% 0%, rgba(113, 139, 88, 0.14), transparent 70%),
+    var(--fondo-2);
+}
+
+.aiden-app-tableta-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.aiden-app-cifras {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.aiden-app-cifras div {
+  display: grid;
+  gap: 1px;
+  padding: 9px 11px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  background: var(--fondo);
+}
+
+.aiden-app-cifras div > span,
+.aiden-app-cifras small {
+  font-size: 11px;
+  color: var(--texto-2);
+}
+
+.aiden-app-cifras strong {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.aiden-app-semana {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  background: var(--fondo);
+}
+
+.aiden-app-semana b {
+  font-weight: 700;
+  color: var(--texto);
+}
+
+.aiden-app-barras {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  height: 64px;
+}
+
+.aiden-app-barras > span {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: end;
+  gap: 3px;
+  text-align: center;
+}
+
+.aiden-app-barras i {
+  display: block;
+  height: calc(var(--alto, 0.05) * 100%);
+  border-radius: 5px 5px 2px 2px;
+  background: var(--color-verde-100);
+}
+
+.aiden-app-barras .is-hoy i {
+  background: var(--color-aiden-moss);
+}
+
+.aiden-app-barras small {
+  font-size: 11px;
+  color: var(--texto-2);
+}
+
+.aiden-app-barras .is-hoy small {
+  font-weight: 700;
+  color: var(--texto);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-app-tareas li {
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+  }
+
+  .aiden-app-check-circulo {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s 0.1s ease;
+  }
+
+  .aiden-app-tareas li.is-hecha .aiden-app-check-circulo {
+    animation: aiden-check-sella 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .aiden-app-avance i {
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .aiden-app-barras i {
+    transition: height 0.9s 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .aiden-app-feed li.is-nuevo {
+    animation: aiden-feed-llega 1.1s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* El destello llega al portátil cuando la luz cruza su borde, y a la tableta después. */
+  .aiden-app-pulso .aiden-app-destello {
+    animation: aiden-destello 1.2s 0.42s ease-out both;
+  }
+
+  .aiden-app-semana .aiden-app-destello {
+    animation: aiden-destello 1.2s 0.9s ease-out both;
+  }
+}
+
+@keyframes aiden-check-sella {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes aiden-feed-llega {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+    background: rgba(217, 234, 115, 0.5);
+  }
+  40% {
+    opacity: 1;
+    transform: none;
+    background: rgba(217, 234, 115, 0.45);
+  }
+  to {
+    background: transparent;
+  }
+}
+
+@keyframes aiden-destello {
+  from {
+    box-shadow: 0 0 0 0 rgba(217, 234, 115, 0.85), inset 0 0 0 1px rgba(217, 234, 115, 0.9);
+  }
+  to {
+    box-shadow: 0 0 0 14px rgba(217, 234, 115, 0), inset 0 0 0 1px rgba(217, 234, 115, 0);
+  }
+}
+
+/* ---------- El hilo: un registro viaja por encima de los equipos ---------- */
+
+.aiden-pantallas-hilo {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.aiden-hilo-ruta {
+  fill: none;
+  stroke: var(--color-aiden-moss);
+  stroke-width: 1.5;
+  stroke-dasharray: 0.4 1.6;
+  stroke-linecap: round;
+  opacity: 0.55;
+  vector-effect: non-scaling-stroke;
+}
+
+.aiden-hilo-luz {
+  fill: none;
+  stroke: var(--color-aiden-lime);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 9 91;
+  stroke-dashoffset: 9;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 6px rgba(217, 234, 115, 0.95)) drop-shadow(0 0 2px rgba(102, 128, 79, 0.9));
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-hilo-luz {
+    animation: aiden-hilo-viaja 1.25s cubic-bezier(0.55, 0.1, 0.25, 1) both;
+  }
+}
+
+@keyframes aiden-hilo-viaja {
+  0% {
+    stroke-dashoffset: 9;
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -91;
+    opacity: 0;
+  }
+}
+
+/* La pista inicial junto al celular. */
+.aiden-pantallas-pista {
+  position: absolute;
+  top: 214px;
+  left: calc(100% - 10px);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px 7px 10px;
+  border-radius: 999px;
+  background: var(--color-aiden-forest-deep);
+  color: var(--vivo);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: var(--sombra-noche);
+}
+
+.aiden-pantallas-pista::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--vivo);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-pantallas-pista::before {
+    animation: aiden-latido 1.8s ease-in-out infinite;
+  }
+
+  .aiden-pantallas-pista {
+    animation: aiden-pista-flota 3s ease-in-out infinite;
+  }
+}
+
+@keyframes aiden-pista-flota {
+  0%, 100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: -6px 0;
+  }
+}
+
+/* Las tres lecturas, una por equipo, alineadas bajo el escenario. */
+.aiden-pantallas-lecturas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 48px);
+  margin: clamp(48px, 5vw, 72px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--borde-fuerte);
+}
+
+.aiden-pantallas-lecturas li {
+  padding-top: 20px;
+}
+
+.aiden-pantallas-lecturas h3 {
+  font-size: 17px;
+}
+
+.aiden-pantallas-lecturas p {
+  margin-top: 8px;
+  max-width: 38ch;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--tinta-suave);
+}
+
+/* ---------- El escenario se arma con el scroll (escritorio) ---------- */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) and (min-width: 1100px) {
+    .aiden-pantallas-escenario {
+      view-timeline: --escenario block;
+    }
+
+    .aiden-pantallas-pieza {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --escenario;
+      animation-range: entry 0% cover 48%;
+    }
+
+    .aiden-pantallas-pieza.is-portatil {
+      animation-name: aiden-arma-portatil;
+    }
+
+    .aiden-pantallas-pieza.is-celular {
+      animation-name: aiden-arma-celular;
+    }
+
+    .aiden-pantallas-pieza.is-tableta {
+      animation-name: aiden-arma-tableta;
+    }
+
+    .aiden-pantallas-hilo,
+    .aiden-pantallas-pista {
+      animation: aiden-aparece-al-final linear both;
+      animation-timeline: --escenario;
+      animation-range: cover 40% cover 52%;
+    }
+  }
+}
+
+@keyframes aiden-arma-portatil {
+  from {
+    transform: translateY(140px) rotateX(58deg) rotateZ(-14deg) scale(0.82);
+  }
+  to {
+    transform: var(--reposo);
+  }
+}
+
+@keyframes aiden-arma-celular {
+  from {
+    transform: translate(180px, 260px) rotateX(60deg) rotateZ(-30deg) scale(0.8);
+  }
+  to {
+    transform: var(--reposo);
+  }
+}
+
+@keyframes aiden-arma-tableta {
+  from {
+    transform: translate(-200px, 280px) rotateX(60deg) rotateZ(10deg) scale(0.8);
+  }
+  to {
+    transform: var(--reposo);
+  }
+}
+
+@keyframes aiden-aparece-al-final {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- Escenario en una columna ---------- */
+
+@media (max-width: 1099px) {
+  .aiden-pantallas-escenario {
+    display: grid;
+    grid-template-columns: minmax(0, 262px) minmax(0, 1fr);
+    gap: 28px 24px;
+    align-items: end;
+    height: auto;
+    perspective: none;
+  }
+
+  .aiden-pantallas-pieza,
+  .aiden-pantallas-pieza.is-portatil,
+  .aiden-pantallas-pieza.is-celular,
+  .aiden-pantallas-pieza.is-tableta {
+    position: relative;
+    inset: auto;
+    translate: none;
+    transform: none;
+    width: auto;
+  }
+
+  .aiden-pantallas-pieza.is-portatil {
+    grid-column: 1 / -1;
+    width: min(100%, 700px);
+    justify-self: center;
+    padding-inline: 4%;
+  }
+
+  .aiden-pantallas-pieza.is-tableta {
+    max-width: 420px;
+  }
+
+  .aiden-pantallas-hilo,
+  .aiden-pantallas-piso {
+    display: none;
+  }
+
+  .aiden-pantallas-pista {
+    top: auto;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .aiden-pantallas-pista {
+      animation: none;
+    }
+  }
+}
+
+@media (max-width: 860px) {
+  .aiden-pantallas-cabecera,
+  .aiden-pantallas-lecturas {
+    grid-template-columns: 1fr;
+  }
+
+  .aiden-pantallas-escenario {
+    width: min(100% - 32px, 520px);
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .aiden-pantallas-pieza.is-celular {
+    width: min(100%, 280px);
+    margin-top: 36px;
+  }
+
+  .aiden-pantallas-pieza.is-tableta {
+    width: 100%;
+  }
+
+  .aiden-pantallas-pieza.is-portatil {
+    padding-inline: 5%;
+  }
+
+  .aiden-pantallas-lecturas li + li {
+    padding-top: 16px;
+    border-top: 1px solid var(--borde);
+  }
+}
+
+/* En pantallas de portátil estrechas la interfaz se recoge. */
+@container (max-width: 560px) {
+  .aiden-app-portatil {
+    grid-template-columns: 38px minmax(0, 1fr);
+  }
+
+  .aiden-app-cuerpo {
+    gap: 7px;
+    padding: 8px 10px 10px;
+  }
+
+  .aiden-app-buscar,
+  .aiden-app-carga li:nth-child(n + 3) {
+    display: none;
+  }
+
+  .aiden-app-pulso {
+    padding: 8px 10px;
+  }
+
+  .aiden-app-pulso strong {
+    font-size: 18px;
+  }
+
+  .aiden-app-columnas {
+    grid-template-columns: 1fr;
+  }
+
+  .aiden-app-columnas section:first-child {
+    display: none;
+  }
+
+  .aiden-app-feed li:nth-child(n + 3),
+  .aiden-app-despacho-pista {
+    display: none;
+  }
+
+  .aiden-app-despacho {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+/* ---------- Manifiesto: la noche, las palabras y el isotipo en vidrio ---------- */
+
+.aiden-manifiesto {
+  padding-block: 24px 40px;
+}
+
+.aiden-manifiesto-marco {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: clamp(460px, 62vh, 620px);
+  padding: clamp(40px, 6vw, 88px);
+  border-radius: 28px;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(520px 420px at 76% 50%, rgba(113, 139, 88, 0.32), transparent 70%),
+    var(--noche);
+  box-shadow: var(--sombra-marca);
+}
+
+.aiden-manifiesto-marco > p {
+  position: relative;
+  z-index: 1;
+  max-width: 14ch;
+  color: var(--sobre-noche);
+}
+
+.aiden-manifiesto-marco em span {
+  color: var(--vivo);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aiden-manifiesto-marco > p span {
+      animation-name: aiden-palabra-enciende-noche;
+    }
+
+    .aiden-manifiesto-marco em span {
+      animation-name: aiden-palabra-enciende-lima;
+    }
+  }
+}
+
+@keyframes aiden-palabra-enciende-noche {
+  from {
+    color: rgba(185, 200, 186, 0.32);
+  }
+  to {
+    color: var(--sobre-noche);
+  }
+}
+
+@keyframes aiden-palabra-enciende-lima {
+  from {
+    color: rgba(185, 200, 186, 0.32);
+  }
+  to {
+    color: var(--vivo);
+  }
+}
+
+@media (max-width: 860px) {
+  .aiden-manifiesto-marco {
+    align-items: flex-start;
+    min-height: 620px;
+  }
+}
+
+/* ---------- El rebobinado: cada ventana se escribe al llegar ---------- */
+
+/* La ventana del módulo emerge del plano y una línea lima la barre de arriba
+   abajo, como si AiDEN la estuviera registrando en ese momento. */
+.aiden-estacion .aiden-ventana {
+  position: relative;
+}
+
+.aiden-estacion .aiden-ventana::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-aiden-lime) 18%, var(--color-aiden-lime) 82%, transparent);
+  box-shadow: 0 0 14px 2px rgba(217, 234, 115, 0.7);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aiden-estacion .aiden-ventana {
+      transform-origin: 50% 0;
+      animation: aiden-ventana-escribe linear both;
+      animation-timeline: view(block);
+      animation-range: entry 0% entry 90%;
+    }
+
+    .aiden-estacion .aiden-ventana::after {
+      animation: aiden-ventana-barre linear both;
+      animation-timeline: view(block);
+      animation-range: entry 30% entry 100%;
+    }
+
+    /* La liquidación sale impresa: el papel baja desde la ranura. */
+    .aiden-liquidacion {
+      animation: aiden-imprime linear both;
+      animation-timeline: view(block);
+      animation-range: entry 0% cover 42%;
+    }
+
+    /* Los sellos de AiDEN caen uno a uno sobre la comparativa. */
+    .aiden-comparativa td.is-aiden .aiden-sello-check {
+      animation: aiden-sella linear both;
+      animation-timeline: view(block);
+      animation-range: entry 40% entry 100%;
+    }
+  }
+}
+
+@keyframes aiden-ventana-escribe {
+  from {
+    transform: perspective(1400px) rotateX(24deg) translateY(36px) scale(0.95);
+    clip-path: inset(0 0 72% 0 round 16px);
+    filter: blur(3px);
+  }
+  60% {
+    filter: blur(0);
+  }
+  to {
+    transform: none;
+    clip-path: inset(0 0 0 0 round 16px);
+    filter: blur(0);
+  }
+}
+
+@keyframes aiden-ventana-barre {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes aiden-imprime {
+  from {
+    clip-path: inset(0 0 100% 0 round 20px);
+    transform: translateY(-36px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 20px);
+    transform: none;
+  }
+}
+
+@keyframes aiden-sella {
+  0% {
+    opacity: 0;
+    transform: rotate(-26deg) scale(2.2);
+  }
+  70% {
+    opacity: 1;
+    transform: rotate(-4deg) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-6deg) scale(1);
+  }
+}
+
+/* ---------- Asistente: escritura en vivo ---------- */
+
+.aiden-ia-marco,
+.aiden-contacto-marco {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.aiden-chat-pensando {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--texto-2);
+}
+
+.aiden-chat-pensando i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-aiden-moss);
+}
+
+.aiden-chat-pensando span {
+  margin-left: 6px;
+  font-size: 12.5px;
+}
+
+.aiden-chat-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.16em;
+  border-radius: 1px;
+  background: var(--color-verde-700);
+}
+
+.aiden-chat-chips button:disabled,
+.aiden-chat-entrada button:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-chat-pensando i {
+    animation: aiden-pensando 1s ease-in-out infinite;
+  }
+
+  .aiden-chat-pensando i:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .aiden-chat-pensando i:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .aiden-chat-cursor {
+    animation: aiden-cursor 0.9s steps(2, jump-none) infinite;
+  }
+
+  .aiden-chat-respuesta.is-escribiendo {
+    box-shadow: 0 0 0 1px rgba(113, 139, 88, 0.35), 0 10px 30px -12px rgba(113, 139, 88, 0.5);
+    transition: box-shadow 0.4s ease;
+  }
+}
+
+@keyframes aiden-pensando {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@keyframes aiden-cursor {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ---------- La cápsula lleva el avance de la lectura ---------- */
+
+.aiden-header-inner {
+  position: relative;
+}
+
+.aiden-header-inner::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-aiden-moss), var(--color-aiden-lime));
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aiden-header.is-compact .aiden-header-inner::after {
+      opacity: 1;
+      animation: aiden-avance-lectura linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+
+@keyframes aiden-avance-lectura {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.aiden-ia-copy h2 {
+  font-size: clamp(32px, 3.6vw, 54px);
+}
+
+/* ---------- Ajustes de una columna ---------- */
+
+/* El botón flotante no se parte en dos líneas. */
+.aiden-flotante .aiden-boton {
+  white-space: nowrap;
+}
+
+@media (max-width: 980px) {
+  /* La leyenda deja sitio al botón circular de la esquina. */
+  .aiden-enjambre-leyenda {
+    padding-right: 64px;
+  }
+
+  /* En la barra horizontal del riel la enredadera no cabe: su hueco quedaba vacío. */
+  .aiden-riel .aiden-enredadera {
+    display: none;
+  }
+}

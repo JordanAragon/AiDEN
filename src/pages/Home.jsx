@@ -2,7 +2,6 @@ import { ArrowDown, ArrowRight, Check, Minus } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { generarSemilla } from "../datos/semilla";
-import { SUGERENCIAS, responder } from "../datos/asistente";
 import { resumenLote, ultimasLecturas } from "../datos/selectores";
 import { ETAPAS } from "../datos/catalogos";
 import { dinero, dineroOGuion, fechaCorta, hoyISO, numero } from "../utilidades/formato";
@@ -15,10 +14,21 @@ import PasosEtapa from "../components/lote/PasosEtapa";
 import LineaTiempo from "../components/lote/LineaTiempo";
 import { TONO_INCIDENCIA, TONO_PRIORIDAD } from "../components/ui/tonos";
 import WordmarkAiden from "../components/landing/WordmarkAiden";
-import CampoVivo from "../components/landing/CampoVivo";
+import TituloVivo from "../components/landing/TituloVivo";
+import CapituloPantallas from "../components/landing/CapituloPantallas";
+import AsistenteVivo from "../components/landing/AsistenteVivo";
+import LienzoVivo from "../components/vivo/LienzoVivo";
+import SembradoIsotipo from "../components/vivo/SembradoIsotipo";
+import { diferida } from "../utilidades/cargaDiferida";
+import "../estilos/landing-vivo.css";
+
+const EscenaInvernadero = diferida(() => import("../components/vivo/escenas/EscenaInvernadero"));
+const EscenaTopografia = diferida(() => import("../components/vivo/escenas/EscenaTopografia"));
+const EscenaVidrio = diferida(() => import("../components/vivo/escenas/EscenaVidrio"));
+const EscenaAsistente = diferida(() => import("../components/vivo/escenas/EscenaAsistente"));
 
 /*
-  La landing rebobina la historia real del lote de tomate de los datos de ejemplo:
+  La landing rebobina la historia del lote de tomate del vivero que trae AiDEN:
   del despacho (día 68) a la siembra (día 0). Cada estación muestra una ventana del
   módulo real del sistema, y el asistente del producto responde en vivo. Nada se
   inventa: generarSemilla es pura y determinista respecto a hoy.
@@ -316,99 +326,6 @@ function CifraViva({ hasta, formatear = numero, sufijo = "" }) {
   return <span ref={nodoRef}>{formatear(valor)}{sufijo}</span>;
 }
 
-/* La demo del asistente: el módulo de IA real respondiendo en el navegador. */
-function DemoAsistente({ datos }) {
-  const [charla, setCharla] = useState([]);
-  const [pregunta, setPregunta] = useState("");
-  const charlaRef = useRef(null);
-
-  const preguntar = (texto) => {
-    const limpio = texto.trim();
-    if (!limpio) return;
-    setCharla((previa) => [...previa.slice(-5), { pregunta: limpio, respuesta: responder(limpio, datos, null) }]);
-    setPregunta("");
-    window.requestAnimationFrame(() => {
-      charlaRef.current?.scrollTo({ top: charlaRef.current.scrollHeight, behavior: "smooth" });
-    });
-  };
-
-  return (
-    <div className="aiden-chat">
-      <div className="aiden-chat-historial" ref={charlaRef} aria-live="polite">
-        {charla.length === 0 && (
-          <p className="aiden-chat-vacio">Elige una pregunta o escribe la tuya. El asistente responde con los registros del vivero de ejemplo.</p>
-        )}
-        {charla.map((turno, indice) => (
-          <div key={`${turno.pregunta}-${indice}`} className="aiden-chat-turno">
-            <p className="aiden-chat-pregunta">{turno.pregunta}</p>
-            <div className="aiden-chat-respuesta">
-              <p>{turno.respuesta.texto}</p>
-              {turno.respuesta.items?.length > 0 && (
-                <ul>
-                  {turno.respuesta.items.slice(0, 5).map((item) => (
-                    <li key={item.texto}>
-                      {item.etiqueta && <Insignia tono="neutral">{String(item.etiqueta).toUpperCase()}</Insignia>}
-                      <span>{item.texto}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {turno.respuesta.fuente && <small>Verificable en: {turno.respuesta.fuente}</small>}
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="aiden-chat-chips" role="group" aria-label="Preguntas sugeridas">
-        {SUGERENCIAS.slice(0, 4).map((sugerencia) => (
-          <button key={sugerencia} type="button" onClick={() => preguntar(sugerencia)}>{sugerencia}</button>
-        ))}
-      </div>
-      <form
-        className="aiden-chat-entrada"
-        onSubmit={(evento) => {
-          evento.preventDefault();
-          preguntar(pregunta);
-        }}
-      >
-        <label className="sr-only" htmlFor="pregunta-asistente">Escribe tu pregunta para el asistente</label>
-        <input
-          id="pregunta-asistente"
-          value={pregunta}
-          onChange={(evento) => setPregunta(evento.target.value)}
-          placeholder="Escribe tu pregunta… por ejemplo, LT-2026-012"
-          maxLength={160}
-          autoComplete="off"
-        />
-        <button type="submit" className="aiden-boton aiden-boton-oscuro" aria-label="Preguntar al asistente"><ArrowRight size={15} /></button>
-      </form>
-    </div>
-  );
-}
-
-const ROLES = [
-  {
-    nombre: "Laura, supervisora",
-    tono: "noche",
-    frase: "Registró el lote, movió las etapas y mañana valida el despacho.",
-    detalle: "Su vista ordena el día por lo que requiere decisión.",
-    hizo: ["Registro del lote", "Cambios de etapa", "Validación de salida"],
-  },
-  {
-    nombre: "Andrés, operario",
-    tono: "lima",
-    frase: "Regó, fertilizó y reportó las hojas amarillas desde el celular.",
-    detalle: "Su vista pone las tareas primero, al alcance del pulgar.",
-    hizo: ["Riego y fertilización", "Reporte de incidencia", "Tareas del día"],
-  },
-  {
-    nombre: "Jordan, administrador",
-    tono: "papel",
-    frase: "Lee el costo por planta sin pedirle la planilla a nadie.",
-    detalle: "Su vista junta costos, accesos y el pulso de la semana.",
-    hizo: ["Costo por planta", "Saldo del mes", "Cuentas y accesos"],
-  },
-];
-
 export default function Inicio() {
   useTitulo(null);
   const historia = useMemo(() => construirHistoria(), []);
@@ -418,6 +335,7 @@ export default function Inicio() {
   const [solicitudEnviada, setSolicitudEnviada] = useState(false);
   const [errorSolicitud, setErrorSolicitud] = useState("");
   const [enviandoSolicitud, setEnviandoSolicitud] = useState(false);
+  const [asistentePensando, setAsistentePensando] = useState(false);
   const estacionesRef = useRef([]);
   const rielRef = useRef(null);
   const fichaRef = useRef(null);
@@ -575,6 +493,7 @@ export default function Inicio() {
   const { datos, lote, resumen, estaciones, totalDias, cerrado, eventoCierre, joven, incidenciaJoven, lotesActivos, registros, validadora } = historia;
   const activa = estaciones[estacionActiva] || estaciones[0];
   const diaCilantro = joven ? numero(diasEntre(hoyISO(), joven.fecha)) : null;
+  const plantasVivero = lotesActivos.reduce((suma, l) => suma + l.cantidad, 0);
 
   return (
     <MarcoPublico diaCilantro={diaCilantro}>
@@ -582,23 +501,27 @@ export default function Inicio() {
         <section className="aiden-despacho" aria-labelledby="titulo-despacho">
           <div className="aiden-shell">
             <p className="aiden-marca-monumental" aria-hidden="true"><WordmarkAiden className="aiden-wordmark" /></p>
-            <div className="aiden-escena">
-              <CampoVivo plantas={lote.cantidad} />
+            <div className="aiden-escena" data-sembrado-marco>
+              <LienzoVivo escena={EscenaInvernadero} />
+              <SembradoIsotipo plantas={plantasVivero} className="aiden-escena-sembrado" />
               <a href="#historia" className="aiden-circulo" aria-label="Bajar a la historia del lote"><ArrowDown size={20} /></a>
+              <p className="aiden-enjambre-leyenda"><i aria-hidden="true" /><span><strong>{numero(plantasVivero)}</strong> plantas vivas en el vivero, un punto por cada una</span></p>
               <div className="aiden-escena-copy">
-                <h1 id="titulo-despacho">
-                  Pasado mañana salen 400 plantas de tomate <em>hacia Timbío.</em>
-                </h1>
+                <TituloVivo
+                  id="titulo-despacho"
+                  retraso={0.35}
+                  partes={[{ texto: "Pasado mañana salen 400 plantas de tomate" }, { texto: "hacia Timbío.", em: true }]}
+                />
                 <p className="aiden-despacho-lead">
                   AiDEN, el sistema de registro del vivero, escribió los {numero(totalDias)} días que las trajeron
                   hasta el camión. Esta página rebobina esa historia.
                 </p>
                 <div className="aiden-despacho-acciones">
-                  <a href="#contacto" className="aiden-boton aiden-boton-lima aiden-boton-grande">Solicitar una demo <ArrowRight size={15} /></a>
+                  <a href="#contacto" className="aiden-boton aiden-boton-lima aiden-boton-grande">Agendar una presentación <ArrowRight size={15} /></a>
                   <a href="#historia" className="aiden-boton aiden-boton-fantasma aiden-boton-grande">Rebobinar la historia</a>
                 </div>
               </div>
-              <figure className="aiden-guia" ref={fichaRef} aria-label="Ficha del lote de ejemplo, como la muestra el producto">
+              <figure className="aiden-guia" ref={fichaRef} aria-label={`Ficha del lote ${lote.lote} en AiDEN`}>
                 <VentanaModulo ruta="Producción / Ficha del lote" meta={lote.lote}>
                   <div className="grid gap-3">
                     <div className="flex items-center justify-between gap-3">
@@ -619,13 +542,12 @@ export default function Inicio() {
                 </VentanaModulo>
               </figure>
             </div>
-            <p className="aiden-escena-nota">Historia tomada de los datos de ejemplo del sistema.</p>
           </div>
         </section>
 
         {/* La pregunta que el ICA y el comprador hacen igual, en tres datos. */}
         <section className="aiden-pregunta" aria-labelledby="titulo-pregunta">
-          <div className="aiden-shell aiden-pregunta-marco"><div className="aiden-pregunta-inner">
+          <div className="aiden-shell aiden-pregunta-marco"><LienzoVivo escena={EscenaTopografia} /><div className="aiden-pregunta-inner">
             <div>
               <h2 id="titulo-pregunta">¿Podría tu vivero reconstruir la historia <em>de cada planta que vende?</em></h2>
               <p className="aiden-pregunta-bajada">
@@ -655,7 +577,7 @@ export default function Inicio() {
           <div className="aiden-shell">
             <header className="aiden-rebobinado-cabecera">
               <h2 id="titulo-historia">Rebobinemos el <span className="aiden-sin-corte">{lote.lote}</span>, <em>del camión a la semilla.</em></h2>
-              <p>Registros reales de los datos de ejemplo, leídos de atrás hacia adelante en el módulo que los escribió.</p>
+              <p>Cada registro, leído de atrás hacia adelante en el módulo que lo escribió.</p>
             </header>
             <div className="aiden-rebobinado-grid">
               <aside className="aiden-riel" aria-hidden="true">
@@ -747,7 +669,8 @@ export default function Inicio() {
 
         {/* El manifiesto: tres verdades del campo, encendidas palabra a palabra. */}
         <section className="aiden-manifiesto" aria-label="Por qué registrar">
-          <div className="aiden-shell">
+          <div className="aiden-shell aiden-manifiesto-marco">
+            <LienzoVivo escena={EscenaVidrio} />
             <p>
               {["El", "cuaderno", "se", "moja."].map((palabra) => <span key={`a-${palabra}`}>{palabra} </span>)}
               {["La", "memoria", "se", "va."].map((palabra) => <span key={`b-${palabra}`}>{palabra} </span>)}
@@ -842,50 +765,31 @@ export default function Inicio() {
           </div>
         </section>
 
-        {/* El asistente de IA, respondiendo en vivo con los datos de ejemplo. */}
+        {/* El asistente de IA, respondiendo en vivo con los registros del vivero. */}
         <section className="aiden-ia" id="asistente" aria-labelledby="titulo-ia">
-          <div className="aiden-shell aiden-ia-marco"><div className="aiden-ia-grid">
+          <div className="aiden-shell aiden-ia-marco"><LienzoVivo escena={EscenaAsistente} datos={{ pensando: asistentePensando }} /><div className="aiden-ia-grid">
             <div className="aiden-ia-copy">
               <h2 id="titulo-ia">Pregúntale <em>al vivero.</em></h2>
               <p>
-                El asistente responde con los registros, no con promesas. Esta demostración corre en tu navegador
-                con las mismas reglas del módulo de inteligencia artificial del producto.
+                El asistente responde con los registros, no con promesas. Corre aquí mismo, en tu navegador, con
+                las mismas reglas del módulo de inteligencia artificial de AiDEN.
               </p>
               <p className="aiden-ia-pista">
                 Prueba con un código de lote ({lote.lote}) o con un insumo: «¿cuánto sustrato queda?».
               </p>
             </div>
-            <VentanaModulo ruta="Inteligencia artificial / Asistente" meta="Datos de ejemplo">
-              <DemoAsistente datos={datos} />
+            <VentanaModulo ruta="Inteligencia artificial / Asistente" meta="Vivero · Cauca">
+              <AsistenteVivo datos={datos} onPensando={setAsistentePensando} />
             </VentanaModulo>
           </div></div>
         </section>
 
-        {/* Los roles, apilados: cada tarjeta tapa a la anterior al bajar. */}
-        <section className="aiden-roles" id="roles" aria-labelledby="titulo-roles">
-          <div className="aiden-shell">
-            <h2 id="titulo-roles">La misma historia, <em>tres lecturas.</em></h2>
-            <div className="aiden-roles-pila">
-              {ROLES.map((rol, indice) => (
-                <article key={rol.nombre} className={`aiden-rol aiden-rol-${rol.tono}`} style={{ "--indice": indice }}>
-                  <div className="aiden-rol-copy">
-                    <h3>{rol.nombre}</h3>
-                    <p className="aiden-rol-frase">{rol.frase}</p>
-                    <p className="aiden-rol-detalle">{rol.detalle}</p>
-                  </div>
-                  <ul className="aiden-rol-hizo">
-                    {rol.hizo.map((cosa) => <li key={cosa}>{cosa}</li>)}
-                  </ul>
-                </article>
-              ))}
-            </div>
-            <p className="aiden-roles-pie">Cada rol entra a su propia vista con su propia cuenta. <Link to="/login">Iniciar sesión</Link></p>
-          </div>
-        </section>
+        {/* Tres pantallas, una historia: el registro viaja del celular al portátil y a la tableta. */}
+        <CapituloPantallas datos={datos} lote={lote} />
 
-        {/* Solicitar demo: el formulario es la acción, no un adorno. */}
+        {/* Agendar presentación: el formulario es la acción, no un adorno. */}
         <section className="aiden-contacto" id="contacto" aria-labelledby="titulo-contacto">
-          <div className="aiden-shell aiden-contacto-marco"><div className="aiden-contacto-grid">
+          <div className="aiden-shell aiden-contacto-marco"><LienzoVivo escena={EscenaInvernadero} /><div className="aiden-contacto-grid">
             <div className="aiden-contacto-copy">
               <h2 id="titulo-contacto">Muéstranos <em>tu vivero.</em></h2>
               <p>
@@ -894,7 +798,7 @@ export default function Inicio() {
               </p>
               {joven && incidenciaJoven && (
                 <p className="aiden-contacto-guino">
-                  Mientras tanto, en el vivero de ejemplo: el {joven.cultivo.toLowerCase()} va por el día {diaCilantro} y
+                  Mientras tanto, en el vivero: el {joven.cultivo.toLowerCase()} va por el día {diaCilantro} y
                   esta mañana reportaron volcamiento en tres bandejas. Esa historia también quedará escrita.
                 </p>
               )}
@@ -903,7 +807,7 @@ export default function Inicio() {
               className="aiden-formulario"
               onSubmit={prepararSolicitud}
               onFocus={() => { if (!formularioMontado.current) formularioMontado.current = Date.now(); }}
-              aria-label="Solicitud de demostración de AiDEN"
+              aria-label="Solicitud de presentación de AiDEN"
               aria-busy={enviandoSolicitud}
             >
               <label>Nombre<input name="nombre" required minLength="2" maxLength="120" autoComplete="name" placeholder="Tu nombre" /></label>
@@ -916,9 +820,9 @@ export default function Inicio() {
                 <span>Autorizo el tratamiento de mis datos para responder esta solicitud, según la <Link to="/privacidad">Política de privacidad</Link>.</span>
               </label>
               <button type="submit" className="aiden-boton aiden-boton-oscuro aiden-boton-grande" disabled={enviandoSolicitud}>
-                {enviandoSolicitud ? "Enviando..." : "Solicitar demo"} <ArrowRight size={15} />
+                {enviandoSolicitud ? "Enviando…" : "Agendar presentación"} <ArrowRight size={15} />
               </button>
-              {solicitudEnviada && <p className="aiden-form-estado is-exito" role="status" aria-live="polite">Solicitud recibida. Te escribiremos al correo que dejaste para coordinar la demostración.</p>}
+              {solicitudEnviada && <p className="aiden-form-estado is-exito" role="status" aria-live="polite">Solicitud recibida. Te escribiremos al correo que dejaste para coordinar la presentación.</p>}
               {errorSolicitud && <p className="aiden-form-estado" role="alert">{errorSolicitud}</p>}
             </form>
           </div></div>

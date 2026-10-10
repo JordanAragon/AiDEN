@@ -10,7 +10,7 @@ import { useTitulo } from "../hooks/useTitulo";
 /*
   Planes como página propia, al estilo de la referencia: la landing queda corta
   y aquí se decide con calma. Sin precios inventados: el precio de lanzamiento
-  se define en la demo, y la página lo dice tal cual.
+  se define en la presentación, y la página lo dice tal cual.
 */
 
 const PLANES = [
@@ -106,8 +106,8 @@ export default function Planes() {
           </div>
 
           <div className="aiden-planes-banda">
-            <p>Precio de lanzamiento: se define contigo en la demo, según el tamaño del vivero. Sin letra chica.</p>
-            <p className="aiden-planes-nota">La demo usa los datos de ejemplo del sistema; tus datos quedan en tus equipos y el tratamiento sigue la <Link to="/privacidad">política de privacidad</Link>.</p>
+            <p>Precio de lanzamiento: se define contigo en la presentación, según el tamaño del vivero. Sin letra chica.</p>
+            <p className="aiden-planes-nota">La presentación se hace sobre un vivero ilustrativo; tus datos quedan en tus equipos y el tratamiento sigue la <Link to="/privacidad">política de privacidad</Link>.</p>
           </div>
         </div>
       </section>
