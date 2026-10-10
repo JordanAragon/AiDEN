@@ -1,0 +1,45 @@
+/*
+  Escenas vivas (WebGPU) y su respaldo. El lienzo llena el marco que lo contiene,
+  hereda su radio y nunca recibe el puntero: el motor escucha el cursor en la
+  ventana, así el texto y los botones de encima siguen siendo lo que se toca.
+*/
+
+.aiden-lienzo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.aiden-lienzo-respaldo {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transition: opacity 1s var(--curva-entrada, ease);
+}
+
+.aiden-lienzo-escena {
+  position: absolute !important;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1.3s var(--curva-entrada, ease);
+}
+
+.aiden-lienzo[data-estado="lista"] .aiden-lienzo-escena {
+  opacity: 1;
+}
+
+.aiden-lienzo[data-estado="lista"] .aiden-lienzo-respaldo {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-lienzo-escena,
+  .aiden-lienzo-respaldo {
+    transition: none;
+  }
+}
