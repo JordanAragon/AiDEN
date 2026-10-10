@@ -793,7 +793,7 @@ export default function Inicio() {
             <div className="aiden-comparativa-placa">
             <header className="aiden-comparativa-doc">
               <span className="aiden-guia-doc">Comparativa de campo</span>
-              <span className="aiden-guia-folio">AiDEN</span>
+              <span className="aiden-guia-folio">Hoja 1 de 1</span>
             </header>
             <table className="aiden-comparativa" aria-labelledby="titulo-comparativa">
               <thead>
@@ -812,7 +812,7 @@ export default function Inicio() {
                   <td className="is-aiden"><span className="aiden-sello-check"><Check size={13} aria-label="Sí" /></span></td>
                 </tr>
                 <tr>
-                  <th scope="row">Asistente que responde con tus lotes, en el idioma del vivero</th>
+                  <th scope="row">Asistente que responde con tus lotes y tus registros</th>
                   <td><Minus size={15} aria-label="No" /></td>
                   <td><Minus size={15} aria-label="Normalmente no" /></td>
                   <td className="is-aiden"><span className="aiden-sello-check"><Check size={13} aria-label="Sí" /></span></td>
