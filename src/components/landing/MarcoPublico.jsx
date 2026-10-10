@@ -65,7 +65,7 @@ export default function MarcoPublico({ children, diaCilantro = null, flotanteVis
     destino.startsWith("/#") && pathname === "/" ? (
       <a key={destino} href={destino.slice(1)} onClick={cerrarMenu}>{nombre}</a>
     ) : (
-      <Link key={destino} to={destino} onClick={cerrarMenu}>{nombre}</Link>
+      <Link key={destino} to={destino} onClick={cerrarMenu} viewTransition>{nombre}</Link>
     );
 
   return (
@@ -130,8 +130,8 @@ export default function MarcoPublico({ children, diaCilantro = null, flotanteVis
             </nav>
             <nav aria-label="Cuenta">
               <strong>Cuenta</strong>
-              <Link to="/planes">Planes</Link>
-              <Link to="/preguntas">Preguntas</Link>
+              <Link to="/planes" viewTransition>Planes</Link>
+              <Link to="/preguntas" viewTransition>Preguntas</Link>
               <Link to="/login">Ingresar</Link>
             </nav>
             <nav aria-label="Legal">

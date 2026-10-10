@@ -464,39 +464,6 @@ body.aiden-menu-open {
   color: var(--tinta-suave);
 }
 
-.aiden-guia-sello {
-  position: absolute;
-  right: -14px;
-  bottom: -20px;
-  width: 112px;
-  height: 112px;
-  display: grid;
-  place-content: center;
-  text-align: center;
-  gap: 1px;
-  border-radius: 50%;
-  background: var(--papel);
-  border: 2px solid var(--color-aiden-forest);
-  box-shadow: inset 0 0 0 4px var(--papel), inset 0 0 0 5px color-mix(in srgb, var(--color-aiden-forest) 55%, transparent);
-  color: var(--color-aiden-forest);
-  transform: rotate(-7deg);
-}
-
-.aiden-guia-sello span {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.aiden-guia-sello strong {
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
-}
-
 /* ---------- La pregunta ---------- */
 
 .aiden-pregunta {
@@ -697,11 +664,6 @@ body.aiden-menu-open {
       animation-range: exit 0% exit 100%;
     }
 
-    .aiden-guia-sello {
-      animation: aiden-sello-gira linear both;
-      animation-timeline: view(block);
-      animation-range: entry 0% exit 100%;
-    }
   }
 }
 
@@ -715,15 +677,6 @@ body.aiden-menu-open {
   to {
     transform: translateY(44px);
     opacity: 0.55;
-  }
-}
-
-@keyframes aiden-sello-gira {
-  from {
-    transform: rotate(-13deg);
-  }
-  to {
-    transform: rotate(-2deg);
   }
 }
 
@@ -1707,16 +1660,6 @@ body.aiden-menu-open {
     right: 14px;
   }
 
-  .aiden-guia-sello {
-    right: -6px;
-    bottom: -14px;
-    width: 86px;
-    height: 86px;
-  }
-
-  .aiden-guia-sello strong {
-    font-size: 28px;
-  }
 
       .aiden-pregunta,
   .aiden-rebobinado,
@@ -2635,4 +2578,326 @@ body.aiden-menu-open {
   color: var(--color-verde-700);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+/* ---------- El nivel final: wordmark vivo, campo, enredadera, manifiesto, comparativa ---------- */
+
+.aiden-wordmark {
+  width: min(86%, 880px);
+  height: auto;
+  display: block;
+}
+
+/* La hoja de la i brota al cargar y luego se mece apenas. */
+.aiden-wordmark-hoja {
+  transform-box: fill-box;
+  transform-origin: 50% 95%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-wordmark-hoja {
+    animation:
+      aiden-hoja-brota 0.9s 0.35s var(--curva-entrada) both,
+      aiden-hoja-mece 7s 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes aiden-hoja-brota {
+  from {
+    opacity: 0;
+    transform: scale(0.2) rotate(-24deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes aiden-hoja-mece {
+  0%, 100% {
+    rotate: 0deg;
+  }
+  50% {
+    rotate: -4deg;
+  }
+}
+
+/* El campo vivo llena el marco por debajo del contenido. */
+.aiden-campo-vivo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* El contenido queda por encima del campo sin alterar su posicionamiento. */
+.aiden-escena-copy,
+.aiden-guia {
+  position: relative;
+  z-index: 1;
+}
+
+.aiden-circulo {
+  z-index: 2;
+}
+
+/* Grano de papel sobre los marcos oscuros: textura, no ruido. */
+.aiden-escena::after,
+.aiden-pregunta-marco::after,
+.aiden-ia-marco::after,
+.aiden-contacto-marco::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+.aiden-pregunta-marco,
+.aiden-ia-marco,
+.aiden-contacto-marco {
+  position: relative;
+}
+
+.aiden-pregunta-marco > *,
+.aiden-ia-marco > *,
+.aiden-contacto-marco > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* La enredadera del riel: el tallo se dibuja con el avance y las hojas brotan. */
+.aiden-enredadera {
+  width: 28px;
+  height: 150px;
+  margin-left: 0;
+  margin-top: 10px;
+  overflow: visible;
+}
+
+.aiden-enredadera-tallo {
+  fill: none;
+  stroke: var(--cumplido);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - var(--avance, 0) * 100);
+}
+
+.aiden-enredadera-hoja {
+  fill: var(--color-verde-700);
+  opacity: clamp(0, (var(--avance, 0) - var(--brote, 0.5)) * 9 + 0.9, 1);
+  transform-box: fill-box;
+  transform-origin: left center;
+  scale: clamp(0.25, (var(--avance, 0) - var(--brote, 0.5)) * 7 + 1, 1);
+  transition: opacity 0.2s ease, scale 0.2s ease;
+}
+
+/* El manifiesto: tres verdades encendidas palabra a palabra. */
+.aiden-manifiesto {
+  background: var(--dia);
+  padding-block: 56px 72px;
+}
+
+.aiden-manifiesto p {
+  font-size: clamp(30px, 4.2vw + 0.4rem, 64px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  text-wrap: balance;
+  max-width: 21ch;
+  color: var(--tinta);
+}
+
+.aiden-manifiesto em {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.aiden-manifiesto em span {
+  color: var(--color-aiden-moss-oscuro);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aiden-manifiesto em span {
+      animation-name: aiden-palabra-enciende-moss;
+    }
+  }
+}
+
+@keyframes aiden-palabra-enciende-moss {
+  from {
+    color: var(--tinta-suave);
+  }
+  to {
+    color: var(--color-aiden-moss-oscuro);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aiden-manifiesto span {
+      animation: aiden-palabra-enciende linear both;
+      animation-timeline: view(block);
+      animation-range: entry 25% entry 70%;
+    }
+  }
+}
+
+@keyframes aiden-palabra-enciende {
+  from {
+    color: var(--tinta-suave);
+  }
+  to {
+    color: var(--tinta);
+  }
+}
+
+/* La comparativa: el documento que pone a AiDEN sobre la mesa. */
+.aiden-comparativa-cabecera {
+  display: grid;
+  gap: 8px;
+  margin: 52px 0 22px;
+}
+
+.aiden-comparativa-cabecera h3 {
+  font-size: clamp(20px, 1.8vw + 0.4rem, 27px);
+}
+
+.aiden-comparativa-cabecera p {
+  font-size: 14.5px;
+  color: var(--tinta-suave);
+}
+
+.aiden-comparativa-placa {
+  background: var(--papel);
+  border: 1px solid var(--borde);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--sombra-marca);
+}
+
+.aiden-comparativa-doc {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 20px 12px;
+  border-bottom: 1px dashed var(--borde-fuerte);
+}
+
+.aiden-comparativa {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.aiden-comparativa th,
+.aiden-comparativa td {
+  padding: 13px 18px;
+  text-align: center;
+  border-top: 1px dashed var(--borde-fuerte);
+  font-size: 13.5px;
+}
+
+.aiden-comparativa thead th {
+  border-top: 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+.aiden-comparativa tbody th {
+  text-align: left;
+  font-weight: 650;
+  color: var(--texto);
+  max-width: 320px;
+}
+
+.aiden-comparativa td svg {
+  display: inline-block;
+  vertical-align: middle;
+  color: var(--tinta-suave);
+}
+
+.aiden-comparativa th.is-aiden {
+  color: var(--color-verde-700);
+}
+
+.aiden-comparativa td.is-aiden {
+  border-left: 1px dashed var(--borde-fuerte);
+}
+
+.aiden-sello-check {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-verde-700);
+  color: var(--color-verde-700);
+  transform: rotate(-6deg);
+}
+
+.aiden-comparativa-nota {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--tinta-suave);
+}
+
+/* La ficha del hero se inclina con el puntero (JS escribe las variables). */
+.aiden-guia .aiden-ventana {
+  transform: perspective(900px) rotateX(var(--inclina-x, 0deg)) rotateY(var(--inclina-y, 0deg));
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+}
+
+/* Transiciones de vista entre páginas públicas. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: aiden-vt-sale 0.22s ease both;
+  }
+
+  ::view-transition-new(root) {
+    animation: aiden-vt-entra 0.3s 0.06s var(--curva-entrada, ease) both;
+  }
+}
+
+@keyframes aiden-vt-sale {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes aiden-vt-entra {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@media (max-width: 860px) {
+  .aiden-comparativa th,
+  .aiden-comparativa td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+
+  .aiden-comparativa tbody th {
+    font-size: 12.5px;
+  }
+
+  .aiden-comparativa thead th {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
 }

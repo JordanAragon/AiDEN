@@ -124,6 +124,25 @@ try:
             "el asistente responde una pregunta libre por código de lote",
         )
 
+        # Los dispositivos del nivel final: campo vivo, manifiesto y comparativa.
+        registro.check(
+            pagina.locator(".aiden-campo-vivo").get_attribute("aria-hidden") == "true",
+            "el campo vivo del hero es un lienzo decorativo oculto a lectores",
+        )
+        registro.check(
+            pagina.locator(".aiden-manifiesto span").count() >= 12,
+            "el manifiesto se parte en palabras para encenderse al bajar",
+        )
+        comparativa = pagina.locator(".aiden-comparativa")
+        registro.check(
+            comparativa.locator("thead th").count() == 4 and comparativa.locator("tbody tr").count() == 5,
+            "la comparativa pone a AiDEN frente al cuaderno y al software genérico",
+        )
+        registro.check(
+            pagina.locator(".aiden-enredadera-hoja").count() == 6,
+            "la enredadera del riel tiene sus hojas listas para brotar",
+        )
+
         # La pila de roles y la cinta de módulos dan vida a la mitad de la página.
         registro.check(pagina.locator(".aiden-roles-pila .aiden-rol").count() == 3, "los tres roles se apilan en tarjetas propias")
 

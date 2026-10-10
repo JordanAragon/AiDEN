@@ -14,8 +14,7 @@ with sync_playwright() as p:
     r.check("Timbío" in " ".join(pg.get_by_role("heading", level=1).inner_text().split()), "la landing abre con la historia del despacho")
     boton = pg.locator(".aiden-despacho-acciones .aiden-boton-lima").first
     r.check(boton.evaluate("e => getComputedStyle(e).color") == "rgb(7, 27, 17)", "el botón lima del hero usa la tinta oscura de la paleta")
-    sello = pg.locator(".aiden-guia-sello strong").inner_text()
-    r.check(sello.isdigit() and int(sello) > 0, f"el sello de la guía marca el día real del lote ({sello})")
+    r.check("420" in pg.locator(".aiden-guia").inner_text(), "la ficha del hero muestra las plantas vivas del lote real")
     pg.locator(".aiden-footer").get_by_role("link", name="Ingresar").click(); pg.wait_for_url("**/login")
     r.check(pg.locator("input[type=email]").input_value() == "", "el acceso llega sin credenciales precargadas")
 

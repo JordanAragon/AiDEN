@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, Minus } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { generarSemilla } from "../datos/semilla";
@@ -14,7 +14,8 @@ import BarraRango from "../components/ui/BarraRango";
 import PasosEtapa from "../components/lote/PasosEtapa";
 import LineaTiempo from "../components/lote/LineaTiempo";
 import { TONO_INCIDENCIA, TONO_PRIORIDAD } from "../components/ui/tonos";
-import palabraMarca from "../assets/marca/aiden-palabra.svg";
+import WordmarkAiden from "../components/landing/WordmarkAiden";
+import CampoVivo from "../components/landing/CampoVivo";
 
 /*
   La landing rebobina la historia real del lote de tomate de los datos de ejemplo:
@@ -419,7 +420,39 @@ export default function Inicio() {
   const [enviandoSolicitud, setEnviandoSolicitud] = useState(false);
   const estacionesRef = useRef([]);
   const rielRef = useRef(null);
+  const fichaRef = useRef(null);
   const formularioMontado = useRef(0);
+
+  // La ficha del hero se inclina siguiendo el puntero (solo puntero fino y sin movimiento reducido).
+  useEffect(() => {
+    const ficha = fichaRef.current;
+    if (!ficha) return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+    if (!window.matchMedia("(pointer: fine)").matches) return undefined;
+    let cuadro = 0;
+    const mover = (evento) => {
+      if (cuadro) return;
+      cuadro = window.requestAnimationFrame(() => {
+        cuadro = 0;
+        const caja = ficha.getBoundingClientRect();
+        const nx = (evento.clientX - caja.left) / caja.width - 0.5;
+        const ny = (evento.clientY - caja.top) / caja.height - 0.5;
+        ficha.style.setProperty("--inclina-x", `${(-ny * 7).toFixed(2)}deg`);
+        ficha.style.setProperty("--inclina-y", `${(nx * 9).toFixed(2)}deg`);
+      });
+    };
+    const soltar = () => {
+      ficha.style.setProperty("--inclina-x", "0deg");
+      ficha.style.setProperty("--inclina-y", "0deg");
+    };
+    ficha.addEventListener("pointermove", mover, { passive: true });
+    ficha.addEventListener("pointerleave", soltar, { passive: true });
+    return () => {
+      ficha.removeEventListener("pointermove", mover);
+      ficha.removeEventListener("pointerleave", soltar);
+      if (cuadro) window.cancelAnimationFrame(cuadro);
+    };
+  }, []);
 
   // El riel marca la estación centrada y las ventanas se revelan una sola vez.
   useEffect(() => {
@@ -539,7 +572,7 @@ export default function Inicio() {
   };
 
   if (!historia) return null;
-  const { datos, lote, resumen, estaciones, totalDias, hoyDia, cerrado, eventoCierre, joven, incidenciaJoven, lotesActivos, registros, validadora } = historia;
+  const { datos, lote, resumen, estaciones, totalDias, cerrado, eventoCierre, joven, incidenciaJoven, lotesActivos, registros, validadora } = historia;
   const activa = estaciones[estacionActiva] || estaciones[0];
   const diaCilantro = joven ? numero(diasEntre(hoyISO(), joven.fecha)) : null;
 
@@ -548,8 +581,9 @@ export default function Inicio() {
         {/* Día 66: la marca corona el marco y la escena abre en la víspera del despacho. */}
         <section className="aiden-despacho" aria-labelledby="titulo-despacho">
           <div className="aiden-shell">
-            <p className="aiden-marca-monumental" aria-hidden="true"><img src={palabraMarca} alt="" /></p>
+            <p className="aiden-marca-monumental" aria-hidden="true"><WordmarkAiden className="aiden-wordmark" /></p>
             <div className="aiden-escena">
+              <CampoVivo plantas={lote.cantidad} />
               <a href="#historia" className="aiden-circulo" aria-label="Bajar a la historia del lote"><ArrowDown size={20} /></a>
               <div className="aiden-escena-copy">
                 <h1 id="titulo-despacho">
@@ -564,7 +598,7 @@ export default function Inicio() {
                   <a href="#historia" className="aiden-boton aiden-boton-fantasma aiden-boton-grande">Rebobinar la historia</a>
                 </div>
               </div>
-              <figure className="aiden-guia" aria-label="Ficha del lote de ejemplo, como la muestra el producto">
+              <figure className="aiden-guia" ref={fichaRef} aria-label="Ficha del lote de ejemplo, como la muestra el producto">
                 <VentanaModulo ruta="Producción / Ficha del lote" meta={lote.lote}>
                   <div className="grid gap-3">
                     <div className="flex items-center justify-between gap-3">
@@ -578,15 +612,11 @@ export default function Inicio() {
                     <dl className="aiden-ficha-lineas">
                       <div><dt>Plantas vivas</dt><dd>{numero(lote.cantidad)} de {numero(lote.cantidadInicial)}</dd></div>
                       <div><dt>Pedido</dt><dd>400 · Asociación de Timbío</dd></div>
-                      <div><dt>Salida estimada</dt><dd>{fechaCorta(lote.fechaEstimada)} · valida {validadora || "Supervisión"}</dd></div>
+                      <div><dt>Salida</dt><dd>{fechaCorta(lote.fechaEstimada)}</dd></div>
+                      <div><dt>Valida</dt><dd>{validadora || "Supervisión"}</dd></div>
                     </dl>
                   </div>
                 </VentanaModulo>
-                <div className="aiden-guia-sello" aria-label={`Día ${numero(hoyDia)} de ${numero(totalDias)} del lote`}>
-                  <span>Día</span>
-                  <strong>{numero(hoyDia)}</strong>
-                  <span>de {numero(totalDias)}</span>
-                </div>
               </figure>
             </div>
             <p className="aiden-escena-nota">Historia tomada de los datos de ejemplo del sistema.</p>
@@ -624,7 +654,6 @@ export default function Inicio() {
         <section className="aiden-rebobinado" id="historia" aria-labelledby="titulo-historia">
           <div className="aiden-shell">
             <header className="aiden-rebobinado-cabecera">
-              <p className="aiden-capitulo"><i aria-hidden="true" />La historia</p>
               <h2 id="titulo-historia">Rebobinemos el <span className="aiden-sin-corte">{lote.lote}</span>, <em>del camión a la semilla.</em></h2>
               <p>Registros reales de los datos de ejemplo, leídos de atrás hacia adelante en el módulo que los escribió.</p>
             </header>
@@ -635,7 +664,20 @@ export default function Inicio() {
                   <strong className="aiden-riel-dia">{numero(diaRiel ?? activa.dia)}</strong>
                   <span className="aiden-riel-etapa">{activa.etapa}</span>
                   <PistaEtapas etapa={activa.etapa} />
-                  <i className="aiden-riel-linea"><b className="aiden-riel-progreso" /></i>
+                  <svg className="aiden-enredadera" viewBox="0 0 28 150" aria-hidden="true">
+                    <path className="aiden-enredadera-tallo" d="M14 2 C 20 20, 8 32, 14 50 C 20 68, 8 80, 14 98 C 19 113, 10 128, 14 148" pathLength="100" />
+                    {[18, 44, 66, 90, 114, 136].map((y, i) => {
+                      const lado = i % 2 ? 1 : -1;
+                      return (
+                        <path
+                          key={y}
+                          className="aiden-enredadera-hoja"
+                          style={{ "--brote": (i + 1) / 7 }}
+                          d={`M14 ${y} q ${9 * lado} -2 ${11 * lado} -8 q ${-9 * lado} 1 ${-11 * lado} 8`}
+                        />
+                      );
+                    })}
+                  </svg>
                 </div>
               </aside>
               <ol className="aiden-estaciones">
@@ -702,11 +744,22 @@ export default function Inicio() {
           </div>
         </section>
 
+
+        {/* El manifiesto: tres verdades del campo, encendidas palabra a palabra. */}
+        <section className="aiden-manifiesto" aria-label="Por qué registrar">
+          <div className="aiden-shell">
+            <p>
+              {["El", "cuaderno", "se", "moja."].map((palabra) => <span key={`a-${palabra}`}>{palabra} </span>)}
+              {["La", "memoria", "se", "va."].map((palabra) => <span key={`b-${palabra}`}>{palabra} </span>)}
+              <em>{["Los", "registros", "se", "quedan."].map((palabra) => <span key={`c-${palabra}`}>{palabra} </span>)}</em>
+            </p>
+          </div>
+        </section>
+
         {/* El vivero completo, leído de un barrido, y los módulos como cinta. */}
         <section className="aiden-vivero" id="vivero" aria-labelledby="titulo-vivero">
           <div className="aiden-shell">
             <header className="aiden-vivero-cabecera">
-              <p className="aiden-capitulo"><i aria-hidden="true" />El vivero</p>
               <h2 id="titulo-vivero">El resto del vivero, <em>de un barrido.</em></h2>
             </header>
             <ul className="aiden-fila-lotes">
@@ -733,24 +786,59 @@ export default function Inicio() {
             </div>
           </div>
           <div className="aiden-shell">
-            <dl className="aiden-fuertes">
-              <div>
-                <dt>La historia completa de cada lote</dt>
-                <dd>Del registro al despacho, con fecha, hora y responsable: lo que el ICA y el comprador preguntan.</dd>
-              </div>
-              <div>
-                <dt>Costo por planta sin planillas</dt>
-                <dd>Cada consumo y cada jornal caen al lote que los gasta; el costo se calcula solo.</dd>
-              </div>
-              <div>
-                <dt>Funciona sin señal, en el campo</dt>
-                <dd>Abre y guarda sin conexión en el equipo del vivero, lista en la pantalla del celular.</dd>
-              </div>
-              <div>
-                <dt>Un asistente que responde con registros</dt>
-                <dd>Pregunta por costos, cargas o incidencias: responde con los datos y cita su fuente.</dd>
-              </div>
-            </dl>
+            <div className="aiden-comparativa-cabecera">
+              <h3 id="titulo-comparativa">Lo que solo AiDEN pone sobre la mesa</h3>
+              <p>Comparado con cómo se lleva hoy el registro en la mayoría de los viveros.</p>
+            </div>
+            <div className="aiden-comparativa-placa">
+            <header className="aiden-comparativa-doc">
+              <span className="aiden-guia-doc">Comparativa de campo</span>
+              <span className="aiden-guia-folio">AiDEN</span>
+            </header>
+            <table className="aiden-comparativa" aria-labelledby="titulo-comparativa">
+              <thead>
+                <tr>
+                  <th scope="col"><span className="sr-only">Capacidad</span></th>
+                  <th scope="col">El cuaderno</th>
+                  <th scope="col">Software genérico</th>
+                  <th scope="col" className="is-aiden">AiDEN</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Funciona sin señal, en el campo</th>
+                  <td><Check size={15} aria-label="Sí" /></td>
+                  <td><Minus size={15} aria-label="Normalmente no" /></td>
+                  <td className="is-aiden"><span className="aiden-sello-check"><Check size={13} aria-label="Sí" /></span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Asistente que responde con tus lotes, en el idioma del vivero</th>
+                  <td><Minus size={15} aria-label="No" /></td>
+                  <td><Minus size={15} aria-label="Normalmente no" /></td>
+                  <td className="is-aiden"><span className="aiden-sello-check"><Check size={13} aria-label="Sí" /></span></td>
+                </tr>
+                <tr>
+                  <th scope="row">La historia del lote, del registro al despacho</th>
+                  <td><Minus size={15} aria-label="Depende de quien escribe" /></td>
+                  <td><Check size={15} aria-label="En algunos" /></td>
+                  <td className="is-aiden"><span className="aiden-sello-check"><Check size={13} aria-label="Sí" /></span></td>
+                </tr>
+                <tr>
+                  <th scope="row">El costo por planta se calcula solo</th>
+                  <td><Minus size={15} aria-label="No" /></td>
+                  <td><Minus size={15} aria-label="Normalmente no" /></td>
+                  <td className="is-aiden"><span className="aiden-sello-check"><Check size={13} aria-label="Sí" /></span></td>
+                </tr>
+                <tr>
+                  <th scope="row">En el idioma del vivero colombiano</th>
+                  <td><Check size={15} aria-label="Sí" /></td>
+                  <td><Minus size={15} aria-label="Normalmente no" /></td>
+                  <td className="is-aiden"><span className="aiden-sello-check"><Check size={13} aria-label="Sí" /></span></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <p className="aiden-comparativa-nota">«Software genérico»: sistemas de gestión no pensados para viveros; lo usual, no un producto concreto.</p>
           </div>
         </section>
 
@@ -776,7 +864,6 @@ export default function Inicio() {
         {/* Los roles, apilados: cada tarjeta tapa a la anterior al bajar. */}
         <section className="aiden-roles" id="roles" aria-labelledby="titulo-roles">
           <div className="aiden-shell">
-            <p className="aiden-capitulo"><i aria-hidden="true" />Roles</p>
             <h2 id="titulo-roles">La misma historia, <em>tres lecturas.</em></h2>
             <div className="aiden-roles-pila">
               {ROLES.map((rol, indice) => (
