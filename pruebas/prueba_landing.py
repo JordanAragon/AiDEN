@@ -31,10 +31,14 @@ try:
             "Timbío" in pagina.locator("h1").inner_text(),
             "el titular abre la historia del despacho hacia Timbío",
         )
-        guia = pagina.locator(".aiden-guia-papel")
+        guia = pagina.locator(".aiden-guia")
         registro.check(
             "LT-2026-011" in guia.inner_text() and "Tomate chonto" in guia.inner_text(),
-            "la guía de despacho muestra el lote real de los datos de ejemplo",
+            "la ficha del lote del hero muestra el lote real de los datos de ejemplo",
+        )
+        registro.check(
+            pagina.locator(".aiden-guia .aiden-ventana-ruta").inner_text().startswith("Producción"),
+            "la ficha del hero es una ventana del módulo de Producción",
         )
         registro.check(
             "datos de ejemplo" in pagina.locator(".aiden-escena-nota").inner_text(),

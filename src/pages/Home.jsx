@@ -564,23 +564,28 @@ export default function Inicio() {
                   <a href="#historia" className="aiden-boton aiden-boton-fantasma aiden-boton-grande">Rebobinar la historia</a>
                 </div>
               </div>
-              <figure className="aiden-guia" aria-label="Guía de despacho del lote de ejemplo">
-                <div className="aiden-guia-papel">
-                  <header>
-                    <span className="aiden-guia-doc">Guía de despacho</span>
-                    <span className="aiden-guia-folio">{lote.lote}</span>
-                  </header>
-                  <dl>
-                    <div><dt>Cultivo</dt><dd>{lote.cultivo}</dd></div>
-                    <div><dt>Destino</dt><dd>Asociación Campesina de Timbío</dd></div>
-                    <div><dt>Cantidad</dt><dd>400 de {numero(lote.cantidad)} vivas</dd></div>
-                    <div><dt>Sale</dt><dd>{fechaCorta(lote.fechaEstimada)} · valida {validadora || "Supervisión"}</dd></div>
-                  </dl>
-                  <div className="aiden-guia-sello" aria-label={`Día ${numero(hoyDia)} de ${numero(totalDias)} del lote`}>
-                    <span>Día</span>
-                    <strong>{numero(hoyDia)}</strong>
-                    <span>de {numero(totalDias)}</span>
+              <figure className="aiden-guia" aria-label="Ficha del lote de ejemplo, como la muestra el producto">
+                <VentanaModulo ruta="Producción / Ficha del lote" meta={lote.lote}>
+                  <div className="grid gap-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-[14px] font-bold text-slate-900">{lote.cultivo}</p>
+                        <p className="text-[11px] text-slate-500">{lote.ubicacion} · {numero(lote.cantidadInicial)} sembradas</p>
+                      </div>
+                      <Insignia tono="exito">ACTIVO</Insignia>
+                    </div>
+                    <PasosEtapa etapa={lote.etapa} fechas={{}} compacto />
+                    <dl className="aiden-ficha-lineas">
+                      <div><dt>Plantas vivas</dt><dd>{numero(lote.cantidad)} de {numero(lote.cantidadInicial)}</dd></div>
+                      <div><dt>Pedido</dt><dd>400 · Asociación de Timbío</dd></div>
+                      <div><dt>Salida estimada</dt><dd>{fechaCorta(lote.fechaEstimada)} · valida {validadora || "Supervisión"}</dd></div>
+                    </dl>
                   </div>
+                </VentanaModulo>
+                <div className="aiden-guia-sello" aria-label={`Día ${numero(hoyDia)} de ${numero(totalDias)} del lote`}>
+                  <span>Día</span>
+                  <strong>{numero(hoyDia)}</strong>
+                  <span>de {numero(totalDias)}</span>
                 </div>
               </figure>
             </div>

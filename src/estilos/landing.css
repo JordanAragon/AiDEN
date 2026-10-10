@@ -394,34 +394,59 @@ body.aiden-menu-open {
    colgado del borde del marco como la tarjeta de la referencia. */
 
 .aiden-guia {
+  position: relative;
   margin: 0 0 calc(-1 * clamp(32px, 4.5vw, 68px) - 34px);
   justify-self: end;
   align-self: end;
   width: min(400px, 100%);
 }
 
-.aiden-guia-papel {
-  position: relative;
-  background: var(--papel);
-  color: var(--tinta);
-  border-radius: 20px;
-  padding: 26px 28px 30px;
+.aiden-guia .aiden-ventana {
   box-shadow: var(--sombra-noche);
 }
 
-.aiden-guia-papel::before {
-  content: "";
-  position: absolute;
-  inset-inline: 22px;
-  top: 58px;
-  border-top: 1px dashed var(--borde-fuerte);
+/* Las líneas de la ficha, con los puntos conductores del mundo documental. */
+.aiden-ficha-lineas {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  border-top: 1px solid var(--borde);
+  padding-top: 10px;
 }
 
-.aiden-guia-papel header {
-  display: flex;
-  justify-content: space-between;
+.aiden-ficha-lineas div {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: baseline;
-  padding-bottom: 18px;
+  gap: 8px;
+}
+
+.aiden-ficha-lineas div::after {
+  content: "";
+  order: 2;
+  border-bottom: 2px dotted var(--borde-fuerte);
+  transform: translateY(-3px);
+}
+
+.aiden-ficha-lineas dt {
+  order: 1;
+  font-size: 11.5px;
+  font-weight: 650;
+  color: var(--tinta-suave);
+}
+
+.aiden-ficha-lineas dd {
+  order: 3;
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding-right: 2px;
+}
+
+/* Las últimas líneas dejan sitio al sello colgado. */
+.aiden-ficha-lineas div:last-child dd {
+  padding-right: 74px;
 }
 
 .aiden-guia-doc {
@@ -437,39 +462,6 @@ body.aiden-menu-open {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--tinta-suave);
-}
-
-.aiden-guia-papel dl {
-  display: grid;
-  gap: 11px;
-  margin: 14px 0 0;
-}
-
-.aiden-guia-papel dl div {
-  display: grid;
-  grid-template-columns: 96px 1fr;
-  gap: 14px;
-  align-items: baseline;
-}
-
-.aiden-guia-papel dt {
-  font-size: 11px;
-  font-weight: 650;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--tinta-suave);
-}
-
-.aiden-guia-papel dd {
-  margin: 0;
-  font-size: 14.5px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Las últimas filas dejan sitio al sello que cuelga de la esquina. */
-.aiden-guia-papel dl div:nth-last-child(-n + 2) dd {
-  padding-right: 84px;
 }
 
 .aiden-guia-sello {
@@ -1726,20 +1718,7 @@ body.aiden-menu-open {
     font-size: 28px;
   }
 
-  .aiden-guia-papel {
-    padding: 20px 20px 26px;
-  }
-
-  .aiden-guia-papel dl div {
-    grid-template-columns: 76px 1fr;
-    gap: 10px;
-  }
-
-  .aiden-guia-papel dl div:nth-last-child(-n + 2) dd {
-    padding-right: 56px;
-  }
-
-  .aiden-pregunta,
+      .aiden-pregunta,
   .aiden-rebobinado,
   .aiden-vivero,
   .aiden-roles,
@@ -2537,16 +2516,7 @@ body.aiden-menu-open {
     animation: aiden-escena-llega 0.8s 0.12s var(--curva-entrada) both;
   }
 
-  .aiden-guia-papel {
-    transition: transform 0.35s var(--curva-micro), box-shadow 0.35s ease;
-  }
-
-  .aiden-guia-papel:hover {
-    transform: rotate(-0.6deg) translateY(-4px);
-    box-shadow: 0 26px 70px rgba(7, 27, 17, 0.5);
-  }
-
-  .aiden-chat-turno {
+    .aiden-chat-turno {
     animation: aiden-turno-entra 0.3s var(--curva-micro);
   }
 
