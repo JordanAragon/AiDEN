@@ -95,28 +95,28 @@ export default function DashboardSupervisorContenido() {
           </section>
           <section className="grid grid-cols-2 border-t border-white/10 lg:border-l lg:border-t-0">
             <article className="flex min-h-32 flex-col justify-between border-r border-white/10 p-5 sm:p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Trabajo abierto</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">Trabajo abierto</p>
               <div>
                 <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={abiertas.length} desdeCero /></p>
                 <p className="mt-1 text-xs text-white/55">{vencidas ? plural(vencidas, "vencida", "vencidas") : "sin vencidas"} · {plural(completadasHoy, "completada hoy", "completadas hoy")}</p>
               </div>
             </article>
             <article className="flex min-h-32 flex-col justify-between p-5 sm:p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Lotes activos</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">Lotes activos</p>
               <div>
                 <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={activos.length} desdeCero /></p>
                 <p className="mt-1 text-xs text-white/55">{activos.filter((l) => l.etapa === "Cosecha").length} en cosecha · {numero(activos.reduce((s, l) => s + Number(l.cantidad || 0), 0))} plantas</p>
               </div>
             </article>
             <article className="flex min-h-32 flex-col justify-between border-r border-t border-white/10 p-5 sm:p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Riesgos</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">Riesgos</p>
               <div>
                 <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={lista.length} desdeCero /></p>
                 <p className="mt-1 text-xs text-white/55">operación, ambiente y calidad</p>
               </div>
             </article>
             <article className="flex min-h-32 flex-col justify-between border-t border-white/10 p-5 sm:p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70">Inventario</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">Inventario</p>
               <div>
                 <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={bajoMinimo} desdeCero /></p>
                 <p className="mt-1 text-xs text-white/55">{bajoMinimo ? "insumos por reponer" : "stock en rango"}</p>

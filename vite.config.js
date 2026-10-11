@@ -74,6 +74,7 @@ const COMPONENTES_VIVOS = new Set([
   "Glass",
   "Godrays",
   "ImageTexture",
+  "LinearGradient",
   "MeshGradient",
   "RadialGradient",
   "SimplexNoise",

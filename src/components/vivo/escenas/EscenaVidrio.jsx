@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DotGrid, FilmGrain, Fog, Glass, RadialGradient, Shader, SolidColor, Vignette } from "shaders/react";
+import { DotGrid, FilmGrain, Fog, Glass, LinearGradient, RadialGradient, Shader, SolidColor, Vignette } from "shaders/react";
 import { sdfIsotipo } from "../sdfMarca";
 import { useEsAngosto } from "../useEsAngosto";
 
@@ -47,28 +47,30 @@ export default function EscenaVidrio({ className, quieto, cursor, onLista, onSin
   return (
     <Shader className={className} disableTelemetry onReady={onLista} onUnavailable={onSinGpu}>
       <SolidColor color="#071b11" />
-      <RadialGradient colorA="#718b58" colorB="#071b11" center={angosto ? { x: 0.5, y: 0.72 } : { x: 0.74, y: 0.5 }} radius={0.55} opacity={0.7} />
-      <DotGrid color="#d9ea73" density={angosto ? 34 : 44} dotSize={0.14} twinkle={quieto ? 0 : 0.4} opacity={0.32} />
-      <Fog colorA="#071b11" colorB="#104a31" seed={3} speed={0.22 * ritmo} turbulence={0.6} detail={9} blending={0.5} opacity={0.55} />
+      <RadialGradient colorA="#718b58" colorB="#071b11" center={angosto ? { x: 0.5, y: 0.95 } : { x: 0.98, y: 0.5 }} radius={0.5} opacity={0.25} />
+      {/* Detrás del vidrio, algo con estructura que doblar: hileras sembradas y una banda de luz lima. */}
+      <LinearGradient colorA="#071b11" colorB="#d9ea73" angle={angosto ? 0 : 90} opacity={0.07} blendMode="screen" />
+      <DotGrid color="#d9ea73" density={angosto ? 46 : 62} dotSize={0.18} offset={0.5} twinkle={quieto ? 0 : 0.35} opacity={0.6} />
+      <Fog colorA="#071b11" colorB="#104a31" seed={3} speed={0.22 * ritmo} turbulence={0.6} detail={9} blending={0.5} opacity={0.35} />
       {campo && (
         <Glass
           shapeSdfUrl={campo}
           shape={{ type: "svgExtrude3D", depth: 0.14, bevel: 0.055, ...giro(cursor, quieto) }}
           center={angosto ? { x: 0.5, y: 0.74 } : { x: 0.74, y: 0.5 }}
           scale={angosto ? 0.62 : 1.05}
-          refraction={0.9}
-          thickness={0.32}
+          refraction={1}
+          thickness={0.2}
           edgeSoftness={0.06}
           aberration={0.45}
           innerZoom={1.3}
-          highlight={0.42}
+          highlight={0.6}
           highlightColor="#f3f6ef"
           highlightSoftness={0.4}
           fresnel={0.22}
           fresnelSoftness={0.18}
           fresnelColor="#d9ea73"
           tintColor="#d9ea73"
-          tintIntensity={0.05}
+          tintIntensity={0}
           lightAngle={300}
         />
       )}

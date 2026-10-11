@@ -151,18 +151,22 @@ export default function MarcoPublico({ children, diaCilantro = null, flotanteVis
   );
 }
 
-/* El botón que acompaña la lectura: aparece pasado el arranque y se retira
-   cuando el formulario de contacto ya está a la vista. */
+/* El botón que acompaña la lectura en el celular (en escritorio la cápsula ya
+   lleva el mismo llamado): aparece pasado el arranque y se retira cuando el
+   formulario de contacto está a la vista y mientras se usan las tres pantallas,
+   para no tapar las tareas del celular. */
 function CtaFlotante({ pathname }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const decidir = () => {
+      const alto = window.innerHeight;
       const contacto = document.getElementById("contacto");
-      const contactoVisible = contacto
-        ? contacto.getBoundingClientRect().top < window.innerHeight * 0.9
-        : false;
-      setVisible(window.scrollY > window.innerHeight * 0.85 && !contactoVisible);
+      const contactoVisible = contacto ? contacto.getBoundingClientRect().top < alto * 0.9 : false;
+      const pantallas = document.querySelector(".aiden-pantallas-escenario");
+      const caja = pantallas?.getBoundingClientRect();
+      const pantallasEnUso = caja ? caja.top < alto * 0.8 && caja.bottom > alto * 0.2 : false;
+      setVisible(window.scrollY > alto * 0.85 && !contactoVisible && !pantallasEnUso);
     };
     decidir();
     window.addEventListener("scroll", decidir, { passive: true });

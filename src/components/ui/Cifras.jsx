@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import CifraRodante from "./CifraRodante";
 
 // El tono solo se marca cuando pide atención: un punto ámbar o rojo junto a la etiqueta.
+// Las cifras (números o importes ya formateados) ruedan cuando cambian; el texto queda como texto.
+const CIFRA = /^[-−+]?[$\d.,%\s\u00a0]+$/;
 const PUNTO = { alerta: "bg-amber-500", critico: "bg-red-600" };
 
 function Contenido({ etiqueta, valor, detalle, icono: Icono, tono }) {
@@ -15,7 +17,7 @@ function Contenido({ etiqueta, valor, detalle, icono: Icono, tono }) {
         {Icono && <Icono size={16} className="mt-0.5 shrink-0 text-aiden-moss" aria-hidden="true" />}
       </span>
       <span className="mt-3 block break-words text-[clamp(1.35rem,4.6vw,1.75rem)] font-semibold leading-none tracking-tight text-slate-950 tabular-nums">
-        {typeof valor === "number" || typeof valor === "string" ? <CifraRodante valor={valor} desdeCero /> : valor}
+        {typeof valor === "number" || (typeof valor === "string" && CIFRA.test(valor)) ? <CifraRodante valor={valor} /> : valor}
       </span>
       {detalle && <span className="mt-2 block text-xs leading-5 text-slate-500">{detalle}</span>}
     </>
