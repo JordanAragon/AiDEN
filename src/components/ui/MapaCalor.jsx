@@ -17,9 +17,9 @@ export default function MapaCalor({ titulo, filas, columnas, celda, tono, descri
           <div key={fila.id} className="aiden-mapa-calor-fila">
             <span className="aiden-mapa-calor-etiqueta">{fila.nombre}</span>
             <span className="aiden-mapa-calor-celdas">
-              {columnas.map((columna) => {
+              {columnas.map((columna, indice) => {
                 const valor = celda(fila, columna);
-                return <i key={columna.id} className={`aiden-mapa-calor-celda ${tono(valor)}`} data-descripcion={valor ? describir(fila, columna, valor) : `${fila.nombre}: sin lectura`} />;
+                return <i key={columna.id} className={`aiden-mapa-calor-celda ${tono(valor)}`} style={{ "--i": indice }} data-descripcion={valor ? describir(fila, columna, valor) : `${fila.nombre} · ${columna.nombre}: sin lectura`} />;
               })}
             </span>
           </div>

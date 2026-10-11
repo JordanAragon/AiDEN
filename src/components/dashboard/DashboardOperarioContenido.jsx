@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { AlertTriangle, ArrowRight, CheckCircle2, Clock3, Droplets, FlagTriangleRight, ListChecks, PlayCircle, RotateCcw, Sprout, Thermometer } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Boton } from "../ui/Boton";
@@ -21,11 +21,14 @@ import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
 import { haceTiempo, hoyISO, numero, plural, vencimiento } from "../../utilidades/formato";
 
-function ModalCompletar({ tarea, onCerrar, onReportar }) {
+function ModalCompletar({ tarea, onCerrar, onReportar, onHecha }) {
   const id = useId();
   const sesion = useSesion();
   const [nota, setNota] = useState("");
-  const { error, enviar } = useEnvio(onCerrar);
+  const { error, enviar } = useEnvio(() => {
+    onHecha?.(tarea?.id);
+    onCerrar();
+  });
   return (
     <Modal
       abierto={Boolean(tarea)}
@@ -61,14 +64,14 @@ function ModalCompletar({ tarea, onCerrar, onReportar }) {
   );
 }
 
-function FilaTarea({ tarea, onCompletar }) {
+function FilaTarea({ tarea, onCompletar, recien = false }) {
   const sesion = useSesion();
   const ejecutar = useAccion();
   const hecha = tarea.estado === "Completada";
   const v = vencimiento(tarea.fecha);
   return (
-    <li className="flex flex-wrap items-start gap-x-3 gap-y-3 py-4">
-      <span className="mt-0.5 shrink-0" aria-hidden="true">
+    <li className={`flex flex-wrap items-start gap-x-3 gap-y-3 py-4 ${recien ? "aiden-tarea-recien" : ""}`}>
+      <span className={`mt-0.5 shrink-0 ${hecha ? "aiden-tarea-check" : ""}`} aria-hidden="true">
         {hecha ? <CheckCircle2 size={20} className="text-verde-500" /> : <span className={`block h-5 w-5 rounded-full border-2 ${tarea.prioridad === "Alta" ? "border-red-500" : "border-slate-300"}`} />}
       </span>
       <span className="min-w-0 flex-1 basis-56">
@@ -110,7 +113,7 @@ function FilaTarea({ tarea, onCompletar }) {
   );
 }
 
-function Grupo({ titulo, tareas, onCompletar, critico = false }) {
+function Grupo({ titulo, tareas, onCompletar, critico = false, recien }) {
   if (!tareas.length) return null;
   return (
     <section aria-label={titulo}>
@@ -119,7 +122,7 @@ function Grupo({ titulo, tareas, onCompletar, critico = false }) {
       </h3>
       <ul className="divide-y divide-slate-100">
         {tareas.map((t) => (
-          <FilaTarea key={t.id} tarea={t} onCompletar={onCompletar} />
+          <FilaTarea key={t.id} tarea={t} onCompletar={onCompletar} recien={t.id === recien} />
         ))}
       </ul>
     </section>
@@ -132,7 +135,23 @@ export default function DashboardOperarioContenido() {
   const { abrirLote } = useFichaLote();
   const [modal, setModal] = useState(null);
   const [completar, setCompletar] = useState(null);
+  const [recien, setRecien] = useState(null);
   const nombre = sesion?.name || "";
+
+  // La tarea recién hecha celebra un instante (check que se dibuja y un anillo lima) y vuelve a la calma.
+  useEffect(() => {
+    if (!recien) return undefined;
+    const espera = window.setTimeout(() => setRecien(null), 1800);
+    return () => window.clearTimeout(espera);
+  }, [recien]);
+  const marcarHecha = (id) => {
+    setRecien(id);
+    try {
+      navigator.vibrate?.(8);
+    } catch {
+      // Sin vibración disponible: la confirmación visual basta.
+    }
+  };
   useTitulo("Mi jornada");
 
   const hoy = hoyISO();
@@ -198,7 +217,7 @@ export default function DashboardOperarioContenido() {
             <Grupo titulo="Vencidas" critico tareas={vencidas} onCompletar={setCompletar} />
             <Grupo titulo="Para hoy" tareas={deHoy} onCompletar={setCompletar} />
             <Grupo titulo="Próximas" tareas={proximas} onCompletar={setCompletar} />
-            <Grupo titulo="Hechas hoy" tareas={hechas} onCompletar={setCompletar} />
+            <Grupo titulo="Hechas hoy" tareas={hechas} onCompletar={setCompletar} recien={recien} />
             {!tareas.length && <p className="py-8 text-center text-sm text-slate-500">No tienes tareas asignadas. Cuando supervisión te asigne trabajo aparecerá aquí.</p>}
             {tareas.length > 0 && !pendientes && !hechas.length && <p className="py-8 text-center text-sm text-slate-500">Todo al día. Registra lo que hagas en campo para que quede en la historia del lote.</p>}
           </section>
@@ -286,6 +305,7 @@ export default function DashboardOperarioContenido() {
         key={completar?.id || "ninguna"}
         tarea={completar}
         onCerrar={() => setCompletar(null)}
+        onHecha={marcarHecha}
         onReportar={() => {
           const lote = completar?.lote;
           setCompletar(null);

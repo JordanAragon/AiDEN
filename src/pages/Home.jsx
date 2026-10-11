@@ -18,6 +18,7 @@ import TituloVivo from "../components/landing/TituloVivo";
 import CapituloPantallas from "../components/landing/CapituloPantallas";
 import AsistenteVivo from "../components/landing/AsistenteVivo";
 import CapituloVivero from "../components/landing/CapituloVivero";
+import SiembraExito from "../components/landing/SiembraExito";
 import LienzoVivo from "../components/vivo/LienzoVivo";
 import SembradoIsotipo from "../components/vivo/SembradoIsotipo";
 import { diferida } from "../utilidades/cargaDiferida";
@@ -462,6 +463,20 @@ export default function Inicio() {
     };
   }, [historia]);
 
+  // La luz que sigue al cursor dentro de los botones (solo con ratón o trackpad).
+  useEffect(() => {
+    if (!window.matchMedia?.("(hover: hover) and (pointer: fine)").matches) return undefined;
+    const mover = (evento) => {
+      const boton = evento.target instanceof Element ? evento.target.closest(".aiden-boton") : null;
+      if (!boton) return;
+      const caja = boton.getBoundingClientRect();
+      boton.style.setProperty("--luz-x", `${evento.clientX - caja.left}px`);
+      boton.style.setProperty("--luz-y", `${evento.clientY - caja.top}px`);
+    };
+    document.addEventListener("pointermove", mover, { passive: true });
+    return () => document.removeEventListener("pointermove", mover);
+  }, []);
+
   const prepararSolicitud = async (event) => {
     event.preventDefault();
     const formulario = event.currentTarget;
@@ -823,9 +838,12 @@ export default function Inicio() {
                 <input type="checkbox" name="consentimiento" value="si" required />
                 <span>Autorizo el tratamiento de mis datos para responder esta solicitud, según la <Link to="/privacidad">Política de privacidad</Link>.</span>
               </label>
-              <button type="submit" className="aiden-boton aiden-boton-oscuro aiden-boton-grande" disabled={enviandoSolicitud}>
-                {enviandoSolicitud ? "Enviando…" : "Agendar presentación"} <ArrowRight size={15} />
-              </button>
+              <span className="aiden-envio">
+                <button type="submit" className="aiden-boton aiden-boton-oscuro aiden-boton-grande" disabled={enviandoSolicitud}>
+                  {enviandoSolicitud ? "Enviando…" : "Agendar presentación"} <ArrowRight size={15} />
+                </button>
+                <SiembraExito activa={solicitudEnviada} />
+              </span>
               {solicitudEnviada && <p className="aiden-form-estado is-exito" role="status" aria-live="polite">Solicitud recibida. Te escribiremos al correo que dejaste para coordinar la presentación.</p>}
               {errorSolicitud && <p className="aiden-form-estado" role="alert">{errorSolicitud}</p>}
             </form>

@@ -136,7 +136,7 @@ function Contenido({ lote, datos, sesion, onAccion }) {
         </section>
       </section>
 
-      <aside className="min-w-0 rounded-2xl bg-slate-50 p-4">
+      <aside className="aiden-ficha-seguimiento min-w-0 rounded-2xl bg-slate-50 p-4">
         <header className="flex items-center gap-2">
           <History size={16} className="text-emerald-700" aria-hidden="true" />
           <h3 className="font-semibold text-slate-900">Seguimiento del lote</h3>
@@ -157,7 +157,7 @@ function Contenido({ lote, datos, sesion, onAccion }) {
         <ul role="tabpanel" id={`panel-${pestana}`} aria-labelledby={`pestana-${pestana}`} className="mt-3 max-h-[46vh] space-y-2 overflow-y-auto pr-1">
           {pestana === "historia" && r.eventos.length > 0 && (
             <li>
-              <LineaTiempo eventos={r.eventos} limite={20} />
+              <LineaTiempo eventos={r.eventos} limite={20} inicio={`Aquí empezó ${lote.lote}: registrado el ${fechaCorta(lote.fecha)}.`} />
             </li>
           )}
           {pestana === "tareas" &&

@@ -221,9 +221,9 @@ export function planoVivero(datos) {
 }
 
 /* Vista general: la cámara que encuadra el vivero entero en tres cuartos. */
-export function vistaGeneral(plano, aspecto = 16 / 9) {
+export function vistaGeneral(plano, aspecto = 16 / 9, cercania = 1) {
   const { radio, centro } = plano.limites;
-  const distancia = radio * (aspecto < 1 ? 2.35 : 1.62);
+  const distancia = radio * (aspecto < 1 ? 2.35 : 1.62) * cercania;
   return {
     ojo: [centro[0] + distancia * 0.62, distancia * 0.78, centro[2] + distancia * 0.86],
     objetivo: [centro[0], 0.4, centro[2] + radio * 0.04],

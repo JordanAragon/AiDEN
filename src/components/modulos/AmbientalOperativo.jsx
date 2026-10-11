@@ -11,6 +11,8 @@ import { Segmentos } from "../ui/Filtros";
 import { FILA_ENCABEZADO, TD, TH, TR } from "../ui/tabla";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import BarraRango from "../ui/BarraRango";
+import MapaCalor from "../ui/MapaCalor";
+import TiempoRelativo from "../ui/TiempoRelativo";
 import ModalLectura from "../formularios/ModalLectura";
 import ModalTarea from "../formularios/ModalTarea";
 import { useDatos } from "../../datos/almacen";
@@ -18,7 +20,7 @@ import { describirLectura, esGestor, evaluarLectura, lecturasOrdenadas, lotesAct
 import { useColoresGrafica } from "../../hooks/useColoresGrafica";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
-import { aFecha, fechaHora, haceTiempo, hora, hoyISO, numero, plural } from "../../utilidades/formato";
+import { aFecha, fechaHora, hora, hoyISO, numero, plural } from "../../utilidades/formato";
 
 export default function AmbientalOperativo() {
   const datos = useDatos();
@@ -62,6 +64,39 @@ export default function AmbientalOperativo() {
     });
   };
 
+  // El mapa de calor: 72 horas en franjas de 4 horas, la lectura más reciente de cada franja por zona.
+  const FRANJA = 4 * 3_600_000;
+  const finFranjas = (() => {
+    const fin = new Date();
+    fin.setMinutes(0, 0, 0);
+    return fin.getTime() + 3_600_000;
+  })();
+  const inicioFranjas = finFranjas - 18 * FRANJA;
+  const columnasCalor = Array.from({ length: 18 }, (_, i) => {
+    const desde = new Date(inicioFranjas + i * FRANJA);
+    const diaAnterior = i > 0 ? new Date(inicioFranjas + (i - 1) * FRANJA).getDate() : null;
+    const iso = `${desde.getFullYear()}-${String(desde.getMonth() + 1).padStart(2, "0")}-${String(desde.getDate()).padStart(2, "0")}`;
+    const marca = diaAnterior === desde.getDate() ? "" : iso === hoyISO() ? "Hoy" : desde.toLocaleDateString("es-CO", { weekday: "short" }).replace(".", "");
+    return { id: i, nombre: `${desde.toLocaleDateString("es-CO", { weekday: "short", day: "numeric" })} ${hora(desde)}`, marca };
+  });
+  const lecturasPorFranja = new Map();
+  for (const lectura of visibles) {
+    const t = aFecha(lectura.fecha).getTime();
+    const i = Math.floor((t - inicioFranjas) / FRANJA);
+    if (i < 0 || i >= 18) continue;
+    const clave = `${lectura.zona}|${i}`;
+    const previa = lecturasPorFranja.get(clave);
+    if (!previa || aFecha(previa.fecha).getTime() < t) lecturasPorFranja.set(clave, lectura);
+  }
+  const tonoCalor = (lectura) => {
+    if (!lectura) return "";
+    const e = evaluarLectura(lectura, cfg);
+    if (!e.fuera) return Number(lectura.temperatura) > cfg.tempMax - 1.5 ? "is-rango-alto" : "is-rango";
+    if (e.temperatura === "baja") return "is-frio";
+    return e.desvio >= 3 ? "is-critico" : "is-alerta";
+  };
+  const describirCalor = (fila, columna, lectura) => `${fila.nombre} · ${fechaHora(lectura.fecha)}: ${describirLectura(lectura, cfg)}${evaluarLectura(lectura, cfg).fuera ? " — fuera de rango" : " — en rango"}`;
+
   const deZona = zone === "Todas" ? [] : lecturasOrdenadas(datos.ambiental.filter((l) => l.zona === zone));
   const referencia = deZona.length ? aFecha(deZona[deZona.length - 1].fecha).getTime() : 0;
   const serie = deZona
@@ -96,7 +131,7 @@ export default function AmbientalOperativo() {
           { icono: Thermometer, etiqueta: "Zonas", valor: zonas.length, detalle: "Con lecturas visibles" },
           { icono: AlertTriangle, etiqueta: "En alerta", valor: enAlerta.length, detalle: `${cfg.tempMin}–${cfg.tempMax} °C · ${cfg.humMin}–${cfg.humMax}%`, tono: enAlerta.length ? "critico" : "exito" },
           { icono: History, etiqueta: "Lecturas", valor: visibles.length, detalle: "Histórico disponible", tono: "info" },
-          { icono: Clock3, etiqueta: "Actualizado", valor: ultima ? hora(ultima.fecha) : "—", detalle: ultima ? `Última lectura ${haceTiempo(ultima.fecha)}` : "Sin lecturas", tono: "alerta" },
+          { icono: Clock3, etiqueta: "Actualizado", valor: ultima ? hora(ultima.fecha) : "—", detalle: ultima ? <>Última lectura <TiempoRelativo fecha={ultima.fecha} /></> : "Sin lecturas", tono: "alerta" },
         ]}
       />
 
@@ -194,6 +229,29 @@ export default function AmbientalOperativo() {
         })}
         {!zonas.length && <p className="rounded-2xl border border-dashed border-slate-200 bg-white p-10 text-center text-sm text-slate-500 md:col-span-2 xl:col-span-3">No hay lecturas visibles para tu rol. Las zonas salen de los lotes a tu cargo.</p>}
       </section>
+
+      {zone === "Todas" && zonas.length > 0 && (
+        <Panel titulo="Las últimas 72 horas, lectura por lectura" descripcion="Cada celda es una franja de 4 horas. Pasa el cursor para ver la lectura; el color dice si quedó en el rango configurado.">
+          <MapaCalor
+              titulo={`Lecturas de las últimas 72 horas por zona, en franjas de 4 horas. Rango: ${cfg.tempMin}–${cfg.tempMax} °C y ${cfg.humMin}–${cfg.humMax} %`}
+              filas={zonas.map((nombre) => ({ id: nombre, nombre }))}
+              columnas={columnasCalor}
+              celda={(fila, columna) => lecturasPorFranja.get(`${fila.id}|${columna.id}`)}
+              tono={tonoCalor}
+              describir={describirCalor}
+              leyenda={
+                <>
+                  <span><i className="aiden-mapa-calor-muestra is-rango" /> En rango</span>
+                  <span><i className="aiden-mapa-calor-muestra is-rango-alto" /> Cerca del máximo</span>
+                  <span><i className="aiden-mapa-calor-muestra is-alerta" /> Fuera de rango</span>
+                  <span><i className="aiden-mapa-calor-muestra is-critico" /> Muy fuera (3 °C o más)</span>
+                  <span><i className="aiden-mapa-calor-muestra is-frio" /> Por debajo del mínimo</span>
+                  <span><i className="aiden-mapa-calor-muestra" /> Sin lectura</span>
+                </>
+              }
+            />
+        </Panel>
+      )}
 
       {zone !== "Todas" && (
         <>

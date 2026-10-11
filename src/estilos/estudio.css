@@ -1236,23 +1236,28 @@ html.aiden-dark .aiden-sello-moss {
   background: #eef2ee;
 }
 
-.aiden-mapa-calor-celda.is-rango {
+.aiden-mapa-calor-celda.is-rango,
+.aiden-mapa-calor-muestra.is-rango {
   background: #cfe7d6;
 }
 
-.aiden-mapa-calor-celda.is-rango-alto {
+.aiden-mapa-calor-celda.is-rango-alto,
+.aiden-mapa-calor-muestra.is-rango-alto {
   background: #9bd7b5;
 }
 
-.aiden-mapa-calor-celda.is-alerta {
+.aiden-mapa-calor-celda.is-alerta,
+.aiden-mapa-calor-muestra.is-alerta {
   background: #f5c26b;
 }
 
-.aiden-mapa-calor-celda.is-critico {
+.aiden-mapa-calor-celda.is-critico,
+.aiden-mapa-calor-muestra.is-critico {
   background: #e4584f;
 }
 
-.aiden-mapa-calor-celda.is-frio {
+.aiden-mapa-calor-celda.is-frio,
+.aiden-mapa-calor-muestra.is-frio {
   background: #9fc3d9;
 }
 
@@ -1308,10 +1313,16 @@ html.aiden-dark .aiden-sello-moss {
   gap: 6px;
 }
 
-.aiden-mapa-calor-leyenda i {
+.aiden-mapa-calor-muestra {
+  display: inline-block;
   width: 12px;
   height: 12px;
   border-radius: 3px;
+  background: #eef2ee;
+}
+
+html.aiden-dark .aiden-mapa-calor-muestra {
+  background: #18201c;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -1336,23 +1347,28 @@ html.aiden-dark .aiden-mapa-calor-celda {
   background: #18201c;
 }
 
-html.aiden-dark .aiden-mapa-calor-celda.is-rango {
+html.aiden-dark .aiden-mapa-calor-celda.is-rango,
+.aiden-mapa-calor-muestra.is-rango {
   background: #1f4a33;
 }
 
-html.aiden-dark .aiden-mapa-calor-celda.is-rango-alto {
+html.aiden-dark .aiden-mapa-calor-celda.is-rango-alto,
+.aiden-mapa-calor-muestra.is-rango-alto {
   background: #2f7a52;
 }
 
-html.aiden-dark .aiden-mapa-calor-celda.is-alerta {
+html.aiden-dark .aiden-mapa-calor-celda.is-alerta,
+.aiden-mapa-calor-muestra.is-alerta {
   background: #b9822c;
 }
 
-html.aiden-dark .aiden-mapa-calor-celda.is-critico {
+html.aiden-dark .aiden-mapa-calor-celda.is-critico,
+.aiden-mapa-calor-muestra.is-critico {
   background: #c2433b;
 }
 
-html.aiden-dark .aiden-mapa-calor-celda.is-frio {
+html.aiden-dark .aiden-mapa-calor-celda.is-frio,
+.aiden-mapa-calor-muestra.is-frio {
   background: #3b6d8c;
 }
 
@@ -1548,5 +1564,320 @@ html.aiden-dark .aiden-ficha-navegacion {
     opacity: 0;
     transform: translateY(6px);
     filter: blur(2px);
+  }
+}
+
+/* ---- Tarea recién hecha: un instante de celebración tranquila ----------------------- */
+
+.aiden-tarea-check {
+  position: relative;
+  display: inline-grid;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-tarea-recien {
+    animation: aidenTareaRecien 900ms var(--curva-resorte) both;
+  }
+
+  .aiden-tarea-recien .aiden-tarea-check svg path {
+    stroke-dasharray: 24;
+    animation: aidenTrazo 420ms var(--curva-enfasis) 120ms both;
+  }
+
+  .aiden-tarea-recien .aiden-tarea-check::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border: 2px solid #d9ea73;
+    border-radius: 999px;
+    animation: aidenAnilloHecha 640ms var(--curva-salida) both;
+    pointer-events: none;
+  }
+}
+
+@keyframes aidenTareaRecien {
+  from {
+    background-color: rgba(217, 234, 115, 0.28);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+@keyframes aidenAnilloHecha {
+  from {
+    opacity: 1;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+/* ---- Línea de tiempo: días que se quedan arriba y el principio de la historia ------- */
+
+.aiden-linea-dia {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--fondo-linea, #fff);
+}
+
+.aiden-ficha-seguimiento {
+  --fondo-linea: var(--color-slate-50);
+  --fondo-linea-oscuro: #0e1411;
+}
+
+html.aiden-dark .aiden-linea-dia {
+  background: var(--fondo-linea-oscuro, #121815);
+}
+
+.aiden-linea-inicio {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 6px 0 2px 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #66736b;
+}
+
+.aiden-linea-inicio span {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border: 1.5px dashed #b6c4b9;
+  border-radius: 999px;
+}
+
+html.aiden-dark .aiden-linea-inicio {
+  color: #91a098;
+}
+
+html.aiden-dark .aiden-linea-inicio span {
+  border-color: #3a4a40;
+}
+
+/* ---- Inteligencia: el asistente dice qué está haciendo -------------------------------- */
+
+.aiden-respuesta-pasos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 2px;
+}
+
+.aiden-respuesta-pasos span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  background: #fff;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #526057;
+  box-shadow: 0 1px 2px rgba(7, 27, 17, 0.06);
+}
+
+.aiden-respuesta-pasos span::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #9bd7b5;
+}
+
+.aiden-respuesta-pasos span:last-child::before {
+  background: #2f9d65;
+}
+
+html.aiden-dark .aiden-respuesta-pasos span {
+  background: #18201c;
+  color: #c5d0ca;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-respuesta.is-nueva .aiden-respuesta-pasos span {
+    animation: aidenPaso 360ms var(--curva-resorte) both;
+    animation-delay: calc(var(--paso) * 240ms);
+  }
+
+  .aiden-respuesta.is-nueva .aiden-respuesta-pasos span:not(:last-child)::before {
+    animation: aidenRespira 900ms ease-in-out 2;
+  }
+
+  .aiden-respuesta.is-nueva .aiden-respuesta-cuerpo {
+    animation: aidenRespuesta 520ms var(--curva-resorte) 620ms both;
+  }
+}
+
+@keyframes aidenPaso {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes aidenRespira {
+  50% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+}
+
+@keyframes aidenRespuesta {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(3px);
+  }
+}
+
+/* ---- 404: el invernadero de noche con una linterna y una lupa de vidrio -------------- */
+
+.aiden-404 {
+  --linterna-x: 50%;
+  --linterna-y: 42%;
+  position: relative;
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 60% at 88% 0%, rgba(217, 234, 115, 0.1), transparent 60%),
+    radial-gradient(60% 50% at 10% 100%, rgba(113, 139, 88, 0.18), transparent 70%),
+    #071b11;
+  padding: 24px 16px;
+  color: #f3f6ef;
+}
+
+/* Policarbonato acanalado: franjas verticales muy suaves, como el techo del invernadero. */
+.aiden-404::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, rgba(243, 246, 239, 0.035) 0 2px, transparent 2px 46px);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.25));
+  pointer-events: none;
+}
+
+.aiden-404.is-linterna::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(260px circle at var(--linterna-x) var(--linterna-y), rgba(217, 234, 115, 0.13), rgba(7, 27, 17, 0) 70%);
+  pointer-events: none;
+}
+
+.aiden-404-marco {
+  position: relative;
+  z-index: 1;
+  width: min(640px, 100%);
+}
+
+.aiden-404-marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f3f6ef;
+}
+
+.aiden-404-lente {
+  margin-top: 56px;
+}
+
+.aiden-lupa {
+  display: block;
+}
+
+.aiden-404-contenido h1 {
+  margin: 0;
+  font-size: clamp(40px, 7vw, 76px);
+  font-weight: 650;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.aiden-404-texto {
+  max-width: 52ch;
+  margin: 20px 0 0;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #b9c8ba;
+}
+
+.aiden-404-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.aiden-404-primario,
+.aiden-404-secundario {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 0 20px;
+  font-size: 14.5px;
+  font-weight: 650;
+  transition:
+    background-color var(--dur-base) ease,
+    border-color var(--dur-base) ease;
+}
+
+.aiden-404-primario {
+  background: #d9ea73;
+  color: #071b11;
+}
+
+.aiden-404-primario:hover {
+  background: #e4f09a;
+}
+
+.aiden-404-secundario {
+  border: 1px solid rgba(243, 246, 239, 0.22);
+  color: #f3f6ef;
+}
+
+.aiden-404-secundario:hover {
+  border-color: rgba(243, 246, 239, 0.5);
+}
+
+.aiden-404 :focus-visible {
+  outline: 2px solid #d9ea73;
+  outline-offset: 3px;
+}
+
+/* ---- Contraseña: el ojo parpadea al mostrar u ocultar ------------------------------- */
+
+.aiden-ojo {
+  display: inline-grid;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-ojo {
+    animation: aidenParpadeo 260ms var(--curva-enfasis) both;
+  }
+}
+
+@keyframes aidenParpadeo {
+  0% {
+    transform: scaleY(0.1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
   }
 }

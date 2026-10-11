@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { AlertCircle, AlertTriangle, CheckCircle2, ClipboardCheck, ClipboardPlus, Plus, RotateCcw, SearchCheck } from "lucide-react";
 import { Boton } from "../ui/Boton";
@@ -16,6 +16,7 @@ import ModalTarea from "../formularios/ModalTarea";
 import { useDatos } from "../../datos/almacen";
 import { PRIORIDADES } from "../../datos/catalogos";
 import { actualizarIncidencia } from "../../datos/acciones";
+import Sello from "../ui/Sello";
 import { esGestor, estadoIncidencia, incidenciasVisibles, nombrePersona, personasActivas } from "../../datos/selectores";
 import { useAviso, useEnvio } from "../../contexto/retroalimentacion";
 import { useSesion } from "../../hooks/useSesion";
@@ -23,6 +24,17 @@ import { useTitulo } from "../../hooks/useTitulo";
 import { coincide, diasEntre, fechaCorta, hoyISO, numero, plural, vencimiento } from "../../utilidades/formato";
 
 const PESO = { Alta: 0, Media: 1, Baja: 2 };
+
+// La incidencia que se acaba de cerrar desde esta vista: su sello cae una sola vez.
+const cierreReciente = { id: null };
+
+function SelloCierre({ incidencia }) {
+  const [animar] = useState(() => cierreReciente.id === incidencia.id);
+  useEffect(() => {
+    if (animar) cierreReciente.id = null;
+  }, [animar]);
+  return <Sello texto="CERRADA" detalle={incidencia.cierre ? fechaCorta(incidencia.cierre) : undefined} borde="CALIDAD · AiDEN · ACCIÓN VERIFICADA ·" tamano={86} animar={animar} className="shrink-0" />;
+}
 
 function DetalleIncidencia({ incidencia, onCerrar, onTarea }) {
   const datos = useDatos();
@@ -38,7 +50,11 @@ function DetalleIncidencia({ incidencia, onCerrar, onTarea }) {
   const cambiar = (campo) => (e) => setF((a) => ({ ...a, [campo]: e.target.value }));
   const dias = diasEntre(incidencia.fecha, estado === "Cerrada" && incidencia.cierre ? incidencia.cierre : hoyISO());
 
-  const mover = (nuevo, mensaje) => enviar(() => actualizarIncidencia(incidencia.id, { ...f, estado: nuevo }, sesion), mensaje);
+  const mover = (nuevo, mensaje) => {
+    if (nuevo === "Cerrada") cierreReciente.id = incidencia.id;
+    const resultado = enviar(() => actualizarIncidencia(incidencia.id, { ...f, estado: nuevo }, sesion), mensaje);
+    if (!resultado) cierreReciente.id = null;
+  };
 
   return (
     <Modal
@@ -87,6 +103,15 @@ function DetalleIncidencia({ incidencia, onCerrar, onTarea }) {
     >
       <div className="space-y-6">
         <AlertaFormulario mensaje={error} />
+        {estado === "Cerrada" && (
+          <div className="flex items-center justify-between gap-4 rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4">
+            <p className="text-sm text-slate-700">
+              <span className="block font-semibold text-slate-900">Incidencia cerrada en {plural(dias, "día")}</span>
+              La acción correctiva quedó en la historia del lote {incidencia.lote}.
+            </p>
+            <SelloCierre incidencia={incidencia} />
+          </div>
+        )}
         <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
           <div>
             <dt className="text-xs text-slate-500">Lote</dt>
@@ -189,10 +214,12 @@ function TarjetaIncidencia({ incidencia, onDetalle }) {
 
   const guardar = (cambios, mensaje) => {
     try {
+      if (cambios.estado === "Cerrada") cierreReciente.id = incidencia.id;
       actualizarIncidencia(incidencia.id, cambios, sesion);
       setError("");
       aviso({ tipo: "exito", ...mensaje });
     } catch (err) {
+      cierreReciente.id = null;
       setError(err.message);
     }
   };
@@ -251,9 +278,12 @@ function TarjetaIncidencia({ incidencia, onDetalle }) {
             </span>
           </label>
         ) : (
-          <section className="rounded-xl bg-slate-50 p-3">
-            <p className="text-[10px] uppercase tracking-wider text-slate-500">{estado === "Cerrada" ? "Acción aplicada" : "Acción definida"}</p>
-            <p className="mt-1 text-sm text-slate-700">{incidencia.accion || "Pendiente de definir por supervisión."}</p>
+          <section className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
+            <span className="min-w-0">
+              <span className="block text-[11px] uppercase tracking-wider text-slate-500">{estado === "Cerrada" ? "Acción aplicada" : "Acción definida"}</span>
+              <span className="mt-1 block text-sm text-slate-700">{incidencia.accion || "Pendiente de definir por supervisión."}</span>
+            </span>
+            {estado === "Cerrada" && <SelloCierre incidencia={incidencia} />}
           </section>
         )}
         {error && (

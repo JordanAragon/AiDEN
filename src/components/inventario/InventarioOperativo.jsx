@@ -2,6 +2,7 @@ import { useId, useState } from "react";
 import { FormularioMovimiento, FormularioInsumo } from "./InventarioFormularios";
 import { useSearchParams } from "react-router-dom";
 import { AlertTriangle, ArrowDownToLine, ArrowLeftRight, ArrowUpFromLine, CircleDollarSign, Download, FilePenLine, History, Package, Plus, Trash2, Undo2, X } from "lucide-react";
+import AnilloProgreso from "../ui/AnilloProgreso";
 import { Boton, BotonIcono } from "../ui/Boton";
 import Cifras from "../ui/Cifras";
 import EncabezadoPagina from "../ui/EncabezadoPagina";
@@ -350,6 +351,26 @@ export default function InventarioOperativo() {
       >
         {detalle && (
           <div className="space-y-5">
+            <section className="flex items-center gap-4 rounded-2xl border border-slate-200 p-4">
+              <AnilloProgreso
+                valor={Number(detalle.stock)}
+                maximo={Math.max(Number(detalle.minimo) * 2, Number(detalle.stock), 1)}
+                tamano={64}
+                grosor={6}
+                tono={Number(detalle.stock) <= 0 ? "critico" : bajo(detalle) ? "alerta" : "verde"}
+                etiqueta={`Existencias de ${detalle.nombre} frente al doble del mínimo`}
+              >
+                {Number(detalle.minimo) > 0 ? `${Math.round((Number(detalle.stock) / Number(detalle.minimo)) * 100)}%` : "—"}
+              </AnilloProgreso>
+              <p className="min-w-0 text-sm text-slate-600">
+                <span className="block text-base font-semibold text-slate-900">{cantidadConUnidad(detalle.stock, detalle.unidad)}</span>
+                {Number(detalle.minimo) > 0
+                  ? bajo(detalle)
+                    ? `En o por debajo del mínimo de ${numero(detalle.minimo)}: hay que reponer.`
+                    : `${numero(Math.round((Number(detalle.stock) / Number(detalle.minimo)) * 100))} % del mínimo de ${numero(detalle.minimo)}.`
+                  : "Sin mínimo de reposición configurado."}
+              </p>
+            </section>
             <section className="grid grid-cols-3 gap-3">
               {[
                 ["Stock", `${cantidadConUnidad(detalle.stock, detalle.unidad)}`, bajo(detalle)],

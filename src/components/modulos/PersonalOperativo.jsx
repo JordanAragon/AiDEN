@@ -9,6 +9,7 @@ import Insignia from "../ui/Insignia";
 import Modal from "../ui/Modal";
 import EstadoVacio from "../ui/EstadoVacio";
 import Pestanas from "../ui/Pestanas";
+import PilaAvatares from "../ui/PilaAvatares";
 import { FILA_ENCABEZADO, TH, TR } from "../ui/tabla";
 import { Buscador, Segmentos } from "../ui/Filtros";
 import { TONO_PRIORIDAD } from "../ui/tonos";
@@ -250,9 +251,22 @@ export default function PersonalOperativo() {
         titulo="Personal y tareas"
         descripcion="Asigna trabajo, controla carga, fechas y avance por colaborador."
         acciones={
-          <Boton variante="primario" icono={Plus} onClick={() => setModal({ tipo: "tarea" })}>
-            Asignar tarea
-          </Boton>
+          <>
+            <PilaAvatares
+              etiqueta="Equipo activo"
+              maximo={6}
+              personas={datos.personas
+                .filter((persona) => persona.estado === "Activo")
+                .map((persona) => {
+                  const abiertas = datos.tareas.filter((t) => t.responsableId === persona.id && t.estado !== "Completada").length;
+                  return { id: persona.id, nombre: persona.nombre, detalle: `${persona.cargo} · ${abiertas === 1 ? "1 tarea abierta" : `${abiertas} tareas abiertas`}`, to: `/personal?persona=${persona.id}` };
+                })}
+              className="mr-2 hidden sm:flex"
+            />
+            <Boton variante="primario" icono={Plus} onClick={() => setModal({ tipo: "tarea" })}>
+              Asignar tarea
+            </Boton>
+          </>
         }
       />
 

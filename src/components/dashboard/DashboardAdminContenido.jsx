@@ -8,6 +8,7 @@ import Panel from "../ui/Panel";
 import { AccionRapida, EnlaceModulo, Estadistica, ItemOscuro } from "../ui/Piezas";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import PulsoSemana from "./PulsoSemana";
+import MapaVivero from "./MapaVivero";
 import { useDatos } from "../../datos/almacen";
 import { alertas as calcularAlertas, costoPorPlanta, estadoIncidencia, lotesActivos, resumenLote, resumenMensual } from "../../datos/selectores";
 import { useColoresGrafica } from "../../hooks/useColoresGrafica";
@@ -111,6 +112,8 @@ export default function DashboardAdminContenido() {
           </section>
         </article>
       </section>
+
+      <MapaVivero datos={datos} />
 
       <section className="grid gap-4 lg:grid-cols-3">
         <Panel className="lg:col-span-2" titulo="Ingresos y gastos" descripcion="Últimos cuatro meses, según los movimientos registrados en Costos.">

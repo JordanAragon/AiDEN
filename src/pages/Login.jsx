@@ -178,9 +178,13 @@ export default function Login() {
                   onClick={() => setShowPass((value) => !value)}
                   aria-label={showPass ? "Ocultar contraseña" : "Mostrar contraseña"}
                   aria-controls="password"
+                  aria-pressed={showPass}
                   className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
                 >
-                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {/* El ojo parpadea al cambiar: se cierra y se abre en el otro estado. */}
+                  <span key={showPass ? "abierto" : "cerrado"} className="aiden-ojo">
+                    {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </span>
                 </button>
               </div>
             </Field>

@@ -155,7 +155,11 @@ export default function TrazabilidadOperativo() {
           <span className="text-xs text-slate-500">{plural(filtered.length, "evento visible", "eventos visibles")}</span>
         </header>
         {filtered.length ? (
-          <LineaTiempo eventos={filtered} mostrarLote={lot === "Todos"} />
+          <LineaTiempo
+            eventos={filtered}
+            mostrarLote={lot === "Todos"}
+            inicio={lot !== "Todos" && filtered.length === delLote.length && datos.lotes.find((l) => l.lote === lot) ? `Aquí empezó ${lot}: registrado el ${fechaCorta(datos.lotes.find((l) => l.lote === lot).fecha)}.` : undefined}
+          />
         ) : (
           <div className="py-10 text-center text-sm text-slate-500">
             <p>{delLote.length ? "Ningún evento coincide con los filtros." : "Todavía no hay eventos para este lote."}</p>

@@ -7,6 +7,9 @@ import CifraRodante from "../ui/CifraRodante";
 import LienzoVivo from "../vivo/LienzoVivo";
 import { diferida } from "../../utilidades/cargaDiferida";
 import Insignia from "../ui/Insignia";
+import PilaAvatares from "../ui/PilaAvatares";
+import TiempoRelativo from "../ui/TiempoRelativo";
+import MapaVivero from "./MapaVivero";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import LineaTiempo from "../lote/LineaTiempo";
 import ModalTarea from "../formularios/ModalTarea";
@@ -16,7 +19,7 @@ import { ETAPAS } from "../../datos/catalogos";
 import { alertas as calcularAlertas, cargaPorPersona, evaluarLectura, lotesActivos, tareaVencida, ultimasLecturas } from "../../datos/selectores";
 import { useSesion } from "../../hooks/useSesion";
 import { useTitulo } from "../../hooks/useTitulo";
-import { aFecha, haceTiempo, hoyISO, numero, plural } from "../../utilidades/formato";
+import { aFecha, hoyISO, numero, plural } from "../../utilidades/formato";
 
 const EscenaPulso = diferida(() => import("../vivo/escenas/EscenaPulso"));
 
@@ -132,9 +135,12 @@ export default function DashboardSupervisorContenido() {
               <h2 className="font-semibold text-slate-900">Carga de trabajo</h2>
               <p className="mt-1 text-xs text-slate-500">Tareas pendientes por responsable</p>
             </section>
-            <Link to="/personal?vista=tareas" className="shrink-0 text-xs font-semibold text-emerald-700 hover:underline">
-              Ver todo
-            </Link>
+            <div className="flex shrink-0 items-center gap-3">
+              <PilaAvatares etiqueta="Operarios con tareas" personas={carga.map(({ persona, abiertas: n, vencidas: v }) => ({ id: persona.id, nombre: persona.nombre, detalle: `${plural(n, "tarea abierta", "tareas abiertas")}${v ? ` · ${plural(v, "vencida", "vencidas")}` : ""}`, to: `/personal?persona=${persona.id}` }))} />
+              <Link to="/personal?vista=tareas" className="text-xs font-semibold text-emerald-700 hover:underline">
+                Ver todo
+              </Link>
+            </div>
           </header>
           <section className="mt-3 space-y-1.5">
             {(mostrarTodaCarga ? carga : carga.slice(0, 4)).map(({ persona, abiertas: n, vencidas: v, lotes }) => (
@@ -215,6 +221,8 @@ export default function DashboardSupervisorContenido() {
           </section>
         </article>
       </section>
+
+      <MapaVivero datos={datos} />
 
       <section className="aiden-supervisor-operacion overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
         <header className="flex flex-col gap-4 border-b border-slate-100 p-5 sm:flex-row sm:items-end sm:justify-between">
@@ -301,7 +309,7 @@ export default function DashboardSupervisorContenido() {
                       <Link to={`/ambiental?zona=${encodeURIComponent(zona.nombre)}`} className="flex items-center justify-between gap-3 rounded-xl border border-slate-100 p-3 transition hover:border-emerald-100 hover:bg-emerald-50/30">
                         <span className="min-w-0">
                           <span className="block text-sm font-medium text-slate-800">{zona.nombre}</span>
-                          <span className="block text-[11px] text-slate-500">{lectura ? `Actualizada ${haceTiempo(lectura.fecha)}` : "Sin lecturas"}</span>
+                          <span className="block text-[11px] text-slate-500">{lectura ? <>Actualizada <TiempoRelativo fecha={lectura.fecha} /></> : "Sin lecturas"}</span>
                         </span>
                         {lectura && (
                           <span className="flex shrink-0 items-center gap-2">

@@ -339,3 +339,66 @@
     display: none;
   }
 }
+
+/* ---- La luz bajo el cursor en los botones ------------------------------------------ */
+
+@media (hover: hover) and (pointer: fine) {
+  .aiden-landing .aiden-boton {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .aiden-landing .aiden-boton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(90px circle at var(--luz-x, 50%) var(--luz-y, 50%), rgba(255, 255, 255, 0.34), transparent 70%);
+    opacity: 0;
+    transition: opacity 220ms ease;
+    pointer-events: none;
+  }
+
+  .aiden-landing .aiden-boton-oscuro::after,
+  .aiden-landing .aiden-boton-fantasma::after,
+  .aiden-landing .aiden-boton-borde::after {
+    background: radial-gradient(110px circle at var(--luz-x, 50%) var(--luz-y, 50%), rgba(217, 234, 115, 0.2), transparent 70%);
+  }
+
+  .aiden-landing .aiden-boton:hover::after {
+    opacity: 1;
+  }
+}
+
+/* ---- La siembra al enviar la solicitud ---------------------------------------------- */
+
+.aiden-envio {
+  position: relative;
+  display: inline-flex;
+}
+
+.aiden-siembra {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.aiden-siembra i {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-aiden-moss);
+  opacity: 0;
+}
+
+.aiden-siembra i.is-lima {
+  background: var(--color-aiden-lime);
+}

@@ -47,7 +47,7 @@ function agruparPorDia(eventos) {
   return grupos;
 }
 
-export default function LineaTiempo({ eventos, mostrarLote = false, limite }) {
+export default function LineaTiempo({ eventos, mostrarLote = false, limite, inicio }) {
   const lista = limite ? eventos.slice(0, limite) : eventos;
   return (
     <div className="space-y-4">
@@ -90,6 +90,12 @@ export default function LineaTiempo({ eventos, mostrarLote = false, limite }) {
           </ol>
         </section>
       ))}
+      {inicio && (!limite || eventos.length <= limite) && (
+        <p className="aiden-linea-inicio">
+          <span aria-hidden="true" />
+          {inicio}
+        </p>
+      )}
     </div>
   );
 }
