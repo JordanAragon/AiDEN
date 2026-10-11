@@ -1740,7 +1740,7 @@ html.aiden-dark .aiden-respuesta-pasos span {
   }
 }
 
-/* ---- 404: el invernadero de noche con una linterna y una lupa de vidrio -------------- */
+/* ---- 404: el invernadero de noche con una linterna ---------------------------------- */
 
 .aiden-404 {
   --linterna-x: 50%;
@@ -1796,10 +1796,6 @@ html.aiden-dark .aiden-respuesta-pasos span {
 
 .aiden-404-lente {
   margin-top: 56px;
-}
-
-.aiden-lupa {
-  display: block;
 }
 
 .aiden-404-contenido h1 {

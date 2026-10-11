@@ -76,6 +76,11 @@ export default function Vivero3D({ ref, plano, pose, resaltado = -1, orbita = 0,
           colocadas.push(caja);
           break;
         }
+        // Un rótulo atenuado (de un lote que no está en foco) no se apila: se esconde.
+        if (rotulo?.classList.contains("is-atenuado")) {
+          nodo.dataset.fuera = "si";
+          break;
+        }
         subir += caja.y1 - choque.y0 + 4;
       }
       nodo.style.setProperty("--subir", `${Math.round(subir)}px`);

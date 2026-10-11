@@ -125,7 +125,7 @@ export default defineConfig({
             { name: "motor-vivo", test: /[\\/]node_modules[\\/](shaders|typegpu|tinyest|tsover-runtime|typed-binary)[\\/]/, priority: 15 },
             // El vivero en 3D (vgpu): lo usan la landing y los tableros, y solo se pide con WebGPU.
             { name: "motor-vivero3d", test: /[\\/]node_modules[\\/](vgpu|@vgpu)[\\/]/, priority: 14 },
-            // La lente de vidrio líquido del interruptor de tema y de la 404.
+            // La lente de vidrio líquido del interruptor de tema.
             { name: "vidrio", test: /[\\/]node_modules[\\/]@samasante[\\/]liquid-glass[\\/]/, priority: 13 },
             {
               name: "graficas",

@@ -31,12 +31,14 @@ export default function CapituloVivero({ datos, protagonista }) {
     return cuentas;
   }, [plano]);
 
-  // En la vista general van todos los rótulos; en una zona, solo los de sus lotes.
+  // En la vista general van todos los rótulos; en una zona, solo el del lote en foco
+  // (los demás lotes de la zona los nombra la parada).
   const zonaActiva = estaciones[activa]?.zona;
+  const loteActivo = estaciones[activa]?.lote;
   const etiquetas = useMemo(
     () =>
       plano.lotes
-        .filter((lote) => zonaActiva === null || zonaActiva === undefined || plano.zonas[zonaActiva]?.nombre === lote.zona)
+        .filter((lote) => zonaActiva === null || zonaActiva === undefined || lote.indice === loteActivo)
         .map((lote) => ({
         id: lote.codigo,
         punto: lote.centro,
@@ -50,7 +52,7 @@ export default function CapituloVivero({ datos, protagonista }) {
           </span>
         ),
       })),
-    [plano, estaciones, activa, zonaActiva],
+    [plano, estaciones, activa, zonaActiva, loteActivo],
   );
 
   useEffect(() => {

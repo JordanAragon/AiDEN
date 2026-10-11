@@ -95,14 +95,14 @@ export default function DashboardSupervisorContenido() {
               </Link>
             </section>
           </section>
-          <dl className="aiden-pulso-cifras grid grid-cols-2 border-t border-white/10 lg:border-l lg:border-t-0">
+          <dl className="aiden-pulso-cifras grid grid-cols-1 border-t border-white/10 sm:grid-cols-2 lg:border-l lg:border-t-0">
             {[
               { valor: abiertas.length, nombre: abiertas.length === 1 ? "tarea abierta" : "tareas abiertas", detalle: `${vencidas ? plural(vencidas, "vencida", "vencidas") : "sin vencidas"} · ${plural(completadasHoy, "completada hoy", "completadas hoy")}` },
               { valor: activos.length, nombre: activos.length === 1 ? "lote activo" : "lotes activos", detalle: `${activos.filter((l) => l.etapa === "Cosecha").length} en cosecha · ${numero(activos.reduce((s, l) => s + Number(l.cantidad || 0), 0))} plantas` },
               { valor: lista.length, nombre: lista.length === 1 ? "riesgo abierto" : "riesgos abiertos", detalle: "operación, ambiente y calidad" },
               { valor: bajoMinimo, nombre: bajoMinimo === 1 ? "insumo por reponer" : "insumos por reponer", detalle: bajoMinimo ? "en o bajo el mínimo" : "stock en rango" },
             ].map((cifra, i) => (
-              <div key={cifra.nombre} className={`flex min-h-32 flex-col justify-end p-5 sm:p-6 ${i % 2 === 0 ? "border-r border-white/10" : ""} ${i > 1 ? "border-t border-white/10" : ""}`}>
+              <div key={cifra.nombre} className={`flex flex-col justify-end border-white/10 px-5 py-4 sm:min-h-32 sm:p-6 ${i > 0 ? "border-t" : ""} ${i === 1 ? "sm:border-t-0" : ""} ${i % 2 === 0 ? "sm:border-r" : ""}`}>
                 <dt className="sr-only">{cifra.nombre}</dt>
                 <dd className="flex flex-wrap items-baseline gap-x-2">
                   <span className="text-3xl font-semibold tracking-tight tabular-nums">

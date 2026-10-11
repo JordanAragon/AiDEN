@@ -62,7 +62,7 @@ Fuente de verdad visual de AiDEN, extraída del código (`src/estilos/`) el 2026
 
 Herramienta de trabajo para viveros e invernaderos: densa, clara y tranquila, con una marca verde bosque cálida que se nota en la landing y en los encabezados, y una interfaz operativa sobria en los módulos. Tres roles (admin, supervisor, operario) comparten la misma base visual; se distinguen por acentos, no por paletas distintas. Modo claro y oscuro.
 
-Stack: React 19 + Vite, Tailwind CSS 4, React Router, Recharts para gráficas, lucide-react para íconos, `shaders` (WebGPU, MIT) para las escenas vivas (ver **Escenas vivas**), `vgpu` 0.5.0 (Vercel Labs, WebGPU, MIT) para el vivero en 3D (ver **El vivero en 3D**) y `@samasante/liquid-glass` 0.1.1 (MIT) para las dos lentes de vidrio (ver **Vidrio líquido**).
+Stack: React 19 + Vite, Tailwind CSS 4, React Router, Recharts para gráficas, lucide-react para íconos, `shaders` (WebGPU, MIT) para las escenas vivas (ver **Escenas vivas**), `vgpu` 0.5.0 (Vercel Labs, WebGPU, MIT) para el vivero en 3D (ver **El vivero en 3D**) y `@samasante/liquid-glass` 0.1.1 (MIT) para la lente del interruptor de tema (ver **Vidrio líquido**).
 
 ## Colors
 
@@ -163,10 +163,9 @@ Componentes en `src/components/vivo/`. Las escenas (`escenas/*.jsx`) se componen
 
 ## Vidrio líquido
 
-`@samasante/liquid-glass` (MIT), siempre en modo en sitio (la lente dobla su propio contenido, así funciona igual en Chrome, Safari y Firefox) y cargado diferido. Solo dos usos, los dos como efecto concreto y nunca sobre datos:
+`@samasante/liquid-glass` (MIT), en modo en sitio (la lente dobla su propio contenido, así funciona igual en Chrome, Safari y Firefox) y cargado diferido. Un solo uso, como efecto concreto y nunca sobre datos: el **interruptor de tema** (`InterruptorTema` + `LenteTema`), donde la lente viaja de «Claro» a «Oscuro» sobre la pista y la aumenta apenas; con la barra colapsada, un solo botón. Se probó como lupa sobre el titular de la 404 y se retiró: al agrandar letras grandes partía los glifos.
 
-- **Interruptor de tema** (`InterruptorTema` + `LenteTema`): la lente viaja de «Claro» a «Oscuro» sobre la pista y la aumenta apenas; con la barra colapsada, un solo botón.
-- **Lupa de la 404** (`LupaVidrio`): sigue al cursor sobre el titular y lo agranda; el texto sigue siendo texto. Sin puntero fino o con movimiento reducido no hay lupa.
+La **404** es el invernadero de noche: fondo forest-deep con la luz lima de la esquina y una linterna que se enciende al entrar el cursor y lo sigue; sin puntero fino o con movimiento reducido, quieta.
 
 ## Elevation & Depth
 
@@ -229,6 +228,6 @@ Reutilizar los de `src/components/ui/` antes de crear otros: `Boton` (clases en 
 - Textos de menos de 11 px.
 - Emojis como íconos.
 - Lenguaje de «demo» en la interfaz.
-- Vidrio o desenfoque como decoración, y nunca sobre datos (solo el interruptor de tema y la lupa de la 404).
+- Vidrio o desenfoque como decoración, y nunca sobre datos (la lente de vidrio solo en el interruptor de tema; el desenfoque, detrás de diálogos y de las placas del vivero en 3D).
 - Efectos que siguen al cursor en la interfaz operativa (salvo la inclinación leve de la ficha de un avatar) o confeti fuera del formulario de contacto.
 - Bento genérico, Spline o íconos de Iconly (licencia sin redistribución; el repo es público).

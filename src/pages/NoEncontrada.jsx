@@ -1,4 +1,4 @@
-import { Component, Suspense, lazy, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useSesion } from "../hooks/useSesion";
@@ -7,25 +7,10 @@ import { getDashboardPath } from "../utilidades/autenticacion";
 import { IsotipoAiden } from "../components/ui/MarcaAiden";
 import { useMovimientoReducido, usePunteroFino } from "../components/vivo/soporte";
 
-const LupaVidrio = lazy(() => import("../components/landing/LupaVidrio"));
-
-// Si la lupa no carga, la página sigue completa: es un adorno.
-class SinLupa extends Component {
-  state = { fallo: false };
-  static getDerivedStateFromError() {
-    return { fallo: true };
-  }
-  render() {
-    return this.state.fallo ? this.props.respaldo : this.props.children;
-  }
-}
-
 /*
   La 404 es el invernadero de noche con una linterna: la luz se enciende al
-  entrar el cursor y lo sigue, y
-  una lupa de vidrio líquido (@samasante/liquid-glass) agranda lo que queda
-  bajo ella. Sin ratón o con movimiento reducido, la página está iluminada y
-  sin lupa.
+  entrar el cursor y lo sigue. Sin ratón o con movimiento reducido, la página
+  queda quieta y legible.
 */
 export default function NoEncontrada() {
   const sesion = useSesion();
@@ -67,17 +52,7 @@ export default function NoEncontrada() {
           <IsotipoAiden tamano={34} placa />
           <span>AiDEN</span>
         </Link>
-        <div className="aiden-404-lente">
-          {linterna ? (
-            <SinLupa respaldo={contenido}>
-              <Suspense fallback={contenido}>
-                <LupaVidrio>{contenido}</LupaVidrio>
-              </Suspense>
-            </SinLupa>
-          ) : (
-            contenido
-          )}
-        </div>
+        <div className="aiden-404-lente">{contenido}</div>
         <div className="aiden-404-acciones">
           <Link to={sesion ? getDashboardPath(sesion.role) : "/"} className="aiden-404-primario">
             {sesion ? "Ir a mi tablero" : "Ir al inicio"} <ArrowRight size={15} aria-hidden="true" />
