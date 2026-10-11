@@ -19,7 +19,8 @@
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.3",
     "recharts": "^3.10.1",
-    "shaders": "^4.0.4"
+    "shaders": "^4.0.4",
+    "vgpu": "0.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

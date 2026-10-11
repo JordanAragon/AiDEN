@@ -1,0 +1,341 @@
+/* La landing a nivel estudio (2026-10-11), sobre landing.css y landing-vivo.css:
+   el vivero en 3D recorrido con el scroll (vgpu), la luz que sigue al cursor en
+   los botones de los marcos nocturnos y la siembra al enviar el formulario. */
+
+/* ---- El vivero, planta por planta ---------------------------------------- */
+
+.aiden-vivero-recorrido {
+  position: relative;
+  height: calc(100svh + (var(--pasos, 5) - 1) * 64svh);
+  margin-bottom: 64px;
+}
+
+.aiden-vivero-escenario {
+  position: sticky;
+  top: 96px;
+  height: min(calc(100svh - 120px), 820px);
+  min-height: 460px;
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--noche);
+  box-shadow: var(--sombra-noche);
+  color: var(--sobre-noche);
+}
+
+.aiden-vivero-lienzo3d {
+  position: absolute;
+  inset: 0;
+}
+
+.aiden-vivero-leyenda {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  display: grid;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--sobre-noche-2);
+}
+
+.aiden-vivero-leyenda p {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-weight: 600;
+  color: var(--sobre-noche);
+}
+
+.aiden-vivero-leyenda i {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+}
+
+.aiden-vivero-leyenda .is-vivo {
+  background: var(--vivo);
+  box-shadow: 0 0 0 4px rgba(217, 234, 115, 0.14);
+}
+
+.aiden-vivero-leyenda ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aiden-vivero-leyenda li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.aiden-vivero-leyenda li span {
+  font-variant-numeric: tabular-nums;
+  color: var(--sobre-noche);
+}
+
+/* Las paradas: se apilan en la misma celda y solo la activa se ve. */
+.aiden-vivero-paradas {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  display: grid;
+  width: min(440px, calc(100% - 48px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aiden-vivero-paradas li {
+  grid-area: 1 / 1;
+  align-self: end;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  background: rgba(7, 27, 17, 0.74);
+  padding: 18px 20px 19px;
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+}
+
+.aiden-vivero-paradas li.is-activa {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-vivero-paradas li {
+    transition:
+      opacity 360ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 520ms cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s linear 360ms;
+  }
+
+  .aiden-vivero-paradas li.is-activa {
+    transition:
+      opacity 360ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 520ms cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s;
+  }
+}
+
+.aiden-vivero-paradas h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 0;
+  font-size: 19px;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--sobre-noche);
+}
+
+.aiden-vivero-paradas p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--sobre-noche-2);
+}
+
+.aiden-vivero-alerta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.16);
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fcd34d;
+}
+
+.aiden-vivero-alerta::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #f59e0b;
+}
+
+/* El riel de paradas: a la derecha en escritorio, arriba en una columna. */
+.aiden-vivero-riel {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  display: grid;
+  gap: 4px;
+  transform: translateY(-50%);
+}
+
+.aiden-vivero-riel button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  min-height: 32px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(243, 246, 239, 0.7);
+  text-shadow: 0 1px 8px rgba(7, 27, 17, 0.9), 0 0 2px rgba(7, 27, 17, 0.9);
+  cursor: pointer;
+}
+
+.aiden-vivero-riel button::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(243, 246, 239, 0.5);
+  border-radius: 999px;
+  transition:
+    background-color 200ms ease,
+    transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 200ms ease;
+}
+
+.aiden-vivero-riel button:hover {
+  color: var(--sobre-noche);
+}
+
+.aiden-vivero-riel button.is-activa {
+  color: var(--sobre-noche);
+}
+
+.aiden-vivero-riel button.is-activa::after {
+  border-color: var(--vivo);
+  background: var(--vivo);
+  transform: scale(1.25);
+}
+
+.aiden-vivero-riel span {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transition:
+    max-width 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 200ms ease;
+}
+
+.aiden-vivero-riel:hover span,
+.aiden-vivero-riel:focus-within span,
+.aiden-vivero-riel button.is-activa span {
+  max-width: 180px;
+  opacity: 1;
+}
+
+@media (max-width: 860px) {
+  .aiden-vivero-recorrido {
+    height: calc(100svh + (var(--pasos, 5) - 1) * 56svh);
+  }
+
+  .aiden-vivero-escenario {
+    top: 84px;
+    height: calc(100svh - 104px);
+    min-height: 420px;
+    border-radius: 22px;
+  }
+
+  .aiden-vivero-leyenda {
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    font-size: 11px;
+  }
+
+  .aiden-vivero-leyenda ul {
+    gap: 4px 10px;
+  }
+
+  .aiden-vivero-paradas {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+  }
+
+  .aiden-vivero-paradas li {
+    padding: 15px 16px 16px;
+    border-radius: 16px;
+  }
+
+  .aiden-vivero-paradas h3 {
+    font-size: 17px;
+  }
+
+  .aiden-vivero-paradas p {
+    font-size: 13.5px;
+  }
+
+  .aiden-vivero-riel {
+    top: auto;
+    right: 12px;
+    bottom: auto;
+    display: none;
+  }
+
+  .aiden-vivero3d-rotulo {
+    font-size: 11px;
+    padding: 5px 8px 6px;
+  }
+}
+
+/* Movimiento reducido: sin recorrido. El plano general y las paradas en lista. */
+@media (prefers-reduced-motion: reduce) {
+  .aiden-vivero-recorrido {
+    height: auto;
+    margin-bottom: 48px;
+  }
+
+  .aiden-vivero-escenario {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 0;
+    display: grid;
+  }
+
+  .aiden-vivero-lienzo3d {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 16 / 10;
+  }
+
+  .aiden-vivero-paradas {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: auto;
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .aiden-vivero-paradas li {
+    grid-area: auto;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  .aiden-vivero-riel {
+    display: none;
+  }
+}

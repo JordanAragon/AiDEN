@@ -17,10 +17,12 @@ import WordmarkAiden from "../components/landing/WordmarkAiden";
 import TituloVivo from "../components/landing/TituloVivo";
 import CapituloPantallas from "../components/landing/CapituloPantallas";
 import AsistenteVivo from "../components/landing/AsistenteVivo";
+import CapituloVivero from "../components/landing/CapituloVivero";
 import LienzoVivo from "../components/vivo/LienzoVivo";
 import SembradoIsotipo from "../components/vivo/SembradoIsotipo";
 import { diferida } from "../utilidades/cargaDiferida";
 import "../estilos/landing-vivo.css";
+import "../estilos/landing-estudio.css";
 
 const EscenaInvernadero = diferida(() => import("../components/vivo/escenas/EscenaInvernadero"));
 const EscenaTopografia = diferida(() => import("../components/vivo/escenas/EscenaTopografia"));
@@ -684,7 +686,9 @@ export default function Inicio() {
           <div className="aiden-shell">
             <header className="aiden-vivero-cabecera">
               <h2 id="titulo-vivero">El resto del vivero, <em>de un barrido.</em></h2>
+              <p>Cada planta viva en su cama, su zona y su etapa. Baja despacio: el recorrido para en cada zona.</p>
             </header>
+            <CapituloVivero datos={datos} protagonista={lote.lote} />
             <ul className="aiden-fila-lotes">
               {lotesActivos.map((l) => (
                 <li key={l.id} className={l.id === lote.id ? "is-protagonista" : ""}>
