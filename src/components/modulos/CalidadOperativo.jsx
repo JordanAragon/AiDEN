@@ -33,7 +33,7 @@ function SelloCierre({ incidencia }) {
   useEffect(() => {
     if (animar) cierreReciente.id = null;
   }, [animar]);
-  return <Sello texto="CERRADA" detalle={incidencia.cierre ? fechaCorta(incidencia.cierre) : undefined} borde="CALIDAD · AiDEN · ACCIÓN VERIFICADA ·" tamano={86} animar={animar} className="shrink-0" />;
+  return <Sello texto="CERRADA" detalle={incidencia.cierre ? fechaCorta(incidencia.cierre) : undefined} borde="CALIDAD · AiDEN · VERIFICADA ·" animar={animar} className="shrink-0" />;
 }
 
 function DetalleIncidencia({ incidencia, onCerrar, onTarea }) {

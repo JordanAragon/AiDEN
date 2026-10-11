@@ -141,10 +141,12 @@ struct Salida {
   var color = entrada.color.rgb * (0.48 + 0.5 * difusa);
   var alfa = entrada.color.a;
   if (alfa < 0.99) {
-    // Vidrio y malla: más visibles de canto, como el policarbonato al contraluz.
+    // Vidrio y malla: más visibles de canto, como el policarbonato al contraluz,
+    // y acanalados (franjas suaves) como el techo del invernadero de la landing.
     let v = normalize(escena.ojo.xyz - entrada.mundo);
     let canto = 1.0 - abs(dot(n, v));
-    alfa = alfa * (0.55 + 1.6 * canto * canto);
+    let canal = 0.7 + 0.6 * smoothstep(0.35, 0.65, abs(fract((entrada.mundo.x + entrada.mundo.z) * 2.2) - 0.5) * 2.0);
+    alfa = alfa * (0.55 + 1.6 * canto * canto) * canal;
     color = entrada.color.rgb * (0.7 + 0.3 * difusa) + LIMA * 0.04 * canto;
   }
   let bruma = niebla(entrada.mundo);
@@ -163,6 +165,9 @@ struct Post {
 
 @fragment fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   var color = textureSampleLevel(escenaColor, muestreo, uv, 0.0).rgb;
+  // La luz lima que entra por la esquina, como en el invernadero del hero.
+  let esquina = distance(uv, vec2f(0.96, -0.06));
+  color += vec3f(0.851, 0.918, 0.451) * 0.075 * (1.0 - smoothstep(0.0, 0.85, esquina));
   let d = distance(uv, vec2f(0.5, 0.46));
   color = mix(color, vec3f(0.027, 0.106, 0.067), smoothstep(0.42, 0.98, d) * post.ajustes.z);
   let ruido = fract(sin(dot(uv * 913.0 + vec2f(post.ajustes.x * 7.0, post.ajustes.x * 3.0), vec2f(12.9898, 78.233))) * 43758.5453) - 0.5;

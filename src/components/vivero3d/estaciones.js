@@ -33,7 +33,8 @@ export function estacionesVivero(datos, plano, { protagonista } = {}) {
       id: "vivero",
       zona: null,
       lote: -1,
-      titulo: `${numero(plano.totalPlantas)} plantas vivas, cada una en su lugar.`,
+      titulo: `${numero(plano.totalPlantas)} plantas vivas,`,
+      remate: "cada una en su lugar.",
       cuerpo: `${plural(plano.lotes.length, "lote activo", "lotes activos")} en ${plural(conLotes.length, "zona", "zonas")}. Un punto por planta, en la cama y la estructura donde está hoy.`,
     },
   ];
@@ -65,7 +66,9 @@ export function estacionesVivero(datos, plano, { protagonista } = {}) {
       id: `zona-${indice}`,
       zona: indice,
       lote: principal ? principal.indice : -1,
-      titulo: zona.nombre,
+      titulo: `${zona.nombre},`,
+      remate: `${plural(lotes.reduce((suma, l) => suma + l.plantas, 0), "planta.", "plantas.")}`,
+      nombre: zona.nombre,
       cuerpo: `${frases.join(". ")}.`,
       alerta,
     });
@@ -75,7 +78,8 @@ export function estacionesVivero(datos, plano, { protagonista } = {}) {
     id: "plano",
     zona: null,
     lote: -1,
-    titulo: "El mismo plano, en el tablero de supervisión.",
+    titulo: "El mismo plano,",
+    remate: "en el tablero de supervisión.",
     cuerpo: "Con los datos del día: cada lote nuevo, cada merma y cada alerta de zona cambian lo que se ve aquí.",
   });
 

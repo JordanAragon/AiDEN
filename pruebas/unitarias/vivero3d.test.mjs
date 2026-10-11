@@ -72,9 +72,10 @@ test("zonas desconocidas y lotes en zonas borradas tienen estructura", () => {
 test("las paradas salen de los datos: alerta en el Invernadero 2", () => {
   const plano = planoVivero(semilla);
   const paradas = estacionesVivero(semilla, plano, { protagonista: "LT-2026-011" });
-  assert.equal(paradas[0].titulo, "4.894 plantas vivas, cada una en su lugar.");
-  assert.equal(paradas[1].titulo, "Invernadero 1");
-  const invernadero2 = paradas.find((p) => p.titulo === "Invernadero 2");
+  assert.equal(`${paradas[0].titulo} ${paradas[0].remate}`, "4.894 plantas vivas, cada una en su lugar.");
+  assert.equal(paradas[1].nombre, "Invernadero 1");
+  assert.equal(paradas[1].remate, "701 plantas.");
+  const invernadero2 = paradas.find((p) => p.nombre === "Invernadero 2");
   assert.ok(invernadero2.alerta);
   assert.match(invernadero2.cuerpo, /fuera del rango/);
 });

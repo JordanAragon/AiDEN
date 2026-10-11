@@ -29,12 +29,18 @@
 
 .aiden-vivero-leyenda {
   position: absolute;
-  top: 22px;
-  left: 24px;
+  top: 18px;
+  left: 18px;
   display: grid;
-  gap: 10px;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  background: rgba(7, 27, 17, 0.72);
+  padding: 10px 14px 11px;
   font-size: 12px;
   color: var(--sobre-noche-2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .aiden-vivero-leyenda p {
@@ -140,6 +146,16 @@
   color: var(--sobre-noche);
 }
 
+/* La voz narrativa de la landing: el remate en serif itálica lima. */
+.aiden-vivero-paradas h3 em {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 1.18em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--vivo);
+}
+
 .aiden-vivero-paradas p {
   margin: 8px 0 0;
   font-size: 14px;
@@ -225,6 +241,9 @@
 .aiden-vivero-riel span {
   max-width: 0;
   overflow: hidden;
+  border-radius: 999px;
+  background: rgba(7, 27, 17, 0.78);
+  padding: 3px 0;
   white-space: nowrap;
   opacity: 0;
   transition:
@@ -235,7 +254,8 @@
 .aiden-vivero-riel:hover span,
 .aiden-vivero-riel:focus-within span,
 .aiden-vivero-riel button.is-activa span {
-  max-width: 180px;
+  max-width: 200px;
+  padding: 3px 9px;
   opacity: 1;
 }
 
@@ -401,4 +421,23 @@
 
 .aiden-siembra i.is-lima {
   background: var(--color-aiden-lime);
+}
+
+/* ---- Hero: aire entre el titular y el texto -------------------------------------- */
+
+/* `.aiden-landing p` anula los márgenes de los párrafos; la bajada del hero
+   recupera el suyo. En una columna, el titular baja hasta quedar libre del
+   botón circular de la esquina. */
+.aiden-landing .aiden-despacho-lead {
+  margin-top: 22px;
+}
+
+@media (max-width: 860px) {
+  .aiden-landing .aiden-escena-copy {
+    padding-top: 52px;
+  }
+
+  .aiden-landing .aiden-despacho-lead {
+    margin-top: 16px;
+  }
 }

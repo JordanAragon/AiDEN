@@ -21,7 +21,8 @@ class SinLupa extends Component {
 }
 
 /*
-  La 404 es el invernadero de noche con una linterna: la luz sigue al cursor y
+  La 404 es el invernadero de noche con una linterna: la luz se enciende al
+  entrar el cursor y lo sigue, y
   una lupa de vidrio líquido (@samasante/liquid-glass) agranda lo que queda
   bajo ella. Sin ratón o con movimiento reducido, la página está iluminada y
   sin lupa.
@@ -41,9 +42,15 @@ export default function NoEncontrada() {
       const caja = nodo.getBoundingClientRect();
       nodo.style.setProperty("--linterna-x", `${evento.clientX - caja.left}px`);
       nodo.style.setProperty("--linterna-y", `${evento.clientY - caja.top}px`);
+      nodo.classList.add("is-encendida");
     };
+    const salir = () => nodo.classList.remove("is-encendida");
     nodo.addEventListener("pointermove", mover, { passive: true });
-    return () => nodo.removeEventListener("pointermove", mover);
+    nodo.addEventListener("pointerleave", salir);
+    return () => {
+      nodo.removeEventListener("pointermove", mover);
+      nodo.removeEventListener("pointerleave", salir);
+    };
   }, [linterna]);
 
   const contenido = (

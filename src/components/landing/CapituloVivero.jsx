@@ -31,9 +31,13 @@ export default function CapituloVivero({ datos, protagonista }) {
     return cuentas;
   }, [plano]);
 
+  // En la vista general van todos los rótulos; en una zona, solo los de sus lotes.
+  const zonaActiva = estaciones[activa]?.zona;
   const etiquetas = useMemo(
     () =>
-      plano.lotes.map((lote) => ({
+      plano.lotes
+        .filter((lote) => zonaActiva === null || zonaActiva === undefined || plano.zonas[zonaActiva]?.nombre === lote.zona)
+        .map((lote) => ({
         id: lote.codigo,
         punto: lote.centro,
         className: "",
@@ -46,7 +50,7 @@ export default function CapituloVivero({ datos, protagonista }) {
           </span>
         ),
       })),
-    [plano, estaciones, activa],
+    [plano, estaciones, activa, zonaActiva],
   );
 
   useEffect(() => {
@@ -128,7 +132,9 @@ export default function CapituloVivero({ datos, protagonista }) {
           {estaciones.map((estacion, i) => (
             <li key={estacion.id} className={i === activa ? "is-activa" : ""} aria-current={i === activa ? "step" : undefined}>
               <h3>
-                {estacion.titulo}
+                <span>
+                  {estacion.titulo} {estacion.remate && <em>{estacion.remate}</em>}
+                </span>
                 {estacion.alerta && <span className="aiden-vivero-alerta">Zona en alerta</span>}
               </h3>
               <p>{estacion.cuerpo}</p>
@@ -139,7 +145,7 @@ export default function CapituloVivero({ datos, protagonista }) {
         <nav className="aiden-vivero-riel" aria-label="Ir a una parada del vivero">
           {estaciones.map((estacion, i) => (
             <button key={estacion.id} type="button" onClick={() => irA(i)} aria-current={i === activa ? "step" : undefined} className={i === activa ? "is-activa" : ""}>
-              <span>{estacion.zona === null ? (i === 0 ? "Vivero" : "Tablero") : estacion.titulo}</span>
+              <span>{estacion.zona === null ? (i === 0 ? "Vivero" : "Tablero") : estacion.nombre}</span>
             </button>
           ))}
         </nav>

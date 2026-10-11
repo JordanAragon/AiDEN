@@ -68,10 +68,7 @@ export default function Login() {
           </Link>
 
           <section className="mt-auto max-w-xl pb-6">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-aiden-lime">
-              Gestión operativa para viveros
-            </p>
-            <h1 className="mt-4 text-5xl font-semibold leading-[.98] tracking-[-.05em] text-white xl:text-6xl">
+            <h1 className="text-5xl font-semibold leading-[.98] tracking-[-.05em] text-white xl:text-6xl">
               La operación del vivero, en contexto.
             </h1>
             <p className="mt-6 max-w-lg text-base leading-7 text-white/65">
@@ -101,10 +98,7 @@ export default function Login() {
           </header>
 
           <section className="aiden-auth-heading">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">
-              Acceso
-            </p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
+            <h2 className="text-3xl font-semibold tracking-tight text-slate-950">
               Hola de nuevo.
             </h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">

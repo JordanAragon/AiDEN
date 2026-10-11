@@ -12,9 +12,9 @@ const OPTICA = {
   strength: 0.06,
   depth: 0.55,
   curvature: 0.4,
-  dispersion: 0.08,
-  bend: 0.18,
-  bendWidth: 0.08,
+  dispersion: 0,
+  bend: 0.12,
+  bendWidth: 0.06,
   frost: 0,
   sheen: 0.6,
   glow: 0.2,
@@ -56,7 +56,7 @@ export default function LupaVidrio({ children, diametro = 168 }) {
 
   return (
     <span ref={caja} className="aiden-lupa">
-      <Glass size={[lado, lado]} radius={radio} center={{ x, y }} optics={OPTICA}>
+      <Glass size={[lado, lado]} radius={radio} center={{ x, y }} optics={OPTICA} filterResolution={2}>
         {children}
       </Glass>
     </span>

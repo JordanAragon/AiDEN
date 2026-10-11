@@ -97,8 +97,7 @@ export default function DashboardAdminContenido() {
         </article>
         <article className="relative isolate overflow-hidden rounded-2xl bg-aiden-forest-deep p-5 text-white">
           <LienzoVivo escena={EscenaPulso} datos={{ riesgos: decisiones.length }} />
-          <p className="relative text-[11px] font-bold uppercase tracking-[0.16em] text-aiden-lime">Prioridad</p>
-          <h2 className="relative mt-2 text-lg font-semibold">Alertas que requieren decisión</h2>
+          <h2 className="relative text-lg font-semibold">Alertas que requieren decisión</h2>
           <section className="relative mt-4 space-y-2">
             {decisiones.slice(0, visibles).map((d) => (
               <ItemOscuro key={d.id} tipo={d.tipo} texto={d.texto} detalle={d.detalle} to={d.to} />

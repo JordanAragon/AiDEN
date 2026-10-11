@@ -80,8 +80,7 @@ export default function ProduccionOperativo() {
         <header className="flex flex-col gap-3">
           <section className="flex flex-wrap items-end justify-between gap-3">
             <section>
-              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-700">Ciclo de trabajo</p>
-              <h2 className="mt-1 font-semibold text-slate-900">Etapa de cada lote</h2>
+              <h2 className="font-semibold text-slate-900">Etapa de cada lote</h2>
               <p className="mt-1 max-w-2xl text-xs text-slate-500">
                 {canManage ? "Avanza el ciclo desde aquí y registra automáticamente la trazabilidad." : "Consulta el estado del lote. Los cambios de etapa los realiza supervisión."}
               </p>

@@ -56,12 +56,9 @@ export default function MapaVivero({ datos }) {
 
   return (
     <section className="aiden-mapa-vivero overflow-hidden rounded-[24px] bg-[#0b2b1b] text-white shadow-[0_24px_70px_rgba(11,43,27,0.16)]" aria-labelledby="titulo-mapa-vivero">
-      <div className="grid lg:grid-cols-[minmax(0,1fr)_300px]">
-        <div className="relative min-h-[320px] lg:min-h-[440px]">
-          <div className="absolute inset-0">
-            <Vivero3D plano={plano} pose={pose} resaltado={resaltado} orbita={0.045} etiquetas={etiquetas} className="h-full w-full" />
-          </div>
-          <header className="pointer-events-none absolute left-5 top-5 max-w-sm sm:left-6 sm:top-6">
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="flex min-w-0 flex-col">
+          <header className="px-5 pt-5 sm:px-6 sm:pt-6">
             <h2 id="titulo-mapa-vivero" className="text-lg font-semibold tracking-tight">
               Mapa del vivero
             </h2>
@@ -69,10 +66,15 @@ export default function MapaVivero({ datos }) {
               {numero(plano.totalPlantas)} plantas vivas, un punto por planta{plano.representa > 1 ? ` (cada punto, ${numero(plano.representa)} plantas)` : ""}.
             </p>
           </header>
+          <div className="relative min-h-[300px] flex-1 lg:min-h-[400px]">
+            <div className="absolute inset-0">
+              <Vivero3D plano={plano} pose={pose} resaltado={resaltado} orbita={0.045} etiquetas={etiquetas} className="h-full w-full" />
+            </div>
+          </div>
         </div>
         <aside className="border-t border-white/10 p-5 lg:border-l lg:border-t-0">
           <div className="flex items-center justify-between gap-3">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">Lotes en el mapa</h3>
+            <h3 className="text-sm font-semibold text-white">Lotes en el mapa</h3>
             <Link to="/produccion" className="inline-flex items-center gap-1 text-xs font-semibold text-aiden-lime hover:underline">
               Producción <ArrowRight size={12} aria-hidden="true" />
             </Link>
@@ -91,7 +93,7 @@ export default function MapaVivero({ datos }) {
                 >
                   <i className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: COLOR_ETAPA[lote.etapaIndice] }} aria-hidden="true" />
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-semibold">{lote.cultivo}</span>
+                    <span className="block text-sm font-semibold leading-5">{lote.cultivo}</span>
                     <span className="block truncate text-[11px] text-white/60">
                       {lote.codigo} · {lote.zona}
                     </span>

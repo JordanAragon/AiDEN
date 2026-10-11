@@ -126,7 +126,6 @@ export default function InteligenciaArtificial() {
                 <BrainCircuit size={20} aria-hidden="true" />
               </span>
               <section>
-                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">Inteligencia</p>
                 <h2 className="text-lg font-bold text-slate-900">Asistente de AiDEN</h2>
                 <p className="mt-1 text-sm text-slate-600">
                   Consulta la operación con datos reales del sistema. Responde con reglas sobre tus registros; no usa modelos de lenguaje ni servicios externos.

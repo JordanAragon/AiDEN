@@ -49,8 +49,7 @@ export default function Register() {
         <section className="aiden-auth-side-content">
           <Link to="/" className="flex items-center gap-2 text-white"><IsotipoAiden tamano={36} placa /><span className="text-xl font-bold tracking-tight !text-white">AiDEN</span></Link>
           <div className="mt-auto max-w-xl pb-6">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-aiden-lime">Una vista, una operación</p>
-            <h1 className="mt-4 text-5xl font-semibold leading-[.98] tracking-[-.05em] text-white xl:text-6xl">Empieza con una operación más clara.</h1>
+            <h1 className="text-5xl font-semibold leading-[.98] tracking-[-.05em] text-white xl:text-6xl">Empieza con una operación más clara.</h1>
             <p className="mt-6 max-w-lg text-base leading-7 text-white/65">Tu cuenta te da acceso al entorno de AiDEN. Cada rol cuenta con una experiencia adaptada a sus responsabilidades.</p>
           </div>
         </section>
@@ -59,7 +58,7 @@ export default function Register() {
       <section className="aiden-auth-panel">
         <div className="aiden-auth-form-wrap">
           <header className="aiden-auth-mobile-brand"><Link to="/" className="inline-flex items-center" aria-label="AiDEN, ir al inicio"><LogotipoAiden alto={34} /></Link></header>
-          <div className="aiden-auth-heading"><p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">Nuevo acceso</p><h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Crear cuenta.</h2><p className="mt-2 text-sm leading-6 text-slate-500">Registra tus datos para entrar al entorno de trabajo de AiDEN.</p></div>
+          <div className="aiden-auth-heading"><h2 className="text-3xl font-semibold tracking-tight text-slate-950">Crear cuenta.</h2><p className="mt-2 text-sm leading-6 text-slate-500">Registra tus datos para entrar al entorno de trabajo de AiDEN.</p></div>
           {error && <p role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
           <form onSubmit={handleRegister} className="aiden-auth-form">
             <Field label="Nombre completo"><input id="name" type="text" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} placeholder="María González Torres" /></Field>

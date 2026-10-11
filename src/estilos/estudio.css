@@ -597,7 +597,7 @@ html.aiden-dark .aiden-hoja-atajos dl > div {
   min-width: 18px;
   height: 18px;
   padding: 0 4px;
-  font-size: 10.5px;
+  font-size: 11px;
 }
 
 .aiden-nav-enlace:hover .aiden-nav-atajo,
@@ -1137,29 +1137,28 @@ html.aiden-dark .aiden-anillo-centro {
 .aiden-sello-borde {
   fill: currentColor;
   stroke: none;
-  font-size: 7.4px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.16em;
 }
 
 .aiden-sello-centro {
   position: relative;
   display: grid;
   justify-items: center;
-  gap: 1px;
-  max-width: 62%;
+  gap: 2px;
+  max-width: 58%;
   text-align: center;
 }
 
 .aiden-sello-centro b {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   line-height: 1.05;
 }
 
 .aiden-sello-centro small {
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   opacity: 0.85;
@@ -1295,7 +1294,7 @@ html.aiden-dark .aiden-sello-moss {
 }
 
 .aiden-mapa-calor-eje b {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
   color: #66736b;
   text-align: center;
@@ -1352,27 +1351,27 @@ html.aiden-dark .aiden-mapa-calor-celda {
 }
 
 html.aiden-dark .aiden-mapa-calor-celda.is-rango,
-.aiden-mapa-calor-muestra.is-rango {
+html.aiden-dark .aiden-mapa-calor-muestra.is-rango {
   background: #1f4a33;
 }
 
 html.aiden-dark .aiden-mapa-calor-celda.is-rango-alto,
-.aiden-mapa-calor-muestra.is-rango-alto {
+html.aiden-dark .aiden-mapa-calor-muestra.is-rango-alto {
   background: #2f7a52;
 }
 
 html.aiden-dark .aiden-mapa-calor-celda.is-alerta,
-.aiden-mapa-calor-muestra.is-alerta {
+html.aiden-dark .aiden-mapa-calor-muestra.is-alerta {
   background: #b9822c;
 }
 
 html.aiden-dark .aiden-mapa-calor-celda.is-critico,
-.aiden-mapa-calor-muestra.is-critico {
+html.aiden-dark .aiden-mapa-calor-muestra.is-critico {
   background: #c2433b;
 }
 
 html.aiden-dark .aiden-mapa-calor-celda.is-frio,
-.aiden-mapa-calor-muestra.is-frio {
+html.aiden-dark .aiden-mapa-calor-muestra.is-frio {
   background: #3b6d8c;
 }
 
@@ -1760,22 +1759,24 @@ html.aiden-dark .aiden-respuesta-pasos span {
   color: #f3f6ef;
 }
 
-/* Policarbonato acanalado: franjas verticales muy suaves, como el techo del invernadero. */
-.aiden-404::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(90deg, rgba(243, 246, 239, 0.035) 0 2px, transparent 2px 46px);
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.25));
-  pointer-events: none;
-}
-
 .aiden-404.is-linterna::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(260px circle at var(--linterna-x) var(--linterna-y), rgba(217, 234, 115, 0.13), rgba(7, 27, 17, 0) 70%);
+  background: radial-gradient(260px circle at var(--linterna-x) var(--linterna-y), rgba(217, 234, 115, 0.12), rgba(7, 27, 17, 0) 70%);
+  opacity: 0;
   pointer-events: none;
+}
+
+/* La linterna se enciende cuando el cursor entra, no antes. */
+.aiden-404.is-encendida::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-404.is-linterna::after {
+    transition: opacity 400ms ease;
+  }
 }
 
 .aiden-404-marco {

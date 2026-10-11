@@ -66,7 +66,6 @@ export default function ForgotPassword() {
             {!done ? (
               <>
                 <header className="aiden-auth-heading">
-                  <p>Recuperación</p>
                   <h1>Restablecer acceso.</h1>
                   <p>Actualiza tu contraseña para recuperar el acceso a la operación.</p>
                 </header>

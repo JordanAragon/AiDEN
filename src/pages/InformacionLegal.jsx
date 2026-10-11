@@ -1,3 +1,4 @@
+import { ArrowLeft } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTitulo } from "../hooks/useTitulo";
 
@@ -86,10 +87,9 @@ export default function InformacionLegal() {
     <main className="aiden-public-page aiden-legal-page">
       <article className="aiden-public-card">
         <button type="button" onClick={() => (window.history.length > 1 ? navigate(-1) : navigate("/"))} className="aiden-public-back">
-          ← Volver
+          <ArrowLeft size={15} aria-hidden="true" /> Volver
         </button>
         <header className="aiden-public-heading">
-          <p className="aiden-public-eyebrow">AiDEN · Información legal</p>
           <h1>{titulo}</h1>
         </header>
         <div className="aiden-legal-sections">

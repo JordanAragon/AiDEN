@@ -149,8 +149,7 @@ export default function TrazabilidadOperativo() {
       <section className="aiden-operario-superficie overflow-hidden rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm">
         <header className="mb-5 flex flex-wrap items-end justify-between gap-2 border-b border-slate-100 pb-4">
           <section>
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-700">Registro cronológico</p>
-            <h2 className="mt-1 font-semibold text-slate-900">Línea de vida del lote</h2>
+            <h2 className="font-semibold text-slate-900">Línea de vida del lote</h2>
           </section>
           <span className="text-xs text-slate-500">{plural(filtered.length, "evento visible", "eventos visibles")}</span>
         </header>

@@ -80,8 +80,7 @@ export default function DashboardSupervisorContenido() {
         <LienzoVivo escena={EscenaPulso} datos={{ riesgos: lista.length }} />
         <section className="relative grid lg:grid-cols-[1.15fr_.85fr]">
           <section className="p-6 sm:p-8 lg:p-10">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-aiden-lime">Pulso de la operación</p>
-            <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
+            <h2 className="max-w-2xl text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
               {lista.length ? plural(lista.length, "asunto requiere atención.", "asuntos requieren atención.") : "La operación está sin alertas."}
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/65">
@@ -96,36 +95,25 @@ export default function DashboardSupervisorContenido() {
               </Link>
             </section>
           </section>
-          <section className="grid grid-cols-2 border-t border-white/10 lg:border-l lg:border-t-0">
-            <article className="flex min-h-32 flex-col justify-between border-r border-white/10 p-5 sm:p-6">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">Trabajo abierto</p>
-              <div>
-                <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={abiertas.length} desdeCero /></p>
-                <p className="mt-1 text-xs text-white/55">{vencidas ? plural(vencidas, "vencida", "vencidas") : "sin vencidas"} · {plural(completadasHoy, "completada hoy", "completadas hoy")}</p>
+          <dl className="aiden-pulso-cifras grid grid-cols-2 border-t border-white/10 lg:border-l lg:border-t-0">
+            {[
+              { valor: abiertas.length, nombre: abiertas.length === 1 ? "tarea abierta" : "tareas abiertas", detalle: `${vencidas ? plural(vencidas, "vencida", "vencidas") : "sin vencidas"} · ${plural(completadasHoy, "completada hoy", "completadas hoy")}` },
+              { valor: activos.length, nombre: activos.length === 1 ? "lote activo" : "lotes activos", detalle: `${activos.filter((l) => l.etapa === "Cosecha").length} en cosecha · ${numero(activos.reduce((s, l) => s + Number(l.cantidad || 0), 0))} plantas` },
+              { valor: lista.length, nombre: lista.length === 1 ? "riesgo abierto" : "riesgos abiertos", detalle: "operación, ambiente y calidad" },
+              { valor: bajoMinimo, nombre: bajoMinimo === 1 ? "insumo por reponer" : "insumos por reponer", detalle: bajoMinimo ? "en o bajo el mínimo" : "stock en rango" },
+            ].map((cifra, i) => (
+              <div key={cifra.nombre} className={`flex min-h-32 flex-col justify-end p-5 sm:p-6 ${i % 2 === 0 ? "border-r border-white/10" : ""} ${i > 1 ? "border-t border-white/10" : ""}`}>
+                <dt className="sr-only">{cifra.nombre}</dt>
+                <dd className="flex flex-wrap items-baseline gap-x-2">
+                  <span className="text-3xl font-semibold tracking-tight tabular-nums">
+                    <CifraRodante valor={cifra.valor} desdeCero />
+                  </span>
+                  <span className="text-sm font-medium text-white/85">{cifra.nombre}</span>
+                </dd>
+                <dd className="mt-1 text-xs text-white/60">{cifra.detalle}</dd>
               </div>
-            </article>
-            <article className="flex min-h-32 flex-col justify-between p-5 sm:p-6">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">Lotes activos</p>
-              <div>
-                <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={activos.length} desdeCero /></p>
-                <p className="mt-1 text-xs text-white/55">{activos.filter((l) => l.etapa === "Cosecha").length} en cosecha · {numero(activos.reduce((s, l) => s + Number(l.cantidad || 0), 0))} plantas</p>
-              </div>
-            </article>
-            <article className="flex min-h-32 flex-col justify-between border-r border-t border-white/10 p-5 sm:p-6">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">Riesgos</p>
-              <div>
-                <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={lista.length} desdeCero /></p>
-                <p className="mt-1 text-xs text-white/55">operación, ambiente y calidad</p>
-              </div>
-            </article>
-            <article className="flex min-h-32 flex-col justify-between border-t border-white/10 p-5 sm:p-6">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">Inventario</p>
-              <div>
-                <p className="text-3xl font-semibold tracking-tight"><CifraRodante valor={bajoMinimo} desdeCero /></p>
-                <p className="mt-1 text-xs text-white/55">{bajoMinimo ? "insumos por reponer" : "stock en rango"}</p>
-              </div>
-            </article>
-          </section>
+            ))}
+          </dl>
         </section>
       </section>
       <section className="aiden-supervisor-grid grid items-start gap-4 lg:grid-cols-[1.3fr_.7fr]">
@@ -175,8 +163,7 @@ export default function DashboardSupervisorContenido() {
         <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <header className="flex items-start justify-between gap-3">
             <section>
-              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-700">Prioridad</p>
-              <h2 className="mt-1 font-semibold text-slate-900">Atención inmediata</h2>
+              <h2 className="font-semibold text-slate-900">Atención inmediata</h2>
               <p className="mt-1 text-xs text-slate-500">Eventos que necesitan intervención del supervisor</p>
             </section>
             {lista.length > 2 && (
@@ -227,8 +214,7 @@ export default function DashboardSupervisorContenido() {
       <section className="aiden-supervisor-operacion overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
         <header className="flex flex-col gap-4 border-b border-slate-100 p-5 sm:flex-row sm:items-end sm:justify-between">
           <section>
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-700">Vista operativa</p>
-            <h2 className="mt-1 text-lg font-semibold tracking-tight text-slate-900">Consulta sin recorrer toda la página</h2>
+            <h2 className="text-lg font-semibold tracking-tight text-slate-900">Consulta sin recorrer toda la página</h2>
             <p className="mt-1 text-xs text-slate-500">Cambia de contexto según lo que necesites revisar. Los datos siguen siendo los mismos.</p>
           </section>
           <nav className="grid grid-cols-3 rounded-xl border border-slate-200 bg-slate-50 p-1" aria-label="Vistas operativas">

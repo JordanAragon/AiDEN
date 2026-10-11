@@ -1,4 +1,5 @@
-export default function EncabezadoPagina({ rotulo, titulo, descripcion, acciones, icono: Icono, children }) {
+// El título habla solo: sin rótulo encima (el antiguo `rotulo` ya no se muestra).
+export default function EncabezadoPagina({ titulo, descripcion, acciones, icono: Icono, children }) {
   return (
     <header className="aiden-page-header flex flex-wrap items-start justify-between gap-4">
       <section className={`min-w-0 ${Icono ? "flex items-start gap-3" : ""}`}>
@@ -8,8 +9,7 @@ export default function EncabezadoPagina({ rotulo, titulo, descripcion, acciones
           </span>
         )}
         <div className="min-w-0">
-          {rotulo && <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">{rotulo}</p>}
-          <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-950">{titulo}</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-950">{titulo}</h1>
           {descripcion && <p className="mt-1 max-w-2xl text-sm text-slate-600">{descripcion}</p>}
           {children}
         </div>

@@ -97,7 +97,7 @@ DM Sans en toda la interfaz (variable, rango 400–700). Instrument Serif (norma
 
 ### Hierarchy
 
-Títulos de página con `EncabezadoPagina` y una barra de acento por rol (`::after`, `src/estilos/sistema-aiden.css`). Texto secundario en `slate-500`.
+Títulos de página con `EncabezadoPagina` y una barra de acento por rol (`::after`, `src/estilos/sistema-aiden.css`), sin rótulo encima. Texto secundario en `slate-500`.
 
 ## Motion
 
@@ -199,6 +199,7 @@ Reutilizar los de `src/components/ui/` antes de crear otros: `Boton` (clases en 
 - **PasosEtapa:** pista de cuatro tramos; lo hecho en moss con check, la etapa en curso en bosque con «Día N».
 - **PulsoSemana** (`components/dashboard`): registros de los últimos 7 días con etiquetas directas y una tabla equivalente para lectores de pantalla.
 - **CifraRodante** (`components/ui`): dígitos de contador mecánico que ruedan al cambiar el valor (y desde cero al montar con `desdeCero`); los dígitos se dibujan con contenido CSS, así el texto legible es solo el número. `Cifras` la usa en todos los módulos para números e importes, que ruedan solo cuando cambian; el panel de pulso del supervisor rueda desde cero al abrir su tablero.
+- **Sin rótulos encima de los títulos (2026-10-11):** `EncabezadoPagina` ya no muestra el antiguo `rotulo` («AiDEN / coordinación») y `Panel` oscuro tampoco; los títulos hablan solos en la app, el acceso y las páginas legales. Las cifras del pulso del supervisor se leen en línea con lo que miden («10 tareas abiertas»), no como cuatro números grandes bajo etiquetas en mayúsculas. El acceso pierde la barra lima junto al título y la nota con franja lateral pasa a fondo suave redondeado.
 - **Kit de estudio (2026-10-11):** `Boton` con `estado` («cargando», «listo» con check que se dibuja, «error»); `Pestanas` y `Segmentos` con indicador que se desliza a la opción elegida; `EstadoVacio` con `variante` (inicio, búsqueda, acceso, error) y una sola acción en verbo + sustantivo; avisos apilados que se abren y esperan con el cursor encima, con su tiempo en una línea musgo → lima; confirmación destructiva cuyo botón espera 1,1 s llenándose antes de poder confirmar; `TiempoRelativo` («hace 3 h» con la fecha completa al pasar el cursor y un solo reloj de minuto); `AnilloProgreso` (valor contra su meta, con el umbral dicho en texto); `Sello` (el timbre circular de la guía de despacho; cae al cerrar una incidencia); `MapaCalor` (filas por columnas con tabla equivalente para lectores de pantalla; en Ambiental, 72 horas en franjas de 4 horas por zona); `PilaAvatares` (el equipo en iniciales; la ficha de cada uno se inclina apenas hacia el cursor).
 - **Tarea recién hecha:** en la jornada del operario el check se dibuja y suelta un anillo lima (y una vibración corta donde exista). Sin confeti.
 - **Línea de tiempo:** los días se quedan arriba al bajar y la historia completa de un lote cierra con «Aquí empezó LT-…».
