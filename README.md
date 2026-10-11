@@ -38,7 +38,7 @@ Cuentas de prueba (contraseña `aiden123`), definidas en `CUENTAS_INICIALES` de 
 - **Inteligencia:** asistente basado en reglas sobre los datos locales; cada respuesta indica de qué módulo sale. No usa modelos de lenguaje ni servicios externos.
 - **Transversal:** buscador ⌘K / Ctrl K de módulos y registros navegable con teclado, notificaciones por cuenta (una alerta resuelta que vuelve aparece como nueva), avisos y confirmaciones, permisos por rol, modo oscuro y Mi perfil (datos y contraseña).
 - **Sin conexión:** tras la primera visita a la app, AiDEN abre y funciona completa sin señal (service worker con la lista exacta del build). Una versión nueva espera a que la persona pulse «Actualizar».
-- **Landing:** recorrido interactivo con los datos de ejemplo (zona fuera de rango → lote → tarea → registro → costo por planta) y formulario de solicitud de demo con autorización de datos (Ley 1581).
+- **Landing «El invernadero vivo»:** escenas WebGPU con respaldo en CSS (invernadero de noche, curvas de nivel, isotipo en vidrio), el isotipo sembrado con una planta por punto, la historia de un lote rebobinada en las ventanas reales de cada módulo, el capítulo «tres pantallas» (celular, portátil y tableta con la app viva y sincronizada), el asistente que escribe en vivo y el formulario para agendar una presentación con autorización de datos (Ley 1581).
 
 ## Cómo está organizada
 

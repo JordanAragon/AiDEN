@@ -41,8 +41,13 @@ try:
             "la ficha del hero es una ventana del módulo de Producción",
         )
         registro.check(
-            "datos de ejemplo" in pagina.locator(".aiden-escena-nota").inner_text(),
-            "la escena declara que la historia sale de los datos de ejemplo",
+            "ilustrativos" in pagina.locator(".aiden-footer").inner_text(),
+            "una sola nota al pie declara que lotes y cifras son ilustrativos",
+        )
+        registro.check(
+            pagina.locator(".aiden-escena-sembrado").get_attribute("aria-hidden") == "true"
+            and "4.894" in pagina.locator(".aiden-enjambre-leyenda").inner_text(),
+            "el isotipo sembrado es decorativo y su leyenda dice cuántas plantas vivas lo forman",
         )
 
         boton_menu = pagina.get_by_role("button", name="Abrir menú")
@@ -108,26 +113,33 @@ try:
             "la cinta nombra los nueve módulos",
         )
 
-        # El asistente real responde en la página, con fuente verificable.
+        # El asistente real responde en la página (se escribe en vivo), con fuente verificable.
         pagina.locator(".aiden-chat-chips button").first.click()
-        pagina.locator(".aiden-chat-respuesta").first.wait_for()
+        pagina.locator(".aiden-chat-respuesta small").first.wait_for(timeout=10000)
         registro.check(
             "Verificable en" in pagina.locator(".aiden-chat-respuesta").first.inner_text(),
             "el chip del asistente produce una respuesta real con su fuente",
         )
+        registro.check(
+            "INC-031" in pagina.locator(".aiden-chat-respuesta").first.inner_text(),
+            "el asistente ve la incidencia alta abierta que cuenta la historia",
+        )
         entrada_chat = pagina.locator("#pregunta-asistente")
         entrada_chat.fill("LT-2026-012")
         entrada_chat.press("Enter")
-        pagina.wait_for_timeout(300)
+        pagina.wait_for_function(
+            "() => [...document.querySelectorAll('.aiden-chat-respuesta')].pop()?.innerText.includes('Café')",
+            timeout=10000,
+        )
         registro.check(
             "Café" in pagina.locator(".aiden-chat-respuesta").last.inner_text(),
             "el asistente responde una pregunta libre por código de lote",
         )
 
-        # Los dispositivos del nivel final: campo vivo, manifiesto y comparativa.
+        # Las escenas vivas son decorativas: nunca llegan a los lectores de pantalla.
         registro.check(
-            pagina.locator(".aiden-campo-vivo").get_attribute("aria-hidden") == "true",
-            "el campo vivo del hero es un lienzo decorativo oculto a lectores",
+            all(pagina.locator(".aiden-lienzo").nth(i).get_attribute("aria-hidden") == "true" for i in range(pagina.locator(".aiden-lienzo").count())),
+            "las escenas vivas (WebGPU) quedan ocultas a lectores de pantalla",
         )
         registro.check(
             pagina.locator(".aiden-manifiesto span").count() >= 12,
@@ -143,8 +155,15 @@ try:
             "la enredadera del riel tiene sus hojas listas para brotar",
         )
 
-        # La pila de roles y la cinta de módulos dan vida a la mitad de la página.
-        registro.check(pagina.locator(".aiden-roles-pila .aiden-rol").count() == 3, "los tres roles se apilan en tarjetas propias")
+        # Tres pantallas, una historia: la tarea marcada en el celular llega al portátil y a la tableta.
+        registro.check(pagina.locator(".aiden-pantallas-pieza").count() == 3, "el capítulo muestra celular, portátil y tableta")
+        pagina.get_by_role("button", name="Marcar como hecha: Deshoje y tutorado").click()
+        pagina.locator(".aiden-app-feed li.is-nuevo").first.wait_for()
+        registro.check(
+            "Deshoje y tutorado" in pagina.locator(".aiden-app-feed li.is-nuevo").first.inner_text()
+            and "3 tareas pendientes" in pagina.locator(".aiden-app-celular-resumen").inner_text(),
+            "marcar la tarea en el celular la registra en la actividad del portátil",
+        )
 
         # Planes vive en su propia página, sin precios inventados.
         pagina.goto(BASE + "/planes")
@@ -156,7 +175,7 @@ try:
         )
         registro.check(
             "se define contigo" in pagina.locator(".aiden-planes-banda").inner_text(),
-            "la banda de planes declara que el precio se define en la demo",
+            "la banda de planes declara que el precio se define en la presentación",
         )
         pagina.locator(".aiden-plan-selector").nth(1).click()
         registro.check(
@@ -221,7 +240,7 @@ try:
         formulario.locator("[name='empresa']").fill("Vivero de prueba")
         formulario.locator("[name='email']").fill("prueba@vivero.com")
         consentimiento.check()
-        formulario.get_by_role("button", name=re.compile("Solicitar demo")).click()
+        formulario.get_by_role("button", name=re.compile("Agendar presentación")).click()
         pagina.locator(".aiden-form-estado.is-exito").wait_for()
         registro.check(
             capturada.get("consentimiento") is True and capturada.get("sitio_web") == "",
