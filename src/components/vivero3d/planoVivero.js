@@ -234,12 +234,14 @@ export function vistaGeneral(plano, aspecto = 16 / 9, cercania = 1) {
 export function vistaZona(zona, aspecto = 16 / 9) {
   const ancho = zona.x1 - zona.x0;
   const fondo = zona.z1 - zona.z0;
-  const tamano = Math.max(ancho / Math.min(aspecto, 1.9), fondo) * (aspecto < 1 ? 1.5 : 1);
+  const vertical = aspecto < 1;
+  const tamano = Math.max(ancho / Math.min(aspecto, 1.9), fondo) * (vertical ? 1.12 : 1);
   const distancia = tamano * 1.2 + 3;
   // En pantallas anchas la zona se corre un poco a la derecha: abajo a la izquierda va la parada.
+  // En vertical sube: la parada ocupa el tercio de abajo.
   // La cámara sube para mirar por encima de las estructuras que quedan delante.
   const corrimiento = aspecto > 1.2 ? 0.07 : 0;
-  const objetivo = [zona.centro[0] - ancho * corrimiento, 0.7, zona.centro[2] + fondo * (0.06 + corrimiento)];
+  const objetivo = [zona.centro[0] - ancho * corrimiento, 0.7, zona.centro[2] + fondo * (0.06 + corrimiento) + (vertical ? distancia * 0.22 : 0)];
   return {
     ojo: [objetivo[0] + distancia * 0.3, distancia * 0.94, objetivo[2] + distancia * 0.74],
     objetivo,

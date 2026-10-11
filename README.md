@@ -10,7 +10,7 @@ Esta versión integra las funcionalidades de **AiDEN Premium** sobre la **identi
 npm install
 npm run dev          # desarrollo
 npm run lint         # calidad de código
-npm test             # pruebas de la capa de datos y de la API (node:test, sin dependencias)
+npm test             # pruebas de la capa de datos, la API y el plano del vivero 3D (node:test)
 npm run build        # compilación de producción en dist/ (incluye el service worker)
 npm run preview      # sirve dist/
 ```
@@ -36,9 +36,10 @@ Cuentas de prueba (contraseña `aiden123`), definidas en `CUENTAS_INICIALES` de 
 - **Reportes:** ocho reportes con periodo o lote, vista previa, CSV (se abre en Excel con tildes correctas) e impresión.
 - **Configuración:** usuarios y accesos (roles, revisión de cuentas nuevas, alta administrativa y restablecimiento de contraseñas), umbrales con vista previa de qué zonas quedarían en alerta, notificaciones, zonas del vivero, respaldo JSON validado (exportar/importar) y restablecer los datos de ejemplo.
 - **Inteligencia:** asistente basado en reglas sobre los datos locales; cada respuesta indica de qué módulo sale. No usa modelos de lenguaje ni servicios externos.
-- **Transversal:** buscador ⌘K / Ctrl K de módulos y registros navegable con teclado, notificaciones por cuenta (una alerta resuelta que vuelve aparece como nueva), avisos y confirmaciones, permisos por rol, modo oscuro y Mi perfil (datos y contraseña).
+- **Transversal:** paleta ⌘K / Ctrl K al estilo de Raycast y Linear (acciones, módulos, registros y ajustes, con vista previa y acción secundaria con ⌘ Enter), atajos de teclado («G + letra» para ir, «N + letra» para registrar, «?» para verlos todos, ⇧D para el tema), ficha del lote recorrible con J/K, notificaciones por cuenta (una alerta resuelta que vuelve aparece como nueva), avisos apilados, confirmaciones destructivas con espera, permisos por rol, modo oscuro con revelado circular e interruptor de vidrio, y Mi perfil (datos y contraseña).
+- **Mapa del vivero:** en los tableros de supervisión y administración, el vivero en 3D con los datos del día (una planta por punto, por lote y zona), las zonas fuera de rango marcadas y la lista de lotes que los ubica y abre su ficha.
 - **Sin conexión:** tras la primera visita a la app, AiDEN abre y funciona completa sin señal (service worker con la lista exacta del build). Una versión nueva espera a que la persona pulse «Actualizar».
-- **Landing «El invernadero vivo»:** escenas WebGPU con respaldo en CSS (invernadero de noche, curvas de nivel, isotipo en vidrio), el isotipo sembrado con una planta por punto, la historia de un lote rebobinada en las ventanas reales de cada módulo, el capítulo «tres pantallas» (celular, portátil y tableta con la app viva y sincronizada), el asistente que escribe en vivo y el formulario para agendar una presentación con autorización de datos (Ley 1581).
+- **Landing «El invernadero vivo»** (con el capítulo «El vivero, planta por planta»: las 4.894 plantas de la semilla en 3D, recorridas con el scroll y paradas escritas desde los datos): escenas WebGPU con respaldo en CSS (invernadero de noche, curvas de nivel, isotipo en vidrio), el isotipo sembrado con una planta por punto, la historia de un lote rebobinada en las ventanas reales de cada módulo, el capítulo «tres pantallas» (celular, portátil y tableta con la app viva y sincronizada), el asistente que escribe en vivo y el formulario para agendar una presentación con autorización de datos (Ley 1581).
 
 ## Cómo está organizada
 
@@ -49,8 +50,10 @@ src/
 │   ├── ui/           # Kit visual escrito con el vocabulario del AiDEN original
 │   ├── lote/         # Código de lote, ficha, etapas y línea de tiempo
 │   ├── formularios/  # Modales de lote, tarea, incidencia, actividad y lectura
-│   ├── navegacion/   # Barra lateral y barra superior originales
-│   ├── dashboard/    # Tableros por rol y vista previa de la landing
+│   ├── navegacion/   # Barra lateral, barra superior, paleta ⌘K, atajos y tema
+│   ├── dashboard/    # Tableros por rol, mapa del vivero y vista previa de la landing
+│   ├── vivero3d/     # El vivero en 3D: plano, motor WebGPU (vgpu), respaldo en Canvas 2D
+│   ├── vivo/         # Escenas vivas WebGPU (shaders) con respaldo en CSS
 │   └── …             # Producción, inventario, módulos y reportes
 ├── contexto/         # Avisos, confirmaciones y ficha de lote
 ├── hooks/            # Sesión, usuarios, título, colores de gráficas

@@ -62,7 +62,7 @@ Fuente de verdad visual de AiDEN, extraída del código (`src/estilos/`) el 2026
 
 Herramienta de trabajo para viveros e invernaderos: densa, clara y tranquila, con una marca verde bosque cálida que se nota en la landing y en los encabezados, y una interfaz operativa sobria en los módulos. Tres roles (admin, supervisor, operario) comparten la misma base visual; se distinguen por acentos, no por paletas distintas. Modo claro y oscuro.
 
-Stack: React 19 + Vite, Tailwind CSS 4, React Router, Recharts para gráficas, lucide-react para íconos y `shaders` (WebGPU, MIT) para las escenas vivas (ver **Escenas vivas**).
+Stack: React 19 + Vite, Tailwind CSS 4, React Router, Recharts para gráficas, lucide-react para íconos, `shaders` (WebGPU, MIT) para las escenas vivas (ver **Escenas vivas**), `vgpu` 0.5.0 (Vercel Labs, WebGPU, MIT) para el vivero en 3D (ver **El vivero en 3D**) y `@samasante/liquid-glass` 0.1.1 (MIT) para las dos lentes de vidrio (ver **Vidrio líquido**).
 
 ## Colors
 
@@ -99,12 +99,25 @@ DM Sans en toda la interfaz (variable, rango 400–700). Instrument Serif (norma
 
 Títulos de página con `EncabezadoPagina` y una barra de acento por rol (`::after`, `src/estilos/sistema-aiden.css`). Texto secundario en `slate-500`.
 
+## Motion
+
+Tokens en `:root` (`src/estilos/index.css`), sacados de la guía de movimiento de Refero:
+
+- **Duraciones:** `--dur-rapida` 120 ms (hover, presión), `--dur-base` 200 ms (cambios de estado), `--dur-lenta` 320 ms (paneles, indicadores que viajan). Nada de la interfaz operativa pasa de 500 ms.
+- **Curvas:** `--curva-salida` (entra), `--curva-retiro` (sale), `--curva-enfasis` (llega con intención), `--curva-resorte` (indicadores que se deslizan). `--curva-entrada` y `--curva-micro` son las de la landing.
+- **Reglas:** todo bajo `prefers-reduced-motion: no-preference`; con movimiento reducido el cambio es instantáneo o solo opacidad. Nada infinito en la app (la campana de notificaciones se mueve una vez; los pulsos, dos ciclos). Los indicadores (pestañas, segmentos, pastilla de navegación) viajan a la opción elegida en vez de aparecer.
+
 ## Layout
 
 Plantilla con barra lateral, barra superior y contenido con scroll propio (`src/plantillas/PlantillaPrincipal.jsx`), con enlace «Saltar al contenido». El supervisor tiene una vista propia (`aiden-supervisor-shell`, `aiden-supervisor-main`). Contenido con `p-4` en móvil y `p-6` desde `sm`. El fondo de la app es papel con un brillo lima suave, sin cuadrícula decorativa.
 
 - **Operario en el celular:** el trabajo va primero (tareas antes que cifras) y las acciones rápidas en una barra fija abajo, al alcance del pulgar.
 - **Objetivos táctiles:** 44 px como mínimo en las acciones de campo.
+- **Shell de estudio (2026-10-11):** la barra lateral agrupa los módulos en **Operación**, **Gestión** y **Sistema** (rótulos de 11 px en mayúsculas: son etiquetas de navegación, no eyebrows) y muestra el atajo «G + letra» de cada módulo al pasar el cursor. El registro de módulos vive una sola vez en `src/components/navegacion/modulos.js`. Al pie: «Buscar o ejecutar ⌘K» y el interruptor de tema con lente de vidrio.
+- **Paleta ⌘K** (`PaletaComandos`, al estilo de Raycast y Linear): diálogo centrado con acciones, módulos, registros y ajustes; vista previa a la derecha (≥ 860 px) con datos reales del elemento activo; Enter hace lo principal y ⌘/Ctrl + Enter lo secundario (ver la trazabilidad de un lote, registrar la entrada de un insumo); recuerda los últimos registros abiertos por cuenta. La barra superior la abre desde un botón con forma de campo («Buscar o ejecutar…»).
+- **Atajos** (`ProveedorComandos`): ⌘K, «G + letra» para ir, «N + letra» para registrar (lote, tarea, lectura, incidencia, actividad), «?» para la hoja de atajos y ⇧D para el tema. Tras la G o la N aparece una pista con las letras posibles. Nada se dispara escribiendo en un campo ni con un diálogo abierto.
+- **Ficha del lote:** se recorre con J/K (o las flechas del encabezado) en el orden de la lista que la abrió; sin lista, en el de los lotes visibles (activos primero).
+- **Tema:** almacén compartido (`useTema`); el cambio se revela en círculo desde el control que lo pidió (View Transitions), instantáneo con movimiento reducido.
 - **Landing «El despacho, hacia atrás»** (`src/pages/Home.jsx` + `src/estilos/landing.css`): la página rebobina el despacho de un lote sobre un lienzo claro (`aiden-paper`): la noche vive enmarcada, no de pared a pared. La palabra de marca monumental —el dibujo oficial del logotipo (`src/assets/marca/aiden-palabra.svg`); el lettering nunca se reescribe con una fuente (manual `MARCA/`)— corona el marco del hero: un bloque `aiden-forest-deep` de radio 28 px con brillos radiales suaves en lima y moss, botón circular de flecha en la esquina y la ficha del lote colgada del borde inferior del marco (en escritorio el marco mide al menos `clamp(540px, 62vh, 610px)` y la ficha sobresale ~150 px para que el isotipo sembrado quede entero). «La pregunta» (`aiden-forest`), el manifiesto, el asistente y el contacto (`aiden-forest-deep`) repiten el marco redondeado de 28 px sobre el lienzo; la historia se rebobina a plena luz (`aiden-cream` → `aiden-paper`). Lime solo para lo vivo y lo pendiente; moss para lo cumplido. La voz narrativa es Instrument Serif itálica en los `em` de los titulares: lima sobre los marcos nocturnos, `aiden-moss-oscuro` sobre las secciones claras. Los títulos de sección van en caja alta grotesca con el remate serif itálico en minúscula (el `em` no se transforma).
   - **El invernadero vivo (2026-10-10):** capa de `src/estilos/landing-vivo.css` sobre `landing.css`. Cada marco nocturno tiene una escena WebGPU propia, con una sola idea: el hero es el invernadero de noche (niebla que empuja el cursor, luz lima por la esquina y policarbonato acanalado); «La pregunta», curvas de nivel que derivan (el terreno del vivero); el manifiesto, el isotipo en vidrio extruido que gira con el cursor; el asistente, una malla de verdes con un brillo lima que respira mientras consulta; el contacto, la noche del hero como cierre. Las secciones claras no llevan escena: la lectura manda.
   - **Isotipo sembrado:** en el hero, el símbolo hecho de plantas —un punto por cada planta viva del vivero (4.894 en la semilla), en tresbolillo dentro de la silueta oficial— brota en ola desde la base de la hoja, se mece con brisa y se aparta del cursor como un cultivo con viento (`SembradoIsotipo`, Canvas 2D: funciona sin WebGPU). Una leyenda con punto lima dice qué es cada punto.
@@ -114,6 +127,9 @@ Plantilla con barra lateral, barra superior y contenido con scroll propio (`src/
   - **Riel de días:** columna sticky con el número del día monumental (clamp 64–92 px, tabular) que rebobina de forma continua con el scroll (rAF interpolando entre estaciones; la estación activa se marca con IntersectionObserver); su línea se llena con una animación scroll-driven (`animation-timeline: --historia`, bajo `@supports`) cuyo respaldo universal es la variable `--avance` que escribe el mismo rAF. El wordmark del hero se hunde en parallax al salir; todo bajo `prefers-reduced-motion: no-preference`, y con movimiento reducido el contador queda estático por estación. Bajo 980 px el riel se vuelve una barra sticky superior y la composición pasa a una columna; ajustes móviles bajo 860 px y la barra de la ventana se pliega bajo 480 px.
   - **Ventanas del módulo real:** cada estación del rebobinado muestra una `VentanaModulo` —barra de ventana con puntos, isotipo y ruta del módulo («Calidad / Incidencias», «Producción / Lotes»…)— con los componentes reales de la app dentro (`Insignia`, `PasosEtapa`, `LineaTiempo`, `BarraRango`), alimentados por la semilla determinista (`generarSemilla`); nada se dibuja a mano. Al entrar, cada ventana se «escribe»: emerge del plano en 3D (rotateX 24° → 0, desenfoque → nítido, recorte que se abre) y una línea lima la barre de arriba abajo (scroll-driven, `view()`).
   - **Tres pantallas** (`CapituloPantallas`, `#roles`): reemplaza la pila de roles. Celular de Andrés, portátil de Laura y tableta de Jordan dibujados en CSS (cuerpo grafito `#0b100e`, isla, cámara, base de aluminio crema) con la interfaz de AiDEN viva dentro y los mismos datos. Marcar una tarea en el celular dispara un registro que viaja por un hilo de luz lima sobre los equipos: el portátil destella, la actividad muestra «Andrés Rojas completó…», la carga y el trabajo abierto ruedan, y la tableta suma el registro del día (con la regla de la app: solo una tarea con lote deja evento). Todo en memoria: la landing no escribe en el navegador. En escritorio (≥ 1100 px) los equipos se arman con el scroll desde una vista isométrica; en una columna se apilan y las pantallas se recogen con container queries. Objetivos táctiles de 44 px.
+  - **El vivero, planta por planta** (`CapituloVivero`, sección `#vivero`, 2026-10-11): sobre la fila de lotes, un marco nocturno de 28 px con el vivero de la semilla en 3D (ver **El vivero en 3D**), recorrido con el scroll en un escenario sticky. La cámara para en cada zona —primero la del lote protagonista— y la parada, escrita desde los datos (etapas, salidas, incidencias abiertas, última lectura de la zona), va en una placa abajo a la izquierda; leyenda de etapas arriba y riel de paradas a la derecha. El CTA flotante móvil se retira mientras dura. Con movimiento reducido: plano general quieto y las paradas en lista.
+  - **Luz bajo el cursor:** los botones de la landing llevan un brillo radial que sigue al cursor (blanco sobre lima, lima sobre los marcos), solo con puntero fino.
+  - **La siembra:** al recibirse la solicitud de presentación, dieciocho semillas musgo y lima saltan del botón y caen en tresbolillo (`SiembraExito`, Web Animations). Es el único confeti de AiDEN.
   - **Asistente en vivo** (`AsistenteVivo`): «consultando los registros» con tres puntos y luego la respuesta palabra a palabra con cursor; la lista y la fuente llegan al final. Responde como la supervisora (sin sesión, las alertas por rol salían vacías). El lector de pantalla oye la respuesta completa una vez.
   - **Marcadores de capítulo:** `aiden-capitulo` —punto en `verde-700` y nombre en mayúsculas con tracking 0,15 em («● La historia»)— abre las secciones del recorrido. Es un recurso de la referencia fijado por David para esta landing; no es licencia para eyebrows o kickers en otras superficies.
   - **Artefactos documentales:** la guía de despacho como placa-remisión (línea discontinua de corte, sello circular rotado −7° en reposo con el día en tabular) y la liquidación del lote con líneas de cuenta y puntos conductores, que sale impresa con el scroll (el papel baja y se despliega como recién salido de la impresora) y en escritorio ocupa la columna derecha del saldo; en la comparativa, los sellos de AiDEN caen uno a uno. Sus títulos en mayúsculas («GUÍA DE DESPACHO», «LIQUIDACIÓN DEL LOTE») son nombres de documento dentro del artefacto dibujado, no eyebrows de sección.
@@ -129,11 +145,28 @@ Componentes en `src/components/vivo/`. Las escenas (`escenas/*.jsx`) se componen
 - **Respaldo primero:** el marco pinta su fondo CSS desde el primer cuadro; la escena se descarga diferida (chunk `motor-vivo`, ~325 KB gzip), se monta cuando el marco se acerca a la pantalla y solo lo tapa cuando el motor confirma que dibuja. Sin WebGPU, sin adaptador, con ahorro de datos o en 2G/3G, el motor ni se descarga y queda el respaldo. Es decorativo de punta a punta (`aria-hidden`).
 - **Una idea por escena** y colores solo de la paleta (forest-deep, verde-900/800, moss, lima, crema). Nada reacciona al cursor en la interfaz operativa.
 - **Movimiento reducido:** velocidades a 0 y sin cursor; la escena queda como imagen quieta.
-- **Interfaz operativa:** solo el panel «Pulso de la operación» del supervisor y el de «Prioridad» del administrador llevan `EscenaPulso` (curvas de nivel casi quietas y un brillo lima que crece con los asuntos abiertos). El operario no lleva escena: trabaja en campo, desde el celular y al sol.
+- **Interfaz operativa:** solo el panel «Pulso de la operación» del supervisor y el de «Prioridad» del administrador llevan `EscenaPulso` (curvas de nivel casi quietas y un brillo lima que crece con los asuntos abiertos). El «Mapa del vivero» de esos dos tableros no es una escena sino una visualización de datos (ver **El vivero en 3D**). El operario no lleva escena ni mapa: trabaja en campo, desde el celular y al sol.
 - **Acceso:** la foto del panel lateral pasa por el vidrio acanalado del invernadero, con ondas de condensación bajo el cursor (`EscenaAcceso`).
 - **Isotipo en GPU:** la silueta sale de los trazos oficiales (`isotipoTrazos.js`, copia de `MARCA/…/a-isotipo-color.svg`) con una ranura entre montaña, cinta, hoja y esfera; `sdfMarca.js` genera su campo de distancia en el navegador. El sembrado (lima/moss) y el vidrio son representaciones monocromas de la silueta sobre la noche, permitidas solo en escenas vivas; el isotipo a color sigue la regla de la placa clara.
 - **Privacidad y seguridad:** siempre `disableTelemetry` (la librería envía métricas a shaders.com por defecto); sin componentes que carguen Google Fonts. La CSP permite `connect-src blob:` para el campo del isotipo; el motor se compila sin `eval` (`vite.config.js`).
 - **Peso:** el build recorta la librería a los componentes de `COMPONENTES_VIVOS` (`vite.config.js`). Un componente nuevo en una escena se agrega ahí, o el build falla al cargarlo. El motor no entra en la precarga del service worker.
+
+## El vivero en 3D (vgpu)
+
+`src/components/vivero3d/`. El vivero como plano, dibujado con `vgpu` (Vercel Labs, MIT) sobre WebGPU:
+
+- **Una instancia por planta viva** (4.894 en la semilla): `planoVivero` (función pura y determinista, con pruebas en `pruebas/unitarias/vivero3d.test.mjs`) reparte cada lote activo en camas dentro de la estructura de su zona —invernadero a dos aguas, cuarto de germinación, umbráculo con malla o campo— según el nombre de la zona. Las zonas no traen coordenadas: es un esquema en dos columnas, no un levantamiento. Por encima de 40.000 plantas cada instancia representa varias, y la interfaz lo dice.
+- **Color por etapa** en la escala de musgo a lima (Germinación la más fresca, Cosecha la más honda); el lote que se ubica se tiñe de lima y los demás se apagan en la niebla, que se funde con forest-deep. Estructuras en crema translúcido; vidrio y malla más visibles de canto.
+- **Respaldo primero:** el mismo plano y la misma cámara se dibujan en Canvas 2D (un punto por planta) mientras el motor carga o si no hay WebGPU; el motor (chunk `motor-vivero3d`, ~51 KB gzip, en la precarga sin conexión) se pide cerca de la pantalla y se funde encima. No exige cambios en la CSP (sin eval, sin workers, sin descargas).
+- **Etiquetas en HTML** colocadas con la proyección de la cámara: siguen a sus lotes, se apartan si se pisan y no se salen del lienzo. El lienzo es `aria-hidden`; la información accesible está en el texto que lo acompaña (las paradas en la landing, la lista de lotes en el mapa).
+- **Dónde va:** el capítulo de la landing y el «Mapa del vivero» de los tableros de supervisión y administración (`MapaVivero`: zonas con la última lectura fuera de rango marcadas en ámbar, lista de lotes que ubica en el mapa y abre la ficha, giro lento). Con movimiento reducido no hay brisa ni giro.
+
+## Vidrio líquido
+
+`@samasante/liquid-glass` (MIT), siempre en modo en sitio (la lente dobla su propio contenido, así funciona igual en Chrome, Safari y Firefox) y cargado diferido. Solo dos usos, los dos como efecto concreto y nunca sobre datos:
+
+- **Interruptor de tema** (`InterruptorTema` + `LenteTema`): la lente viaja de «Claro» a «Oscuro» sobre la pista y la aumenta apenas; con la barra colapsada, un solo botón.
+- **Lupa de la 404** (`LupaVidrio`): sigue al cursor sobre el titular y lo agranda; el texto sigue siendo texto. Sin puntero fino o con movimiento reducido no hay lupa.
 
 ## Elevation & Depth
 
@@ -166,6 +199,10 @@ Reutilizar los de `src/components/ui/` antes de crear otros: `Boton` (clases en 
 - **PasosEtapa:** pista de cuatro tramos; lo hecho en moss con check, la etapa en curso en bosque con «Día N».
 - **PulsoSemana** (`components/dashboard`): registros de los últimos 7 días con etiquetas directas y una tabla equivalente para lectores de pantalla.
 - **CifraRodante** (`components/ui`): dígitos de contador mecánico que ruedan al cambiar el valor (y desde cero al montar con `desdeCero`); los dígitos se dibujan con contenido CSS, así el texto legible es solo el número. `Cifras` la usa en todos los módulos para números e importes, que ruedan solo cuando cambian; el panel de pulso del supervisor rueda desde cero al abrir su tablero.
+- **Kit de estudio (2026-10-11):** `Boton` con `estado` («cargando», «listo» con check que se dibuja, «error»); `Pestanas` y `Segmentos` con indicador que se desliza a la opción elegida; `EstadoVacio` con `variante` (inicio, búsqueda, acceso, error) y una sola acción en verbo + sustantivo; avisos apilados que se abren y esperan con el cursor encima, con su tiempo en una línea musgo → lima; confirmación destructiva cuyo botón espera 1,1 s llenándose antes de poder confirmar; `TiempoRelativo` («hace 3 h» con la fecha completa al pasar el cursor y un solo reloj de minuto); `AnilloProgreso` (valor contra su meta, con el umbral dicho en texto); `Sello` (el timbre circular de la guía de despacho; cae al cerrar una incidencia); `MapaCalor` (filas por columnas con tabla equivalente para lectores de pantalla; en Ambiental, 72 horas en franjas de 4 horas por zona); `PilaAvatares` (el equipo en iniciales; la ficha de cada uno se inclina apenas hacia el cursor).
+- **Tarea recién hecha:** en la jornada del operario el check se dibuja y suelta un anillo lima (y una vibración corta donde exista). Sin confeti.
+- **Línea de tiempo:** los días se quedan arriba al bajar y la historia completa de un lote cierra con «Aquí empezó LT-…».
+- **Inteligencia:** antes de la respuesta, el asistente dice en pasos de qué módulo lee y con qué lo cruza; la respuesta completa está en el documento desde el primer instante.
 - **Transiciones de módulo:** los enlaces de la barra lateral navegan con View Transitions; la pastilla del módulo activo (`aiden-nav-pastilla`) viaja al nuevo ítem, el módulo anterior se apaga y el nuevo entra con `aidenEntradaModulo`. Los desplegables de la barra superior (⌘K, notificaciones, cuenta) nacen del control que los abre (`@starting-style`).
 
 ### Navigation
@@ -178,7 +215,8 @@ Reutilizar los de `src/components/ui/` antes de crear otros: `Boton` (clases en 
 
 - Foco visible: `outline: 2px solid` `verde-500` con `outline-offset: 3px`.
 - Animaciones solo con `prefers-reduced-motion: no-preference`.
-- Escenas WebGPU solo a través de `LienzoVivo`, con respaldo y telemetría apagada.
+- Escenas WebGPU solo a través de `LienzoVivo`, con respaldo y telemetría apagada; el vivero en 3D solo a través de `Vivero3D`, con su respaldo en Canvas 2D.
+- Atajos de teclado visibles donde se usan (paleta, barra lateral, hoja de atajos) y nunca mientras se escribe.
 - Íconos de lucide-react, con `aria-hidden` cuando son decorativos.
 - Terminología agrícola colombiana (vivero, lote, etapa, incidencia fitosanitaria).
 
@@ -190,3 +228,6 @@ Reutilizar los de `src/components/ui/` antes de crear otros: `Boton` (clases en 
 - Textos de menos de 11 px.
 - Emojis como íconos.
 - Lenguaje de «demo» en la interfaz.
+- Vidrio o desenfoque como decoración, y nunca sobre datos (solo el interruptor de tema y la lupa de la 404).
+- Efectos que siguen al cursor en la interfaz operativa (salvo la inclinación leve de la ficha de un avatar) o confeti fuera del formulario de contacto.
+- Bento genérico, Spline o íconos de Iconly (licencia sin redistribución; el repo es público).
