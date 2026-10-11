@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ClipboardList, FilePenLine, FlagTriangleRight, History, ListPlus, PackageCheck, Trash2 } from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronUp, ClipboardList, FilePenLine, FlagTriangleRight, History, ListPlus, PackageCheck, Trash2 } from "lucide-react";
 import Modal from "../ui/Modal";
 import { Boton } from "../ui/Boton";
 import Insignia from "../ui/Insignia";
@@ -219,17 +219,57 @@ function Contenido({ lote, datos, sesion, onAccion }) {
   );
 }
 
-export default function FichaLote({ codigo, onCerrar }) {
+export default function FichaLote({ codigo, lista = [], onIr, onCerrar }) {
   const datos = useDatos();
   const sesion = useSesion();
   const [modal, setModal] = useState(null);
   const lote = datos.lotes.find((item) => item.lote === codigo);
+  const posicion = lista.indexOf(codigo);
+  const anterior = posicion > 0 ? lista[posicion - 1] : null;
+  const siguiente = posicion >= 0 && posicion < lista.length - 1 ? lista[posicion + 1] : null;
+
+  // J / K recorren los lotes de la lista, como en Linear. No mientras se escribe ni con otro formulario encima.
+  useEffect(() => {
+    if (!codigo || modal) return undefined;
+    const alTeclear = (evento) => {
+      if (evento.metaKey || evento.ctrlKey || evento.altKey) return;
+      const objetivo = evento.target;
+      if (objetivo instanceof HTMLElement && (objetivo.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(objetivo.tagName))) return;
+      const tecla = evento.key.toLowerCase();
+      if (tecla === "j" && siguiente) {
+        evento.preventDefault();
+        onIr?.(siguiente);
+      } else if (tecla === "k" && anterior) {
+        evento.preventDefault();
+        onIr?.(anterior);
+      }
+    };
+    document.addEventListener("keydown", alTeclear);
+    return () => document.removeEventListener("keydown", alTeclear);
+  }, [codigo, modal, anterior, siguiente, onIr]);
+
+  const navegacion =
+    lista.length > 1 && posicion >= 0 ? (
+      <span className="aiden-ficha-navegacion">
+        <span className="text-[11px] font-semibold tabular-nums text-slate-500" aria-live="polite">
+          {posicion + 1} de {lista.length}
+        </span>
+        <button type="button" onClick={() => anterior && onIr?.(anterior)} disabled={!anterior} className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-35" aria-label={anterior ? `Lote anterior, ${anterior}` : "No hay lote anterior"} aria-keyshortcuts="K" title="Lote anterior (K)">
+          <ChevronUp size={16} aria-hidden="true" />
+        </button>
+        <button type="button" onClick={() => siguiente && onIr?.(siguiente)} disabled={!siguiente} className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-35" aria-label={siguiente ? `Lote siguiente, ${siguiente}` : "No hay lote siguiente"} aria-keyshortcuts="J" title="Lote siguiente (J)">
+          <ChevronDown size={16} aria-hidden="true" />
+        </button>
+      </span>
+    ) : null;
 
   return (
     <>
-      <Modal abierto={Boolean(codigo)} onCerrar={onCerrar} variante="panel" titulo={`Lote ${codigo || ""}`}>
+      <Modal abierto={Boolean(codigo)} onCerrar={onCerrar} variante="panel" titulo={`Lote ${codigo || ""}`} accionesEncabezado={navegacion}>
         {lote ? (
-          <Contenido lote={lote} datos={datos} sesion={sesion} onAccion={setModal} />
+          <div key={lote.lote} className="aiden-ficha-cambio">
+            <Contenido lote={lote} datos={datos} sesion={sesion} onAccion={setModal} />
+          </div>
         ) : (
           <p className="py-10 text-center text-sm text-slate-500">No encontramos el lote {codigo}. Puede que el registro ya no esté disponible.</p>
         )}

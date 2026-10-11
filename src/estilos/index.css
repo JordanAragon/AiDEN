@@ -101,6 +101,16 @@
   --aiden-cream: #ebe7db;
   --aiden-white: #fffdf8;
   --aiden-muted: #526057;
+  /* Movimiento (DESIGN.md › Motion): duraciones y curvas compartidas. */
+  --dur-rapida: 120ms;
+  --dur-base: 200ms;
+  --dur-lenta: 320ms;
+  --curva-salida: cubic-bezier(0, 0, 0.2, 1);
+  --curva-retiro: cubic-bezier(0.4, 0, 1, 1);
+  --curva-enfasis: cubic-bezier(0.2, 0, 0, 1);
+  --curva-resorte: cubic-bezier(0.16, 1, 0.3, 1);
+  --curva-entrada: cubic-bezier(0.16, 0.84, 0.28, 1);
+  --curva-micro: cubic-bezier(0.2, 0.7, 0.2, 1);
   font-family:
   "DM Sans",
   ui-sans-serif,

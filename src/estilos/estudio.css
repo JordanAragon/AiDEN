@@ -1,0 +1,1552 @@
+/* AiDEN a nivel estudio (2026-10-11): la capa de la app con la paleta ⌘K, los
+   atajos, la barra lateral agrupada, el interruptor de tema de vidrio, los
+   avisos apilados y las primitivas nuevas del kit (sello, anillo, mapa de
+   calor, pila de avatares, tiempo relativo). Cada bloque trae su modo oscuro y
+   su versión con movimiento reducido. Tokens de movimiento en index.css. */
+
+/* ---- Cambio de tema: revelado circular ----------------------------------- */
+
+html.aiden-cambio-tema .aiden-nav-pastilla,
+html.aiden-cambio-tema .aiden-app-shell main {
+  view-transition-name: none !important;
+}
+
+html.aiden-cambio-tema::view-transition-old(root),
+html.aiden-cambio-tema::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html.aiden-cambio-tema::view-transition-new(root) {
+  z-index: 2;
+}
+
+/* ---- Teclas ------------------------------------------------------------------ */
+
+.aiden-tecla,
+.aiden-nav-atajo kbd {
+  display: inline-flex;
+  min-width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px solid #dfe5e0;
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: #fffdf8;
+  padding: 0 5px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  color: #526057;
+  font-variant-numeric: tabular-nums;
+}
+
+html.aiden-dark .aiden-tecla,
+html.aiden-dark .aiden-nav-atajo kbd {
+  border-color: #314039;
+  background: #18201c;
+  color: #c5d0ca;
+}
+
+/* ---- Paleta de comandos ------------------------------------------------------ */
+
+.aiden-paleta-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: min(12vh, 120px) 12px 12px;
+  background: rgba(7, 27, 17, 0.32);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.aiden-paleta {
+  display: flex;
+  flex-direction: column;
+  width: min(820px, 100%);
+  max-height: min(620px, calc(100vh - 140px));
+  overflow: hidden;
+  border: 1px solid #dfe8e2;
+  border-radius: 18px;
+  background: #fffdfa;
+  box-shadow:
+    0 40px 100px rgba(7, 27, 17, 0.28),
+    0 2px 6px rgba(7, 27, 17, 0.06);
+  transform-origin: 50% 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-paleta-fondo {
+    animation: aidenEntradaFondo 160ms ease-out both;
+  }
+
+  .aiden-paleta {
+    animation: aidenPaletaEntra 280ms var(--curva-resorte) both;
+  }
+}
+
+@keyframes aidenPaletaEntra {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.975);
+    filter: blur(6px);
+  }
+}
+
+.aiden-paleta-busqueda {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #e7ede8;
+  padding: 16px 16px 15px 18px;
+  color: #89938d;
+}
+
+.aiden-paleta-busqueda input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 16px;
+  color: #132019;
+  outline: none;
+}
+
+.aiden-paleta-busqueda input::placeholder {
+  color: #89938d;
+}
+
+.aiden-paleta-cerrar {
+  cursor: pointer;
+}
+
+.aiden-paleta-cuerpo {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 860px) {
+  .aiden-paleta-cuerpo {
+    grid-template-columns: minmax(0, 1fr) 272px;
+  }
+}
+
+.aiden-paleta-lista {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px;
+}
+
+.aiden-paleta-grupo + .aiden-paleta-grupo {
+  margin-top: 6px;
+}
+
+.aiden-paleta-grupo-nombre {
+  margin: 0;
+  padding: 8px 10px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #66736b;
+}
+
+.aiden-paleta-opcion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  border-radius: 12px;
+  padding: 7px 10px;
+  cursor: pointer;
+  transition: background-color var(--dur-rapida) ease;
+}
+
+.aiden-paleta-opcion[aria-selected="true"] {
+  background: #eef5ef;
+}
+
+.aiden-paleta-opcion-icono {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  place-items: center;
+  border: 1px solid #e3eae4;
+  border-radius: 9px;
+  background: #fff;
+  color: #4f6b46;
+}
+
+.aiden-paleta-opcion[aria-selected="true"] .aiden-paleta-opcion-icono {
+  border-color: #cfe0cf;
+  color: #176b45;
+}
+
+.aiden-paleta-opcion-texto {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+}
+
+.aiden-paleta-opcion-titulo {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #132019;
+}
+
+.aiden-paleta-opcion-detalle {
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #66736b;
+}
+
+.aiden-paleta-opcion-final {
+  display: inline-flex;
+  flex: none;
+  gap: 4px;
+}
+
+.aiden-paleta-opcion-tipo {
+  border-radius: 999px;
+  background: #f1f4f1;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #526057;
+}
+
+.aiden-paleta-previa {
+  display: none;
+  min-height: 0;
+  overflow-y: auto;
+  border-left: 1px solid #e7ede8;
+  background: #f8f9f6;
+}
+
+@media (min-width: 860px) {
+  .aiden-paleta-previa {
+    display: block;
+  }
+}
+
+.aiden-paleta-previa-cuerpo {
+  padding: 20px 18px;
+}
+
+.aiden-paleta-previa-meta {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #66736b;
+  font-variant-numeric: tabular-nums;
+}
+
+.aiden-paleta-previa-titulo {
+  margin: 4px 0 0;
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: #132019;
+}
+
+.aiden-paleta-previa-icono {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 14px;
+  place-items: center;
+  border-radius: 12px;
+  background: #0b2b1b;
+  color: #d9ea73;
+}
+
+.aiden-paleta-previa-datos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 14px;
+  margin: 16px 0 0;
+}
+
+.aiden-paleta-previa-datos dt {
+  font-size: 11px;
+  font-weight: 600;
+  color: #66736b;
+}
+
+.aiden-paleta-previa-datos dd {
+  margin: 2px 0 0;
+  font-size: 14px;
+  font-weight: 650;
+  color: #132019;
+  font-variant-numeric: tabular-nums;
+}
+
+.aiden-paleta-previa-datos dd span {
+  font-weight: 500;
+  color: #66736b;
+}
+
+.aiden-paleta-previa-datos dd.is-alerta,
+.aiden-paleta-previa-zona.is-alerta {
+  color: #b45309;
+}
+
+.aiden-paleta-previa-zona {
+  margin: 16px 0 0;
+  border-radius: 10px;
+  background: #fff;
+  padding: 9px 11px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #176b45;
+  font-variant-numeric: tabular-nums;
+}
+
+.aiden-paleta-vacia {
+  padding: 36px 16px;
+  text-align: center;
+}
+
+.aiden-paleta-vacia p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #132019;
+}
+
+.aiden-paleta-vacia span {
+  display: block;
+  max-width: 34ch;
+  margin: 6px auto 0;
+  font-size: 13px;
+  color: #66736b;
+}
+
+.aiden-paleta-pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  border-top: 1px solid #e7ede8;
+  background: #f8f9f6;
+  padding: 10px 16px;
+  font-size: 12px;
+  color: #66736b;
+}
+
+.aiden-paleta-pie > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.aiden-paleta-pie-fin {
+  margin-left: auto;
+}
+
+@media (max-width: 640px) {
+  .aiden-paleta-fondo {
+    padding-top: 12px;
+  }
+
+  .aiden-paleta {
+    max-height: calc(100vh - 24px);
+  }
+
+  .aiden-paleta-pie > span:not(:first-child):not(:nth-child(2)) {
+    display: none;
+  }
+}
+
+html.aiden-dark .aiden-paleta {
+  border-color: #26332d;
+  background: #121815;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.55);
+}
+
+html.aiden-dark .aiden-paleta-busqueda,
+html.aiden-dark .aiden-paleta-pie,
+html.aiden-dark .aiden-paleta-previa {
+  border-color: #26332d;
+}
+
+html.aiden-dark .aiden-paleta-busqueda input,
+html.aiden-dark .aiden-paleta-opcion-titulo,
+html.aiden-dark .aiden-paleta-previa-titulo,
+html.aiden-dark .aiden-paleta-previa-datos dd,
+html.aiden-dark .aiden-paleta-vacia p {
+  color: #f1f5f3;
+}
+
+html.aiden-dark .aiden-paleta-busqueda input {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+html.aiden-dark .aiden-paleta-opcion-detalle,
+html.aiden-dark .aiden-paleta-grupo-nombre,
+html.aiden-dark .aiden-paleta-previa-meta,
+html.aiden-dark .aiden-paleta-previa-datos dt,
+html.aiden-dark .aiden-paleta-vacia span,
+html.aiden-dark .aiden-paleta-pie {
+  color: #91a098;
+}
+
+html.aiden-dark .aiden-paleta-opcion[aria-selected="true"] {
+  background: #1a2a21;
+}
+
+html.aiden-dark .aiden-paleta-opcion-icono {
+  border-color: #26332d;
+  background: #18201c;
+  color: #a8c49a;
+}
+
+html.aiden-dark .aiden-paleta-opcion[aria-selected="true"] .aiden-paleta-opcion-icono {
+  border-color: #3a5a44;
+  color: #d9ea73;
+}
+
+html.aiden-dark .aiden-paleta-opcion-tipo {
+  background: #18201c;
+  color: #c5d0ca;
+}
+
+html.aiden-dark .aiden-paleta-previa,
+html.aiden-dark .aiden-paleta-pie {
+  background: #0e1411;
+}
+
+html.aiden-dark .aiden-paleta-previa-zona {
+  background: #18201c;
+  color: #68d391;
+}
+
+html.aiden-dark .aiden-paleta-previa-datos dd.is-alerta,
+html.aiden-dark .aiden-paleta-previa-zona.is-alerta {
+  color: #f4c96b;
+}
+
+/* ---- Pista de atajo en secuencia (G…, N…) ------------------------------------ */
+
+.aiden-pista-atajo {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 65;
+  display: grid;
+  gap: 10px;
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  transform: translateX(-50%);
+  border-radius: 16px;
+  background: rgba(7, 27, 17, 0.92);
+  padding: 12px 14px;
+  color: #f1f5f3;
+  box-shadow: 0 24px 60px rgba(7, 27, 17, 0.32);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-pista-atajo {
+    animation: aidenPistaEntra 220ms var(--curva-resorte) both;
+  }
+}
+
+@keyframes aidenPistaEntra {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+}
+
+.aiden-pista-atajo-titulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.aiden-pista-atajo ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  color: #c5d0ca;
+}
+
+.aiden-pista-atajo li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.aiden-pista-atajo .aiden-tecla {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: #d9ea73;
+}
+
+/* ---- Hoja de atajos ------------------------------------------------------------ */
+
+.aiden-hoja-atajos {
+  display: grid;
+  gap: 22px;
+}
+
+@media (min-width: 720px) {
+  .aiden-hoja-atajos {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .aiden-hoja-atajos section:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+.aiden-hoja-atajos h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #132019;
+}
+
+.aiden-hoja-atajos dl {
+  display: grid;
+  margin: 0;
+}
+
+.aiden-hoja-atajos dl > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #eef2ee;
+  padding: 7px 0;
+}
+
+.aiden-hoja-atajos dt {
+  font-size: 13px;
+  color: #3d4a42;
+}
+
+.aiden-hoja-atajos dd {
+  display: inline-flex;
+  gap: 4px;
+  margin: 0;
+}
+
+html.aiden-dark .aiden-hoja-atajos h3 {
+  color: #f1f5f3;
+}
+
+html.aiden-dark .aiden-hoja-atajos dt {
+  color: #c5d0ca;
+}
+
+html.aiden-dark .aiden-hoja-atajos dl > div {
+  border-color: #26332d;
+}
+
+/* ---- Barra lateral -------------------------------------------------------------- */
+
+.aiden-nav-grupo {
+  margin: 0 0 6px;
+  padding: 0 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #66736b;
+}
+
+.aiden-nav-atajo {
+  display: inline-flex;
+  gap: 3px;
+  opacity: 0;
+  transition: opacity var(--dur-base) ease;
+}
+
+.aiden-nav-atajo kbd {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 10.5px;
+}
+
+.aiden-nav-enlace:hover .aiden-nav-atajo,
+.aiden-nav-enlace:focus-visible .aiden-nav-atajo,
+.aiden-nav-atajo.is-visible {
+  opacity: 1;
+}
+
+.aiden-nav-cuenta {
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-nav-cuenta {
+    animation: aidenCuentaEntra 360ms var(--curva-resorte) both;
+  }
+}
+
+@keyframes aidenCuentaEntra {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+
+html.aiden-dark .aiden-nav-grupo {
+  color: #91a098;
+}
+
+html.aiden-dark .aiden-barra-lateral .text-emerald-800 {
+  color: #d9ea73 !important;
+}
+
+html.aiden-dark .aiden-barra-lateral .aiden-nav-pastilla {
+  background: #1a2a21 !important;
+}
+
+/* ---- Interruptor de tema (vidrio líquido) --------------------------------------- */
+
+.aiden-interruptor-tema {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 999px;
+}
+
+.aiden-interruptor-caja {
+  position: relative;
+  display: block;
+  height: 40px;
+  overflow: hidden;
+  border: 1px solid #e3eae4;
+  border-radius: 999px;
+  background: #f1f4ef;
+}
+
+.aiden-interruptor-vidrio {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+}
+
+.aiden-interruptor-pista {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr 1fr;
+}
+
+.aiden-interruptor-pista > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b776f;
+  transition: color var(--dur-base) ease;
+}
+
+.aiden-interruptor-pista > span.is-activo {
+  color: #12251b;
+}
+
+.aiden-interruptor-pulgar {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 6px);
+  border-radius: 999px;
+  background: #fffdf8;
+  box-shadow: 0 2px 8px rgba(7, 27, 17, 0.12);
+}
+
+.aiden-interruptor-caja[data-oscuro="true"] .aiden-interruptor-pulgar {
+  transform: translateX(calc(100% + 6px));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-interruptor-pulgar {
+    transition: transform var(--dur-lenta) var(--curva-resorte);
+  }
+}
+
+.aiden-interruptor-tema:focus-visible {
+  outline: 2px solid var(--color-verde-500);
+  outline-offset: 3px;
+}
+
+html.aiden-dark .aiden-interruptor-caja {
+  border-color: #26332d;
+  background: #0e1411 !important;
+}
+
+html.aiden-dark .aiden-interruptor-pista > span {
+  color: #91a098;
+}
+
+html.aiden-dark .aiden-interruptor-pista > span.is-activo {
+  color: #f1f5f3;
+}
+
+html.aiden-dark .aiden-interruptor-pulgar {
+  background: #1f2a24;
+}
+
+/* ---- Disparador de la paleta y notificaciones ------------------------------------ */
+
+.aiden-disparador-paleta:focus-visible {
+  outline: 2px solid var(--color-verde-500);
+  outline-offset: 2px;
+}
+
+.aiden-insignia-notificaciones {
+  transform-origin: center;
+}
+
+.aiden-insignia-notificaciones[data-vacia] {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.6);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-insignia-notificaciones {
+    transition:
+      opacity 160ms ease,
+      transform 220ms var(--curva-resorte);
+    animation: aidenCuentaEntra 360ms var(--curva-resorte) both;
+  }
+
+  .aiden-insignia-notificaciones[data-vacia] {
+    animation: none;
+  }
+
+  .aiden-campana {
+    animation: aidenCampana 900ms var(--curva-enfasis) 1 both;
+    transform-origin: 50% 10%;
+  }
+}
+
+@keyframes aidenCampana {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  15% {
+    transform: rotate(12deg);
+  }
+  30% {
+    transform: rotate(-10deg);
+  }
+  45% {
+    transform: rotate(6deg);
+  }
+  60% {
+    transform: rotate(-3deg);
+  }
+}
+
+/* ---- Avisos apilados -------------------------------------------------------------- */
+
+.aiden-avisos {
+  position: relative;
+  display: grid;
+  width: min(384px, calc(100vw - 24px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aiden-aviso {
+  position: relative;
+  grid-area: 1 / 1;
+  align-self: end;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #071b11;
+  padding: 12px 16px 14px;
+  color: #fff;
+  box-shadow: 0 22px 48px rgba(7, 27, 17, 0.32);
+  transform: translateY(calc(var(--profundidad) * -10px)) scale(calc(1 - var(--profundidad) * 0.05));
+  transform-origin: 50% 100%;
+  opacity: calc(1 - var(--profundidad) * 0.22);
+  z-index: calc(10 - var(--profundidad));
+}
+
+.aiden-aviso:not(:last-child) > * {
+  opacity: 0;
+}
+
+.aiden-avisos.is-expandida .aiden-aviso {
+  transform: translateY(calc(var(--profundidad) * (-100% - 8px)));
+  opacity: 1;
+}
+
+.aiden-avisos.is-expandida .aiden-aviso > * {
+  opacity: 1;
+}
+
+.aiden-aviso-tiempo {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, #718b58, #d9ea73);
+  transform-origin: 0 50%;
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-aviso {
+    transition:
+      transform 380ms var(--curva-resorte),
+      opacity 240ms ease;
+    animation: aidenAvisoEntra 420ms var(--curva-resorte) both;
+  }
+
+  .aiden-aviso > * {
+    transition: opacity 200ms ease;
+  }
+
+  .aiden-aviso.is-saliendo {
+    animation: aidenAvisoSale 220ms var(--curva-retiro) both;
+  }
+
+  .aiden-aviso-tiempo {
+    animation: aidenAvisoTiempo var(--duracion) linear both;
+  }
+
+  .aiden-avisos.is-expandida .aiden-aviso-tiempo {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-aviso-tiempo {
+    display: none;
+  }
+}
+
+@keyframes aidenAvisoEntra {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+}
+
+@keyframes aidenAvisoSale {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+
+@keyframes aidenAvisoTiempo {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* ---- Confirmación destructiva: espera antes de poder confirmar -------------------- */
+
+@property --aiden-espera {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+.aiden-confirmar-peligro {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.aiden-confirmar-peligro:disabled {
+  opacity: 1 !important;
+  background: #f3c9cc !important;
+  color: #7f1d1d !important;
+}
+
+.aiden-confirmar-peligro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: var(--aiden-espera);
+  background: #dc2626;
+}
+
+.aiden-confirmar-peligro:disabled::before {
+  animation: aidenEspera var(--espera, 1100ms) linear forwards;
+}
+
+.aiden-confirmar-peligro.is-listo::before {
+  width: 100%;
+}
+
+@keyframes aidenEspera {
+  to {
+    --aiden-espera: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-confirmar-peligro:disabled::before {
+    animation: none;
+  }
+}
+
+/* ---- Botón con estado ----------------------------------------------------------- */
+
+.aiden-boton-check path,
+.aiden-boton-check polyline {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-boton-check polyline,
+  .aiden-boton-check path {
+    animation: aidenTrazo 360ms var(--curva-enfasis) both;
+  }
+
+  .aiden-boton-estado[data-estado="listo"] {
+    animation: aidenLatido 420ms var(--curva-resorte);
+  }
+}
+
+@keyframes aidenTrazo {
+  from {
+    stroke-dashoffset: 24;
+  }
+}
+
+@keyframes aidenLatido {
+  40% {
+    transform: scale(1.04);
+  }
+}
+
+/* ---- Pestañas: indicador que se desliza ----------------------------------------- */
+
+.aiden-pestanas-indicador {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: var(--ancho);
+  border-radius: 2px;
+  background: #176b45;
+  transform: translateX(var(--x));
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-pestanas-indicador {
+    transition:
+      transform var(--dur-lenta) var(--curva-resorte),
+      width var(--dur-lenta) var(--curva-resorte);
+  }
+}
+
+html.aiden-dark .aiden-pestanas-indicador {
+  background: #d9ea73;
+}
+
+/* ---- Estados vacíos ------------------------------------------------------------- */
+
+.aiden-vacio-icono {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 12px;
+  place-items: center;
+  border-radius: 14px;
+  background: #f1f4ef;
+  color: #4f6b46;
+}
+
+.aiden-vacio.is-inicio .aiden-vacio-icono {
+  background: #0b2b1b;
+  color: #d9ea73;
+}
+
+.aiden-vacio.is-error .aiden-vacio-icono {
+  background: #fdecec;
+  color: #b91c1c;
+}
+
+html.aiden-dark .aiden-vacio-icono {
+  background: #18201c;
+  color: #a8c49a;
+}
+
+html.aiden-dark .aiden-vacio.is-error .aiden-vacio-icono {
+  background: #3b1d22;
+  color: #f28b96;
+}
+
+/* ---- Tiempo relativo: la fecha completa a mano ---------------------------------- */
+
+.aiden-tiempo {
+  position: relative;
+  font-variant-numeric: tabular-nums;
+  text-decoration: underline dotted rgba(102, 115, 107, 0.45);
+  text-underline-offset: 3px;
+  cursor: default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .aiden-tiempo::after {
+    content: attr(data-completo);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    z-index: 30;
+    width: max-content;
+    border-radius: 8px;
+    background: #071b11;
+    padding: 5px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #f1f5f3;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 3px);
+    transition:
+      opacity var(--dur-rapida) ease,
+      transform var(--dur-base) var(--curva-salida);
+  }
+
+  .aiden-tiempo:hover::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ---- Anillo de progreso ---------------------------------------------------------- */
+
+.aiden-anillo {
+  --anillo-verde: #2f9d65;
+  --anillo-alerta: #d97706;
+  --anillo-critico: #dc2626;
+  --anillo-lima: #b6cc4a;
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+}
+
+.aiden-anillo-pista {
+  stroke: #e6ece7;
+}
+
+.aiden-anillo-centro {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #132019;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-anillo-arco {
+    transition: stroke-dashoffset 640ms var(--curva-enfasis);
+  }
+}
+
+html.aiden-dark .aiden-anillo-pista {
+  stroke: #26332d;
+}
+
+html.aiden-dark .aiden-anillo {
+  --anillo-verde: #4fbf84;
+  --anillo-lima: #d9ea73;
+}
+
+html.aiden-dark .aiden-anillo-centro {
+  color: #f1f5f3;
+}
+
+/* ---- Sello -------------------------------------------------------------------------- */
+
+.aiden-sello {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  transform: rotate(-7deg);
+  color: #176b45;
+}
+
+.aiden-sello svg {
+  position: absolute;
+  inset: 0;
+  stroke: currentColor;
+}
+
+.aiden-sello-borde {
+  fill: currentColor;
+  stroke: none;
+  font-size: 7.4px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.aiden-sello-centro {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  max-width: 62%;
+  text-align: center;
+}
+
+.aiden-sello-centro b {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  line-height: 1.05;
+}
+
+.aiden-sello-centro small {
+  font-size: 9.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+
+.aiden-sello-moss {
+  color: #5d7546;
+}
+
+html.aiden-dark .aiden-sello {
+  color: #68d391;
+}
+
+html.aiden-dark .aiden-sello-moss {
+  color: #a8c49a;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-sello.is-cae {
+    animation: aidenSelloCae 520ms var(--curva-enfasis) both;
+  }
+}
+
+@keyframes aidenSelloCae {
+  0% {
+    opacity: 0;
+    transform: scale(1.6) rotate(-16deg);
+    filter: blur(2px);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(0.94) rotate(-6deg);
+    filter: blur(0);
+  }
+  100% {
+    transform: scale(1) rotate(-7deg);
+  }
+}
+
+/* ---- Mapa de calor ----------------------------------------------------------------- */
+
+.aiden-mapa-calor {
+  margin: 0;
+}
+
+.aiden-mapa-calor-rejilla {
+  display: grid;
+  gap: 6px;
+}
+
+.aiden-mapa-calor-fila {
+  display: grid;
+  grid-template-columns: minmax(96px, 150px) minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.aiden-mapa-calor-etiqueta {
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #3d4a42;
+}
+
+.aiden-mapa-calor-celdas {
+  display: grid;
+  grid-template-columns: repeat(var(--columnas), minmax(0, 1fr));
+  gap: 3px;
+}
+
+.aiden-mapa-calor-celda {
+  position: relative;
+  display: block;
+  height: 22px;
+  border-radius: 4px;
+  background: #eef2ee;
+}
+
+.aiden-mapa-calor-celda.is-rango {
+  background: #cfe7d6;
+}
+
+.aiden-mapa-calor-celda.is-rango-alto {
+  background: #9bd7b5;
+}
+
+.aiden-mapa-calor-celda.is-alerta {
+  background: #f5c26b;
+}
+
+.aiden-mapa-calor-celda.is-critico {
+  background: #e4584f;
+}
+
+.aiden-mapa-calor-celda.is-frio {
+  background: #9fc3d9;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .aiden-mapa-calor-celda:hover {
+    outline: 2px solid #12251b;
+    outline-offset: 1px;
+    z-index: 2;
+  }
+
+  .aiden-mapa-calor-celda:hover::after {
+    content: attr(data-descripcion);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    z-index: 5;
+    width: max-content;
+    max-width: 240px;
+    border-radius: 8px;
+    background: #071b11;
+    padding: 6px 9px;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #f1f5f3;
+    white-space: normal;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+}
+
+.aiden-mapa-calor-eje b {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #66736b;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.aiden-mapa-calor-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: #526057;
+}
+
+.aiden-mapa-calor-leyenda span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.aiden-mapa-calor-leyenda i {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-mapa-calor-celdas .aiden-mapa-calor-celda {
+    animation: aidenCeldaEntra 420ms var(--curva-salida) both;
+    animation-delay: calc(var(--i, 0) * 12ms);
+  }
+}
+
+@keyframes aidenCeldaEntra {
+  from {
+    opacity: 0;
+    transform: scaleY(0.4);
+  }
+}
+
+html.aiden-dark .aiden-mapa-calor-etiqueta {
+  color: #c5d0ca;
+}
+
+html.aiden-dark .aiden-mapa-calor-celda {
+  background: #18201c;
+}
+
+html.aiden-dark .aiden-mapa-calor-celda.is-rango {
+  background: #1f4a33;
+}
+
+html.aiden-dark .aiden-mapa-calor-celda.is-rango-alto {
+  background: #2f7a52;
+}
+
+html.aiden-dark .aiden-mapa-calor-celda.is-alerta {
+  background: #b9822c;
+}
+
+html.aiden-dark .aiden-mapa-calor-celda.is-critico {
+  background: #c2433b;
+}
+
+html.aiden-dark .aiden-mapa-calor-celda.is-frio {
+  background: #3b6d8c;
+}
+
+html.aiden-dark .aiden-mapa-calor-eje b,
+html.aiden-dark .aiden-mapa-calor-leyenda {
+  color: #91a098;
+}
+
+/* ---- Pila de avatares --------------------------------------------------------------- */
+
+.aiden-pila {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 0 0 6px;
+  list-style: none;
+}
+
+.aiden-pila > li {
+  position: relative;
+  margin-left: -6px;
+}
+
+.aiden-pila-item {
+  position: relative;
+  display: inline-grid;
+  border-radius: 999px;
+  outline-offset: 2px;
+}
+
+.aiden-pila-avatar {
+  box-shadow: 0 0 0 2px #fffdfa;
+  transition: transform var(--dur-base) var(--curva-resorte);
+}
+
+.aiden-pila-resto {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 999px;
+  background: #eef2ee;
+  box-shadow: 0 0 0 2px #fffdfa;
+  font-size: 11px;
+  font-weight: 700;
+  color: #526057;
+}
+
+.aiden-pila-ficha {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  z-index: 20;
+  display: grid;
+  width: max-content;
+  max-width: 220px;
+  border-radius: 10px;
+  background: #071b11;
+  padding: 7px 10px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: #c5d0ca;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 6px) rotate(var(--giro, 0deg));
+  box-shadow: 0 12px 28px rgba(7, 27, 17, 0.28);
+}
+
+.aiden-pila-ficha b {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f1f5f3;
+}
+
+.aiden-pila-ficha::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 8px;
+  height: 8px;
+  background: #071b11;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.aiden-pila > li:hover,
+.aiden-pila > li:focus-within {
+  z-index: 3;
+}
+
+.aiden-pila > li:hover .aiden-pila-avatar,
+.aiden-pila > li:focus-within .aiden-pila-avatar {
+  transform: translateY(-2px) scale(1.08);
+}
+
+.aiden-pila > li:hover .aiden-pila-ficha,
+.aiden-pila > li:focus-within .aiden-pila-ficha {
+  opacity: 1;
+  transform: translate(-50%, 0) rotate(var(--giro, 0deg));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-pila-ficha {
+    transition:
+      opacity var(--dur-rapida) ease,
+      transform var(--dur-lenta) var(--curva-resorte);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiden-pila-ficha {
+    --giro: 0deg !important;
+  }
+}
+
+html.aiden-dark .aiden-pila-avatar,
+html.aiden-dark .aiden-pila-resto {
+  box-shadow: 0 0 0 2px #121815;
+}
+
+html.aiden-dark .aiden-pila-resto {
+  background: #18201c;
+  color: #c5d0ca;
+}
+
+/* ---- Segmentos: píldora que se desliza --------------------------------------------- */
+
+.aiden-segmentos-pildora {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ancho);
+  height: var(--alto);
+  border-radius: 999px;
+  background: #176b45;
+  box-shadow: 0 4px 12px rgba(23, 107, 69, 0.22);
+  transform: translate(var(--x), var(--y));
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-segmentos-pildora {
+    transition:
+      transform var(--dur-lenta) var(--curva-resorte),
+      width var(--dur-lenta) var(--curva-resorte);
+  }
+}
+
+html.aiden-dark .aiden-segmentos {
+  background: #0e1411 !important;
+}
+
+html.aiden-dark .aiden-segmentos-pildora {
+  background: #d9ea73;
+  box-shadow: none;
+}
+
+html.aiden-dark .aiden-segmento.is-activo {
+  color: #0b2b1b !important;
+}
+
+html.aiden-dark .aiden-segmento.is-activo span {
+  color: #3a4a2a !important;
+}
+
+/* ---- Ficha del lote: recorrido con J/K -------------------------------------------- */
+
+.aiden-ficha-navegacion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 4px;
+  border-right: 1px solid #e7ede8;
+  padding-right: 6px;
+}
+
+.aiden-ficha-navegacion > span {
+  margin-right: 4px;
+}
+
+html.aiden-dark .aiden-ficha-navegacion {
+  border-color: #26332d;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiden-ficha-cambio {
+    animation: aidenFichaCambio 260ms var(--curva-resorte) both;
+  }
+}
+
+@keyframes aidenFichaCambio {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(2px);
+  }
+}

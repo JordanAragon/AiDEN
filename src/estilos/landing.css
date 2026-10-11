@@ -23,8 +23,6 @@
   --vivo: var(--color-aiden-lime);
   --cumplido: var(--color-aiden-moss);
   --radio-ficha: 22px;
-  --curva-entrada: var(--curva-entrada);
-  --curva-micro: var(--curva-micro);
   --sombra-marca: 0 30px 90px rgba(11, 47, 32, 0.11);
   --sombra-noche: 0 20px 54px rgba(7, 27, 17, 0.4);
   font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;

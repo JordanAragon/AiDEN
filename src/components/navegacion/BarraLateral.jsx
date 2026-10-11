@@ -1,43 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import {
-  BarChart3,
-  BrainCircuit,
-  ChevronLeft,
-  ChevronRight,
-  CircleDollarSign,
-  GitBranch,
-  LayoutDashboard,
-  Menu,
-  Moon,
-  Package,
-  Settings,
-  ShieldCheck,
-  Sprout,
-  Sun,
-  Thermometer,
-  Users,
-  X,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Menu, Search, X } from "lucide-react";
 import { getDashboardPath } from "../../utilidades/autenticacion";
 import { useSesion } from "../../hooks/useSesion";
 import { useDatos } from "../../datos/almacen";
 import { alertas as calcularAlertas } from "../../datos/selectores";
+import { useComandos } from "../../contexto/comandos";
 import { IsotipoAiden } from "../ui/MarcaAiden";
-
-const navItems = [
-  { label: "Inicio", path: "/dashboard-admin", icon: <LayoutDashboard size={18} />, roles: ["admin", "supervisor", "operario"] },
-  { label: "Producción", path: "/produccion", icon: <Sprout size={18} />, roles: ["admin", "supervisor", "operario"] },
-  { label: "Trazabilidad", path: "/trazabilidad", icon: <GitBranch size={18} />, roles: ["admin", "supervisor", "operario"] },
-  { label: "Ambiental", path: "/ambiental", icon: <Thermometer size={18} />, roles: ["admin", "supervisor", "operario"] },
-  { label: "Calidad", path: "/calidad", icon: <ShieldCheck size={18} />, roles: ["admin", "supervisor", "operario"] },
-  { label: "Inventario", path: "/inventario", icon: <Package size={18} />, roles: ["admin", "supervisor"] },
-  { label: "Costos", path: "/costos", icon: <CircleDollarSign size={18} />, roles: ["admin", "supervisor"] },
-  { label: "Personal", path: "/personal", icon: <Users size={18} />, roles: ["admin", "supervisor"] },
-  { label: "Inteligencia", path: "/ia", icon: <BrainCircuit size={18} />, roles: ["admin", "supervisor"] },
-  { label: "Reportes", path: "/reportes", icon: <BarChart3 size={18} />, roles: ["admin", "supervisor"] },
-  { label: "Configuración", path: "/configuracion", icon: <Settings size={18} />, roles: ["admin"] },
-];
+import InterruptorTema from "./InterruptorTema";
+import { GRUPOS_MODULOS, modulosDeRol, rutaDeModulo } from "./modulos";
 
 const roleLabel = {
   admin: "Administrador",
@@ -62,16 +33,12 @@ function guardarPreferencia(clave, valor) {
 }
 
 export default function BarraLateral() {
-  const [colapsado, setColapsado] = useState(
-    () => leerPreferencia("aiden-sidebar") === "collapsed",
-  );
-  const [oscuro, setOscuro] = useState(
-    () => leerPreferencia("aiden-theme") === "dark",
-  );
+  const [colapsado, setColapsado] = useState(() => leerPreferencia("aiden-sidebar") === "collapsed");
   const [movilAbierto, setMovilAbierto] = useState(false);
   const location = useLocation();
   const session = useSesion();
   const datos = useDatos();
+  const { abrirPaleta } = useComandos();
   const role = session?.role || "operario";
   const conteos = useMemo(() => {
     const lista = calcularAlertas(datos, session);
@@ -79,15 +46,10 @@ export default function BarraLateral() {
     return { "/calidad": cuenta("Calidad"), "/ambiental": cuenta("Ambiental"), "/inventario": cuenta("Inventario") };
   }, [datos, session]);
   const pathDashboard = getDashboardPath(role);
-  const visible = useMemo(
-    () => navItems.filter((item) => item.roles.includes(role)),
-    [role],
-  );
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("aiden-dark", oscuro);
-    guardarPreferencia("aiden-theme", oscuro ? "dark" : "light");
-  }, [oscuro]);
+  const grupos = useMemo(() => {
+    const visibles = modulosDeRol(role);
+    return GRUPOS_MODULOS.map((grupo) => ({ ...grupo, modulos: visibles.filter((m) => m.grupo === grupo.id) })).filter((grupo) => grupo.modulos.length);
+  }, [role]);
 
   useEffect(() => {
     guardarPreferencia("aiden-sidebar", colapsado ? "collapsed" : "expanded");
@@ -102,44 +64,67 @@ export default function BarraLateral() {
     return () => window.removeEventListener("keydown", key);
   }, [movilAbierto]);
 
-  const renderNav = (mobile = false) => (
-    <nav aria-label="Menú principal" className="flex-1 overflow-y-auto px-3 py-4">
-      <ul className="space-y-1">
-        {visible.map((item) => {
-          const targetPath = item.label === "Inicio" ? pathDashboard : item.path;
-          const isActive = location.pathname === targetPath || (item.label === "Inicio" && location.pathname.startsWith("/dashboard-"));
-          return (
-            <li key={item.label}>
-              <NavLink
-                to={targetPath}
-                viewTransition
-                title={!mobile && colapsado ? item.label : undefined}
-                onClick={() => mobile && setMovilAbierto(false)}
-                className={`relative isolate flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${!mobile && colapsado ? "justify-center" : "justify-start"} ${isActive ? "font-semibold text-emerald-800" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"}`}
-              >
-                {/* La pastilla del módulo activo se desliza al siguiente con View Transitions. */}
-                {isActive && <span className="aiden-nav-pastilla bg-emerald-50" aria-hidden="true" />}
-                {item.icon}
-                {(mobile || !colapsado) && <span className="flex-1">{item.label}</span>}
-                {conteos[item.path] > 0 &&
-                  (!mobile && colapsado ? (
-                    <span className="absolute right-2 top-1.5 h-2 w-2 rounded-full bg-red-600">
-                      <span className="sr-only">, {conteos[item.path]} {conteos[item.path] === 1 ? "alerta" : "alertas"}</span>
-                    </span>
-                  ) : (
-                    <span className="min-w-5 rounded-full bg-red-600 px-1.5 text-center text-[11px] font-bold leading-5 text-white tabular-nums">
-                      <span className="sr-only">, </span>
-                      {conteos[item.path]}
-                      <span className="sr-only"> {conteos[item.path] === 1 ? "alerta" : "alertas"}</span>
-                    </span>
-                  ))}
-              </NavLink>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
-  );
+  const renderNav = (mobile = false) => {
+    const estrecha = !mobile && colapsado;
+    return (
+      <nav aria-label="Menú principal" className="aiden-nav flex-1 overflow-y-auto px-3 py-4">
+        {grupos.map((grupo, indiceGrupo) => (
+          <section key={grupo.id} aria-labelledby={estrecha ? undefined : `grupo-${grupo.id}-${mobile ? "m" : "d"}`} className={indiceGrupo ? "mt-5" : ""}>
+            {estrecha ? (
+              indiceGrupo > 0 && <hr className="mx-2 mb-3 border-slate-100" aria-hidden="true" />
+            ) : (
+              <p id={`grupo-${grupo.id}-${mobile ? "m" : "d"}`} className="aiden-nav-grupo">
+                {grupo.nombre}
+              </p>
+            )}
+            <ul className="space-y-0.5">
+              {grupo.modulos.map((item) => {
+                const Icono = item.icono;
+                const targetPath = rutaDeModulo(item, pathDashboard);
+                const isActive = location.pathname === targetPath || (item.nombre === "Inicio" && location.pathname.startsWith("/dashboard-"));
+                const cuenta = conteos[item.ruta] || 0;
+                return (
+                  <li key={item.nombre}>
+                    <NavLink
+                      to={targetPath}
+                      viewTransition
+                      title={estrecha ? item.nombre : undefined}
+                      aria-keyshortcuts={`G ${item.atajo}`}
+                      onClick={() => mobile && setMovilAbierto(false)}
+                      className={`aiden-nav-enlace relative isolate flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${estrecha ? "justify-center" : "justify-start"} ${isActive ? "font-semibold text-emerald-800" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"}`}
+                    >
+                      {/* La pastilla del módulo activo se desliza al siguiente con View Transitions. */}
+                      {isActive && <span className="aiden-nav-pastilla bg-emerald-50" aria-hidden="true" />}
+                      <Icono size={18} aria-hidden="true" className={isActive ? "text-emerald-700" : ""} />
+                      {!estrecha && <span className="flex-1">{item.nombre}</span>}
+                      {!estrecha && !mobile && cuenta === 0 && (
+                        <span className="aiden-nav-atajo" aria-hidden="true">
+                          <kbd>G</kbd>
+                          <kbd>{item.atajo}</kbd>
+                        </span>
+                      )}
+                      {cuenta > 0 &&
+                        (estrecha ? (
+                          <span className="absolute right-2 top-1.5 h-2 w-2 rounded-full bg-red-600">
+                            <span className="sr-only">, {cuenta} {cuenta === 1 ? "alerta" : "alertas"}</span>
+                          </span>
+                        ) : (
+                          <span className="aiden-nav-cuenta min-w-5 rounded-full bg-red-600 px-1.5 text-center text-[11px] font-bold leading-5 text-white tabular-nums">
+                            <span className="sr-only">, </span>
+                            {cuenta}
+                            <span className="sr-only"> {cuenta === 1 ? "alerta" : "alertas"}</span>
+                          </span>
+                        ))}
+                    </NavLink>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ))}
+      </nav>
+    );
+  };
 
   return (
     <>
@@ -153,69 +138,47 @@ export default function BarraLateral() {
         <Menu size={19} />
       </button>
 
-      {movilAbierto && (
-        <button
-          type="button"
-          aria-label="Cerrar menú"
-          className="fixed inset-0 z-40 bg-aiden-forest-deep/35 lg:hidden"
-          onClick={() => setMovilAbierto(false)}
-        />
-      )}
+      {movilAbierto && <button type="button" aria-label="Cerrar menú" className="fixed inset-0 z-40 bg-aiden-forest-deep/35 lg:hidden" onClick={() => setMovilAbierto(false)} />}
 
       <aside
         aria-label="Navegación de AiDEN"
-        className={`no-imprimir fixed inset-y-0 left-0 z-50 flex w-[min(84vw,300px)] flex-col border-r border-[#dfe8e2] bg-white shadow-2xl transition-transform duration-200 ease-out lg:static lg:z-auto lg:shadow-none ${movilAbierto ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} ${colapsado ? "lg:w-16" : "lg:w-60"}`}
+        className={`aiden-barra-lateral no-imprimir fixed inset-y-0 left-0 z-50 flex w-[min(84vw,300px)] flex-col border-r border-[#dfe8e2] bg-white shadow-2xl transition-transform duration-200 ease-out lg:static lg:z-auto lg:shadow-none ${movilAbierto ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} ${colapsado ? "lg:w-16" : "lg:w-60"}`}
       >
         <header className="flex h-16 min-h-[64px] items-center border-b border-[#dfe8e2] px-4">
           <section className="w-full">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <IsotipoAiden tamano={32} className="aiden-isotipo-adaptable" />
-                {(movilAbierto || !colapsado) && (
-                  <span className="text-lg font-bold tracking-tight text-emerald-800">
-                    AiDEN
-                  </span>
-                )}
+                {(movilAbierto || !colapsado) && <span className="text-lg font-bold tracking-tight text-emerald-800">AiDEN</span>}
               </div>
-              <button
-                type="button"
-                className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 lg:hidden"
-                aria-label="Cerrar menú"
-                onClick={() => setMovilAbierto(false)}
-              >
+              <button type="button" className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 lg:hidden" aria-label="Cerrar menú" onClick={() => setMovilAbierto(false)}>
                 <X size={18} />
               </button>
             </div>
-            {(movilAbierto || !colapsado) && (
-              <p className="ml-10 mt-0.5 text-[10px] font-medium text-slate-500">
-                {roleLabel[role]}
-              </p>
-            )}
+            {(movilAbierto || !colapsado) && <p className="aiden-rol-chip ml-10 mt-0.5 text-[11px] font-medium text-slate-500">{roleLabel[role]}</p>}
           </section>
         </header>
 
         <div className="hidden min-w-0 flex-1 lg:flex">{renderNav()}</div>
         <div className="flex min-w-0 flex-1 lg:hidden">{renderNav(true)}</div>
 
-        <footer className="border-t border-slate-100 p-3">
-          <button
-            type="button"
-            onClick={() => setOscuro((value) => !value)}
-            title={
-              !movilAbierto && colapsado
-                ? oscuro
-                  ? "Modo claro"
-                  : "Modo oscuro"
-                : undefined
-            }
-            className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-500 hover:bg-slate-50 ${!movilAbierto && colapsado ? "justify-center" : ""}`}
-            aria-label={oscuro ? "Activar modo claro" : "Activar modo oscuro"}
-          >
-            {oscuro ? <Sun size={18} /> : <Moon size={18} />}
-            {(movilAbierto || !colapsado) && (
-              <span>{oscuro ? "Modo claro" : "Modo oscuro"}</span>
-            )}
-          </button>
+        <footer className="space-y-2 border-t border-slate-100 p-3">
+          {(movilAbierto || !colapsado) && (
+            <button type="button" onClick={() => { setMovilAbierto(false); abrirPaleta(); }} className="aiden-nav-comandos flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+              <Search size={15} aria-hidden="true" />
+              <span className="flex-1">Buscar o ejecutar</span>
+              <span className="aiden-nav-atajo is-visible" aria-hidden="true">
+                <kbd>⌘</kbd>
+                <kbd>K</kbd>
+              </span>
+            </button>
+          )}
+          <div className="hidden lg:block">
+            <InterruptorTema compacto={colapsado} />
+          </div>
+          <div className="lg:hidden">
+            <InterruptorTema />
+          </div>
         </footer>
 
         <button
@@ -224,11 +187,7 @@ export default function BarraLateral() {
           className="absolute -right-3 top-20 z-10 hidden h-6 w-6 items-center justify-center rounded-full border border-[#dfe8e2] bg-white shadow-sm hover:bg-slate-50 lg:flex"
           aria-label={colapsado ? "Expandir barra lateral" : "Colapsar barra lateral"}
         >
-          {colapsado ? (
-            <ChevronRight size={12} className="text-slate-500" />
-          ) : (
-            <ChevronLeft size={12} className="text-slate-500" />
-          )}
+          {colapsado ? <ChevronRight size={12} className="text-slate-500" /> : <ChevronLeft size={12} className="text-slate-500" />}
         </button>
       </aside>
     </>

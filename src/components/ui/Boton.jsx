@@ -1,11 +1,32 @@
-import { Loader2 } from "lucide-react";
+import { Check, Loader2, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { VARIANTES, clasesBoton } from "./clasesBoton";
 
-export function Boton({ variante, tamano, ancho, icono: Icono, cargando = false, children, className, type = "button", disabled, ...props }) {
+/*
+  El botón de la app. Con `estado` cuenta lo que pasó sin cambiar de lugar:
+  «cargando» gira, «listo» dibuja un check y «error» marca una equis. El texto
+  se queda (el ancho no salta). El resultado lo anuncian los avisos.
+*/
+export function Boton({ variante, tamano, ancho, icono: Icono, cargando = false, estado, children, className, type = "button", disabled, ...props }) {
+  const actual = cargando ? "cargando" : estado;
   return (
-    <button type={type} disabled={disabled || cargando} className={clasesBoton({ variante, tamano, ancho, className })} {...props}>
-      {cargando ? <Loader2 size={15} className="animate-spin" aria-hidden="true" /> : Icono && <Icono size={15} aria-hidden="true" />}
+    <button
+      type={type}
+      disabled={disabled || actual === "cargando"}
+      aria-busy={actual === "cargando" || undefined}
+      data-estado={actual || undefined}
+      className={clasesBoton({ variante, tamano, ancho, className: `aiden-boton-estado ${className || ""}` })}
+      {...props}
+    >
+      {actual === "cargando" ? (
+        <Loader2 size={15} className="animate-spin" aria-hidden="true" />
+      ) : actual === "listo" ? (
+        <Check size={15} className="aiden-boton-check" aria-hidden="true" />
+      ) : actual === "error" ? (
+        <X size={15} aria-hidden="true" />
+      ) : (
+        Icono && <Icono size={15} aria-hidden="true" />
+      )}
       {children}
     </button>
   );

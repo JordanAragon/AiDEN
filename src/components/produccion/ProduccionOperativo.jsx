@@ -5,6 +5,7 @@ import { Selector } from "../ui/Campo";
 import Cifras from "../ui/Cifras";
 import EncabezadoPagina from "../ui/EncabezadoPagina";
 import { Buscador, Segmentos } from "../ui/Filtros";
+import EstadoVacio from "../ui/EstadoVacio";
 import EtiquetaLote from "../lote/EtiquetaLote";
 import PasosEtapa from "../lote/PasosEtapa";
 import ModalLote from "../formularios/ModalLote";
@@ -131,7 +132,7 @@ export default function ProduccionOperativo() {
                     <p className="text-[11px] text-slate-500">de {numero(l.cantidadInicial)} plantas</p>
                   </section>
                   <section className="flex gap-1">
-                    <button type="button" onClick={() => abrirLote(l.lote)} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-emerald-700" title="Ver lote" aria-label={`Ver lote ${l.lote}`}>
+                    <button type="button" onClick={() => abrirLote(l.lote, filtrados.map((item) => item.lote))} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-emerald-700" title="Ver lote" aria-label={`Ver lote ${l.lote}`}>
                       <ChevronRight size={16} aria-hidden="true" />
                     </button>
                     {canManage && !cerrado && (
@@ -149,30 +150,32 @@ export default function ProduccionOperativo() {
               </article>
             );
           })}
-          {!filtrados.length && (
-            <div className="py-10 text-center text-sm text-slate-500">
-              {visibles.length ? (
-                <>
-                  <p>No hay lotes que coincidan con el filtro.</p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setQuery("");
-                      setStage("Todas");
-                      setZona("Todas");
-                    }}
-                    className="mt-2 text-xs font-semibold text-emerald-700 hover:underline"
-                  >
-                    Limpiar filtros
-                  </button>
-                </>
-              ) : isOperator ? (
-                "No tienes lotes asignados actualmente."
-              ) : (
-                "Todavía no hay lotes. Crea el primero con “Nuevo lote”."
-              )}
-            </div>
-          )}
+          {!filtrados.length &&
+            (visibles.length ? (
+              <EstadoVacio variante="busqueda" compacto titulo={query.trim() ? `Ningún lote coincide con «${query.trim()}»` : "Ningún lote coincide con el filtro"} texto="Prueba con otra etapa o zona, o quita los filtros para ver todos los lotes.">
+                <Boton
+                  variante="secundario"
+                  tamano="sm"
+                  onClick={() => {
+                    setQuery("");
+                    setStage("Todas");
+                    setZona("Todas");
+                  }}
+                >
+                  Limpiar filtros
+                </Boton>
+              </EstadoVacio>
+            ) : isOperator ? (
+              <EstadoVacio variante="inicio" compacto titulo="No tienes lotes asignados" texto="Cuando supervisión te asigne un lote, aparecerá aquí con su etapa y sus plantas." />
+            ) : (
+              <EstadoVacio variante="inicio" compacto titulo="Todavía no hay lotes" texto="Un lote reúne un cultivo, su zona y sus plantas. Desde el registro, cada tarea, costo e incidencia queda en su historia.">
+                {canManage && (
+                  <Boton variante="primario" tamano="sm" icono={Plus} onClick={() => setModal({ tipo: "nuevo" })}>
+                    Registrar primer lote
+                  </Boton>
+                )}
+              </EstadoVacio>
+            ))}
         </section>
       </section>
 

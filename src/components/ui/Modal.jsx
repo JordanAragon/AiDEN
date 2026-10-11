@@ -6,7 +6,7 @@ const pila = [];
 const ENFOCABLES = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 const ANCHOS = { sm: "max-w-md", md: "max-w-lg", lg: "max-w-2xl", xl: "max-w-3xl" };
 
-export default function Modal({ abierto, onCerrar, titulo, descripcion, children, pie, ancho = "md", variante = "centro", encabezado }) {
+export default function Modal({ abierto, onCerrar, titulo, descripcion, children, pie, ancho = "md", variante = "centro", encabezado, accionesEncabezado }) {
   const idTitulo = useId();
   const dialogo = useRef(null);
   const cerrar = useRef(onCerrar);
@@ -73,9 +73,12 @@ export default function Modal({ abierto, onCerrar, titulo, descripcion, children
             </h2>
             {descripcion && <p className="mt-0.5 text-xs text-slate-500">{descripcion}</p>}
           </div>
-          <button type="button" onClick={() => cerrar.current?.()} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100" aria-label="Cerrar">
-            <X size={16} aria-hidden="true" />
-          </button>
+          <div className="flex shrink-0 items-center gap-1">
+            {accionesEncabezado}
+            <button type="button" onClick={() => cerrar.current?.()} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100" aria-label="Cerrar">
+              <X size={16} aria-hidden="true" />
+            </button>
+          </div>
         </header>
         <div className="min-h-0 flex-1 overflow-y-auto p-5">{children}</div>
         {pie && <footer className="flex shrink-0 flex-wrap items-center justify-end gap-2 border-t border-slate-100 bg-white px-5 py-4">{pie}</footer>}
