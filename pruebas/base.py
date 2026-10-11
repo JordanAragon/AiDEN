@@ -25,10 +25,15 @@ def servir():
     threading.Thread(target=s.serve_forever, daemon=True).start()
     return s
 
+# Avisos que emite el navegador por el entorno, no por la app. Chromium sin GPU (CI,
+# headless) avisa «No available adapters.» cuando las escenas vivas preguntan si hay
+# WebGPU; la app cae entonces a su respaldo en CSS, que es lo esperado ahí.
+AVISOS_DEL_ENTORNO = {"No available adapters."}
+
 class Registro:
     def __init__(self): self.errores = []; self.ok = []; self.fallos = []
     def conectar(self, pg, nombre):
-        pg.on("console", lambda m: self.errores.append(f"[{nombre}] {m.type}: {m.text}") if m.type in ("error", "warning") else None)
+        pg.on("console", lambda m: self.errores.append(f"[{nombre}] {m.type}: {m.text}") if m.type in ("error", "warning") and not (m.type == "warning" and m.text in AVISOS_DEL_ENTORNO) else None)
         pg.on("pageerror", lambda e: self.errores.append(f"[{nombre}] PAGEERROR: {e}"))
     def check(self, cond, texto):
         (self.ok if cond else self.fallos).append(texto)
