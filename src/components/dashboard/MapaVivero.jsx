@@ -25,7 +25,7 @@ export default function MapaVivero({ datos }) {
   const lecturas = useMemo(() => ultimasLecturas(datos.ambiental), [datos.ambiental]);
   const enAlerta = useMemo(() => new Set(plano.zonas.filter((zona) => evaluarLectura(lecturas.get(zona.nombre), datos.configuracion).fuera).map((zona) => zona.nombre)), [plano, lecturas, datos.configuracion]);
   const codigos = plano.lotes.map((lote) => lote.codigo);
-  const pose = useCallback((aspecto) => vistaGeneral(plano, aspecto, aspecto > 1.4 ? 0.8 : 0.95), [plano]);
+  const pose = useCallback((aspecto) => vistaGeneral(plano, aspecto, aspecto > 1.4 ? 0.8 : aspecto >= 1 ? 1.12 : 0.95), [plano]);
 
   const etiquetas = useMemo(
     () => [

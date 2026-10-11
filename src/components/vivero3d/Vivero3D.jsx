@@ -55,9 +55,22 @@ export default function Vivero3D({ ref, plano, pose, resaltado = -1, orbita = 0,
       const rotulo = nodo.firstElementChild;
       const ancho = rotulo?.offsetWidth || 0;
       const alto = rotulo?.offsetHeight || 0;
+      // El rótulo no se sale por los lados del lienzo: se corre hacia adentro (su
+      // línea guía se oculta para no apuntar a otro sitio).
+      const limite = contenedorRef.current?.clientWidth || 0;
+      let correr = 0;
+      if (limite) {
+        const izquierda = p.x - ancho / 2 - 8;
+        const derecha = p.x + ancho / 2 + 8 - limite;
+        if (izquierda < 0) correr = -izquierda;
+        else if (derecha > 0) correr = -derecha;
+      }
+      nodo.style.setProperty("--correr", `${Math.round(correr)}px`);
+      nodo.dataset.corrida = correr ? "si" : "no";
+      const cx = p.x + correr;
       let subir = 0;
       for (let intento = 0; intento < 6; intento += 1) {
-        const caja = { x0: p.x - ancho / 2, x1: p.x + ancho / 2, y1: p.y - 10 - subir, y0: p.y - 10 - subir - alto };
+        const caja = { x0: cx - ancho / 2, x1: cx + ancho / 2, y1: p.y - 10 - subir, y0: p.y - 10 - subir - alto };
         const choque = colocadas.find((otra) => caja.x0 < otra.x1 && caja.x1 > otra.x0 && caja.y0 < otra.y1 && caja.y1 > otra.y0);
         if (!choque) {
           colocadas.push(caja);

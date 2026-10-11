@@ -22,9 +22,9 @@ import { dinero, dineroOGuion, fechaCorta, haceTiempo, numero, vencimiento } fro
 function Info({ etiqueta, valor, detalle, alerta = false }) {
   return (
     <section className={`rounded-xl p-3 ${alerta ? "bg-red-50" : "bg-slate-50"}`}>
-      <p className="text-[10px] text-slate-500">{etiqueta}</p>
+      <p className={`text-[11px] ${alerta ? "text-red-700" : "text-slate-500"}`}>{etiqueta}</p>
       <p className={`mt-1 text-xs font-semibold ${alerta ? "text-red-600" : "text-slate-800"}`}>{valor}</p>
-      {detalle && <p className="mt-0.5 text-[10px] text-slate-500">{detalle}</p>}
+      {detalle && <p className={`mt-0.5 text-[11px] ${alerta ? "text-red-700" : "text-slate-500"}`}>{detalle}</p>}
     </section>
   );
 }
@@ -77,7 +77,11 @@ function Contenido({ lote, datos, sesion, onAccion }) {
             detalle={cerrado ? lote.motivoCierre : salida === null ? `${r.dias} días en vivero` : salida < 0 ? `Atrasada ${-salida} días` : `En ${salida} días · ${r.dias} en vivero`}
             alerta={!cerrado && salida !== null && salida < 0}
           />
-          <Info etiqueta="Costo por planta" valor={dineroOGuion(r.costoPlanta)} detalle={r.costoPlanta === null ? `Sin plantas vivas · ${dinero(r.gasto)} acumulados` : `${dinero(r.gasto)} acumulados`} />
+          <Info
+            etiqueta="Costo por planta"
+            valor={dineroOGuion(r.costoPlanta)}
+            detalle={r.costoPlanta === null ? `Sin plantas vivas · ${dinero(r.gasto)} acumulados` : `${dinero(r.gasto)} acumulados`}
+          />
           <Info
             etiqueta="Incidencias abiertas"
             valor={r.incidenciasAbiertas.length || "Ninguna"}
@@ -154,58 +158,60 @@ function Contenido({ lote, datos, sesion, onAccion }) {
             ]}
           />
         </div>
-        <ul role="tabpanel" id={`panel-${pestana}`} aria-labelledby={`pestana-${pestana}`} className="mt-3 max-h-[46vh] space-y-2 overflow-y-auto pr-1">
-          {pestana === "historia" && r.eventos.length > 0 && (
-            <li>
-              <LineaTiempo eventos={r.eventos} limite={20} inicio={`Aquí empezó ${lote.lote}: registrado el ${fechaCorta(lote.fecha)}.`} />
-            </li>
-          )}
-          {pestana === "tareas" &&
-            r.tareas.map((t) => (
-              <Tarjeta key={t.id}>
-                <div className="flex items-start justify-between gap-2">
-                  <p className={`text-sm font-medium ${t.estado === "Completada" ? "text-slate-500 line-through" : "text-slate-800"}`}>{t.titulo}</p>
-                  <Insignia tono={TONO_ESTADO_TAREA[t.estado]}>{t.estado}</Insignia>
-                </div>
-                <p className="mt-1 text-[11px] text-slate-500">
-                  {nombrePersona(datos.personas, t.responsableId)} · {t.estado === "Completada" ? `completada ${fechaCorta(t.completada)}` : vencimiento(t.fecha).texto}
-                </p>
-              </Tarjeta>
-            ))}
-          {pestana === "calidad" &&
-            r.incidencias.map((i) => (
-              <Tarjeta key={i.id}>
-                <div className="flex flex-wrap items-center gap-2">
-                  <Link to={`/calidad?incidencia=${i.id}`} className="font-mono text-[10px] font-bold text-emerald-700 hover:underline">
-                    {i.codigo}
-                  </Link>
-                  <Insignia tono={TONO_PRIORIDAD[i.prioridad]}>{i.prioridad}</Insignia>
-                  <Insignia tono={TONO_INCIDENCIA[estadoIncidencia(i)]}>{estadoIncidencia(i)}</Insignia>
-                </div>
-                <p className="mt-1 text-sm text-slate-800">{i.descripcion}</p>
-                {i.accion && <p className="mt-1 text-[11px] text-slate-500">Acción: {i.accion}</p>}
-              </Tarjeta>
-            ))}
-          {pestana === "costos" &&
-            costos.map((c) => (
-              <Tarjeta key={c.id}>
-                <div className="flex items-baseline justify-between gap-2">
-                  <p className="min-w-0 text-sm text-slate-800">{c.concepto}</p>
-                  <p className={`shrink-0 text-sm font-bold ${c.tipo === "ingreso" ? "text-emerald-700" : "text-slate-800"}`}>
-                    {c.tipo === "ingreso" ? "+" : "−"}
-                    {dinero(c.valor)}
+        <div role="tabpanel" id={`panel-${pestana}`} aria-labelledby={`pestana-${pestana}`} tabIndex={0} className="mt-3 max-h-[46vh] overflow-y-auto rounded-xl pr-1 outline-offset-2">
+          <ul className="space-y-2">
+            {pestana === "historia" && r.eventos.length > 0 && (
+              <li>
+                <LineaTiempo eventos={r.eventos} limite={20} inicio={`Aquí empezó ${lote.lote}: registrado el ${fechaCorta(lote.fecha)}.`} />
+              </li>
+            )}
+            {pestana === "tareas" &&
+              r.tareas.map((t) => (
+                <Tarjeta key={t.id}>
+                  <div className="flex items-start justify-between gap-2">
+                    <p className={`text-sm font-medium ${t.estado === "Completada" ? "text-slate-500 line-through" : "text-slate-800"}`}>{t.titulo}</p>
+                    <Insignia tono={TONO_ESTADO_TAREA[t.estado]}>{t.estado}</Insignia>
+                  </div>
+                  <p className="mt-1 text-[11px] text-slate-500">
+                    {nombrePersona(datos.personas, t.responsableId)} · {t.estado === "Completada" ? `completada ${fechaCorta(t.completada)}` : vencimiento(t.fecha).texto}
                   </p>
-                </div>
-                <p className="mt-1 text-[11px] text-slate-500">
-                  {fechaCorta(c.fecha)} · {c.categoria}
-                </p>
-              </Tarjeta>
-            ))}
-          {((pestana === "historia" && !r.eventos.length) ||
-            (pestana === "tareas" && !r.tareas.length) ||
-            (pestana === "calidad" && !r.incidencias.length) ||
-            (pestana === "costos" && !costos.length)) && <li className="px-1 py-4 text-xs text-slate-500">Todavía no hay registros.</li>}
-        </ul>
+                </Tarjeta>
+              ))}
+            {pestana === "calidad" &&
+              r.incidencias.map((i) => (
+                <Tarjeta key={i.id}>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Link to={`/calidad?incidencia=${i.id}`} className="font-mono text-[10px] font-bold text-emerald-700 hover:underline">
+                      {i.codigo}
+                    </Link>
+                    <Insignia tono={TONO_PRIORIDAD[i.prioridad]}>{i.prioridad}</Insignia>
+                    <Insignia tono={TONO_INCIDENCIA[estadoIncidencia(i)]}>{estadoIncidencia(i)}</Insignia>
+                  </div>
+                  <p className="mt-1 text-sm text-slate-800">{i.descripcion}</p>
+                  {i.accion && <p className="mt-1 text-[11px] text-slate-500">Acción: {i.accion}</p>}
+                </Tarjeta>
+              ))}
+            {pestana === "costos" &&
+              costos.map((c) => (
+                <Tarjeta key={c.id}>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <p className="min-w-0 text-sm text-slate-800">{c.concepto}</p>
+                    <p className={`shrink-0 text-sm font-bold ${c.tipo === "ingreso" ? "text-emerald-700" : "text-slate-800"}`}>
+                      {c.tipo === "ingreso" ? "+" : "−"}
+                      {dinero(c.valor)}
+                    </p>
+                  </div>
+                  <p className="mt-1 text-[11px] text-slate-500">
+                    {fechaCorta(c.fecha)} · {c.categoria}
+                  </p>
+                </Tarjeta>
+              ))}
+            {((pestana === "historia" && !r.eventos.length) ||
+              (pestana === "tareas" && !r.tareas.length) ||
+              (pestana === "calidad" && !r.incidencias.length) ||
+              (pestana === "costos" && !costos.length)) && <li className="px-1 py-4 text-xs text-slate-500">Todavía no hay registros.</li>}
+          </ul>
+        </div>
         {pestana === "costos" && costos.length > 0 && (
           <p className="mt-3 text-xs text-slate-600">
             Gastos {dinero(r.gasto)} · Ingresos {dinero(r.ingreso)} · <span className={`font-semibold ${r.resultado < 0 ? "text-red-600" : "text-emerald-700"}`}>Resultado {dinero(r.resultado)}</span>
@@ -254,10 +260,26 @@ export default function FichaLote({ codigo, lista = [], onIr, onCerrar }) {
         <span className="text-[11px] font-semibold tabular-nums text-slate-500" aria-live="polite">
           {posicion + 1} de {lista.length}
         </span>
-        <button type="button" onClick={() => anterior && onIr?.(anterior)} disabled={!anterior} className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-35" aria-label={anterior ? `Lote anterior, ${anterior}` : "No hay lote anterior"} aria-keyshortcuts="K" title="Lote anterior (K)">
+        <button
+          type="button"
+          onClick={() => anterior && onIr?.(anterior)}
+          disabled={!anterior}
+          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-35"
+          aria-label={anterior ? `Lote anterior, ${anterior}` : "No hay lote anterior"}
+          aria-keyshortcuts="K"
+          title="Lote anterior (K)"
+        >
           <ChevronUp size={16} aria-hidden="true" />
         </button>
-        <button type="button" onClick={() => siguiente && onIr?.(siguiente)} disabled={!siguiente} className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-35" aria-label={siguiente ? `Lote siguiente, ${siguiente}` : "No hay lote siguiente"} aria-keyshortcuts="J" title="Lote siguiente (J)">
+        <button
+          type="button"
+          onClick={() => siguiente && onIr?.(siguiente)}
+          disabled={!siguiente}
+          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-35"
+          aria-label={siguiente ? `Lote siguiente, ${siguiente}` : "No hay lote siguiente"}
+          aria-keyshortcuts="J"
+          title="Lote siguiente (J)"
+        >
           <ChevronDown size={16} aria-hidden="true" />
         </button>
       </span>

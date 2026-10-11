@@ -49,9 +49,13 @@
   visibility: hidden;
 }
 
+.aiden-vivero3d-etiqueta[data-corrida="si"] .aiden-vivero3d-rotulo::after {
+  display: none;
+}
+
 /* Rótulo flotante de lote o zona: anclado por su punto inferior. */
 .aiden-vivero3d-rotulo {
-  translate: -50% calc(-100% - 10px - var(--subir, 0px));
+  translate: calc(-50% + var(--correr, 0px)) calc(-100% - 10px - var(--subir, 0px));
   display: grid;
   gap: 1px;
   min-width: max-content;

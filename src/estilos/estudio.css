@@ -213,7 +213,7 @@ html.aiden-dark .aiden-nav-atajo kbd {
   font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #66736b;
+  color: #56635b;
 }
 
 .aiden-paleta-opcion-final {
@@ -432,6 +432,10 @@ html.aiden-dark .aiden-paleta-opcion-tipo {
 html.aiden-dark .aiden-paleta-previa,
 html.aiden-dark .aiden-paleta-pie {
   background: #0e1411;
+}
+
+html.aiden-dark .aiden-paleta-previa-datos dd span {
+  color: #91a098;
 }
 
 html.aiden-dark .aiden-paleta-previa-zona {

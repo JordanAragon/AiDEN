@@ -153,8 +153,9 @@ export default function MarcoPublico({ children, diaCilantro = null, flotanteVis
 
 /* El botón que acompaña la lectura en el celular (en escritorio la cápsula ya
    lleva el mismo llamado): aparece pasado el arranque y se retira cuando el
-   formulario de contacto está a la vista y mientras se usan las tres pantallas,
-   para no tapar las tareas del celular. */
+   formulario de contacto está a la vista, mientras se usan las tres pantallas
+   (para no tapar las tareas del celular) y durante el recorrido del vivero en
+   3D (para no tapar sus paradas). */
 function CtaFlotante({ pathname }) {
   const [visible, setVisible] = useState(false);
 
@@ -166,7 +167,9 @@ function CtaFlotante({ pathname }) {
       const pantallas = document.querySelector(".aiden-pantallas-escenario");
       const caja = pantallas?.getBoundingClientRect();
       const pantallasEnUso = caja ? caja.top < alto * 0.8 && caja.bottom > alto * 0.2 : false;
-      setVisible(window.scrollY > alto * 0.85 && !contactoVisible && !pantallasEnUso);
+      const vivero = document.querySelector(".aiden-vivero-recorrido")?.getBoundingClientRect();
+      const viveroEnUso = vivero ? vivero.top < alto * 0.9 && vivero.bottom > alto * 0.1 : false;
+      setVisible(window.scrollY > alto * 0.85 && !contactoVisible && !pantallasEnUso && !viveroEnUso);
     };
     decidir();
     window.addEventListener("scroll", decidir, { passive: true });
